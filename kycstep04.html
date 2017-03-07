@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <title>Tax</title>
+        <meta name="description" content="">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+
+        <!-- Stylesheets -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/css/animsition.css"> -->
+        
+        <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+        <link rel="stylesheet" href="css/material.css">  
+        <link rel="stylesheet" href="css/swipebox.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/stylesheet.css">
+        <script src="js/angular.min.js"></script>
+    </head>
+    <style>
+        .tsap_SelectPhoto
+        {
+            background-color: #4A4A4A;
+            color: #FFF;
+            display: block;
+            width: 180px;
+            margin: auto;
+            height: 47px;
+            line-height: 46px;
+            font-size: 18px;
+            border: 1px solid #4A4A4A;
+            border-radius: 7px;
+            transition: all 0.2s ease 0s;
+            text-align: center;
+        }
+    </style>
+
+    <body >
+        <div ng-app="myApp" ng-controller="personCtrl" class="animsition">
+            <div class="mdl-layout mdl-js-layout mdl-layout--overlay-drawer-button">
+
+                <!-- Sidebar -->
+                <div id="sidebar_agency" class="mdl-layout__drawer">
+                    <!-- Top -->
+
+                </div>
+                <!-- Page Content -->
+                <main class="mdl-layout__content">
+                    <div class=""> <!-- card -->
+                        <div class="account-info dark-blue-bg">
+                            <div class="account-navigation"> <!-- top icons -->
+                                <!-- <a class="mdl-button mdl-js-button mdl-button--icon left" href="add-customer.html">
+                                   <img src="img/back-button.png">
+                                 </a>  -->
+                               <!-- <button class="mdl-button mdl-js-button mdl-button--icon right">
+                                    <i class="material-icons">close</i>
+                                </button> -->
+                                <span class="main-heading">{{datalang.OwnerDetails}} </span>
+                                <div class="clr"></div>
+                            </div>
+                        </div>
+                        <div class="account-info mdl-color--primary grey-gradient">
+
+                            <div class="account-navigation"> 
+                                <div class="add-account-container">
+                                    <a href="javascript:;">
+                                        <div class="add-account">
+                                            <img id="view_profile_image_plus" src="img/add-account.png">
+                                        </div>
+                                    </a>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="account-data add-customer-data"> <!-- text fields -->
+                            <div class="mdl-card mdl-shadow--2dp ">
+                                <form action="#">
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                                        <input class="mdl-textfield__input" type="text" placeholder="  {{datalang.Roleofuserwithcompany}} *" id="user_role_with_company" />
+                                        <label class="mdl-textfield__label" for="user_role_with_company">  </label>
+
+                                    </div>
+
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                                        <input class="mdl-textfield__input" readonly type="text" placeholder=" {{datalang.Companyname}}" id="company_name" />
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                                        <input class="mdl-textfield__input" readonly  type="text" placeholder=" {{datalang.Addresscompany}}:" id="company_address" />
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                                        <input class="mdl-textfield__input" readonly type="text" placeholder=" {{datalang. Fiscalid}}" id="comany_fiscal_id" />
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                                        <center> <img id="compnay_doc" style="height:100px;width:100px;margin-top:40px;"  src="img/add-account.png">  </center>
+                                        <label class="mdl-textfield__label" for="compnay_doc"> &nbsp; &nbsp; {{datalang.CompanyDocument}} </label>
+                                    </div>  
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                                        <center> <img id="compnay_doc_imagelicensew" style="height:100px;width:100px;margin-top:40px;"  src="img/add-account.png">  </center>
+                                        <label class="mdl-textfield__label" for="compnay_doc_imagelicensew"> &nbsp; &nbsp; {{datalang.CompanyLicense}} </label>
+                                    </div>  
+
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                                        <input class="mdl-textfield__input" readonly type="text" placeholder=" {{datalang.Companyauthorizedby}}" id="company_authorised_by" />
+                                    </div>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                                        <input class="mdl-textfield__input" readonly type="date" placeholder=" {{datalang.DateofAutorized}}" id="company_authorisation_date" />
+                                    </div> 
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                                        <input class="mdl-textfield__input" readonly type="number" placeholder=" {{datalang.FiscalBudget}}" id="fiscal_budget" />
+                                    </div> 
+
+                                </form>
+                                <div class="center-align">
+                                    <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="save_kyc(1)" href="javascript:;">                
+                                        {{datalang.SaveExit}}
+                                    </a>
+                                    <a id="kyc_button2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="save_kyc(2)" href="javascript:;">                
+                                       {{datalang.SaveNext}}
+                                    </a>
+                                    <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >  
+                                </div>
+
+                            </div>
+                            <div class="clr"></div>
+
+                        </div>
+
+                    </div>
+                </main>
+            </div>
+        </div>
+        <script src="js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="js/custom.js"></script>
+        <script src="js/kycstep04.js"></script>
+        <script src="cordova.js"></script>
+        <script type="text/javascript">$(document).ready(function () {
+                                            app.initialize();
+                                        });
+        </script>
+        <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/js/jquery.animsition.js"></script> -->
+        <script src="js/animsition.js"></script>
+        <script src="js/sweetalert.min.js"></script> 
+        <script src="js/material.min.js"></script>
+        <script src="js/jquery.swipebox.min.js"></script>
+        <script src="js/function.js"></script>
+        
+        <script>
+            langfile = localStorage.getItem("language");
+            if (langfile == 'en')
+                document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
+            else
+                document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
+            
+        </script>
+    </body>
+</html>

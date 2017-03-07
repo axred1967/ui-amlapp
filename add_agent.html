@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Tax</title>
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/animsition.css">
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+    <link rel="stylesheet" href="css/material.css">
+    <link rel="stylesheet" href="css/swipebox.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/stylesheet.css">
+  </head>
+
+  <body>
+    <div ng-app="myApp" ng-controller="personCtrl" class="animsition">
+      <!-- Page Content -->
+      <main class="mdl-layout__content">
+        <div class=""> <!-- card -->
+        	 <div class="account-info dark-blue-bg">
+                <div class="account-navigation"> <!-- top icons -->
+                  <a class="mdl-button mdl-js-button mdl-button--icon left" href="javascript:;" onclick="redirect('my_agent.html')" >
+                    <img src="img/back-button.png">
+                  </a>
+                 <!-- <button class="mdl-button mdl-js-button mdl-button--icon right">
+                    <i class="material-icons">close</i>
+                  </button> -->
+                  <span class="main-heading">{{datalang.Addnewagent}}</span>
+                  <div class="clr"></div>
+                  </div>
+              </div>
+          
+
+          <div class="account-data add-customer-data"> <!-- text fields -->
+          	<div class="mdl-card mdl-shadow--2dp ">
+                <form action="#">
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input" type="text" placeholder=" {{datalang.Name}}" id="agent_name" />
+                  </div>
+                  
+                  
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input" type="text" placeholder=" {{datalang.EmailID}}"  id="agent_email" />
+                  </div>
+                   
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input" type="text" placeholder=" {{datalang.Mobile}}"  id="agent_mobile_number" />
+                  </div>
+                  
+                </form>
+    			<div class="center-align">
+                    <a  id="save_button_agent" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" href="javascript:;" onclick="add_agent()" >                
+                       {{datalang.Save}}
+                    </a>
+                    <a id="cancel_button_agent" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" href="javascript:;" onclick="redirect('my_agent.html')">                
+                     {{datalang.Cancel}}
+                    </a>
+                            <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
+                </div>
+                
+             </div>
+            <div class="clr"></div>
+            
+          </div>
+
+        </div>
+      </main>
+    </div>
+
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/custom.js"></script>
+    <script src="js/add_agent.js"></script>
+     <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
+    <script src="js/animsition.js"></script>
+    <script src="js/sweetalert.min.js"></script> 
+    <script src="js/material.min.js"></script>
+    <script src="js/jquery.swipebox.min.js"></script>
+    <script src="js/function.js"></script>
+    <script src="js/angular.min.js"></script>
+        <script>
+            langfile = localStorage.getItem("language");
+            if (langfile == 'en')
+                document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
+            else
+                document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
+            var app2 = angular.module('myApp', []);
+            app2.controller('personCtrl', function ($scope) {
+                $scope.datalang = DATALANG;
+            });
+        </script>
+  </body>
+</html>

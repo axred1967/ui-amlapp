@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Tax</title>
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/animsition.css">
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+    <link rel="stylesheet" href="css/material.css">
+    <link rel="stylesheet" href="css/swipebox.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/stylesheet.css">
+  </head>
+
+  <body>
+  <style>
+      .tsap_SelectPhoto
+      {
+          background-color: #4A4A4A;
+          color: #FFF;
+          display: block;
+          width: 180px;
+          margin: auto;
+          height: 47px;
+          line-height: 46px;
+          font-size: 18px;
+          border: 1px solid #4A4A4A;
+          border-radius: 7px;
+          transition: all 0.2s ease 0s;
+          text-align: center;
+      }
+  </style>
+    <div ng-app="myApp" ng-controller="personCtrl" class="animsition">
+      <!-- Page Content -->
+      <main class="mdl-layout__content">
+        <div class=""> <!-- card -->
+        	 <div class="account-info dark-blue-bg">
+                <div class="account-navigation"> <!-- top icons -->
+                  <a class="mdl-button mdl-js-button mdl-button--icon left" href="javascript:;" onclick="redirect('my_contract.html')">
+                    <img src="img/back-button.png">
+                  </a>
+                 <!-- <button class="mdl-button mdl-js-button mdl-button--icon right">
+                    <i class="material-icons">close</i>
+                  </button> -->
+                  <span class="main-heading">{{datalang.AddnewContract}}</span>
+                  <div class="clr"></div>
+                  </div>
+              </div>
+
+
+          <div class="account-data add-customer-data"> <!-- text fields -->
+          	<div class="mdl-card mdl-shadow--2dp ">
+              <form action="#">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                      <input class="mdl-textfield__input" type="text" placeholder="{{datalang.ScopeofContract}}" id="scope_of_contract" />
+                      <label for="scope_of_contract" style="color:orange;display:none">{{datalang.ScopeofContract}}</label>
+                    </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input" type="text" placeholder="{{datalang.NatureofContract}}" id="nature_of_contract" />
+                    <label for="nature_of_contract" style="color:orange;display:none">{{datalang.NatureofContract}}</label>
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input" type="text" placeholder="{{datalang.ContractDate}}" id="ContractDate" />
+                    <label for="ContractDate" style="color:orange;display:none">{{datalang.ContractDate}}</label>
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input" type="text" placeholder="{{datalang.ContractEOV}}" id="ContractEOV" />
+                    <label for="ContractEOV" style="color:orange;display:none">{{datalang.ContractEOV}}</label>
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input" type="text" placeholder="{{datalang.EconomicValueifDeterminable}}" id="ContractValue" />
+                    <label  for="ContractValue" style="color:orange;display:none">{{datalang.EconomicValueifDeterminable}}</label>
+                </div>
+                  <input type="hidden" id="image_document" >
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo"><br><br><br>
+                      <a onclick="takephoto()" style="width:100%;" class="tsap_SelectPhoto"> <span  class="fa fa-picture-o spanCam"></span> {{datalang.Upload_contract}} *</a>
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                      <center> <img id="contract_image" style="height:100px;width:100px;"  src="img/add-account.png"> <img style="display:none;height:100px;width:100px;" class="profile-Img" src="img/load.gif" id="profileimgloader"> </center>
+                  </div>
+
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <label  for="SearchCustomerByEmail" style="color:orange;display:none">{{datalang.SearchCustomerByEmail}}</label>
+                    <input class="mdl-textfield__input" ng-keyup="showList();" ng-model="searcCustomer" type="text" placeholder=" {{datalang.SearchCustomerByEmail}}" id="SearchCustomerByEmail" />
+                    <input ng-model="user_id" type="hidden" id="user_id" />
+                  </div>
+                  <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+                  <tbody>
+                    <tr ng-click="additem(item.fullname,item.user_id)" ng-repeat="item in list">
+                      <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.email}}</td>
+                      <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.fullname}}</td>
+                    </tr>
+                  </tbody>
+                  </table>
+                  <div class="center-align padTop20">
+                  <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn"  onclick="add_customer()" >
+                    <i class="material-icons">add</i>
+                  </button><br/>
+                  {{datalang.Addnewcustomer}}
+                </div>
+                <div class="mdl-grid">
+                  <div clas="mdl-cell mdl-cell--4-col">
+                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
+                          <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="0" checked>
+                          <span class="mdl-radio__label" ng-bind="datalang.actForHimself"></span>
+                        </label>
+                    </div>
+
+                  <div clas="mdl-cell--4-col">
+                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
+                          <input type="radio" id="option-2" class="mdl-radio__button" name="options" value="1" >
+                          <span class="mdl-radio__label" ng-bind="datalang.actForCompany"></span>
+                        </label>
+                </div>
+                <div clas="mdl-cell--4-col">
+                        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-3">
+                          <input type="radio" id="option-3" class="mdl-radio__button" name="options" value="2">
+                          <span class="mdl-radio__label" ng-bind="datalang.actForOtherPerson"></span>
+                        </label>
+                </div>
+                </div>
+                  <div id="show_forCompany" style="display:none;width:100%">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                      <input class="mdl-textfield__input"   type="text" placeholder=" {{datalang.Roleofuserwithcompany}}" id="company_role" />
+                      <label for="company_role" style="color:orange;display:none">{{datalang.Roleofuserwithcompany}}</label>
+                    </div>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                      <label for="FindCompany" style="color:orange;display:none">{{datalang.SearchCompanyByEmail}}</label>
+                      <input class="mdl-textfield__input" ng-keyup="showListCompany();" ng-model="searchCompany" type="text" placeholder=" {{datalang.SearchCompanyByEmail}}" id="FindCompany" />
+                    </div>
+                    <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+                    <tbody>
+                      <tr ng-click="addCompany(item.fullname,item.user_id)" ng-repeat="item in list">
+                        <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.email}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.fullname}}</td>
+                      </tr>
+                    </tbody>
+                    </table>
+                    <div class="center-align">
+
+                    <a id="add_company" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="add_company()" href="javascript:;">
+                      {{datalang.addNewCompany}}
+                    </a>
+                  </div>
+                </div>
+
+                <div id="show_forPerson" style="display:none;width:100%">
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input" type="text" placeholder=" {{datalang.kindofDelegation}}" id="user_role" />
+                    <label for="user_role" style="color:orange;display:none">{{datalang.kindofDelegation}}</label>
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <label for="FindOther" style="color:orange;display:none">{{datalang.SearchDelegatorByEmail}}</label>
+                    <input class="mdl-textfield__input" ng-keyup="showOtherPerson();" ng-model="searchCompany" type="text" placeholder=" {{datalang.SearchDelegatorByEmail}}" id="FindOther" />
+                  </div>
+                  <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+                  <tbody>
+                    <tr ng-click="addOtherPersony(item.fullname,item.user_id)" ng-repeat="item in list">
+                      <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.email}}</td>
+                      <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.fullname}}</td>
+                    </tr>
+                  </tbody>
+                  </table>
+
+                  <a id="add_company" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="add_company()" href="javascript:;">
+                    {{datalang.addNewOtherPerson}}
+                  </a>
+                </div>
+
+              </form>
+
+    			<div class="center-align">
+                    <a id="save_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="add_customer()" href="javascript:;">
+                      {{datalang.Save}}
+                    </a>
+                    <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="redirect('my_customer.html')" href="javascript:;">
+                      {{datalang.Cancel}}
+                    </a>
+                     <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
+            </div>
+          </div>
+             </div>
+            <div class="clr"></div>
+
+          </div>
+
+        </div>
+      </main>
+    </div>
+
+   <script src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/custom.js"></script>
+    <script src="js/add_contract.js"></script>
+    <script type="text/javascript">$(document).ready(function(){app.initialize();});
+    $('#check_actForOther').change(function () {
+     if (this.checked) {
+         $('#show_actForOther').show();
+     } else {
+         $('#show_actForOther').hide();
+    }
+     });
+
+     $("[name=options]").change(function(){
+       switch ($(this).val()){
+         case "1":
+         $('#show_forCompany').show();
+          $('#show_forPerson').hide();
+         break;
+         case "2":
+         $('#show_forCompany').hide();
+          $('#show_forPerson').show();
+         break;
+         default:
+         $('#show_forCompany').hide();
+          $('#show_forPerson').hide();
+
+         }
+       });
+
+     $(".mdl-textfield__input").focus(function(){
+       $('label[for="'+$(this).attr("id") +'"]').show()
+     });
+     $(".mdl-textfield__input").blur(function(){
+       $('label[for="'+$(this).attr("id") +'"]').hide()
+     });
+     function takephoto()
+     {
+     navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+     destinationType: Camera.DestinationType.DATA_URL
+     });
+     }
+     function onSuccess(imageData) {
+     var image = document.getElementById('contract_image');
+     image.src = "data:image/jpeg;base64," + imageData;
+     document.getElementById("text1").innerHTML = imageData;
+     }
+     function onFail(message) {
+     alert('Failed because: ' + message);
+     }
+     
+    </script>
+    <script src="js/animsition.js"></script>
+    <script src="js/sweetalert.min.js"></script>
+    <script src="js/material.min.js"></script>
+    <script src="js/jquery.swipebox.min.js"></script>
+    <script src="js/function.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+
+        <script>
+            langfile = localStorage.getItem("language");
+            if (langfile == 'en')
+                document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
+            else
+                document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
+            var app2 = angular.module('myApp', []);
+            app2.controller('personCtrl', function ($scope) {
+                $scope.datalang = DATALANG;
+                //var dataString =angular.fromJson('{"RESPONSECODE":1,"RESPONSE":[{"0":"95","user_id":"95","1":"rahul nilesh","fullname":"rahul nilesh"},{"0":"58","user_id":"58","1":"rahul shalma","fullname":"rahul shalma"}]}');
+
+                $scope.showList=function(){
+                if ((typeof $scope.searcCustomer !== "undefined" && $scope.searcCustomer.length>4)){
+                    $.ajax ({
+                            type: "POST",
+                            async: false,
+                            url: SERVICEURL2,
+                            data: {"action":"ACCustomerList",name:$scope.searcCustomer},
+                            crossDomain: true,
+                            success:function(responceData){
+                              $scope.data=JSON.parse(responceData);
+                            }
+                      })
+                      if(typeof $scope.data.RESPONSECODE !== undefined && $scope.data.RESPONSECODE=='1'){
+                        var array=[];
+                        angular.forEach($scope.data.RESPONSE,function(value,key) {
+                        	console.log(value);
+                        	if(value.email.indexOf($scope.searcCustomer)!=-1) {
+                        		array.push($scope.data.RESPONSE[key]);
+                        	}
+                        })
+                        $scope.list=array;
+                        }
+                      }
+                  }
+                $scope.additem=function(name, id){
+                      $scope.list=[];
+                      $scope.search=name;
+                      $scope.user_id=id;
+                };
+              })
+
+        </script>
+  </body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Tax</title>
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/animsition.css">
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+    <link rel="stylesheet" href="css/material.css">  
+    <link rel="stylesheet" href="css/swipebox.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/stylesheet.css">
+  </head>
+  <style>
+      #name_agent1
+      {
+          text-transform: capitalize;
+      }
+       #name_agent
+      {
+          text-transform: capitalize;
+      }
+      .redbut-btn{
+	background:red !important;
+	text-transform:capitalize !important;
+}
+      
+  </style>
+
+  <body >
+    <div ng-app="myApp" ng-controller="personCtrl" class="animsition">
+        <div class="mdl-layout mdl-js-layout mdl-layout--overlay-drawer-button">
+            
+            <!-- Sidebar -->
+            <div id="sidebar_agency" class="mdl-layout__drawer">
+                <!-- Top -->
+                
+            </div>
+      <!-- Page Content -->
+      <main class="mdl-layout__content">
+        <div class=""> <!-- card -->
+        	 <div class="account-info dark-blue-bg">
+                <div class="account-navigation"> <!-- top icons -->
+                <!--  <a class="mdl-button mdl-js-button mdl-button--icon left" onclick="redirect('my_agent.html')" href="javascript:;">
+                    <img src="img/back-button.png">
+                  </a>
+                 <button class="mdl-button mdl-js-button mdl-button--icon right">
+                    <i class="material-icons">close</i>
+                  </button>  -->
+                  <span class="main-heading" id="name_agent1"></span>
+                  <div class="clr"></div>
+                  </div>
+              </div>
+          <div class="account-info mdl-color--primary grey-gradient agent-img-bg">
+
+            <div class="account-navigation"> 
+            	 <div class="add-account-container">
+                     <a href="javascript:;">
+                         <div class="add-account">
+                            <img id="img_agent" src="img/add-account.png">
+                         </div>
+                     </a>
+                 </div>
+
+              
+            </div>
+          </div>
+		  <div class="contact-about view-agent">
+              <div class="mdl-card mdl-shadow--2dp about">
+                <h4 id="name_agent"></h4>
+                <p id="mobile_number"></p>
+                <p id="email_agent" ></p>
+                <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="edit_info()"  href="javascript:;">                
+                      {{datalang.EditInformation}}
+                </a>
+                 <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="edit_docu()"  href="javascript:;">                
+                      {{datalang.UploadDocuments}}
+                </a>
+              </div>
+          </div>
+          <div class="center-align">
+                    <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="edit_user_kycform()"  href="javascript:;">                
+                      {{datalang.EditKycForm}}
+                    </a>
+                    <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="edit_risk_account()" href="javascript:;">                
+                      {{datalang.RiskAnalysis}}
+                    </a>
+                     <a  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary redbut-btn"  onclick="contract_company()" href="javascript:;">                
+                      {{datalang.ContractForm}}
+                    </a>
+                </div>
+
+        </div>
+      </main>
+        </div>
+    </div>
+
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/custom.js"></script>
+    <script src="js/view_customer.js"></script>
+    <script type="text/javascript">$(document).ready(function () {
+            app.initialize();
+        });
+    </script>
+     <script src="js/animsition.js"></script>
+        <script src="js/sweetalert.min.js"></script> 
+        <script src="js/material.min.js"></script>
+        <script src="js/jquery.swipebox.min.js"></script>
+        <script src="js/function.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script>
+            langfile = localStorage.getItem("language");
+            if (langfile == 'en')
+                document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
+            else
+                document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
+            var app2 = angular.module('myApp', []);
+            app2.controller('personCtrl', function ($scope) {
+                $scope.datalang = DATALANG;
+            });
+        </script>
+  </body>
+</html>

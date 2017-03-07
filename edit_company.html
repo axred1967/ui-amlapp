@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Tax</title>
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+     <link rel="stylesheet" type="text/css" href="font-awesome-4.6.2/css/font-awesome.min.css">
+   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/css/animsition.css"> -->
+
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+    <link rel="stylesheet" href="css/material.css">  
+    <link rel="stylesheet" href="css/swipebox.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/stylesheet.css">
+     <script src="js/angular.min.js"></script>
+     <link rel="stylesheet" href="css/jquery.fancybox.css">
+  </head>
+  <style>
+      .tsap_SelectPhoto
+      {
+          background-color: #4A4A4A;
+            color: #FFF;
+            display: block;
+            width: 180px;
+            margin: auto;
+            height: 47px;
+            line-height: 46px;
+            font-size: 18px;
+            border: 1px solid #4A4A4A;
+            border-radius: 7px;
+            transition: all 0.2s ease 0s;
+            text-align: center;
+      }
+      
+            .cameraSpan, .gallery_Icon{
+                width: 39px;
+                height: 40px;
+                border-radius: 50%;
+                background-color: #1c224b;
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 10px;
+            }
+
+            .camera_Icon, .gallery_Icon{
+                color: #fff;
+                font-size: 18px;
+                line-height: 40px !important;
+                text-shadow: 0px 1px 1px #000;
+
+            }
+            .popupclientissue
+            {
+                width:320px !important;
+                padding:16px !important;
+                overflow:hidden !important;
+                background-color:#fff !important;
+                border-radius:5px !important;
+            }
+
+            .mdl-card, .mdl-card__title-text, .mdl-card__supporting-text {
+                display: block;
+            }
+            .mdl-card__title-text {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                padding: 20px;
+                display: block;
+            }
+            .mdl-card__menu {
+                color: #fff;
+            }
+
+            .card-author span:first-child {
+                display: block;
+                margin-top: 4px;
+            }
+            .mdl-card {
+                width: 100%;
+                max-width: 100%;
+                min-height: 0;
+            }
+            .mdl-card__title-text {
+                font-weight: 400;
+            }
+            .mdl-card__title a {
+                color: #ffffff;
+            }
+            .mdl-card__supporting-text {
+                width: auto;
+            }
+            .mdl-card .mdl-button--fab {
+                position: absolute;
+                right: 16px;
+                bottom: -28px;
+            }
+            .mdl-card__actions .mdl-button {
+                float: right;
+            }
+            .mdl-card__supporting-text {
+                border-top: 1px solid rgba(0,0,0,.1);
+            }
+
+            .drawer-separator {
+                height: 1px;
+                background-color: #DCDCDC;
+                margin: 8px 0px;
+            }
+  </style>
+  
+
+  <body >
+    <div ng-app="myApp" ng-controller="personCtrl" class="animsition">
+      <!-- Page Content -->
+      <main class="mdl-layout__content">
+        <div class=""> <!-- card -->
+        	 <div class="account-info dark-blue-bg">
+                <div class="account-navigation"> <!-- top icons -->
+                  <a class="mdl-button mdl-js-button mdl-button--icon left" onclick="redirect('company_list.html')" href="javascript:;">
+                    <img src="img/back-button.png">
+                  </a>
+                 <!-- <button class="mdl-button mdl-js-button mdl-button--icon right">
+                    <i class="material-icons">close</i>
+                  </button> -->
+                  <span class="main-heading">{{datalang.EditCompanyDetails}} </span>
+                  <div class="clr"></div>
+                  </div>
+              </div>
+          <div class="account-info mdl-color--primary grey-gradient">
+
+            <div class="account-navigation"> 
+            	 <div class="add-account-container">
+                     <a href="#">
+                         <div class="add-account">
+                            <img id="view_profile_image"  src="img/add-account.png">
+                         </div>
+                     </a>
+                 </div>
+
+              
+            </div>
+          </div>
+
+          <div class="account-data add-customer-data"> <!-- text fields -->
+          	<div class="mdl-card mdl-shadow--2dp ">
+                <form action="#">
+                 
+                    
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input"  type="text" placeholder=" {{datalang.Companyname}}" id="company_name" />
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input"   type="text" placeholder="  {{datalang.Addresscompany}}" id="company_address" />
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input"  type="text" placeholder=" {{datalang.Fiscalid}}" id="comany_fiscal_id" />
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                       <label  class="mdl-textfield__label" for="compnay_doc"> &nbsp; &nbsp; {{datalang.CompanyDocument}}  </label>
+                      <center> <img onclick="openuploadoptions1()" id="compnay_doc" style="height:100px;width:100px;margin-top:40px;"  src="img/add-account.png">  </center>
+                     
+                  </div>  
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                      <center> <img onclick="openuploadoptions()" id="compnay_doc_imagelicensew" style="height:100px;width:100px;margin-top:40px;"  src="img/add-account.png">  </center>
+                      <label class="mdl-textfield__label" for="compnay_doc_imagelicensew"> &nbsp; &nbsp; {{datalang.CompanyLicense}} </label>
+                  </div>  
+                  
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input"  type="text" placeholder=" {{datalang.Companyauthorizedby}}" id="company_authorised_by" />
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input"  type="text" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder=" {{datalang.DateofAutorized}}" id="company_authorisation_date" />
+                  </div> 
+                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input"  type="number" placeholder=" {{datalang.FiscalBudget}}" id="fiscal_budget" />
+                  </div> 
+                    <input type="hidden"  id="compnay_doc_image" >
+                    <input type="hidden"  id="company_lisence_image" >
+                    
+                   
+                </form>
+    			<div style="display:none;" id="edit_button_agent" class="center-align">
+                    <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="save_kyc(1)" href="javascript:;">                
+                      {{datalang.Save}}
+                    </a>
+                    <a id="kyc_button2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="redirect('company_list.html')" href="javascript:;">                
+                     {{datalang.Cancel}}
+                    </a>
+                             <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >  
+                </div>
+                
+             </div>
+            <div class="clr"></div>
+            
+          </div>
+
+        </div>
+      </main>
+    </div>
+      
+       <a id="popup3"  href="#pop-up3" class="fancybox" style="display:none;">Pop</a>
+        <div class="popupclientissue mdl-card" id="pop-up3" style="display:none;width:100% !important;">
+            <p style="color:#000;font-family:kalingab;margin:0;font-size:18px;text-align:center">Upload Document Pic</p>
+            <div class="drawer-separator" style="height:2px"></div>
+            <div style="text-align: center;">  
+                <p style="text-align: left;color: #555;font-family:OpenSans-Semibold;cursor:pointer;" id="takepic" onClick="take_pic1()">
+                    <span class="cameraSpan" style="text-align: center">
+                        <span class="fa fa-camera camera_Icon" ></span></span>Camera
+                </p>  
+                <p style="text-align: left;color: #555;font-family:OpenSans-Semibold; margin-top: 7px;cursor:pointer" id="uploadfromgallery" onClick="uploadfromgallery1()"><span class="" style="text-align: center">
+                        <span class="fa fa-picture-o gallery_Icon"></span></span>Gallery
+                </p>   
+            </div>
+        </div>
+       <a id="popup4"  href="#pop-up4" class="fancybox" style="display:none;">Pop</a>
+        <div class="popupclientissue mdl-card" id="pop-up4" style="display:none;width:100% !important;">
+            <p style="color:#000;font-family:kalingab;margin:0;font-size:18px;text-align:center">Upload License Pic</p>
+            <div class="drawer-separator" style="height:2px"></div>
+            <div style="text-align: center;">  
+                <p style="text-align: left;color: #555;font-family:OpenSans-Semibold;cursor:pointer;" id="takepic" onClick="take_pic()">
+                    <span class="cameraSpan" style="text-align: center">
+                        <span class="fa fa-camera camera_Icon" ></span></span>Camera
+                </p>  
+                <p style="text-align: left;color: #555;font-family:OpenSans-Semibold; margin-top: 7px;cursor:pointer" id="uploadfromgallery" onClick="uploadfromgallery()"><span class="" style="text-align: center">
+                        <span class="fa fa-picture-o gallery_Icon"></span></span>Gallery
+                </p>   
+            </div>
+        </div>
+
+    <script src="js/jquery-2.1.4.min.js"></script>
+     <script type="text/javascript" src="js/custom.js"></script>
+    <script src="js/edit_company.js"></script>
+     <script src="cordova.js"></script>
+    <script type="text/javascript">$(document).ready(function () {
+            app.initialize();
+        });
+    </script>
+  <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/js/jquery.animsition.js"></script> -->
+     <script src="js/animsition.js"></script>
+    <script src="js/sweetalert.min.js"></script> 
+    <script src="js/material.min.js"></script>
+    <script src="js/jquery.swipebox.min.js"></script>
+    <script src="js/function.js"></script>
+    
+    <script src="js/jquery.fancybox.pack.js"></script>
+   
+        <script>
+            langfile = localStorage.getItem("language");
+            if (langfile == 'en')
+                document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
+            else
+                document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
+           
+        </script>
+  </body>
+</html>

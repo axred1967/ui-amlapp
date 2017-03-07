@@ -1,0 +1,305 @@
+@charset "utf-8";
+/* CSS Document */
+.main-heading{
+	text-align: center;
+	padding-top: 4px;
+	font-size: 21px !important;
+	font-weight: bold !important;
+}
+.grey-gradient{
+	background: #FFF;
+    background: -webkit-linear-gradient(#FFF, #c5c4c4);
+    background: -o-linear-gradient(#FFF, #c5c4c4);
+    background: -moz-linear-gradient(#FFF, #c5c4c4);
+    background: linear-gradient(#FFF, #c5c4c4);
+}
+.dark-blue-bg{
+	background:#1c224b;
+}
+.add-account{
+	width:150px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: auto;
+	z-index: 999;
+}
+.add-account-container{
+	position:relative;
+	margin-top: 50px;
+	min-height: 110px;
+}
+.add-customer-data{
+	background:#f0f0f0;
+	padding:15px
+}
+.add-customer-data .mdl-card{
+	padding:20px;
+}
+.add-customer-data .mdl-textfield__input{
+	border:1px solid #cbcbcb;
+	border-radius:3px;
+	padding-top:10px;
+	padding-bottom:10px;
+	
+}
+.mdl-textfield__label{
+	top:29px;
+}
+.mdl-textfield__label {
+    bottom: -20px;
+	font-size: 14px;
+}
+.mdl-textfield{
+	padding:20px 0 0 0 !important;
+}
+.center-align{
+	text-align:center;
+	margin-bottom:60px;
+}
+.orange-btn{
+	background:#f7961d !important;
+	text-transform:capitalize !important;
+}
+.blue-btn{
+	background:#1c224b !important;
+	text-transform:capitalize !important;
+}
+.account-data.add-customer-data form {
+    margin-bottom: 24px;
+}
+.customer-listing1{
+	background-image:url(../img/customer-listing1.png);
+	margin-right:8px;
+}
+.customer-listing2{
+	background-image:url(../img/customer-listing2.png);
+	margin-right:8px;
+}
+.customer-listing3{
+	background-image:url(../img/customer-listing3.png);
+	margin-right:8px;
+}
+.customer-listing4{
+	background-image:url(../img/customer-listing4.png);
+	margin-right:8px;
+}
+.customer-listing5{
+	background-image:url(../img/customer-listing5.png);
+	margin-right:8px;
+}
+.customer-listing6{
+	background-image:url(../img/customer-listing6.png);
+	margin-right:8px;
+}
+.customer-listing7{
+	background-image:url(../img/customer-listing7.png);
+	margin-right:8px;
+}
+#customer-listing .mdl-card__supporting-text{
+	font-size:10px;
+	padding: 10px 6px;
+}
+#customer-listing .mdl-grid{
+	padding:5px;
+}
+#customer-listing span strong{
+	font-size:13px;
+}
+.status-header{
+	display:inline-block;
+	width:70px;
+	color:#383838;
+}
+.green-checkbox{
+	display: inline-block;
+	width: 12px;
+	padding-left: 5px;
+}
+.mr-top-22px{
+	margin-top:22px;
+}
+.mdl-button--icon {
+    font-size: 18px;
+    height: 27px;
+    min-width: 27px;
+    width: 27px;
+}
+.mdl-textfield--expandable{
+	padding:1px 0 0 !important;
+}
+.mdl-textfield.mdl-textfield--expandable .mdl-button {
+    top: 2px;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+	margin-top:10%;
+}
+
+/* The Close Button */
+.modal-close-btn{
+	position:relative;
+}
+.close {
+    color: #FFF;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+	position: absolute;
+	top: -52px;
+	right: -19px;
+	border:2px solid #FFF;
+	border-radius:50%;
+	padding: 3px 5px;
+}
+
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+	border:2px solid #000;
+    cursor: pointer;
+}
+.change-pwd-btn{
+	width:96%;
+}
+.customer-email{
+	margin-top:18px;
+	margin-left:8px;
+}
+.radio-toolbar input[type="radio"] {
+    display:none;
+}
+.radio-toolbar input[type="radio"] + label{
+    background:url(../img/unchecked-checkbox.png) no-repeat right center;
+	width:auto;
+	height:20px;
+	display: inline-block;
+	padding-right: 30px;
+}
+
+.radio-toolbar input[type="radio"]:checked + label{
+	background:url(../img/checked-checkbox.png) no-repeat right center;
+	width:auto;
+	height:20px;
+	display: inline-block;
+	padding-right: 30px;
+}
+
+
+
+.radio-toolbar label {
+    display:inline-block;
+    background-color:#ddd;
+    padding:4px 11px 4px 0;
+    font-family:Arial;
+    font-size:14px;
+	margin-right: 10px;
+}
+.kyc01-head{
+	font-size:15px;
+}
+.agent-img-bg{
+	background:url(../img/agent-img-bg.png) left top;
+	background-size: cover;
+}
+.view-agent{
+	padding:10px 12px;
+	color: #383838;
+}
+.tax-login{
+	text-align:center;
+}
+.font18{
+	font-size:18px;
+}
+.tax-login .mdl-textfield__input {
+    border: 1px solid #CBCBCB;
+    border-radius: 3px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+	background:#FFF;
+	color: #000;
+	width: 96%;
+padding-left: 10px;
+}
+.tax-login .mdl-textfield {
+    width: 100%;
+}
+.tax-login-button{
+	margin-top:20px;
+}
+.tax-login-button a{
+	width:95%;
+	font-size: 18px;
+}
+.forgot-pwd{
+	margin:20px 0 5px 0;
+}
+.forgot-pwd a{
+	color:#FFF;
+}
+.signup-container{
+	margin-top:40px;
+}
+.signup-container h6{
+	color:#1c224b;
+}
+.signup-container a{
+	border-radius:20px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+.data-seperator-header{
+	font-weight: bold;
+	color: rgb(56, 56, 56);
+	margin: 0px;
+}
+
+@media screen and (max-width: 350px) {
+	.long-email{
+	display: block;
+	width: 100px;
+	word-wrap: break-word;
+}
+.main-heading {
+    font-size: 19px !important;
+}
+.customer-email{
+	margin-top:18px;
+	margin-left:4px;
+}
+.account-info {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+}
+@media screen and (max-width: 360px) {
+	#my-agent .mdl-card__supporting-text {
+    font-size: 11px;
+}
+}
+	
+
