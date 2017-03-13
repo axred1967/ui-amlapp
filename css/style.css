@@ -1199,6 +1199,9 @@ thead, tbody, .mdl-data-table__cell--non-numeric {
 
 }
 .center{
-	text-align: center:
+	text-align: center;
 
+}
+svg {
+    fill: inherit;
 }
