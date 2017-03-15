@@ -5,7 +5,7 @@ document.title = SITE_TITLE;
 //var BASEURL = "http://192.168.0.5/Deve02/amlapp/";
 //var SERVICEURL = "http://192.168.0.5/Deve02/amlapp/service.php";
 //var SERVICEURL2 = "http://192.168.0.5/Deve02/amlapp/service2.php";
-var BASEURL = "http://www.euriskoformazione.com/amlapp/app";
+var BASEURL = "http://www.euriskoformazione.com/amlapp/";
 var SERVICEURL = "http://www.euriskoformazione.com/amlapp/service.php";
 var SERVICEURL2 = "http://www.euriskoformazione.com/amlapp/service.php";
 

@@ -142,12 +142,12 @@ function uploadPhoto(imageURI)
     options.fileKey="file";
     options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
     options.mimeType="text/plain";
-
+    options.chunkedMode = false;
     var params = new Object();
 
     options.params = params;
     var ft = new FileTransfer();
-    ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+customer_id), win, fail, options);
+    ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+customer_id), win, fail, options,true);
 }
 
 function win(r)
