@@ -40,6 +40,8 @@ app2.controller('personCtrl', function ($scope) {
                          data=JSON.parse(responceData);
                          if(data.RESPONSECODE=='1') 			{
                             $scope.Contracts=data.RESPONSE;
+                            console.log($scope.Contracts);
+                            x=1;
                           }
                           else
                           {
