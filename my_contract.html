@@ -67,11 +67,32 @@
 
                     <main class="mdl-layout__content">
                         <!-- cards grid -->
-                      
+
                         <center>  <img style="height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
 
-                        <div id="list_customer" class="mdl-grid">
-
+                        <div id="list_contract" class="mdl-grid" ng-repeat="Contracts in list">
+                          <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+                          	<div style="cursor:pointer;" onclick="redirecttocustomer({{Contracts.user_id}})" class="minilogo customer-listing1"></div>
+                          	<div class="card-author">
+                          		<span style="cursor:pointer;" onclick="redirecttocustomer({{Contracts.user_id}})">
+                          		<strong class="first_letter_cap">{{Contracts.fullname}}</strong></span>
+                              <span style="cursor:pointer;" onclick="redirecttocustomer({Contracts.user_id}})">{{Contracts.mobile}}</span>
+                          		<br>
+                          		<span style="cursor:pointer;" onclick="redirecttocustomer({Contracts.user_id}})" class="long-email">
+                          			{Contracts.email}}
+                          		</span>
+                          	</div>
+                          	<div class="share mr-top-22px">
+                          		<div>
+                          			<span class="status-header">KYC : </span><span>{Contracts.user_id}}</span>
+                          		</div>
+                          		<div>
+                          			<span class="status-header">Risk Analysis :</span>
+                          			<span>{Contracts.user_id}}</span>
+                          		<span class="green-checkbox"></span>
+                          		</div>
+                          	</div>
+                          </div>
 
                         </div>
                         <!-- load more -->
@@ -98,16 +119,7 @@
         <script src="js/jquery.swipebox.min.js"></script>
         <script src="js/function.js"></script>
         <script src="js/angular.min.js"></script>
-        <script>
-            langfile = localStorage.getItem("language");
-            if (langfile == 'en')
-                document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
-            else
-                document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
-            var app2 = angular.module('myApp', []);
-            app2.controller('personCtrl', function ($scope) {
-                $scope.datalang = DATALANG;
-            });
-        </script>
+        <script src="js/angular-route.min.js"></script>
+        <script src="js/my_contract_ang.js"></script>
     </body>
 </html>

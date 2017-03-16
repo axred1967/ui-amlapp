@@ -7,7 +7,7 @@ var app = {
     },
     deviceready: function() {
         // This is an event handler function, which means the scope is the event.
-        // So, we must explicitly called `app.report()` instead of `this.report()`.		
+        // So, we must explicitly called `app.report()` instead of `this.report()`.
         app.report('deviceready');
     },
     report: function(id) {
@@ -28,36 +28,33 @@ function getChkLogin()
         {
             redirect("login.html");
         }
-        else 
+        else
         {
-            redirect("my_customer.html");
+            redirect("my_contract.html");
         }
-        
-	
-			
+
+
+
 }
 
-setTimeout(function(){ 
+setTimeout(function(){
         var id=localStorage.getItem("userId");
 	var email=localStorage.getItem("userEmail");
         var usertype = localStorage.getItem('userType');
          var name = localStorage.getItem("Name");
-        
+
          var image = localStorage.getItem("Profileimageagencyuser");
-        
+
         if(image != null)
-        {   
+        {
             if(image !='null')
             {
-               
+
                 $('#Profileimageagencyuser').attr("src",BASEURL+"uploads/user/small/"+image);
             }
         }
-        
-            
+
+
         $('#Profileimageagencyusername').html(name);
         $('#Profileimageagencyuseremail').html(email);
 }, 800);
-
-
-

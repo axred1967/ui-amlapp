@@ -1205,3 +1205,10 @@ thead, tbody, .mdl-data-table__cell--non-numeric {
 svg {
     fill: inherit;
 }
+
+.mdl-textfield__input {
+    padding: 15px 0px 0px 10px;
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;
+}

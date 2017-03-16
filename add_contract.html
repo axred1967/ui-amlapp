@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/animsition.css">
     <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
     <link rel="stylesheet" href="css/material.css">
+    <link rel="stylesheet" href="css/mdl-currency.min.css">
     <link rel="stylesheet" href="css/swipebox.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/stylesheet.css">
@@ -60,42 +61,49 @@
               <form action="#">
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                       <input class="mdl-textfield__input" type="text" placeholder="{{datalang.ScopeofContract}}" id="scope_of_contract" />
-                      <label for="scope_of_contract" style="color:orange;display:none">{{datalang.ScopeofContract}}</label>
+                      <label for="scope_of_contract" class="mdl-textfield__label" style="color:orange;display:none">{{datalang.ScopeofContract}}</label>
                     </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     <input class="mdl-textfield__input" type="text" placeholder="{{datalang.NatureofContract}}" id="nature_of_contract" />
-                    <label for="nature_of_contract" style="color:orange;display:none">{{datalang.NatureofContract}}</label>
+                    <label for="nature_of_contract" class="mdl-textfield__label" style="color:orange;display:none">{{datalang.NatureofContract}}</label>
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" placeholder="{{datalang.ContractDate}}" id="ContractDate" />
-                    <label for="ContractDate" style="color:orange;display:none">{{datalang.ContractDate}}</label>
+                    <input class="mdl-textfield__input" type="text" placeholder="{{datalang.ContractDate}}" onfocus="(this.type='date')" onblur="(this.type='text')" id="ContractDate" />
+                    <label for="ContractDate" class="mdl-textfield__label" style="color:orange;display:none"  >{{datalang.ContractDate}}</label>
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" placeholder="{{datalang.ContractEOV}}" id="ContractEOV" />
-                    <label for="ContractEOV" style="color:orange;display:none">{{datalang.ContractEOV}}</label>
+                    <input class="mdl-textfield__input"  onfocus="(this.type='date')" onblur="(this.type='text')" type="text" placeholder="{{datalang.ContractEOV}}" id="ContractEOV" />
+                    <label for="ContractEOV" class="mdl-textfield__label" style="color:orange;display:none">{{datalang.ContractEOV}}</label>
                   </div>
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" placeholder="{{datalang.EconomicValueifDeterminable}}" id="ContractValue" />
-                    <label  for="ContractValue" style="color:orange;display:none">{{datalang.EconomicValueifDeterminable}}</label>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo mdl-currency-usd mdl-js-currency-usd mdl-currency-usd--floating-label">
+                    <input class="mdl-textfield__input mdl-currency-usd__input" type="text" id="ContractValue"  placeholder="{{datalang.EconomicValueifDeterminable}}">
+                    <label  for="ContractValue" class="mdl-textfield__label" style="color:orange;display:none">{{datalang.EconomicValueifDeterminable}}</label>
+                    <div class="mdl-currency-usd__symbol">€</div>
+                    <span class="mdl-currency-usd__error">#.##</span>
                 </div>
-                  <input type="hidden" id="image_document" >
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo"><br><br><br>
-                      <a onclick="takephoto()" style="width:100%;" class="tsap_SelectPhoto"> <span  class="fa fa-picture-o spanCam"></span> {{datalang.Upload_contract}} *</a>
-                  </div>
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                      <center> <img id="contract_image" style="height:100px;width:100px;"  src="img/add-account.png"> <img style="display:none;height:100px;width:100px;" class="profile-Img" src="img/load.gif" id="profileimgloader"> </center>
-                  </div>
 
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <label  for="SearchCustomerByEmail" style="color:orange;display:none">{{datalang.SearchCustomerByEmail}}</label>
-                    <input class="mdl-textfield__input" ng-keyup="showList();" ng-model="searcCustomer" type="text" placeholder=" {{datalang.SearchCustomerByEmail}}" id="SearchCustomerByEmail" />
-                    <input ng-model="user_id" type="hidden" id="user_id" />
+
+                <div class="mdl-card mdl-shadow--2dp" >
+                  <div class="mdl-card__title">Immagine Contratto</div>
+                  <input type="hidden" id="doc_image" >
+                  <div class="mdl-card__actions mdl-card--border">
+                  <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Aggiungi</a>
+                  <div class="mdl-layout-spacer"></div>
+                    <button class="mdl-button mdl-button--icon mdl-button--colored" onclick="add_photo()" ><i class="material-icons">add_a_photo</i></button>
+                    <button class="mdl-button mdl-button--icon mdl-button--colored" onclick="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
+                  </div>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+                    <label  for="searchContractor" style="color:orange;display:none">{{datalang.SearchCustomerByEmail}}</label>
+                    <input class="mdl-textfield__input" ng-keyup="showContractorList();" ng-model="searchContractor" type="text" placeholder=" {{datalang.SearchCustomerByEmail}}" id="searchContractor" />
+                    <input ng-model="Contractor"  type="text" style="display:none" id="Contractor" />
                   </div>
                   <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
                   <tbody>
-                    <tr ng-click="additem(item.fullname,item.user_id)" ng-repeat="item in list">
-                      <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.email}}</td>
+                    <tr ng-click="addContractorItem(item.user_id,item.fullname)" ng-repeat="item in list">
+                      <td style="display:none" >{{item.user_id}}</td>
                       <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.fullname}}</td>
+                      <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.email}}</td>
                     </tr>
                   </tbody>
                   </table>
@@ -106,22 +114,22 @@
                   {{datalang.Addnewcustomer}}
                 </div>
                 <div class="mdl-grid">
-                  <div clas="mdl-cell mdl-cell--4-col">
+                  <div class="mdl-cell ">
                         <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
-                          <input type="radio" id="option-1" class="mdl-radio__button" name="options" value="0" checked>
+                          <input type="radio" id="option-1" class="mdl-radio__button" name="act_for" value="0" checked>
                           <span class="mdl-radio__label" ng-bind="datalang.actForHimself"></span>
                         </label>
                     </div>
 
-                  <div clas="mdl-cell--4-col">
+                  <div class="mdl-cell">
                         <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-2">
-                          <input type="radio" id="option-2" class="mdl-radio__button" name="options" value="1" >
+                          <input type="radio" id="option-2" class="mdl-radio__button" name="act_for" value="1" >
                           <span class="mdl-radio__label" ng-bind="datalang.actForCompany"></span>
                         </label>
                 </div>
-                <div clas="mdl-cell--4-col">
+                <div class="mdl-cell">
                         <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-3">
-                          <input type="radio" id="option-3" class="mdl-radio__button" name="options" value="2">
+                          <input type="radio" id="option-3" class="mdl-radio__button" name="act_for" value="2">
                           <span class="mdl-radio__label" ng-bind="datalang.actForOtherPerson"></span>
                         </label>
                 </div>
@@ -134,6 +142,7 @@
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                       <label for="FindCompany" style="color:orange;display:none">{{datalang.SearchCompanyByEmail}}</label>
                       <input class="mdl-textfield__input" ng-keyup="showListCompany();" ng-model="searchCompany" type="text" placeholder=" {{datalang.SearchCompanyByEmail}}" id="FindCompany" />
+                      <input ng-model="Company"  type="text" style="display:none" id="Company" />
                     </div>
                     <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
                     <tbody>
@@ -158,7 +167,8 @@
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     <label for="FindOther" style="color:orange;display:none">{{datalang.SearchDelegatorByEmail}}</label>
-                    <input class="mdl-textfield__input" ng-keyup="showOtherPerson();" ng-model="searchCompany" type="text" placeholder=" {{datalang.SearchDelegatorByEmail}}" id="FindOther" />
+                    <input class="mdl-textfield__input" ng-keyup="showOtherPerson();" ng-model="searchOther" type="text" placeholder=" {{datalang.SearchDelegatorByEmail}}" id="FindOther" />
+                    <input ng-model="Other"  type="text" style="display:none" id="Other" />
                   </div>
                   <table class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
                   <tbody>
@@ -177,7 +187,7 @@
               </form>
 
     			<div class="center-align">
-                    <a id="save_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="add_customer()" href="javascript:;">
+                    <a id="save_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="add_contract()" href="javascript:;">
                       {{datalang.Save}}
                     </a>
                     <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="redirect('my_customer.html')" href="javascript:;">
@@ -224,31 +234,20 @@
          }
        });
 
+
      $(".mdl-textfield__input").focus(function(){
        $('label[for="'+$(this).attr("id") +'"]').show()
      });
      $(".mdl-textfield__input").blur(function(){
        $('label[for="'+$(this).attr("id") +'"]').hide()
      });
-     function takephoto()
-     {
-     navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-     destinationType: Camera.DestinationType.DATA_URL
-     });
-     }
-     function onSuccess(imageData) {
-     var image = document.getElementById('contract_image');
-     image.src = "data:image/jpeg;base64," + imageData;
-     document.getElementById("text1").innerHTML = imageData;
-     }
-     function onFail(message) {
-     alert('Failed because: ' + message);
-     }
-     
+
+
     </script>
     <script src="js/animsition.js"></script>
     <script src="js/sweetalert.min.js"></script>
     <script src="js/material.min.js"></script>
+    <script src="js/currency.js"></script>
     <script src="js/jquery.swipebox.min.js"></script>
     <script src="js/function.js"></script>
     <script src="js/angular.min.js"></script>
@@ -265,13 +264,13 @@
                 $scope.datalang = DATALANG;
                 //var dataString =angular.fromJson('{"RESPONSECODE":1,"RESPONSE":[{"0":"95","user_id":"95","1":"rahul nilesh","fullname":"rahul nilesh"},{"0":"58","user_id":"58","1":"rahul shalma","fullname":"rahul shalma"}]}');
 
-                $scope.showList=function(){
-                if ((typeof $scope.searcCustomer !== "undefined" && $scope.searcCustomer.length>4)){
+                $scope.showContractorList=function(){
+                if ((typeof $scope.searchContractor !== "undefined" && $scope.searchContractor.length>4)){
                     $.ajax ({
                             type: "POST",
                             async: false,
                             url: SERVICEURL2,
-                            data: {"action":"ACCustomerList",name:$scope.searcCustomer},
+                            data: {"action":"ACCustomerList",name:$scope.searchContractor},
                             crossDomain: true,
                             success:function(responceData){
                               $scope.data=JSON.parse(responceData);
@@ -281,18 +280,18 @@
                         var array=[];
                         angular.forEach($scope.data.RESPONSE,function(value,key) {
                         	console.log(value);
-                        	if(value.email.indexOf($scope.searcCustomer)!=-1) {
+                        	//if(value.email.indexOf($scope.searcCustomer)!=-1) {
                         		array.push($scope.data.RESPONSE[key]);
-                        	}
+                        	//}
                         })
                         $scope.list=array;
                         }
                       }
                   }
-                $scope.additem=function(name, id){
+                $scope.addContractorItem=function(id, name){
                       $scope.list=[];
-                      $scope.search=name;
-                      $scope.user_id=id;
+                      $scope.searchContractor=name;
+                      $scope.Contractor=id;
                 };
               })
 

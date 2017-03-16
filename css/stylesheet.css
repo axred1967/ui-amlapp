@@ -34,21 +34,29 @@
 	padding:15px
 }
 .add-customer-data .mdl-card{
-	padding:20px;
+/*	padding:20px; */
 }
 .add-customer-data .mdl-textfield__input{
-	border:1px solid #cbcbcb;
+	border-bottom:1px solid #cbcbcb;
+	/*
 	border-radius:3px;
 	padding-top:10px;
 	padding-bottom:10px;
-	
+	padding-left:10px;
+	*/
+
 }
 .mdl-textfield__label{
 	top:29px;
+	left:0px;
 }
+
 .mdl-textfield__label {
     bottom: -20px;
 	font-size: 14px;
+	display: block;
+	text-aling:center;
+	padding:20px:
 }
 .mdl-textfield{
 	padding:20px 0 0 0 !important;
@@ -301,5 +309,12 @@ padding-left: 10px;
     font-size: 11px;
 }
 }
-	
-
+.mdl-card__actions {
+  display: flex;
+  box-sizing:border-box;
+  align-items: center;
+}
+.mdl-card__actions > .mdl-button--icon {
+  margin-right: 5px;
+  margin-left: 5px;
+}
