@@ -76,37 +76,43 @@
                           <div  class="mdl-card__supporting-text mdl-color-text--grey-600">
                           	<div style="cursor:pointer;"  class="minilogo customer-listing1"></div>
                           	<div class="card-author">
-                          		<span style="cursor:pointer;" >
-                              <strong class="orange first_letter_cap">{{Contract.CPU}} -{{Contract.nature_contract}}</strong>
-                            </span>
-                            <span style="cursor:pointer;" >
-                              <strong class="blue first_letter_cap">{{Contract.fullname}}</strong>
-                            </span><br/>
-                            <span style="cursor:pointer;" >
-                              {{Contract.contract_value | currency }}
-                            </span><br/>
 
-                            <span style="cursor:pointer;" >
-                              {{Contract.contract_date | date : 'shortDate'}}
-                            </span><br/>
 
-                              <span class="green" style=" cursor:pointer;" >{{Contract.mobile}}</span>
-                          		<br>
-                          		<span class="green" style=" cursor:pointer;"  class="long-email">
-                          			{{Contract.email}}
-                          		</span>
                           	</div>
-                          	<div class="share mr-top-22px">
-                          		<div>
-                                <span class="orange">Adeguata Verifica:</span>
-                                <div ng-class="{hidden : Contract.status=='0'}"><span>Approved</span><span class="green-checkbox"><img src="img/green-check.png"></span></div>
-                                <div ng-class="{hidden : Contract.status=='1'}"><span>In Process</span><span class="green-checkbox"></div>
+                            <div class="mdl-grid">
+                              <div class="mdl-cell">
+
+                              <span style="cursor:pointer;" >
+                                <strong class="blue first_letter_cap">{{Contract.fullname}}</strong>
+                              </span><br/>
+                              <span class="green" style=" cursor:pointer;" >{{Contract.mobile}}</span>
+                              <br>
+                              <span class="green" style=" cursor:pointer;"  class="long-email">
+                                {{Contract.email}}
+                              </span>
+                              </div>
+                            <div class="mdl-cell">
+                            <span style="cursor:pointer;" >
+                            {{Contract.CPU}}
+                          </span><br/>
+                            <span style="cursor:pointer;" class="orange first_letter_cap" >
+                            <strong>{{Contract.nature_contract}}</strong>
+                          </span><br>
+                            <span style="cursor:pointer;" class="first_letter_cap" >
+                            {{Contract.contract_date | date : 'shortDate'}}
+                            </span>
+                        </div>
+                        </div>
+                          	<div class="mdl-card__actions mdl-card--border " style="font-size:12px">
+                          		<div class="mdl-cell">
+                                <span class="orange">Adeguata Verifica </span>
+                                <span ng-class="{hidden : Contract.status=='0'}">->Approved<span class="green-checkbox"><img src="img/green-check.png"></span></span>
+                                <span ng-class="{hidden : Contract.status=='1'}">->In Process</span>
                           		</div>
-                          		<div>
-                          			<span class="blue">Risk Analysis :</span>
-                                <div ng-class="{hidden : Contract.kyc_status =='0'}"><span>Approved</span><span class="green-checkbox"><img src="img/green-check.png"></span></div>
-                                <div ng-class="{hidden : Contract.kyc_status =='1'}"><span>In Process</span><span class="green-checkbox"></div>
-                          		<span class="green-checkbox"></span>
+                          		<div class="mdl-cell">
+                          			<span class="blue">Risk Analysis </span>
+                                <span ng-class="{hidden : Contract.kyc_status =='0'}">->Approved<span class="green-checkbox"><img src="img/green-check.png"></span></span>
+                                <span ng-class="{hidden : Contract.kyc_status =='1'}">->In Process</span>
                           		</div>
                           	</div>
                           </div>
