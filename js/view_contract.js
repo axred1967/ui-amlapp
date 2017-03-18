@@ -50,26 +50,34 @@ function getChkLogin()
 }
 function edit_risk_account()
 {
+  localstorage("back","view_contract.html");
+
+  localstorage("Customertype",1);
     redirect('risk_profile1.html');
 }
 
 function edit_user_kycform()
 {
+    localstorage("back","view_contract.html");
     redirect('kyc.html');
 }
 
 function contract_company()
 {
+    localstorage("back","view_contract.html");
     redirect('contract_form.html');
 }
-function edit_info()
+function edit_info(id)
 {
+   localstorage("CustomerProfileId",id);
+   localstorage("back","view_contract.html");
    redirect('edit_customer.html');
 
 }
 
   function edit_docu()
   {
+       localstorage("back","view_contract.html");
        redirect('multipledocuments.html');
   }
 

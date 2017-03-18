@@ -18,6 +18,39 @@
         <link rel="stylesheet" href="css/swipebox.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/stylesheet.css">
+        <script src="js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="js/custom.js"></script>
+        <script src="js/my_contract.js"></script>
+        <!--<script src="cordova.js"></script> -->
+        <script type="text/javascript">$(document).ready(function () {
+                                    app.initialize();
+                                });
+                                        </script>
+
+       <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/js/jquery.animsition.js"></script> -->
+        <script src="js/animsition.js"></script>
+        <script src="js/sweetalert.min.js"></script>
+        <script src="js/material.min.js"></script>
+        <script src="js/jquery.swipebox.min.js"></script>
+        <script src="js/function.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script src="js/angular-route.min.js"></script>
+        <script>
+        langfile = localStorage.getItem("language");
+        if (langfile == 'en')
+            document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
+        else
+            document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
+        if(langfile ==  "en"){
+  //             $.getScript("js/i18n/angular-locale_en.js");
+             document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
+         }
+         else{
+  //             $.getScript("js/i18n/angular-locale_it.js");
+             document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
+         }
+        </script>
+        <script src="js/my_contract_ang.js"></script>
     </head>
     <style>
         .first_letter_cap
@@ -28,6 +61,7 @@
 
 
     <body  >
+
         <div ng-app="myApp" ng-controller="personCtrl"  id="menulist">
             <div class="mdl-layout mdl-js-layout mdl-layout--overlay-drawer-button">
 
@@ -69,9 +103,9 @@
                         <!-- cards grid -->
                         <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
                         <center>  <img style="height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
-                        <div id="list_contract" class="mdl-grid"  ng-repeat="Contract in Contracts ">
+                        <div id="list_contract" class="mdl-grid"  ng-hide="Contracts.length == 0 " class="ng-hide" ng-repeat="Contract in Contracts ">
 
-                          <div ng-click="tocontract(Contract.contract_id)" class="mdl-cell mdl-cell--12-col">
+                          <div ng-click="tocontract(Contract)" class="mdl-cell mdl-cell--12-col">
                           <div class="mdl-card amazing mdl-shadow--2dp">
                           <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
                           	<div style="cursor:pointer;"  class="minilogo customer-listing1"></div>
@@ -81,44 +115,52 @@
                           	</div>
                             <div class="mdl-grid">
                               <div class="mdl-cell">
-
                               <span style="cursor:pointer;" >
                                 <strong class="blue first_letter_cap">{{Contract.fullname}}</strong>
                               </span><br/>
-                              <span class="green" style=" cursor:pointer;" >{{Contract.mobile}}</span>
-                              <br>
+                              <span style="cursor:pointer;" >
+                              {{Contract.CPU}}
+                            </span><br/>
+                              <span style="cursor:pointer;" class="orange first_letter_cap" >
+                              <strong>{{Contract.nature_contract}}</strong>
+                            </span><br>
                               <span class="green" style=" cursor:pointer;"  class="long-email">
                                 {{Contract.email}}
                               </span>
-                              </div>
-                            <div class="mdl-cell">
-                            <span style="cursor:pointer;" >
-                            {{Contract.CPU}}
-                          </span><br/>
-                            <span style="cursor:pointer;" class="orange first_letter_cap" >
-                            <strong>{{Contract.nature_contract}}</strong>
-                          </span><br>
-                            <span style="cursor:pointer;" class="first_letter_cap" >
-                            {{Contract.contract_date | date : 'shortDate'}}
-                            </span>
                         </div>
                         </div>
                           	<div class="mdl-card__actions mdl-card--border " style="font-size:12px">
                           		<div class="mdl-cell">
-                                <span class="orange">Adeguata Verifica </span>
-                                <span ng-class="{hidden : Contract.status=='0'}">->Approved<span class="green-checkbox"><img src="img/green-check.png"></span></span>
-                                <span ng-class="{hidden : Contract.status=='1'}">->In Process</span>
+                                <span class="orange">Adeguata Verifica </span><br/>
+                                <span ng-class="{hidden : Contract.status=='0'}">Approved<span class="green-checkbox"><img src="img/green-check.png"></span></span>
+                                <span ng-class="{hidden : Contract.status=='1'}">In Process</span>
                           		</div>
                           		<div class="mdl-cell">
-                          			<span class="blue">Risk Analysis </span>
-                                <span ng-class="{hidden : Contract.kyc_status =='0'}">->Approved<span class="green-checkbox"><img src="img/green-check.png"></span></span>
-                                <span ng-class="{hidden : Contract.kyc_status =='1'}">->In Process</span>
+                          			<span class="blue">Risk Analysis </span><br/>
+                                <span ng-class="{hidden : Contract.kyc_status =='0'}">Approved<span class="green-checkbox"><img src="img/green-check.png"></span></span>
+                                <span ng-class="{hidden : Contract.kyc_status =='1'}">In Process</span>
                           		</div>
                           	</div>
                           </div>
                           </div>
                         </div>
                       </div>
+                      <div id="no_contract" ng-hide="Contracts.length != 0 " class="ng-hide"  >
+                        <div  class="mdl-cell mdl-cell--12-col">
+                          <div class="mdl-card amazing mdl-shadow--2dp">
+                            <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
+                                <div class="mdl-grid">
+                                  <div class="mdl-cell">
+                                    <span style="cursor:pointer;" >
+                                      <strong class="blue first_letter_cap">Nessun cliente inserito ancora</strong>
+                                    </span><br/>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                         <!-- load more -->
 
                     </main>
@@ -127,38 +169,6 @@
             </main>
         </div>
         </div>
-        <script src="js/jquery-2.1.4.min.js"></script>
-        <script type="text/javascript" src="js/custom.js"></script>
-        <script src="js/my_contract.js"></script>
-        <!--<script src="cordova.js"></script> -->
-        <script type="text/javascript">$(document).ready(function () {
-                                    app.initialize();
-                                });
-                                        </script>
 
-       <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/js/jquery.animsition.js"></script> -->
-        <script src="js/animsition.js"></script>
-        <script src="js/sweetalert.min.js"></script>
-        <script src="js/material.min.js"></script>
-        <script src="js/jquery.swipebox.min.js"></script>
-        <script src="js/function.js"></script>
-        <script src="js/angular.min.js"></script>
-        <script src="js/angular-route.min.js"></script>
-        <script>
-        langfile = localStorage.getItem("language");
-        if (langfile == 'en')
-            document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
-        else
-            document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
-        if(langfile ==  "en"){
-//             $.getScript("js/i18n/angular-locale_en.js");
-             document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
-         }
-         else{
-//             $.getScript("js/i18n/angular-locale_it.js");
-             document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
-         }
-        </script>
-        <script src="js/my_contract_ang.js"></script>
     </body>
 </html>

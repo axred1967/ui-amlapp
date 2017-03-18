@@ -19,7 +19,8 @@ app2.controller('personCtrl', function ($scope,$http) {
     }
     $('#Profileimageagencyusername').html(name);
     $('#Profileimageagencyuseremail').html(email);
-    data= {"action":"ContractList",id:id,email:email,usertype:usertype,priviledge:priviledge}
+    data= {"action":"CustomerList",id:id,email:email,usertype:usertype,priviledge:priviledge}
+
     $http.post(
       SERVICEURL2,  data
       )
@@ -29,25 +30,14 @@ app2.controller('personCtrl', function ($scope,$http) {
                   if(responceData.RESPONSECODE=='1') 			{
                     data=responceData.RESPONSE;
 
-                     angular.forEach(data,function(value,key) {
-                       if (data[key].company_name !== null && data[key].company_name.length>0)
-                           data[key].fullname=data[key].company_name
-                       if (data[key].other_name !== null && data[key].other_name.length>0)
-                         data[key].fullname=data[key].other_name
-                     })
-                     $scope.Contracts=data;
+                    $scope.Customers=data;
+
 
 
                    }
                    else
                    {
-                   var data1='';
-                     data1 +='<div class="mdl-cell mdl-cell--12-col"> <div class="mdl-card amazing mdl-shadow--2dp"><div class="mdl-card__supporting-text mdl-color-text--grey-600"><div class="card-author">';
-                                            data1 += '<span><strong>No Customer Record Found</strong></span>';
-                                            //data1 += '<span>'+value['mobile_number']+'</span><br> <span class="long-email">'+value['email']+'</span>';
-                                            data1 +='</div></div></div></div>';
-
-                                             $('#list_customer').html(data1);
+                      console.log('no customer')
                    }
 
          })

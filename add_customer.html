@@ -7,7 +7,7 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -17,7 +17,33 @@
     <link rel="stylesheet" href="css/swipebox.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/stylesheet.css">
-  </head>
+    <script src="js/jquery-2.1.4.min.js"></script>
+     <script type="text/javascript" src="js/custom.js"></script>
+     <script src="js/add_customer.js"></script>
+     <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
+     <script src="js/animsition.js"></script>
+     <script src="js/sweetalert.min.js"></script>
+     <script src="js/material.min.js"></script>
+     <script src="js/jquery.swipebox.min.js"></script>
+     <script src="js/function.js"></script>
+     <script src="js/angular.min.js"></script>
+    <script>
+    langfile = localStorage.getItem("language");
+    if (langfile == 'en')
+        document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
+    else
+        document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
+    if(langfile ==  "en"){
+//             $.getScript("js/i18n/angular-locale_en.js");
+         document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
+     }
+     else{
+//             $.getScript("js/i18n/angular-locale_it.js");
+         document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
+     }
+    </script>
+    <script src="js/add_customer_ang.js"></script>
+    </head>
 
   <body>
     <div ng-app="myApp" ng-controller="personCtrl" class="animsition">
@@ -36,70 +62,49 @@
                   <div class="clr"></div>
                   </div>
               </div>
-          
+
 
           <div class="account-data add-customer-data"> <!-- text fields -->
           	<div class="mdl-card mdl-shadow--2dp ">
                 <form action="#">
-                    
+
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     <input class="mdl-textfield__input" type="text" placeholder="  {{datalang.Name}}" id="customer_name" />
-                  </div>                    
+                  </div>
+                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input" type="text" placeholder="  {{datalang.Name}}" id="customer_surname" />
+                  </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     <input class="mdl-textfield__input" type="text" placeholder=" {{datalang.EmailID}}" id="customer_email" />
                   </div>
-                    
+
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     <input class="mdl-textfield__input" type="text" placeholder=" {{datalang.Mobile}}" id="customer_mobile_number" />
                   </div>
-                  
+
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     <input class="mdl-textfield__input" type="text" placeholder=" {{datalang.Addressofresidence}}" id="customer_address_resi" />
                   </div>
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                       <input class="mdl-textfield__input" type="checkbox" id="actofcompany" value="1"   style="width:10px;" />&nbsp;Act For Company
-                  </div>  
-                  
+
                 </form>
     			<div class="center-align">
-                    <a id="save_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="add_customer()" href="javascript:;">                
+                    <a id="save_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="add_customer()" href="javascript:;">
                       {{datalang.Save}}
                     </a>
-                    <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="redirect('my_customer.html')" href="javascript:;">                
+                    <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="redirect('my_customer.html')" href="javascript:;">
                       {{datalang.Cancel}}
                     </a>
-                     <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >       
+                     <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
                 </div>
-                
+
              </div>
             <div class="clr"></div>
-            
+
           </div>
 
         </div>
       </main>
     </div>
 
-   <script src="js/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="js/custom.js"></script>
-    <script src="js/add_customer.js"></script>
-    <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
-    <script src="js/animsition.js"></script>
-    <script src="js/sweetalert.min.js"></script> 
-    <script src="js/material.min.js"></script>
-    <script src="js/jquery.swipebox.min.js"></script>
-    <script src="js/function.js"></script>
-    <script src="js/angular.min.js"></script>
-        <script>
-            langfile = localStorage.getItem("language");
-            if (langfile == 'en')
-                document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
-            else
-                document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
-            var app2 = angular.module('myApp', []);
-            app2.controller('personCtrl', function ($scope) {
-                $scope.datalang = DATALANG;
-            });
-        </script>
   </body>
 </html>

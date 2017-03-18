@@ -29,9 +29,10 @@ setTimeout(function(){
 
 
 
-function tocontract(id)
+function tocontract(d)
 {
-    localstorage("contract_id",id);
+    localstorage("contract_id",d.contract_id);
+    localstorage("customer_id",d.contractor_id);
     localstorage("Customertype",1);
     window.location = 'view_contract.html';
 }

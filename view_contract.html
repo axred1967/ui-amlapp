@@ -17,6 +17,35 @@
     <link rel="stylesheet" href="css/swipebox.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/stylesheet.css">
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/custom.js"></script>
+    <script src="js/view_contract.js"></script>
+    <script type="text/javascript">$(document).ready(function () {
+            app.initialize();
+        });
+    </script>
+     <script src="js/animsition.js"></script>
+        <script src="js/sweetalert.min.js"></script>
+        <script src="js/material.min.js"></script>
+        <script src="js/jquery.swipebox.min.js"></script>
+        <script src="js/function.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script>
+        langfile = localStorage.getItem("language");
+        if (langfile == 'en')
+            document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
+        else
+            document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
+        if(langfile ==  "en"){
+//             $.getScript("js/i18n/angular-locale_en.js");
+             document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
+         }
+         else{
+//             $.getScript("js/i18n/angular-locale_it.js");
+             document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
+         }
+        </script>
+        <script src="js/view_contract_ang.js"></script>
   </head>
   <style>
       #name_agent1
@@ -74,22 +103,43 @@
           </div>
 		  <div class="contact-about view-agent">
               <div class="mdl-card mdl-shadow--2dp about">
-                <h4></h4>
-                <h4 class="orange" id="name_agent">{{Contract.CPU}} - {{Contract.owner}}</h4>
-                <h5 class="blue">{{Contract.nature_contract}}</h5>
-                <p>Stipulato il :{{Contract.contract_date | date : 'shortDate'}}</p>
-                <p>Valore:{{Contract.contract_value | currency}}</p>
+                <h5 class="orange" id="name_agent">{{Contract.CPU}} - {{Contract.owner}}</h5>
 
-                <p id="mobile_number">{{Contract.mobile}}</p>
-                <p id="email_agent" >{{Contract.email}}</p>
+                <table style="display:table;width:auto!important;" align="center" class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+                  <tbody>
+                    <tr>
+                      <td  >Tipo Polizza :</td>
+                      <td class="blue">{{Contract.nature_contract}}</td>
+
+                    </tr>
+                    <tr>
+                      <td >Stipulato il :</td>
+                      <td>{{Contract.contract_date | date : 'shortDate'}}</td>
+
+                    </tr>
+                    <tr>
+                        <td>Valore</td>
+                      <td>{{Contract.contract_value | currency}}</td>
+                    </tr>
+                    <tr>
+                        <td>email:</td>
+                      <td>{{Contract.email}}</td>
+                    </tr>
+                    <tr>
+                        <td>mobile:</td>
+                      <td>{{Contract.mobile_number}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
                 <div class="mdl-card__actions mdl-card--border">
                   <div class="mdl-cell">
-                    <button class="mdl-button mdl-js-button mdl-button--accent" onclick="edit_info()" >
+                    <button class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_profile(Contract.contractor_id)"  >
                         {{datalang.EditInformation}}
                       </button>
                 </div>
                 <div class="mdl-cell">
-                  <button class="mdl-button mdl-js-button mdl-button--primary" onclick="edit_docu()">
+                  <button class="mdl-button mdl-js-button mdl-button--primary" ng-click="edit_docu(Contract.contractor_id)" >
                       {{datalang.UploadDocuments}}
                   </button>
 
@@ -97,31 +147,31 @@
             </div>
               <div class="mdl-card__actions mdl-card--border">
               <div class="mdl-cell">
-                <button class="mdl-button mdl-js-button mdl-button--accent" onclick="edit_info()" edit_user_kycform()>
+                <button class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_kyc(Contract.contractor_id)" >
                       {{datalang.EditKycForm}}
                   </button>
               </div>
               <div class="mdl-cell">
-                <button class="mdl-button mdl-js-button mdl-button--primary" onclick="edit_risk_account()">
+                <button class="mdl-button mdl-js-button mdl-button--primary"  ng-click="edit_risk(Contract.contractor_id)" >
                     {{datalang.RiskAnalysis}}
                 </button>
               </div>
               </div>
               <div ng-class="{showed : contract.act_for=='1'}" class="hidden mdl-card__actions mdl-card--border">
               <div class="mdl-cell">
-                <button class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_info(contract.other_id)" edit_user_kycform()>
+                <button class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_company(Contract.other_id)" >
                       {{datalang.CompanyInfo}}
                   </button>
               </div>
               <div class="mdl-cell">
-                <button class="mdl-button mdl-js-button mdl-button--primary" ng-click="owners(contract.other_id)">
+                <button class="mdl-button mdl-js-button mdl-button--primary" ng-click="owners(Contract.other_id)">
                     {{datalang.Owners}}
                 </button>
               </div>
               </div>
               <div ng-class="{showed : contract.act_for=='2'}" class="hidden mdl-card__actions mdl-card--border">
               <div class="mdl-cell">
-                <button class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_info(contract.other_id)" edit_user_kycform()>
+                <button class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_profile(Contract.other_id)" edit_user_kycform()>
                       {{datalang.OtherInfo}}
                   </button>
               </div>
@@ -150,35 +200,6 @@
         </div>
     </div>
 
-    <script src="js/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="js/custom.js"></script>
-    <script src="js/view_contract.js"></script>
-    <script type="text/javascript">$(document).ready(function () {
-            app.initialize();
-        });
-    </script>
-     <script src="js/animsition.js"></script>
-        <script src="js/sweetalert.min.js"></script>
-        <script src="js/material.min.js"></script>
-        <script src="js/jquery.swipebox.min.js"></script>
-        <script src="js/function.js"></script>
-        <script src="js/angular.min.js"></script>
-        <script>
-        langfile = localStorage.getItem("language");
-        if (langfile == 'en')
-            document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
-        else
-            document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
-        if(langfile ==  "en"){
-//             $.getScript("js/i18n/angular-locale_en.js");
-             document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
-         }
-         else{
-//             $.getScript("js/i18n/angular-locale_it.js");
-             document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
-         }
-        </script>
-        <script src="js/view_contract_ang.js"></script>
 
   </body>
 </html>

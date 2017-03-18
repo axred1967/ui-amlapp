@@ -30,4 +30,7 @@ app2.controller('personCtrl', function ($scope,$http) {
    $scope.risk_analisys = function(id){
       edit_risk_account(id)
   };
+  $scope.edit_profile = function(id){
+     edit_info(id)
+ };
 })
