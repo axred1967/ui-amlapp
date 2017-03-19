@@ -54,8 +54,8 @@ app2.controller('personCtrl', function ($scope,$http) {
         .error(function() {
                  console.log("error");
          });
-         $scope.tocustomer = function(d){
-            tocustomer(d)
+         $scope.tocontract = function(d){
+            tocontract(d)
           };
       console.log($scope.Contracts);
 });

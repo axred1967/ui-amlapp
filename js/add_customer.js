@@ -1,3 +1,11 @@
+var back=localStorage.getItem("back");
+if (back!==undefined && back.length>0){
+//  localstorage("back","");
+}
+else {
+back="view_customer.html";
+}
+
 var app = {
     initialize: function() {
         this.bind();
@@ -87,6 +95,14 @@ function add_customer()
 
     else
     {
+      if ($('input[name=act_for]:checked').val()==1){
+          dbData.other_id=$.trim($('#Company').val())
+          dbData.role_for_other=$.trim($('#company_role').val())
+      }
+      if ($('input[name=act_for]:checked').val()==2){
+          dbData.other_id=$.trim($('#Other').val())
+          dbData.role_for_other=$.trim($('#user_role').val())
+      }
         $('#save_button_cust').hide();
         $('#cancel_button_cust').hide();
         $('#loader_img').show();
@@ -100,9 +116,7 @@ function add_customer()
                     $('#save_button_cust').show();
                     $('#cancel_button_cust').show();
                     data=JSON.parse(responceData);
-			if(data.RESPONSECODE=='1')
-			{
-
+			if(data.RESPONSECODE=='1')			{
                            $('#customer_name').val('');
                            $('#customer_email').val('');
                             $('#customer_mobile_number').val('');
@@ -111,37 +125,34 @@ function add_customer()
                             swal("",data.RESPONSE);
                            setTimeout(function(){
                                 var priviledge = localStorage.getItem("priviligetype");
-                                if(priviledge == 0 && usertype == 2  )
-                                {
+                                if(priviledge == 0 && usertype == 2  ) {
                                     redirect("my_profile_agent_noprve.html");
                                 }
-                                else
-                                {
-
-                                    if(actedcompnay == 1 )
-                                    {
+                                else     {
+                                    if(actedcompnay == 1 ) {
                                         localstorage("CustomerProfileId",data.ID);
                                         localstorage("actforcompany",1);
                                         localstorage("Customertype",1);
                                         redirect("add_company.html");
                                     }
-                                    else
-                                    {
+                                    else  {
                                         localstorage("CustomerProfileId",data.ID);
 
                                         localstorage("Customertype",1);
                                         redirect("view_customer.html");
                                     }
-
                                 }
                             }, 2000);
-
 
 			}
 			else
 			{
                             swal("",data.RESPONSE);
 			}
+
+    },
+            fail: function(error){
+                console.log('error' + error)
 
             }
         });

@@ -69,29 +69,29 @@
                 <form action="#">
 
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" placeholder="  {{datalang.Name}}" id="customer_name" />
+                    <input class="mdl-textfield__input" type="text" ng-model="Customer.name "  ng-change="Customer.name=(Customer.name| capitalize)" placeholder="  {{datalang.Name}}" id="customer_name" />
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" placeholder="  {{datalang.Name}}" id="customer_surname" />
+                    <input class="mdl-textfield__input" type="text" ng-model="Customer.surname " ng-change="Customer.surname=(Customer.surname| capitalize)" placeholder="  {{datalang.Surname}}" id="customer_surname" />
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" placeholder=" {{datalang.EmailID}}" id="customer_email" />
+                    <input class="mdl-textfield__input" type="text" ng-model="Customer.email" placeholder=" {{datalang.EmailID}}" id="customer_email" />
                   </div>
 
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" placeholder=" {{datalang.Mobile}}" id="customer_mobile_number" />
+                    <input class="mdl-textfield__input" type="text" ng-model="Customer.mobile_number" placeholder=" {{datalang.Mobile}}" id="customer_mobile_number" />
                   </div>
-
+<!--
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" placeholder=" {{datalang.Addressofresidence}}" id="customer_address_resi" />
+                    <input class="mdl-textfield__input" type="text" ng-model="Customer.address_resi" placeholder=" {{datalang.Addressofresidence}}" id="customer_address_resi" />
                   </div>
-
+-->
                 </form>
     			<div class="center-align">
-                    <a id="save_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="add_customer()" href="javascript:;">
+                    <a id="save_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_customer()" href="javascript:;">
                       {{datalang.Save}}
                     </a>
-                    <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="redirect('my_customer.html')" href="javascript:;">
+                    <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="redirect(back)" href="javascript:;">
                       {{datalang.Cancel}}
                     </a>
                      <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >

@@ -1,6 +1,10 @@
- var app2 = angular.module('myApp', []);
-            
-
+var back=localStorage.getItem("back");
+if (back!==undefined && back.length>0){
+//  localstorage("back","");
+}
+else {
+back="view_customer.html";
+}
 var app = {
     initialize: function() {
         this.bind();
@@ -10,7 +14,7 @@ var app = {
     },
     deviceready: function() {
         // This is an event handler function, which means the scope is the event.
-        // So, we must explicitly called `app.report()` instead of `this.report()`.		
+        // So, we must explicitly called `app.report()` instead of `this.report()`.
         app.report('deviceready');
     },
     report: function(id) {
@@ -18,44 +22,49 @@ var app = {
         console.log("Report: " + id);
     }
 };
+$(".mdl-textfield__input").focus(function(){
+  $('label[for="'+$(this).attr("id") +'"]').show()
+});
+$(".mdl-textfield__input").blur(function(){
+  $('label[for="'+$(this).attr("id") +'"]').hide()
+});
+
 function getChkLogin()
 {
-          $('.fancybox').fancybox();	
+//          $('.fancybox').fancybox();
         chkloggedin();
-        
-       
-				
-}
-app2.controller('personCtrl', function ($scope) {
-                $scope.datalang = DATALANG;
-            });
 
-        
+
+
+}
+
+
+
 function save_kyc(type)
 {
-    
-  
+
+
    var langfileloginchk = localStorage.getItem("language");
    var actforcompany = localStorage.getItem("actforcompany");
-   
-   
+
+
    if(!actforcompany)
    {
        var customer_id_act=0;
-      
+
    }
    else
    {
         var customer_id_act= localStorage.getItem("CustomerProfileId");
-        
-   }    
-   
-    
+
+   }
+
+
     if(langfileloginchk == 'en' )
     {
         var company_name_msg ="Please enter  Company Name";
        var company_addressmsg = "Please enter  Company Address";
-       var comany_fiscal_idmsg ="Please enter  Fiscal Id"; 
+       var comany_fiscal_idmsg ="Please enter  Fiscal Id";
        var validcomany_fiscal_idmsg ="Please enter the valid Fiscal Id";
        var compnay_doc_image_msg ="Please enter Document Image";
        var company_lisence_image_msg = "Please enter License Image";
@@ -63,13 +72,13 @@ function save_kyc(type)
        var company_authorisation_date_msg = "Please enter  Date Of Authorization";
        var fiscal_budget_msg ="Please enter  Fiscal Budget";
        var validcomany_fiscal_idmsg ="Please enter the valid Fiscal Id";
-       
+
     }
     else
     {
         var company_name_msg ="Si prega di inserire Nome azienda";
        var company_addressmsg = "Inserisci Azienda Indirizzo";
-       var comany_fiscal_idmsg ="Si prega di inserire fiscale Id"; 
+       var comany_fiscal_idmsg ="Si prega di inserire fiscale Id";
        var validcomany_fiscal_idmsg ="Si prega di inserire la validità fiscale Id";
        var compnay_doc_image_msg ="Si prega di inserire Documento Immagine";
        var company_lisence_image_msg = "Si prega di inserire licenza Immagine";
@@ -77,8 +86,8 @@ function save_kyc(type)
        var company_authorisation_date_msg = "Si prega di inserire data di autorizzazione";
        var fiscal_budget_msg ="Si prega di inserire Fiscal Budget";
        var validcomany_fiscal_idmsg ="Si prega di inserire la validità fiscale Id";
-    }  
-    
+    }
+
    var agency_id = localStorage.getItem("userId");
    var company_name = $.trim($('#company_name').val());
    var company_address = $.trim($('#company_address').val());
@@ -88,7 +97,7 @@ function save_kyc(type)
    var fiscal_budget = $.trim($('#fiscal_budget').val());
    var compnay_doc_image = $('#compnay_doc_image').val();
    var company_lisence_image = $('#company_lisence_image').val();
-   
+
     if(company_name=="") swal("",company_name_msg)
     else if(company_address=="") swal("",company_addressmsg)
     else if(comany_fiscal_id=="") swal("",comany_fiscal_idmsg)
@@ -116,38 +125,38 @@ function save_kyc(type)
                     $('#kyc_button2').show();
                     data=JSON.parse(responceData);
 			if(data.RESPONSECODE=='1')
-			{ 
-                           swal("",data.RESPONSE);  
-                           setTimeout(function(){ 
-                               
+			{
+                           swal("",data.RESPONSE);
+                           setTimeout(function(){
+
                                 localstorage("CompanyId",data.ID);
                                 redirect("add_owners.html");
-                                
-                           
+
+
                            }, 800);
-                              
+
 			}
 			else
 			{
                             swal("",data.RESPONSE);
 			}
-            
+
             }
         });
-    }    
+    }
 }
 
 function openuploadoptions()
-{ 
+{
     $("#popup4").click();
-    
+
 }
 
 function take_pic()
 {
-	
+
     $.fancybox.close();
-    
+
     navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
         destinationType: Camera.DestinationType.FILE_URI });
 
@@ -155,11 +164,11 @@ function take_pic()
         //alert(imageURI);
         //var image = document.getElementById('myImage');
         //image.src = imageURI;
- 
+
        $("#compnay_doc_imagelicensew").attr("src","img/load.gif");
-    
+
     var userid = localStorage.getItem("userId");
-   
+
     var options = new FileUploadOptions();
     options.fileKey="file";
     options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
@@ -179,16 +188,16 @@ function take_pic()
 
 
 function openuploadoptions1()
-{ 
+{
     $("#popup3").click();
-    
+
 }
 
 function take_pic1()
 {
-	
+
     $.fancybox.close();
-    
+
     navigator.camera.getPicture(onSuccess1, onFail1, { quality: 50,
         destinationType: Camera.DestinationType.FILE_URI });
 
@@ -196,7 +205,7 @@ function take_pic1()
         //alert(imageURI);
         //var image = document.getElementById('myImage');
         //image.src = imageURI;
- 
+
         $("#compnay_doc").attr("src","img/load.gif");
 
         var userid = localStorage.getItem("userId");
@@ -224,24 +233,24 @@ function uploadfromgallery1()
    // alert('cxccx');
    $.fancybox.close();
    navigator.camera.getPicture(uploadPhoto1,
-        function(message) { 
-            //alert('get picture failed'); 
+        function(message) {
+            //alert('get picture failed');
         },
-        { 
-            quality: 50, 
+        {
+            quality: 50,
             destinationType: navigator.camera.DestinationType.FILE_URI,
-            sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY 
+            sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
         }
     );
 }
 
-function uploadPhoto1(imageURI) 
+function uploadPhoto1(imageURI)
 {
-  
+
    $("#compnay_doc").attr("src","img/load.gif");
-    
+
     var userid = localStorage.getItem("userId");
-   
+
     var options = new FileUploadOptions();
     options.fileKey="file";
     options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
@@ -254,17 +263,17 @@ function uploadPhoto1(imageURI)
     ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_compnay_doc_image&custid="+userid), win1, fail1, options);
 }
 
-function win1(r) 
-{ 
-    
+function win1(r)
+{
+
   // alert(r.responseCode); alert(r.response);
    // alert(r.responseCode);
     var userid = localStorage.getItem("userId");
-   // var review_info   =JSON.parse(r.response); 
-   // var review_selected_image  =  review_info.review_id; 
+   // var review_info   =JSON.parse(r.response);
+   // var review_selected_image  =  review_info.review_id;
     //$('#review_id_checkin').val(review_selected_image);
-    
-    var review_info   =JSON.parse(r.response); 
+
+    var review_info   =JSON.parse(r.response);
     var id = review_info.id;
     $.ajax ({
         type: "POST",
@@ -276,22 +285,22 @@ function win1(r)
             data=JSON.parse(responceData);
             $('#compnay_doc_image').val(data.RESPONSE);
             if(data.RESPONSECODE==1)
-            { 
-              
+            {
+
                 localstorage("image",data.RESPONSE);
-             
+
                 $("#compnay_doc").attr("src",BASEURL+"uploads/company/resize/"+data.RESPONSE);
             }
         }
     });
 }
 
-function fail1(error) 
-{ 
+function fail1(error)
+{
    $("#compnay_doc").attr("src","img/add-account.png");
-   // $('#profileimgloader').hide(); 
-   
-}  
+   // $('#profileimgloader').hide();
+
+}
 
 
 function uploadfromgallery()
@@ -299,24 +308,24 @@ function uploadfromgallery()
    // alert('cxccx');
     $.fancybox.close();
    navigator.camera.getPicture(uploadPhoto,
-        function(message) { 
-            //alert('get picture failed'); 
+        function(message) {
+            //alert('get picture failed');
         },
-        { 
-            quality: 50, 
+        {
+            quality: 50,
             destinationType: navigator.camera.DestinationType.FILE_URI,
-            sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY 
+            sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
         }
     );
 }
 
-function uploadPhoto(imageURI) 
+function uploadPhoto(imageURI)
 {
-  
+
    $("#compnay_doc_imagelicensew").attr("src","img/load.gif");
-    
+
     var userid = localStorage.getItem("userId");
-   
+
     var options = new FileUploadOptions();
     options.fileKey="file";
     options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
@@ -329,16 +338,16 @@ function uploadPhoto(imageURI)
     ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_company_lisence_image&custid="+userid), win, fail, options);
 }
 
-function win(r) 
-{ 
-    
+function win(r)
+{
+
   // alert(r.responseCode); alert(r.response);
    // alert(r.responseCode);
     var userid = localStorage.getItem("userId");
-   // var review_info   =JSON.parse(r.response); 
-   // var review_selected_image  =  review_info.review_id; 
+   // var review_info   =JSON.parse(r.response);
+   // var review_selected_image  =  review_info.review_id;
     //$('#review_id_checkin').val(review_selected_image);
-    var review_info   =JSON.parse(r.response); 
+    var review_info   =JSON.parse(r.response);
     var id = review_info.id;
     $.ajax ({
         type: "POST",
@@ -351,10 +360,10 @@ function win(r)
             $('#company_lisence_image').val(data.RESPONSE);
             if(data.RESPONSECODE==1)
             {
-                
-               
+
+
                 //$("#agent_image").show();
-               // $('#profileimgloader').hide(); 
+               // $('#profileimgloader').hide();
                 localstorage("image",data.RESPONSE);
                // $('#agent_image').show();
                 $("#compnay_doc_imagelicensew").attr("src",BASEURL+"uploads/company/resize/"+data.RESPONSE);
@@ -363,17 +372,14 @@ function win(r)
     });
 }
 
-function fail(error) 
-{ 
+function fail(error)
+{
    $("#compnay_doc_imagelicensew").attr("src","img/add-account.png");
-   // $('#profileimgloader').hide(); 
-   
-}  
+   // $('#profileimgloader').hide();
+
+}
 
 
-setTimeout(function(){ 
+setTimeout(function(){
         checkthesidebarinfouser();
 }, 800);
-
-
-

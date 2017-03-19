@@ -4,7 +4,7 @@ var app2 = angular.module('myApp', []);
 app2.controller('personCtrl', function ($scope,$http) {
     $scope.datalang = DATALANG;
     $scope.Companies= [];
-    var id=localStorage.getItem("userId");
+    var CompanyID=localStorage.getItem("CompanyID");
   	var email=localStorage.getItem("userEmail");
     $('#loader_img').hide();
     var usertype = localStorage.getItem('userType');
@@ -21,7 +21,7 @@ app2.controller('personCtrl', function ($scope,$http) {
     }
     $('#Profileimageagencyusername').html(name);
     $('#Profileimageagencyuseremail').html(email);
-    data= {"action":"CompanyList",id:id,email:email,usertype:usertype,priviledge:priviledge}
+    data= {"action":"show_edit_company",company_id:CompanyID}
 
     $http.post(
       SERVICEURL2,  data
@@ -32,7 +32,7 @@ app2.controller('personCtrl', function ($scope,$http) {
                   if(responceData.RESPONSECODE=='1') 			{
                     data=responceData.RESPONSE;
 
-                    $scope.Company=data;
+                    $scope.Companies=data;
 
 
 

@@ -7,21 +7,45 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="font-awesome-4.6.2/css/font-awesome.min.css">
    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/css/animsition.css"> -->
-    
+
     <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
     <link rel="stylesheet" href="css/material.css">
     <link rel="stylesheet" href="css/swipebox.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/stylesheet.css">
-      <script src="js/angular.min.js"></script>
-      <link rel="stylesheet" href="css/jquery.fancybox.css">
-  </head>
+    <link rel="stylesheet" href="css/jquery.fancybox.css">
+    <script src="js/jquery-2.1.4.min.js"></script>
+     <script type="text/javascript" src="js/custom.js"></script>
+     <script src="js/add_company.js"></script>
+     <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
+     <script src="js/animsition.js"></script>
+     <script src="js/sweetalert.min.js"></script>
+     <script src="js/material.min.js"></script>
+     <script src="js/jquery.swipebox.min.js"></script>
+     <script src="js/function.js"></script>
+     <script src="js/angular.min.js"></script>
+    <script>
+    langfile = localStorage.getItem("language");
+    if (langfile == 'en')
+        document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
+    else
+        document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
+    if(langfile ==  "en"){
+  //             $.getScript("js/i18n/angular-locale_en.js");
+         document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
+     }
+     else{
+  //             $.getScript("js/i18n/angular-locale_it.js");
+         document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
+     }
+    </script>
+    <script src="js/add_company_ang.js"></script>  </head>
   <style>
       .tsap_SelectPhoto
       {
@@ -38,7 +62,7 @@
             transition: all 0.2s ease 0s;
             text-align: center;
       }
-      
+
             .cameraSpan, .gallery_Icon{
                 width: 39px;
                 height: 40px;
@@ -123,7 +147,7 @@
         <div class=""> <!-- card -->
         	 <div class="account-info dark-blue-bg">
                 <div class="account-navigation"> <!-- top icons -->
-                  <a class="mdl-button mdl-js-button mdl-button--icon left" onclick="redirect('company_list.html')" href="javascript:;">
+                  <a class="mdl-button mdl-js-button mdl-button--icon left" onclick="redirect(back)" href="javascript:;">
                     <img src="img/back-button.png">
                   </a>
                  <!-- <button class="mdl-button mdl-js-button mdl-button--icon right">
@@ -133,118 +157,98 @@
                   <div class="clr"></div>
                   </div>
               </div>
-          
+
 
           <div class="account-data add-customer-data"> <!-- text fields -->
           	<div class="mdl-card mdl-shadow--2dp ">
                 <form action="#">
-                 
-                    
+
+
+
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input"  type="text" placeholder=" {{datalang.Companyname}}" id="company_name" />
+                    <input class="mdl-textfield__input"  ng-model="Company.name "  ng-change="Company.name=(Company.name| capitalize)" type="text" placeholder=" {{datalang.Companyname}}" id="company_name" />
+                    <label for="company_name" class="mdl-textfield__label" style="color:orange;display:none">{{datalang.company_name}}</label>
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input"   type="text" placeholder=" {{datalang.Addresscompany}}" id="company_address" />
+                    <input class="mdl-textfield__input"   ng-model="Company.address "   type="text" placeholder=" {{datalang.Addresscompany}}" id="company_address" />
+                    <label for="company_address" class="mdl-textfield__label" style="color:orange;display:none">{{datalang.company_address}}</label>
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input"  type="text" placeholder=" {{datalang.Fiscalid}}" id="comany_fiscal_id" />
+                    <input class="mdl-textfield__input"  ng-model="Company.fiscal_id"  ng-change="Company.fiscal_id=(Company.fiscal_id| uppercase) "  type="text" placeholder=" {{datalang.PIVA}}" id="comany_fiscal_id" />
+                    <label for="company_fiscal_id" class="mdl-textfield__label" style="color:orange;display:none">{{datalang.company_fiscal_id}}</label>
                   </div>
+<!--
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                        <label  class="mdl-textfield__label" for="compnay_doc"> &nbsp; &nbsp; {{datalang.CompanyDocument}} </label>
                       <center> <img onclick="openuploadoptions1()" id="compnay_doc" style="height:100px;width:100px;margin-top:40px;"  src="img/add-account.png">  </center>
-                     
-                  </div>  
+
+                  </div>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                       <center> <img onclick="openuploadoptions()" id="compnay_doc_imagelicensew" style="height:100px;width:100px;margin-top:40px;"  src="img/add-account.png">  </center>
                       <label class="mdl-textfield__label" for="compnay_doc_imagelicensew"> &nbsp; &nbsp; {{datalang.CompanyLicense}} </label>
-                  </div>  
-                  
+                  </div>
+
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     <input class="mdl-textfield__input"  type="text" placeholder=" {{datalang.Companyauthorizedby}}" id="company_authorised_by" />
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     <input class="mdl-textfield__input"  type="text" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder=" {{datalang.DateofAutorized}}" id="company_authorisation_date" />
-                  </div> 
+                  </div>
                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     <input class="mdl-textfield__input"  type="number" placeholder=" {{datalang.FiscalBudget}}" id="fiscal_budget" />
-                  </div> 
+                  </div>
                     <input type="hidden"  id="compnay_doc_image" >
                     <input type="hidden"  id="company_lisence_image" >
-                    
-                   
+-->
+
                 </form>
     			<div class="center-align">
-                    <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="save_kyc(1)" href="javascript:;">                
+                    <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_company()" href="javascript:;">
                       {{datalang.Save}}
                     </a>
-                    <a id="kyc_button2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="redirect('company_list.html')" href="javascript:;">                
+                    <a id="kyc_button2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="redirect('company_list.html')" href="javascript:;">
                       {{datalang.Cancel}}
                     </a>
-                             <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >  
+                             <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
                 </div>
-                
+
              </div>
             <div class="clr"></div>
-            
+
           </div>
 
         </div>
       </main>
     </div>
-      
+
        <a id="popup3"  href="#pop-up3" class="fancybox" style="display:none;">Pop</a>
         <div class="popupclientissue mdl-card" id="pop-up3" style="display:none;width:100% !important;">
             <p style="color:#000;font-family:kalingab;margin:0;font-size:18px;text-align:center">Upload Document Pic</p>
             <div class="drawer-separator" style="height:2px"></div>
-            <div style="text-align: center;">  
+            <div style="text-align: center;">
                 <p style="text-align: left;color: #555;font-family:OpenSans-Semibold;cursor:pointer;" id="takepic" onClick="take_pic1()">
                     <span class="cameraSpan" style="text-align: center">
                         <span class="fa fa-camera camera_Icon" ></span></span>Camera
-                </p>  
+                </p>
                 <p style="text-align: left;color: #555;font-family:OpenSans-Semibold; margin-top: 7px;cursor:pointer" id="uploadfromgallery" onClick="uploadfromgallery1()"><span class="" style="text-align: center">
                         <span class="fa fa-picture-o gallery_Icon"></span></span>Gallery
-                </p>   
+                </p>
             </div>
         </div>
        <a id="popup4"  href="#pop-up4" class="fancybox" style="display:none;">Pop</a>
         <div class="popupclientissue mdl-card" id="pop-up4" style="display:none;width:100% !important;">
             <p style="color:#000;font-family:kalingab;margin:0;font-size:18px;text-align:center">Upload License Pic</p>
             <div class="drawer-separator" style="height:2px"></div>
-            <div style="text-align: center;">  
+            <div style="text-align: center;">
                 <p style="text-align: left;color: #555;font-family:OpenSans-Semibold;cursor:pointer;" id="takepic" onClick="take_pic()">
                     <span class="cameraSpan" style="text-align: center">
                         <span class="fa fa-camera camera_Icon" ></span></span>Camera
-                </p>  
+                </p>
                 <p style="text-align: left;color: #555;font-family:OpenSans-Semibold; margin-top: 7px;cursor:pointer" id="uploadfromgallery" onClick="uploadfromgallery()"><span class="" style="text-align: center">
                         <span class="fa fa-picture-o gallery_Icon"></span></span>Gallery
-                </p>   
+                </p>
             </div>
         </div>
 
-    <script src="js/jquery-2.1.4.min.js"></script>
-     <script type="text/javascript" src="js/custom.js"></script>
-    <script src="js/add_company.js"></script>
-     <script src="cordova.js"></script>
-    <script type="text/javascript">$(document).ready(function () {
-            app.initialize();
-        });
-    </script>
-  <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/js/jquery.animsition.js"></script> -->
-    <script src="js/animsition.js"></script>
-    <script src="js/sweetalert.min.js"></script> 
-    <script src="js/material.min.js"></script>
-    <script src="js/jquery.swipebox.min.js"></script>
-    <script src="js/function.js"></script>
-    
-    <script src="js/jquery.fancybox.pack.js"></script>
-  
-        <script>
-            langfile = localStorage.getItem("language");
-            if (langfile == 'en')
-                document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
-            else
-                document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
-           
-        </script>
   </body>
 </html>

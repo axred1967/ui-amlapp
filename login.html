@@ -17,11 +17,33 @@
         <link rel="stylesheet" href="css/swipebox.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/stylesheet.css">
-    </head>
+        <script src="js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="js/custom.js"></script>
+        <script src="js/login.js"></script>
+        <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
+
+        <script src="js/animsition.js"></script>
+        <script src="js/sweetalert.min.js"></script>
+        <script src="js/material.min.js"></script>
+        <script src="js/jquery.swipebox.min.js"></script>
+        <script src="js/function.js"></script>
+         <script src="js/angular.min.js"></script>
+        <script>
+            langfile = localStorage.getItem("language");
+            if (langfile == 'en')
+                document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
+            else
+                document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
+            var app2 = angular.module('myApp', []);
+            app2.controller('personCtrl', function ($scope) {
+
+                $scope.datalang = DATALANG;
+            });
+        </script>    </head>
 
     <body>
         <div ng-app="myApp" ng-controller="personCtrl" class="animsition">
-          
+
             <!-- Page Content -->
             <main class="mdl-layout__content">
                 <div class=""> <!-- card -->
@@ -32,7 +54,7 @@
                             <div class="clr"></div>
                             <form action="#">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                                    <input class="mdl-textfield__input" type="text" placeholder="{{datalang.EmailID}}" id="username" />
+                                    <input class="mdl-textfield__input"  autocorrect="off" autocapitalize="off" type="text" placeholder="{{datalang.EmailID}}" id="username" />
 
                                 </div>
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
@@ -64,27 +86,6 @@
             </main>
         </div>
 
-        <script src="js/jquery-2.1.4.min.js"></script>
-        <script type="text/javascript" src="js/custom.js"></script>
-        <script src="js/login.js"></script>
-        <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
 
-        <script src="js/animsition.js"></script>
-        <script src="js/sweetalert.min.js"></script>
-        <script src="js/material.min.js"></script>
-        <script src="js/jquery.swipebox.min.js"></script>
-        <script src="js/function.js"></script>
-         <script src="js/angular.min.js"></script>
-        <script>
-            langfile = localStorage.getItem("language");
-            if (langfile == 'en')
-                document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
-            else
-                document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
-            var app2 = angular.module('myApp', []);
-            app2.controller('personCtrl', function ($scope) {
-                $scope.datalang = DATALANG;
-            });
-        </script>
     </body>
 </html>
