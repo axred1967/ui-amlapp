@@ -1,10 +1,3 @@
-var back=localStorage.getItem("back");
-if (back!==undefined && back.length>0){
-//  localstorage("back","");
-}
-else {
-back="view_customer.html";
-}
 var app = {
     initialize: function() {
         this.bind();
@@ -22,12 +15,6 @@ var app = {
         console.log("Report: " + id);
     }
 };
-$(".mdl-textfield__input").focus(function(){
-  $('label[for="'+$(this).attr("id") +'"]').show()
-});
-$(".mdl-textfield__input").blur(function(){
-  $('label[for="'+$(this).attr("id") +'"]').hide()
-});
 
 function getChkLogin()
 {
@@ -378,8 +365,3 @@ function fail(error)
    // $('#profileimgloader').hide();
 
 }
-
-
-setTimeout(function(){
-        checkthesidebarinfouser();
-}, 800);

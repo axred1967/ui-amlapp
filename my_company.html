@@ -101,7 +101,7 @@
                         <center>  <img style="height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
                         <div id="list_customer" ng-hide="Companies.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Company in Companies ">
 
-                          <div ng-click="tocompany(Company)" class="mdl-cell mdl-cell--12-col">
+                          <div class="mdl-cell mdl-cell--12-col">
                           <div class="mdl-card amazing mdl-shadow--2dp">
                           <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
                           	<div style="cursor:pointer;"  class="minilogo customer-listing1"></div>
@@ -110,7 +110,7 @@
 
                           	</div>
                             <div class="mdl-grid">
-                              <div class="mdl-cell">
+                              <div class="mdl-cell--6-col"  ng-click="tocompany(Company)">
                                 <span style="cursor:pointer;" >
                                   <strong class="blue first_letter_cap">{{Company.name}}</strong>
                                 </span><br/>
@@ -121,7 +121,11 @@
                                   {{Company.fiscal_id}}
                                 </span>
                               </div>
-                            </div>
+                                <div class="mdl-cell--6-col" >
+                                    <a style="float:right" ng-click="toowners(Company)"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
+                                      {{datalang.Owners}}
+                                    </a>
+                            	</div>
                           </div>
                         </div>
                         </div>

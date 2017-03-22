@@ -5,6 +5,7 @@ if (back!==undefined && back.length>0){
 else {
 back="view_customer.html";
 }
+
 var app = {
     initialize: function() {
         this.bind();

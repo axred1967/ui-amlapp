@@ -1,5 +1,5 @@
 var back=localStorage.getItem("back");
-if (back!==undefined && back.length>0){
+if (back!==undefined && back != null && back.length>0){
 //  localstorage("back","");
 }
 else {
@@ -32,7 +32,7 @@ function getChkLogin()
 }
 function tocompany(d)
 {
-    localstorage("CompanyId",d.company_id);
+    localstorage("CompanyID",d.company_id);
     localstorage("back","my_company.html");
 
     redirect("edit_company.html");
@@ -42,10 +42,10 @@ function add_company()
     redirect("add_company.html");
 }
 
-function redirecttoowners(id)
+function toowners(d)
 {
-    localstorage("CompanyId",id);
-
+    localstorage("CompanyId",d.company_id);
+    localstorage("back","my_company.html");
     redirect("owners_list.html");
 }
 

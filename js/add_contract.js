@@ -23,8 +23,8 @@ function getChkLogin()
 }
 
 
-
-function add_contract()
+/*
+function add_contract(action)
 {
 
     var langfileloginchk = localStorage.getItem("language");
@@ -38,6 +38,8 @@ function add_contract()
        var customermsg ="Please enter customer";
        var datamsg = "Please enter date of contract"
        var eovmsg = "Please enter end of validity of contract"
+       var other_idmsg = "Inserire soggetto delegante"
+       var role_for_othermsg = "Inserire ruolo soggeto delegato"
 
     }
     else
@@ -48,6 +50,8 @@ function add_contract()
      var customermsg ="Inserire Firmatario del contratto";
      var datamsg = "Inserire data contratto"
      var eovmsg = "Inserire scadenza contratto"
+     var other_idmsg = "Inserire soggetto delegante"
+     var role_for_othermsg = "Inserire ruolo soggeto delegato"
 
     }
     var  appData ={
@@ -56,26 +60,40 @@ function add_contract()
     }
     dbData = {
       agent_id :localStorage.getItem("userId"),
-      scope_contract: $.trim($('#scope_of_contract').val()),
-      nature_contract: $.trim($('#nature_of_contract').val()),
+      scope_contract: $.trim($('#scope_contract').val()),
+      nature_contract: $.trim($('#nature_contract').val()),
       contract_date: $.trim($('#ContractDate').val()),
       contract_eov : $.trim($('#ContractEOV').val()),
       contract_value: $.trim($('#ContractValue').val()),
       contractor_id: $.trim($('#Contractor').val()),
-      act_for_other: $('input[name=act_for]:checked').val(),
-    }
-    if ($('input[name=act_for]:checked').val()==1){
-        dbData.other_id=$.trim($('#Company').val())
-        dbData.role_for_other=$.trim($('#company_role').val())
-    }
-    if ($('input[name=act_for]:checked').val()==2){
-        dbData.other_id=$.trim($('#Other').val())
-        dbData.role_for_other=$.trim($('#user_role').val())
+      act_for_other: $.trim($('input[name=act_for]:checked').val()),
+      role_for_other:$.trim($('#role_for_other').val()),
+      contractor_id: $.trim($('#Contractor').val()),
     }
 
-    if(dbData.scope_of_contract=="") swal("",scopemsg);
+    switch(dbData.act_for_other){
+        case "1":
+          dbData.other_id= $.trim($('#Company').val());
+          dbData.role_for_other= $.trim($('#role_for_other').val())
+          if(dbData.other_id=="") swal("",other_idmsg);
+          if(dbData.role_for_other=="") swal("",role_for_othermsg);
+        break;
+        case "2":
+        dbData.other_id= $.trim($('#other_id').val());
+        dbData.role_for_other=$.trim( $('#role_for_other').val())
+        if(dbData.other_id=="") swal("",other_idmsg);
+        if(dbData.role_for_other=="") swal("",role_for_othermsg);
+        break;
+        default:
+        dbData.other_id= -1;
+        dbData.role_for_other=-1;
+    }
 
-    else if(dbData.nature_of_contract=="") swal("",naturemsg);
+
+
+    if(dbData.scope_contract=="") swal("",scopemsg);
+
+    else if(dbData.nature_contract=="") swal("",naturemsg);
 
     else if(dbData.contract_date =="") swal("",datamsg);
     else if(dbData.contract_eov=='') swal("",eov);
@@ -88,7 +106,7 @@ function add_contract()
         $.ajax ({
             type: "POST",
             url: SERVICEURL2,
-            data: {"action":"addcontract",appData,dbData},
+            data: {"action":"addcontract",appData,dbData,edit:action},
             crossDomain: true,
             success:function(responceData){
                     $('#loader_img').hide();
@@ -98,39 +116,20 @@ function add_contract()
 			if(data.RESPONSECODE=='1')
 			{
 
-                           $('#scope_of_contract').val('');
-                           $('#nature_of_contract').val('');
+                           $('#scope_contract').val('');
+                           $('#nature_contract').val('');
                             $('#nature_of_contract').val('');
                             $('#ContractDate').val('');
                             $('#ContractEOV').val('');
                             $('#ContractValue').val('');
                             swal("",data.RESPONSE);
-                           setTimeout(function(){
-                                var priviledge = localStorage.getItem("priviligetype");
-                                if(priviledge == 0 && usertype == 2  )
-                                {
-                                    redirect("my_profile_agent_noprve.html");
-                                }
-                                else
-                                {
+                            if (action=="edit"){
+                                redirect(back)
 
-                                    if(actedcompnay == 1 )
-                                    {
-                                        localstorage("CustomerProfileId",data.ID);
-                                        localstorage("actforcompany",1);
-                                        localstorage("Customertype",1);
-                                        redirect("add_company.html");
-                                    }
-                                    else
-                                    {
-                                        localstorage("CustomerProfileId",data.ID);
+                            }
 
-                                        localstorage("Customertype",1);
-                                        redirect("view_contract.html");
-                                    }
 
-                                }
-                            }, 2000);
+
 
 
 			}
@@ -144,7 +143,7 @@ function add_contract()
     }
 }
 
-
 setTimeout(function(){
        checkthesidebarinfouser();
 }, 800);
+*/

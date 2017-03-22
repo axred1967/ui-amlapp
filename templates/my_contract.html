@@ -1,0 +1,90 @@
+<!-- Page Content -->
+    <div class=""> <!-- card -->
+        <div class="account-info dark-blue-bg">
+            <div class="account-navigation"> <!-- top icons -->
+              <!--  <a class="mdl-button mdl-js-button mdl-button--icon left" onClick="logout()" href="javascript:void(0)">
+                    <img src="img/back-button.png">
+                </a>  -->
+                <button onclick="redirect('add_contract.html')" class="mdl-button mdl-js-button mdl-button--icon right" style="border:2px solid #FFF">
+                    <!--<img src="img/add-search.png">-->
+                    <b >+</b>
+                </button>
+                <div class="mdl-layout-spacer"></div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right right">
+                    <label class="mdl-button mdl-js-button mdl-button--icon"
+                           for="waterfall-exp">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input class="mdl-textfield__input" type="text" name="sample"
+                               id="waterfall-exp" />
+                    </div>
+                </div>
+                <span class="main-heading">{{datalang.MyContract}}</span>
+                <div class="clr"></div>
+            </div>
+        </div>
+
+
+        <main class="mdl-layout__content">
+            <!-- cards grid -->
+            <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
+            <center>  <img style="height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
+            <div id="list_contract" class="mdl-grid"  ng-hide="Contracts.length == 0 " class="ng-hide" ng-repeat="Contract in Contracts ">
+
+              <div ng-click="tocontract(Contract)" class="mdl-cell mdl-cell--12-col">
+              <div class="mdl-card amazing mdl-shadow--2dp">
+              <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
+                <div style="cursor:pointer;"  class="minilogo customer-listing1"></div>
+                <div class="card-author">
+
+
+                </div>
+                <div class="mdl-grid">
+                  <div class="mdl-cell">
+                  <span style="cursor:pointer;" >
+                    <strong class="blue first_letter_cap">{{Contract.fullname}}</strong>
+                  </span><br/>
+                  <span style="cursor:pointer;" >
+                  {{Contract.CPU}}
+                </span><br/>
+                  <span style="cursor:pointer;" class="orange first_letter_cap" >
+                  <strong>{{Contract.nature_contract}}</strong>
+                </span><br>
+                  <span class="green" style=" cursor:pointer;"  class="long-email">
+                    {{Contract.email}}
+                  </span>
+            </div>
+            </div>
+                <div class="mdl-card__actions mdl-card--border " style="font-size:12px">
+                  <div class="mdl-cell">
+                    <span class="orange">Adeguata Verifica </span><br/>
+                    <span ng-class="{hidden : Contract.status=='0'}">Approved<span class="green-checkbox"><img src="img/green-check.png"></span></span>
+                    <span ng-class="{hidden : Contract.status=='1'}">In Process</span>
+                  </div>
+                  <div class="mdl-cell">
+                    <span class="blue">Risk Analysis </span><br/>
+                    <span ng-class="{hidden : Contract.kyc_status =='0'}">Approved<span class="green-checkbox"><img src="img/green-check.png"></span></span>
+                    <span ng-class="{hidden : Contract.kyc_status =='1'}">In Process</span>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+          <div id="no_contract" ng-hide="Contracts.length != 0 " class="ng-hide"  >
+            <div  class="mdl-cell mdl-cell--12-col">
+              <div class="mdl-card amazing mdl-shadow--2dp">
+                <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
+                    <div class="mdl-grid">
+                      <div class="mdl-cell">
+                        <span style="cursor:pointer;" >
+                          <strong class="blue first_letter_cap">Nessun cliente inserito ancora</strong>
+                        </span><br/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+<script src="js/my_contract_ang.js"></script>

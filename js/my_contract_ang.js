@@ -2,6 +2,9 @@ var app2 = angular.module('myApp', []);
 
 app2.controller('personCtrl', function ($scope,$http) {
     $scope.datalang = DATALANG;
+
+
+
     var id=localStorage.getItem("userId");
   	var email=localStorage.getItem("userEmail");
     $('#loader_img').hide();
@@ -30,8 +33,8 @@ app2.controller('personCtrl', function ($scope,$http) {
                     data=responceData.RESPONSE;
 
                      angular.forEach(data,function(value,key) {
-                       if (data[key].company_name !== null && data[key].company_name.length>0)
-                           data[key].fullname=data[key].company_name
+                       if (data[key].name !== null && data[key].name.length>0)
+                           data[key].fullname=data[key].name
                        if (data[key].other_name !== null && data[key].other_name.length>0)
                          data[key].fullname=data[key].other_name
                      })
@@ -55,7 +58,20 @@ app2.controller('personCtrl', function ($scope,$http) {
                  console.log("error");
          });
          $scope.tocontract = function(d){
+           $scope.stack={}
+           $scope.stack['my_contract.html']={}
+           $scope.stack['my_contract.html'].action="view"
+           localstorage('stack',JSON.stringify($scope.stack))
+
             tocontract(d)
           };
+          $scope.back = function(d){
+            back=$scope.lastkey
+            delete $scope.stack[$scope.lastkey]
+            localstorage('stack',JSON.stringify($scope.stack))
+            redirect(back)
+          }
       console.log($scope.Contracts);
+
+
 });

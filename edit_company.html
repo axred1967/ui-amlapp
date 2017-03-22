@@ -189,12 +189,15 @@
 
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     <input class="mdl-textfield__input"  ng-model="Company.name" type="text" placeholder=" {{datalang.Companyname}}" id="company_name" />
+                    <label for="company_name" class="mdl-textfield__label" style="color:orange;display:none">{{datalang.Companyname}}</label>
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     <input class="mdl-textfield__input"  ng-model="Company.address"   type="text" placeholder="  {{datalang.Addresscompany}}" id="company_address" />
+                    <label for="company_address" class="mdl-textfield__label" style="color:orange;display:none">{{datalang.Addresscompany}}</label>
                   </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input"  ng-model="Company.fiscal_id"  type="text" placeholder=" {{datalang.Fiscalid}}" id="comany_fiscal_id" />
+                    <input class="mdl-textfield__input"  ng-model="Company.fiscal_id"  type="text" placeholder=" {{datalang.Fiscalid}}" id="company_fiscal_id" />
+                    <label for="company_fiscal_id" class="mdl-textfield__label" style="color:orange;display:none">{{datalang.Fiscalid}}</label>
                   </div>
 <!--
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
@@ -222,7 +225,7 @@
 
                 </form>
          			<div id="edit_button_agent" class="center-align">
-                    <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="save_kyc(1)" href="javascript:;">
+                    <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="edit_company()" href="javascript:;">
                       {{datalang.Save}}
                     </a>
                     <a id="kyc_button2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="redirect('company_list.html')" href="javascript:;">
@@ -269,4 +272,13 @@
             </div>
         </div>
   </body>
+  <script>
+  $(".mdl-textfield__input").focus(function(){
+    $('label[for="'+$(this).attr("id") +'"]').show()
+  });
+  $(".mdl-textfield__input").blur(function(){
+    $('label[for="'+$(this).attr("id") +'"]').hide()
+  });
+
+  </script>
 </html>

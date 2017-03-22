@@ -11,6 +11,19 @@ app2.filter('capitalize', function() {
 app2.controller('personCtrl', function ($scope,$http, $filter) {
 
     $scope.datalang = DATALANG;
+    if (localStorage.getItem('stack')!=null) {
+      $scope.stack=JSON.parse(localStorage.getItem('stack'))
+      $scope.lastkey= Object.keys($scope.stack).pop() ;
+    }
+    switch ($scope.stack[$scope.lastkey].action){
+        case 'add_contract':
+            $scope.viewName="Inserisci Cliente"
+            break;
+        default:
+            $scope.viewName="Inserisci Cliente"
+
+
+    }
     $scope.add_customer= function (){
       var langfileloginchk = localStorage.getItem("language");
 
@@ -81,8 +94,9 @@ app2.controller('personCtrl', function ($scope,$http, $filter) {
               .success(function(data) {
                         $('#loader_img').hide();
                         if(data.RESPONSECODE=='1') 			{
-                           $scope.Customer=[]
                            swal("",data.RESPONSE);
+                           $scope.lastid=data.lastid
+                           $scope.back()
 
                          }
                          else
@@ -97,5 +111,31 @@ app2.controller('personCtrl', function ($scope,$http, $filter) {
 
 
     }
+  }
+
+
+  $scope.back=function(){
+    switch ($scope.stack[$scope.lastkey].action){
+       case'add_customer_for_contract':
+            if ($scope.lastid!==undefined && $scope.lastid>0 ){
+            $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+            $scope.Contract.fullname=$scope.Customer.name +" "+$scope.Customer.surname
+            $scope.Contract.contractor_id= $scope.lastid
+            localstorage('Contract', JSON.stringify($scope.Contract));
+            }
+            break;
+            case'add_other_for_contract':
+                 if ($scope.lastid!==undefined && $scope.lastid>0 ){
+                 $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+                 $scope.Contract.other_name=$scope.Customer.name +" "+$scope.Customer.surname
+                 $scope.Contract.user_id= $scope.lastid
+                 localstorage('Contract', JSON.stringify($scope.Contract));
+                 }
+                 break;
+    }
+    back=$scope.lastkey
+    delete $scope.stack[back]
+    localstorage('stack',JSON.stringify($scope.stack))
+    redirect(back)
   }
 })

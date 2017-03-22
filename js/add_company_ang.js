@@ -19,6 +19,17 @@ app2.filter('capitalize', function() {
 });
 app2.controller('personCtrl', function ($scope,$http) {
     $scope.datalang = DATALANG;
+    if (localStorage.getItem('stack')!=null) {
+      $scope.stack=JSON.parse(localStorage.getItem('stack'))
+      $scope.lastkey= Object.keys($scope.stack).pop() ;
+    }
+    switch ($scope.stack[$scope.lastkey].action){
+        case 'add_company_for_contract':
+            $scope.viewName="Inserisci Società"
+            break;
+        default:
+            $scope.viewName="Inserisci Società"
+    }
     $scope.add_company= function (){
     var langfileloginchk = localStorage.getItem("language");
     if(langfileloginchk == 'en' )
@@ -52,12 +63,12 @@ app2.controller('personCtrl', function ($scope,$http) {
           var email=localStorage.getItem("userEmail");
           var usertype = localStorage.getItem('userType');
           $('#loader_img').show();
-          data={ "action":"add_company", id:id,email:email,usertype:usertype,lang:langfileloginchk, dbData: $scope.Company}
+          data={ "action":scope.action, id:id,email:email,usertype:usertype,lang:langfileloginchk, dbData: $scope.Company}
           $http.post( SERVICEURL2,  data )
               .success(function(data) {
                         $('#loader_img').hide();
                         if(data.RESPONSECODE=='1') 			{
-                           $scope.Customer=[]
+                           $scope.Company=[]
                            swal("",data.RESPONSE);
 
                          }
@@ -75,4 +86,20 @@ app2.controller('personCtrl', function ($scope,$http) {
     }
   }
 
+  $scope.back=function(){
+    switch ($scope.stack[$scope.lastkey].action){
+       case'add_company_for_contract':
+            if ($scope.lastid!==undefined && $scope.lastid>0 ){
+            $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+            $scope.Contract.fullname=$scope.Company.name
+            $scope.Contract.company_id= $scope.lastid
+            localstorage('Contract', JSON.stringify($scope.Contract));
+            }
+            break;
+    }
+    back=$scope.lastkey
+    delete $scope.stack[back]
+    localstorage('stack',JSON.stringify($scope.stack))
+    redirect(back)
+  }
 })

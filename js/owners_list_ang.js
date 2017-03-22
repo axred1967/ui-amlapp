@@ -1,11 +1,20 @@
+var back=localStorage.getItem("back");
+if (back!==undefined && back.length>0){
+//  localstorage("back","");
+}
+else {
+back="my_company.html";
+}
 
 var app2 = angular.module('myApp', []);
 
-
 app2.controller('personCtrl', function ($scope,$http) {
     $scope.datalang = DATALANG;
-    $scope.Companies= [];
+    $scope.Company=[];
+    $scope.Owers=[];
+    $scope.Company.name=localStorage.getItem("Company_name");
     var id=localStorage.getItem("userId");
+    var CompanyID=localStorage.getItem("CompanyID");
   	var email=localStorage.getItem("userEmail");
     $('#loader_img').hide();
     var usertype = localStorage.getItem('userType');
@@ -22,7 +31,7 @@ app2.controller('personCtrl', function ($scope,$http) {
     }
     $('#Profileimageagencyusername').html(name);
     $('#Profileimageagencyuseremail').html(email);
-    data= {"action":"CompanyList",id:id,email:email,usertype:usertype,priviledge:priviledge}
+    data= {"action":"OwnersList",company_id:CompanyID, id:id,email:email,usertype:usertype,priviledge:priviledge}
 
     $http.post(
       SERVICEURL2,  data
@@ -33,31 +42,25 @@ app2.controller('personCtrl', function ($scope,$http) {
                   if(responceData.RESPONSECODE=='1') 			{
                     data=responceData.RESPONSE;
 
-                    $scope.Companies=data;
+                    $scope.Owners=data;
 
 
 
                    }
                    else
                    {
-                      console.log('no customer')
+                      //swal("", 'no customer')
+                      $scope.Owners=[];
+
                    }
 
          })
         .error(function() {
+                swal("", 'Errore')
                  console.log("error");
          });
-         $scope.tocompany = function(d){
-           localstorage("CompanyID",d.company_id);
-           localstorage("back","my_company.html");
-           redirect("edit_company.html");          };
-          $scope.toowners = function(d){
-            localstorage("Company_name",d.name);
-            localstorage("CompanyID",d.company_id);
-            localstorage("back","my_company.html");
-            redirect("owners_list.html");
-           };
-
-
+         $scope.tocustomer = function(d){
+            tocustomer(d)
+          };
       console.log($scope.Contracts);
 });

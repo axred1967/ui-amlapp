@@ -13,10 +13,43 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="css/animsition.css">
         <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
-        <link rel="stylesheet" href="css/material.css">  
+        <link rel="stylesheet" href="css/material.css">
         <link rel="stylesheet" href="css/swipebox.min.css">
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/stylesheet.css">
+        <script src="js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="js/custom.js"></script>
+        <script src="js/owners_list.js"></script>
+        <!--<script src="cordova.js"></script> -->
+        <script type="text/javascript">$(document).ready(function () {
+                                    app.initialize();
+                                });
+                                        </script>
+
+       <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/js/jquery.animsition.js"></script> -->
+        <script src="js/animsition.js"></script>
+        <script src="js/sweetalert.min.js"></script>
+        <script src="js/material.min.js"></script>
+        <script src="js/jquery.swipebox.min.js"></script>
+        <script src="js/function.js"></script>
+        <script src="js/angular.min.js"></script>
+        <script src="js/angular-route.min.js"></script>
+        <script>
+        langfile = localStorage.getItem("language");
+        if (langfile == 'en')
+            document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
+        else
+            document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
+        if(langfile ==  "en"){
+  //             $.getScript("js/i18n/angular-locale_en.js");
+             document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
+         }
+         else{
+  //             $.getScript("js/i18n/angular-locale_it.js");
+             document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
+         }
+        </script>
+        <script src="js/owners_list_ang.js"></script>
     </head>
     <style>
         .first_letter_cap
@@ -26,44 +59,46 @@
     </style>
 
     <body >
-        <div ng-app="myApp" ng-controller="personCtrl" class="animsition" id="customer-listing">
             <!-- Page Content -->
             <div class="mdl-layout mdl-js-layout mdl-layout--overlay-drawer-button">
-            
+
             <!-- Sidebar -->
+<!--
             <div id="sidebar_agency" class="mdl-layout__drawer">
-                <!-- Top -->
-                
+
             </div>
+            <!-- Top -->
+          <div ng-app="myApp" ng-controller="personCtrl"  id="menulist">
+
             <main class="mdl-layout__content">
                 <div class=""> <!-- card -->
                     <div class="account-info dark-blue-bg">
-                        <div class="account-navigation"> <!-- top icons -->
-                           <!-- <a class="mdl-button mdl-js-button mdl-button--icon left"  href="javascript:;">
-                                <img src="img/back-button.png">
-                            </a> -->
-                            <button class="mdl-button mdl-js-button mdl-button--icon right" onclick="add_owners()"  style="border:2px solid #FFF">
-                               <!-- <img src="img/add-search.png">  -->
-                                <b >+</b> 
-                            </button> 
-                            <div class="mdl-layout-spacer"></div>
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right right">
-                                <label class="mdl-button mdl-js-button mdl-button--icon"
-                                       for="waterfall-exp">
-                                    <i class="material-icons">search</i>
-                                </label>
-                                <div class="mdl-textfield__expandable-holder">
-                                    <input class="mdl-textfield__input" type="text" name="sample"
-                                           id="waterfall-exp" />
-                                </div>
+                      <div class="account-navigation"> <!-- top icons -->
+                        <a class="mdl-button mdl-js-button mdl-button--icon left" href="javascript:;" onclick="redirect(back)">
+                          <img src="img/back-button.png">
+                        </a>
+                           <button class="mdl-button mdl-js-button mdl-button--icon right" onclick="add_owners()" style="border:2px solid #FFF">
+                            <!--<img src="img/add-search.png">-->
+                            <b >+</b>
+                        </button>
+                        <div class="mdl-layout-spacer"></div>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right right">
+                            <label class="mdl-button mdl-js-button mdl-button--icon"
+                                   for="waterfall-exp">
+                                <i class="material-icons">search</i>
+                            </label>
+                            <div class="mdl-textfield__expandable-holder">
+                                <input class="mdl-textfield__input" type="text" name="sample"
+                                       id="waterfall-exp" />
                             </div>
-                            <span class="main-heading">{{datalang.BeneficialownerofCompanies}}</span>
-                            <div class="clr"></div>
                         </div>
+                        <span class="main-heading"> {{Company.name}}</span>
+                        <div class="clr"></div>
                     </div>
+                  </div>
                   <!--  <div class="account-info mdl-color--primary grey-gradient">
 
-                        <div class="account-navigation"> 
+                        <div class="account-navigation">
                             <div class="add-account-container">
                                 <a href="#">
                                     <div class="add-account">
@@ -77,18 +112,55 @@
                     </div>  -->
 
                     <main class="mdl-layout__content">
-                        <!-- cards grid -->
-
-                        <!-- bold card -->
-                        <center>  <img style="height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
-                       
-                        <div id="list_customer" class="mdl-grid">
+                    <center>  <h4>{{datalang.OwnersList}} </h4></center>
+                    <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
+                    <center>  <img style="height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
+                    <div id="list_owner" ng-hide="Owners.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Owner in Owners ">
+                      <div class="mdl-cell mdl-cell--12-col">
+                      <div class="mdl-card amazing mdl-shadow--2dp">
+                      <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
+                        <div style="cursor:pointer;"  class="minilogo customer-listing1"></div>
+                        <div class="card-author">
 
 
                         </div>
+                        <div class="mdl-grid">
+                          <div class="mdl-cell--12-col"  ng-click="toOwner(Owner)">
+                            <span style="cursor:pointer;" >
+                              <strong class="blue first_letter_cap">{{Owner.name}}</strong>
+                            </span><br/>
+                            <span class="green" style=" cursor:pointer;"  >
+                              {{Owner.email}}
+                            </span><br/>
+                            <span class="green" style=" cursor:pointer;"  class="long-email">
+                              {{Owner.fiscal_id}}
+                            </span>
+                          </div>
+                      </div>
+                    </div>
+                    </div>
+
+                    </div>
+                  </div>
+
+                  <div id="no_Owner" ng-hide="Owners.length != 0 " class="ng-hide"  >
+                    <div  class="mdl-cell mdl-cell--12-col">
+                      <div class="mdl-card amazing mdl-shadow--2dp">
+                        <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
+                            <div class="mdl-grid">
+                              <div class="mdl-cell-12-col">
+                                <span style="cursor:pointer;" >
+                                  <strong class="blue first_letter_cap">Nessun Titolare Effettivo per {{Company.name}} ancora inserito</strong>
+                                </span><br/>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
 
-                        <!-- load more --> 
+                        <!-- load more -->
 
                     </main>
 
@@ -96,28 +168,6 @@
             </main>
         </div>
         </div>
-        <script src="js/jquery-2.1.4.min.js"></script>
-        <script type="text/javascript" src="js/custom.js"></script>
-        <script src="js/owners_list.js"></script>
-        <script type="text/javascript">$(document).ready(function () {
-                app.initialize();
-            });</script>
-         <script src="js/animsition.js"></script>
-        <script src="js/sweetalert.min.js"></script> 
-        <script src="js/material.min.js"></script>
-        <script src="js/jquery.swipebox.min.js"></script>
-        <script src="js/function.js"></script>
-        <script src="js/angular.min.js"></script>
-        <script>
-            langfile = localStorage.getItem("language");
-            if (langfile == 'en')
-                document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
-            else
-                document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
-            var app2 = angular.module('myApp', []);
-            app2.controller('personCtrl', function ($scope) {
-                $scope.datalang = DATALANG;
-            });
-        </script>
+
     </body>
 </html>

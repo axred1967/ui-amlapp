@@ -65,19 +65,21 @@
 
   <body >
     <div ng-app="myApp" ng-controller="personCtrl" class="animsition">
+      <!-- side bar
         <div class="mdl-layout mdl-js-layout mdl-layout--overlay-drawer-button">
 
-            <!-- Sidebar -->
             <div id="sidebar_agency" class="mdl-layout__drawer">
-                <!-- Top -->
 
             </div>
+      -->
       <!-- Page Content -->
       <main class="mdl-layout__content">
         <div class=""> <!-- card -->
         	 <div class="account-info dark-blue-bg">
                 <div class="account-navigation"> <!-- top icons -->
-                <!--  <a class="mdl-button mdl-js-button mdl-button--icon left" onclick="redirect('my_agent.html')" href="javascript:;">
+                  <a class="mdl-button mdl-js-button mdl-button--icon left" href="javascript:;" ng-click="back()">
+                    <img src="img/back-button.png">
+                  </a>                <!--  <a class="mdl-button mdl-js-button mdl-button--icon left" onclick="redirect('my_agent.html')" href="javascript:;">
                     <img src="img/back-button.png">
                   </a>
                  <button class="mdl-button mdl-js-button mdl-button--icon right">
@@ -104,9 +106,23 @@
 		  <div class="contact-about view-agent">
               <div class="mdl-card mdl-shadow--2dp about">
                 <h5 class="orange" id="name_agent">{{Contract.CPU}} - {{Contract.owner}}</h5>
-
+                <button  class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_contract(Contract.contractor_id)"  >
+                    {{datalang.EditContract}}
+                  </button>
                 <table style="display:table;width:auto!important;" align="center" class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
                   <tbody>
+
+                    <tr>
+                      <td  >Firmatario :</td>
+                      <td class="blue">{{Contract.fullname}}</td>
+
+                    </tr>
+                    <tr>
+                      <td  >Tipo Delega :</td>
+                      <td class="blue">{{Contract.role_for_other}}</td>
+
+                    </tr>
+
                     <tr>
                       <td  >Tipo Polizza :</td>
                       <td class="blue">{{Contract.nature_contract}}</td>
@@ -139,7 +155,7 @@
                       </button>
                 </div>
                 <div class="mdl-cell">
-                  <button class="mdl-button mdl-js-button mdl-button--primary" ng-click="edit_docu(Contract.contractor_id)" >
+                  <button class="mdl-button mdl-js-button mdl-button--primary" ng-click="edit_docu(Contract.contract_id)" >
                       {{datalang.UploadDocuments}}
                   </button>
 
@@ -147,29 +163,29 @@
             </div>
               <div class="mdl-card__actions mdl-card--border">
               <div class="mdl-cell">
-                <button class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_kyc(Contract.contractor_id)" >
+                <button class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_kyc(Contract.contract_id)" >
                       {{datalang.EditKycForm}}
                   </button>
               </div>
               <div class="mdl-cell">
-                <button class="mdl-button mdl-js-button mdl-button--primary"  ng-click="edit_risk(Contract.contractor_id)" >
+                <button class="mdl-button mdl-js-button mdl-button--primary"  ng-click="edit_risk(Contract.contrac_id)" >
                     {{datalang.RiskAnalysis}}
                 </button>
               </div>
               </div>
-              <div ng-class="{showed : contract.act_for=='1'}" class="hidden mdl-card__actions mdl-card--border">
+              <div ng-show="Contract.act_for_other==1" class=" mdl-card__actions mdl-card--border">
               <div class="mdl-cell">
                 <button class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_company(Contract.other_id)" >
-                      {{datalang.CompanyInfo}}
+                      Dati Società
                   </button>
               </div>
               <div class="mdl-cell">
-                <button class="mdl-button mdl-js-button mdl-button--primary" ng-click="owners(Contract.other_id)">
+                <button class="blue mdl-button mdl-js-button mdl-button--primary" ng-click="owners(Contract.other_id)">
                     {{datalang.Owners}}
                 </button>
               </div>
               </div>
-              <div ng-class="{showed : contract.act_for=='2'}" class="hidden mdl-card__actions mdl-card--border">
+              <div ng-show="Contract.act_for_other==2"  class=" mdl-card__actions mdl-card--border">
               <div class="mdl-cell">
                 <button class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_profile(Contract.other_id)" edit_user_kycform()>
                       {{datalang.OtherInfo}}
