@@ -1,4 +1,37 @@
-var app2 = angular.module('myApp', ['ngInputCurrency']);
+var app2 = angular.module('myApp', ['pascalprecht.translate','ng-currency','fieldMatch']);
+//Field Match directive
+angular.module('fieldMatch', [])
+   .directive('fieldMatch', ["$parse", function($parse) {
+       return {
+           require: 'ngModel',
+           link: function(scope, elem, attrs, ctrl) {
+               var me = $parse(attrs.ngModel);
+               var matchTo = $parse(attrs.fieldMatch);
+               scope.$watchGroup([me, matchTo], function(newValues, oldValues) {
+                   ctrl.$setValidity('fieldmatch', me(scope) === matchTo(scope));
+               }, true);
+           }
+       }
+   }]);
+//Run material design lite
+app2.directive("ngModel",["$timeout", function($timeout){
+            return {
+                restrict: 'A',
+                priority: -1, // lower priority than built-in ng-model so it runs first
+                link: function(scope, element, attr) {
+                    scope.$watch(attr.ngModel,function(value){
+                        $timeout(function () {
+                            if (value){
+                                element.trigger("change");
+                            } else if(element.attr('placeholder') === undefined) {
+                                if(!element.is(":focus"))
+                                    element.trigger("blur");
+                            }
+                        });
+                    });
+                }
+            };
+        }]);
 app2.filter('uppercase', function() {
     return function(input, $scope) {
         if ( input !==undefined && input.length>0)
@@ -17,8 +50,7 @@ app2.filter('capitalize', function() {
 
     }
 });
-app2.controller('personCtrl', function ($scope,$http) {
-    $scope.datalang = DATALANG;
+app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.word={};
     if (localStorage.getItem('stack')!=null) {
       $scope.stack=JSON.parse(localStorage.getItem('stack'))
@@ -34,18 +66,13 @@ app2.controller('personCtrl', function ($scope,$http) {
         	var email=localStorage.getItem("userEmail");
           data= {"action":"show_edit_company",company_id:CompanyID}
 
-            $http.post(
-              SERVICEURL2,  data
+            $http.post( SERVICEURL2,  data)
                 .success(function(responceData)
                          {
                           $('#loader_img').hide();
                           if(responceData.RESPONSECODE=='1') 			{
                             data=responceData.RESPONSE;
-
                             $scope.Company=data;
-
-
-
                            }
                            else
                            {
@@ -87,61 +114,46 @@ app2.controller('personCtrl', function ($scope,$http) {
       $scope.word[$e]=[]
     }
     $scope.add_company= function (){
-    var langfileloginchk = localStorage.getItem("language");
-    if(langfileloginchk == 'en' )
-    {
-        var company_name_msg ="Please enter  Company Name";
-       var company_addressmsg = "Please enter  Company Address";
-       var comany_fiscal_idmsg ="Please enter  Fiscal Id";
+      var langfileloginchk = localStorage.getItem("language");
+      if ($scope.form.$invalid) {
+          angular.forEach($scope.form.$error, function(field) {
+              angular.forEach(field, function(errorField) {
+                  errorField.$setTouched();
+              })
+          });
+          $scope.formStatus = "Dati non Validi.";
+          console.log("Form is invalid.");
+					return
+      } else {
+          //$scope.formStatus = "Form is valid.";
+          console.log("Form is valid.");
+          console.log($scope.data);
+      }
+
+      var id=localStorage.getItem("userId");
+      var email=localStorage.getItem("userEmail");
+      var usertype = localStorage.getItem('userType');
+      $('#loader_img').show();
+      data={ "action":$scope.action, id:id,email:email,usertype:usertype,lang:langfileloginchk, dbData: $scope.Company}
+      $http.post( SERVICEURL2,  data )
+          .success(function(data) {
+                    $('#loader_img').hide();
+                    if(data.RESPONSECODE=='1') 			{
+                       swal("",data.RESPONSE);
+                       $scope.lastid=data.lastid
+                       $scope.back()
+                     }
+                     else
+                     {
+                       console.log('error');
+                       swal("",data.RESPONSE);
+                     }
+           })
+          .error(function() {
+                   console.log("error");
+           });
 
     }
-    else
-    {
-      var company_name_msg ="Si prega di inserire Nome Società";
-       var company_addressmsg = "Si prega di inserire  Indirizzo Azienda ";
-       var comany_fiscal_idmsg ="Si prega di inserire Partita iva o COE";
-    }
-
-
-    var company_name = $.trim($('#company_name').val());
-    var company_address = $.trim($('#company_address').val());
-    var comany_fiscal_id = $.trim($('#comany_fiscal_id').val());
-
-     if(company_name=="") swal("",company_name_msg)
-     else if(company_address=="") swal("",company_addressmsg)
-     else if(company_fiscal_id=="") swal("",company_fiscal_idmsg)
-
-
-      else
-      {
-
-          var id=localStorage.getItem("userId");
-          var email=localStorage.getItem("userEmail");
-          var usertype = localStorage.getItem('userType');
-          $('#loader_img').show();
-          data={ "action":$scope.action, id:id,email:email,usertype:usertype,lang:langfileloginchk, dbData: $scope.Company}
-          $http.post( SERVICEURL2,  data )
-              .success(function(data) {
-                        $('#loader_img').hide();
-                        if(data.RESPONSECODE=='1') 			{
-                           swal("",data.RESPONSE);
-                           $scope.lastid=data.lastid
-                           $scope.back()
-                         }
-                         else
-                         {
-                           console.log('error');
-                           swal("",data.RESPONSE);
-                         }
-               })
-              .error(function() {
-                       console.log("error");
-               });
-
-
-    }
-  }
-
   $scope.back=function(){
     switch ($scope.stack[$scope.lastkey].action){
        case'add_company_for_contract':

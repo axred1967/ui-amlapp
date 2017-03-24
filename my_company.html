@@ -97,10 +97,22 @@
 
 
                         <main class="mdl-layout__content">
-                        <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
-                        <center>  <img style="height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
-                        <div id="list_customer" ng-hide="Companies.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Company in Companies ">
-
+                          <div id="no_company" ng-hide="Companies.length != 0 "   >
+                            <div  class="mdl-cell mdl-cell--12-col">
+                              <div class="mdl-card amazing mdl-shadow--2dp">
+                                <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
+                                    <div class="mdl-grid">
+                                      <div class="mdl-cell">
+                                        <span style="cursor:pointer;" >
+                                          <strong class="blue first_letter_cap">Nessuna società inserita ancora</strong>
+                                        </span><br/>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        <div ng-hide="Companies.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Company in Companies ">
                           <div class="mdl-cell mdl-cell--12-col">
                           <div class="mdl-card amazing mdl-shadow--2dp">
                           <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
@@ -127,30 +139,22 @@
                                     </a>
                             	</div>
                           </div>
+
                         </div>
                         </div>
 
                         </div>
 
-                      <div id="no_company" ng-hide="Companies.length != 0 " class="ng-hide"  >
-                        <div  class="mdl-cell mdl-cell--12-col">
-                          <div class="mdl-card amazing mdl-shadow--2dp">
-                            <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
-                                <div class="mdl-grid">
-                                  <div class="mdl-cell">
-                                    <span style="cursor:pointer;" >
-                                      <strong class="blue first_letter_cap">Nessuna società inserita ancora</strong>
-                                    </span><br/>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
 
-                        </main>
+
+
 
                     </div>
+                    <center ng-hide="Companies.length < 5">
+                      <a  ng-click="addMoreItems()"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
+                        Altri>>
+                      </a>
+                    </center>
                 </main>
             </div>
         </div>
