@@ -239,3 +239,8 @@ function convertDatestoStrings(input) {
     }
     return input
 }
+function onBackKeyDown(evt) {
+  evt.preventDefault();
+  evt.stopPropagation();
+  angular.element('[ng-controller=personCtrl]').scope().back();
+ }

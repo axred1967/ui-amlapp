@@ -184,24 +184,24 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
             localstorage('Contract', JSON.stringify($scope.Contract));
             }
             break;
-            case'add_other_for_contract':
-                 if ($scope.lastid!==undefined && $scope.lastid>0 ){
-                 $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-                 $scope.Contract.other_name=$scope.Customer.name +" "+$scope.Customer.surname
-                 $scope.Contract.user_id= $scope.lastid
-                 localstorage('Contract', JSON.stringify($scope.Contract));
-                 }
-                 break;
-             case'add_customer_for_owner':
-                  if ($scope.lastid!==undefined && $scope.lastid>0 ){
-                  $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
-                  $scope.Owner.fullname=$scope.Customer.name +" "+$scope.Customer.surname
-                  $scope.Owner.user_id= $scope.lastid
-                  key= Object.keys($scope.stack).pop() ;
-                  $scope.stack[key].load=true;
-                  localstorage('Owner', JSON.stringify($scope.Owner));
-                  }
-                  break;
+      case'add_other_for_contract':
+           if ($scope.lastid!==undefined && $scope.lastid>0 ){
+           $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+           $scope.Contract.other_name=$scope.Customer.name +" "+$scope.Customer.surname
+           $scope.Contract.user_id= $scope.lastid
+           localstorage('Contract', JSON.stringify($scope.Contract));
+           }
+           break;
+       case'add_customer_for_owner':
+            if ($scope.lastid!==undefined && $scope.lastid>0 ){
+            $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
+            $scope.Owner.fullname=$scope.Customer.name +" "+$scope.Customer.surname
+            $scope.Owner.user_id= $scope.lastid
+            key= Object.keys($scope.stack).pop() ;
+            $scope.stack[key].load=true;
+            localstorage('Owner', JSON.stringify($scope.Owner));
+            }
+            break;
     }
 
     localstorage('stack',JSON.stringify($scope.stack))
