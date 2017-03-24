@@ -23,7 +23,6 @@ app2.controller('personCtrl', function ($scope,$http) {
     $('#Profileimageagencyusername').html(name);
     $('#Profileimageagencyuseremail').html(email);
     data= {"action":"CompanyList",id:id,email:email,usertype:usertype,priviledge:priviledge}
-
     $http.post(
       SERVICEURL2,  data
       )
@@ -48,14 +47,28 @@ app2.controller('personCtrl', function ($scope,$http) {
                  console.log("error");
          });
          $scope.tocompany = function(d){
+           $scope.stack={}
            localstorage("CompanyID",d.company_id);
-           localstorage("back","my_company.html");
-           redirect("edit_company.html");          };
+           $scope.stack['my_company.html']={}
+           $scope.stack['my_company.html'].action="edit_company"
+           localstorage('stack',JSON.stringify($scope.stack))
+           redirect('add_company.html')
+         };
+         $scope.add_company = function(){
+           $scope.stack={}
+           $scope.stack['my_company.html']={}
+           $scope.stack['my_company.html'].action="add_company"
+           localstorage('stack',JSON.stringify($scope.stack))
+           redirect('add_company.html')
+         };
           $scope.toowners = function(d){
+            $scope.stack={}
             localstorage("Company_name",d.name);
             localstorage("CompanyID",d.company_id);
-            localstorage("back","my_company.html");
-            redirect("owners_list.html");
+            $scope.stack['my_company.html']={}
+            $scope.stack['my_company.html'].action="owners_list"
+            localstorage('stack',JSON.stringify($scope.stack))
+            redirect('owners_list.html')
            };
 
 

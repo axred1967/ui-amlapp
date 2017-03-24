@@ -1,121 +1,181 @@
-var app2 = angular.module('myApp', []);
-app2.filter('capitalize', function() {
-    return function(input, $scope) {
-        if ( input !==undefined && input.length>0)
-        return input.substring(0,1).toUpperCase()+input.substring(1);
-        else
-        return input
-
-    }
+var app2 = angular.module('myApp',['pascalprecht.translate','fieldMatch']);
+//Field Match directive
+angular.module('fieldMatch', [])
+		.directive('fieldMatch', ["$parse", function($parse) {
+				return {
+						require: 'ngModel',
+						link: function(scope, elem, attrs, ctrl) {
+								var me = $parse(attrs.ngModel);
+								var matchTo = $parse(attrs.fieldMatch);
+								scope.$watchGroup([me, matchTo], function(newValues, oldValues) {
+										ctrl.$setValidity('fieldmatch', me(scope) === matchTo(scope));
+								}, true);
+						}
+				}
+		}]);
+//Run material design lite
+app2.directive("ngModel",["$timeout", function($timeout){
+            return {
+                restrict: 'A',
+                priority: -1, // lower priority than built-in ng-model so it runs first
+                link: function(scope, element, attr) {
+                    scope.$watch(attr.ngModel,function(value){
+                        $timeout(function () {
+                            if (value){
+                                element.trigger("change");
+                            } else if(element.attr('placeholder') === undefined) {
+                                if(!element.is(":focus"))
+                                    element.trigger("blur");
+                            }
+                        });
+                    });
+                }
+            };
+        }]);
+app2.run(function($rootScope, $timeout) {
+		$rootScope.$on('$viewContentLoaded', function(event) {
+				$timeout(function() {
+						componentHandler.upgradeAllRegistered();
+				}, 0);
+		});
+		$rootScope.render = {
+				header: true,
+				aside: true
+		}
 });
-app2.controller('personCtrl', function ($scope,$http, $filter) {
+// create angular controller
 
-    $scope.datalang = DATALANG;
+app2.filter('capitalize', function() {
+  return function(input, $scope) {
+      if ( input !==undefined && input.length>0)
+      return input.substring(0,1).toUpperCase()+input.substring(1);
+      else
+      return input
+
+}
+});
+
+app2.controller('personCtrl', function ($scope,$http,$translate) {
+    $scope.Customer={}
+/*    $scope.Customer.name=" "
+    $scope.Customer.surname=" "
+    $scope.Customer.email="x "
+    $scope.Customer.mobile= " "
+*/
     if (localStorage.getItem('stack')!=null) {
       $scope.stack=JSON.parse(localStorage.getItem('stack'))
       $scope.lastkey= Object.keys($scope.stack).pop() ;
     }
+
     switch ($scope.stack[$scope.lastkey].action){
-        case 'add_contract':
+        case 'add_customer':
             $scope.viewName="Inserisci Cliente"
+            $scope.action="addcustomer"
             break;
+        case 'update_customer':
+          var id=localStorage.getItem("CustomerProfileId");
+        	var email=localStorage.getItem("userEmail");
+          data= {"action":"view_Customer_Profile_info",customer_id:id,email:email}
+
+
+          $http.post( SERVICEURL2,  data )
+              .success(function(responceData) {
+                        $('#loader_img').hide();
+                        if(responceData.RESPONSECODE=='1') 			{
+                          data=responceData.RESPONSE;
+                          $scope.Customer =  angular.copy(data);
+													/*
+													angular.forEach($scope.form.$error, function(field) {
+								              angular.forEach(field, function(errorField) {
+								                  //errorField.$setTouched();
+								              })
+														})*/
+														angular.forEach(data, function(field,key) {
+																//key=key.replace(".","_")
+																if(typeof $('#Customer_'+key) !== undefined){
+																	$('#'+key).val(' ')
+																	$('#Customer_'+key).val(field)
+																	$('#Customer_'+key).trigger('change')
+																	$('#Customer_'+key).parent('div.mdl-textfield').addClass('is-dirty')
+																}
+														})
+														/*
+														angular.forEach(data, function(field,key) {
+																key=key.replace(".","_")
+																if(typeof $('#'+key) !== undefined){
+																	$('#'+key).val(' ')
+																	$('#'+key).val(field[key])
+																	$('#'+key).trigger('change')
+																	$(".mdl-textfield").parent('#'+key).attr('is-dirty','')
+																}
+														})
+														*/
+
+													}
+                         else
+                         {
+                           console.log('error');
+                         }
+               })
+              .error(function() {
+                       console.log("error");
+               });            $scope.viewName="Modifica Cliente"
+            $scope.action="saveProfileCustomer"
+            break;
+        case 'add_customer_for_owners':
+                $scope.viewName="Inserisci Titolare Effettivo"
+                $scope.action="addcustomer"
+                break;
         default:
             $scope.viewName="Inserisci Cliente"
 
 
     }
+
     $scope.add_customer= function (){
-      var langfileloginchk = localStorage.getItem("language");
-
-
-      if(langfileloginchk == 'en' )
-      {
-          var namemsg ="Please enter Name";
-          var surnamemsg ="Please enter Surname";
-
-         var emailmsg ="Please enter Email";
-         var mobilemsg ="Please enter Mobile Number";
-         var mobilevalidmsg ="Please enter valid mobile number";
-         var valid_emailmsg = "Please provide a valid Email ID";
-         var chkmobileaccpt ="Only 10 digit Mobile Number accepted";
-         var validmessageaddrees = "Please enter Address of residence";
-
+      if ($scope.form.$invalid) {
+          angular.forEach($scope.form.$error, function(field) {
+              angular.forEach(field, function(errorField) {
+                  errorField.$setTouched();
+              })
+          });
+          $scope.formStatus = "Dati non Validi.";
+          console.log("Form is invalid.");
+					return
+      } else {
+          //$scope.formStatus = "Form is valid.";
+          console.log("Form is valid.");
+          console.log($scope.data);
       }
-      else
-      {
-          var namemsg ="Si prega di inserire nome";
-          var surnamemsg ="Si prega di inserire cognome";
-
-         var emailmsg ="Inserisci e-mail";
-         var mobilemsg ="Si prega di inserire numero di cellulare";
-         var mobilevalidmsg ="Si prega di inserire il numero di cellulare valido";
-         var valid_emailmsg = "Si prega di fornire un ID e-mail valido";
-         var chkmobileaccpt ="Solo 10 cifre numero di cellulare accettato";
-         var validmessageaddrees = "Si prega di inserire indirizzo di residenza";
-
-      }
-
-      var id=localStorage.getItem("userId");
-      var email=localStorage.getItem("userEmail");
-      var customer_name = $.trim($('#customer_name').val());
-      var customer_email = $.trim($('#customer_email').val());
-      var customer_mobile_number = $.trim($('#customer_mobile_number').val());
-      var customer_address_resi = $.trim($('#customer_address_resi').val());
-     // var actedcompnay = $('#actofcompany').val();
-      if($('#actofcompany').is(":checked"))
-      {
-          var actedcompnay = 1;
-      }
-      else
-      {
-         var actedcompnay = 0;
-      }
-      //alert(actedcompnay); exit;
-      var usertype = localStorage.getItem('userType');
-
-      if(customer_name=="") swal("",namemsg);
-      if(customer_surname=="") swal("",surnamemsg);
-
-      else if(customer_email=="") swal("",emailmsg);
-
-      else if(customer_mobile_number =="") swal("",mobilemsg);
-      else if(isNaN(customer_mobile_number))swal("",mobilevalidmsg);
-      //else if(customer_address_resi=='') swal("",validmessageaddrees);
-      else if(!isValidEmailAddress(customer_email) )swal("",valid_emailmsg);
-
-      else
-      {
-
-          //$('#save_button_cust').hide();
-          //$('#cancel_button_cust').hide();
-          $('#loader_img').show();
-          data={ "action":"addcustomer", id:id,email:email,usertype:usertype,lang:langfileloginchk, dbData: $scope.Customer}
-          $http.post( SERVICEURL2,  data )
-              .success(function(data) {
-                        $('#loader_img').hide();
-                        if(data.RESPONSECODE=='1') 			{
-                           swal("",data.RESPONSE);
-                           $scope.lastid=data.lastid
-                           $scope.back()
-
-                         }
-                         else
-                         {
-                           console.log('error');
-                           swal("",data.RESPONSE);
-                         }
-               })
-              .error(function() {
-                       console.log("error");
-               });
+      lang=localStorage.getItem('language');
+    	var usertype = localStorage.getItem('userType');
+        $('#loader_img').show();
+        data={ "action":$scope.action, id:id,email:email,usertype:usertype,lang:lang, dbData: $scope.Customer}
+        $http.post( SERVICEURL2,  data )
+            .success(function(data) {
+                      $('#loader_img').hide();
+                      if(data.RESPONSECODE=='1') 			{
+                         swal("",data.RESPONSE);
+                         $scope.lastid=data.lastid
+                         $scope.back()
+                       }
+                       else
+                       {
+                         console.log('error');
+                         swal("",data.RESPONSE);
+                       }
+             })
+            .error(function() {
+                     console.log("error");
+             });
+}
 
 
-    }
-  }
-
-
-  $scope.back=function(){
-    switch ($scope.stack[$scope.lastkey].action){
+   $scope.back=function(){
+    back=$scope.lastkey
+    action=$scope.stack[back].action
+    delete $scope.stack[back]
+    switch (action){
        case'add_customer_for_contract':
             if ($scope.lastid!==undefined && $scope.lastid>0 ){
             $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
@@ -132,9 +192,18 @@ app2.controller('personCtrl', function ($scope,$http, $filter) {
                  localstorage('Contract', JSON.stringify($scope.Contract));
                  }
                  break;
+             case'add_customer_for_owner':
+                  if ($scope.lastid!==undefined && $scope.lastid>0 ){
+                  $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
+                  $scope.Owner.fullname=$scope.Customer.name +" "+$scope.Customer.surname
+                  $scope.Owner.user_id= $scope.lastid
+                  key= Object.keys($scope.stack).pop() ;
+                  $scope.stack[key].load=true;
+                  localstorage('Owner', JSON.stringify($scope.Owner));
+                  }
+                  break;
     }
-    back=$scope.lastkey
-    delete $scope.stack[back]
+
     localstorage('stack',JSON.stringify($scope.stack))
     redirect(back)
   }

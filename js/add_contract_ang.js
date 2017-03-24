@@ -1,12 +1,50 @@
+ var app2 = angular.module('myApp', ['pascalprecht.translate','ng-currency','fieldMatch']);
+ //Field Match directive
+ angular.module('fieldMatch', [])
+ 		.directive('fieldMatch', ["$parse", function($parse) {
+ 				return {
+ 						require: 'ngModel',
+ 						link: function(scope, elem, attrs, ctrl) {
+ 								var me = $parse(attrs.ngModel);
+ 								var matchTo = $parse(attrs.fieldMatch);
+ 								scope.$watchGroup([me, matchTo], function(newValues, oldValues) {
+ 										ctrl.$setValidity('fieldmatch', me(scope) === matchTo(scope));
+ 								}, true);
+ 						}
+ 				}
+ 		}]);
+ //Run material design lite
+ app2.directive("ngModel",["$timeout", function($timeout){
+             return {
+                 restrict: 'A',
+                 priority: -1, // lower priority than built-in ng-model so it runs first
+                 link: function(scope, element, attr) {
+                     scope.$watch(attr.ngModel,function(value){
+                         $timeout(function () {
+                             if (value){
+                                 element.trigger("change");
+                             } else if(element.attr('placeholder') === undefined) {
+                                 if(!element.is(":focus"))
+                                     element.trigger("blur");
+                             }
+                         });
+                     });
+                 }
+             };
+         }]);
 
+ app2.run(function($rootScope, $timeout) {
+ 		$rootScope.$on('$viewContentLoaded', function(event) {
+ 				$timeout(function() {
+ 						componentHandler.upgradeAllRegistered();
+ 				}, 0);
+ 		});
+ 		$rootScope.render = {
+ 				header: true,
+ 				aside: true
+ 		}
+ });
 
- $(".mdl-textfield__input").focus(function(){
-   $('label[for="'+$(this).attr("id") +'"]').show()
- });
- $(".mdl-textfield__input").blur(function(){
-   $('label[for="'+$(this).attr("id") +'"]').hide()
- });
- var app2 = angular.module('myApp', ['ngInputCurrency']);
  app2.filter('capitalize', function() {
      return function(input, $scope) {
          if ( input !==undefined && input.length>0)
@@ -16,8 +54,7 @@
 
      }
  });
- app2.controller('personCtrl', function ($scope,$http) {
-     $scope.datalang = DATALANG;
+ app2.controller('personCtrl', function ($scope,$http,$translate) {
      if (localStorage.getItem('stack')!=null) {
        $scope.stack=JSON.parse(localStorage.getItem('stack'))
        $scope.lastkey= Object.keys($scope.stack).pop() ;
@@ -26,7 +63,27 @@
      //localstorage("back","view_contract.html");
      switch ($scope.stack[$scope.lastkey].action){
          case 'edit' :
-              $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+              Contract=JSON.parse(localStorage.getItem('Contract'))
+              convertDateStringsToDates(Contract)
+              $scope.Contract=Contract
+              angular.forEach(Contract, function(field,key) {
+                  key=key.replace(".","_")
+                  if(field!==null && typeof $('#'+key) !== undefined  ){
+                    //$('#'+key).val(' ')
+              //      $('#'+key).val(field)
+                    //$('#'+key).trigger('change')
+                    $('#Contract_'+key).parent('div.mdl-textfield').addClass('is-dirty')
+                  }
+                  switch($scope.Contract.act_for_other){
+                      case "1":
+                        $scope.Contract.company_id= $scope.Contract.other_id
+                      break;
+                      case "2":
+                      $scope.Contract.user_id= $scope.Contract.other_id
+                      break;
+                  }
+
+              })
               $scope.action='edit'
               $scope.viewName="Modifica Contratto"
               break;
@@ -86,15 +143,19 @@
      $scope.showAC=function($search,$table){
      var id=localStorage.getItem("userId");
      var usertype = localStorage.getItem('userType');
+     res = $search.split(".")
+     $search=res[1]
+     $word=$scope[res[0]][res[1]]
+     $table=res[0].toLowerCase()
 
-     if ((typeof $($search.currentTarget).val()  !== "undefined" && $($search.currentTarget).val().length>3 &&  $($search.currentTarget).val()!=$scope.oldWord)){
-       $word=$($search.currentTarget).attr('id');
-       data={ "action":"ACWord", id:id,usertype:usertype, name:$scope.searchContractor, search:$($search.currentTarget).val() ,word:$word ,table:$table}
+     if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
+
+       data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table}
        $http.post( SERVICEURL2,  data )
            .success(function(data) {
                      if(data.RESPONSECODE=='1') 			{
-                       $word=$($search.currentTarget).attr('id');
-                       $scope.word[$word]=data.RESPONSE;
+                       //$word=$($search.currentTarget).attr('id');
+                       $scope.word[$search]=data.RESPONSE;
                      }
             })
            .error(function() {
@@ -118,35 +179,28 @@
            $scope.Contract.other_name=other.fullname;
            $scope.Contract.user_id=other.user_id;
      };
-     $scope.addWord=function($e,word){
-       $('#'+$e).val(word);
-
-       $scope.word[$e]=[]
+     $scope.addWord=function($search,$word){
+       res = $search.split(".")
+       $scope[res[0]][res[1]]=$word
+       $scope.word[res[1]]=[]
      }
      $scope.add_contract=function(){
 //       add_contract($scope.action);
       var langfileloginchk = localStorage.getItem("language");
-      if(langfileloginchk == 'en' )
-      {
-        var scopemsg ="Please enter Scope of Contract";
-         var naturemsg ="Please enter Nature of Contract";
-         var customermsg ="Please enter customer";
-         var datamsg = "Please enter date of contract"
-         var eovmsg = "Please enter end of validity of contract"
-         var other_idmsg = "Inserire soggetto delegante"
-         var role_for_othermsg = "Inserire ruolo soggeto delegato"
-
-      }
-      else
-      {
-        var scopemsg ="Inserire scopo del contratto";
-       var naturemsg ="Inserire Natura del contratto";
-       var customermsg ="Inserire Firmatario del contratto";
-       var datamsg = "Inserire data contratto"
-       var eovmsg = "Inserire scadenza contratto"
-       var other_idmsg = "Inserire soggetto delegante"
-       var role_for_othermsg = "Inserire ruolo soggeto delegato"
-      }
+      if ($scope.form.$invalid) {
+          angular.forEach($scope.form.$error, function(field) {
+              angular.forEach(field, function(errorField) {
+                  errorField.$setTouched();
+              })
+          });
+          $scope.formStatus = "Dati non Validi.";
+          console.log("Form is invalid.");
+					return
+      } else {
+          //$scope.formStatus = "Form is valid.";
+          console.log("Form is valid.");
+          console.log($scope.data);
+      }      if(langfileloginchk == 'en' )
       var  appData ={
         id :localStorage.getItem("userId"),
         usertype: localStorage.getItem('userType')
@@ -155,29 +209,16 @@
 
       switch(dbData.act_for_other){
           case "1":
-            dbData.other_id= $.trim($('#Company').val());
-            dbData.role_for_other= $.trim($('#role_for_other').val())
-            if(dbData.other_id=="") swal("",other_idmsg);
-            if(dbData.role_for_other=="") swal("",role_for_othermsg);
+            dbData.other_id= $scope.Contract.company_id
+            dbData.role_for_other= $.trim($('#Contract_role_for_other').val())
           break;
           case "2":
-          dbData.other_id= $.trim($('#other_id').val());
-          dbData.role_for_other=$.trim( $('#role_for_other').val())
-          if(dbData.other_id=="") swal("",other_idmsg);
-          if(dbData.role_for_other=="") swal("",role_for_othermsg);
+          dbData.other_id= $scope.Contract.user_id
+          dbData.role_for_other=$.trim( $('#Contract_role_for_other').val())
           break;
-          default:
-          dbData.other_id= -1;
-          dbData.role_for_other=-1;
       }
 
-      if(dbData.scope_contract=="") swal("",scopemsg);
-      else if(dbData.nature_contract=="") swal("",naturemsg);
-      else if(dbData.contract_date =="") swal("",datamsg);
-      else if(dbData.contract_eov=='') swal("",eov);
 
-      else
-      {
           $('#loader_img').show();
           data= {"action":"addcontract",appData,dbData,edit:$scope.action}
           $http.post(SERVICEURL2,data)
@@ -197,8 +238,6 @@
               .error(function(){
                   console.log('error');
               })
-      }
-       $scope.word[$e]=[]
      }
      $scope.add_customer=function(){
        $scope.stack['add_contract.html']={}
@@ -224,16 +263,8 @@
      $scope.back=function(){
        back=$scope.lastkey
        delete $scope.stack[back]
-       localstorage('stack',JSON.stringify($scope.stack))
+      localstorage('stack',JSON.stringify($scope.stack))
        redirect(back)
      }
 
 })
-//gestione label
-
-$(".mdl-textfield__input").focus(function(){
-  $('label[for="'+$(this).attr("id") +'"]').show()
-});
-$(".mdl-textfield__input").blur(function(){
-  $('label[for="'+$(this).attr("id") +'"]').hide()
-});

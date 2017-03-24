@@ -7,7 +7,7 @@
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -17,6 +17,34 @@
     <link rel="stylesheet" href="css/swipebox.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/stylesheet.css">
+    <script src="js/jquery-2.1.4.min.js"></script>
+     <script type="text/javascript" src="js/custom.js"></script>
+     <script src="js/add_owners.js"></script>
+     <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
+     <script src="js/animsition.js"></script>
+     <script src="js/sweetalert.min.js"></script>
+     <script src="js/material.min.js"></script>
+     <script src="js/jquery.swipebox.min.js"></script>
+     <script src="js/function.js"></script>
+     <script src="js/angular.min.js"></script>
+     <script src="js/angular-route.min.js"></script>
+    <script>
+    langfile = localStorage.getItem("language");
+    if (langfile == 'en')
+        document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
+    else
+        document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
+    if(langfile ==  "en"){
+//             $.getScript("js/i18n/angular-locale_en.js");
+         document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
+     }
+     else{
+//             $.getScript("js/i18n/angular-locale_it.js");
+         document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
+     }
+    </script>
+    <script src="js/add_owners_ang.js"></script>
+    <script src="js/ng-currency.js"></script>
   </head>
 
   <body >
@@ -36,67 +64,66 @@
                   <div class="clr"></div>
                   </div>
               </div>
-       
+
 
           <div class="account-data add-customer-data"> <!-- text fields -->
           	<div class="mdl-card mdl-shadow--2dp ">
                 <form action="#">
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" placeholder="  {{datalang.Name}}" id="customer_name" />
-                  </div>
-                    
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" placeholder=" {{datalang.EmailID}}" id="customer_email" />
-                  </div>
-                    
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" placeholder=" {{datalang.Mobile}}" id="customer_mobile_number" />
-                  </div>
-                  
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" placeholder=" {{datalang.Addressofresidence}}" id="customer_address_resi" />
-                  </div>
-                  
+                    <label  for="searchContractor" class="mdl-textfield__label"  style="color:orange;display:none">
+                      Cerca un Titolare effetivo</label>
+                    <input class="mdl-textfield__input" ng-keyup="showContractorList();" ng-model="Owner.fullname"  type="text" placeholder=" Cerca un Titolare effetivo" id="searchContractor" />
+                    <input type="text" ng-model="Owner.user_id" style="display:none" id="Owner_id" />
+                  <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                  <tbody>
+                    <tr ng-click="addContractorItem(item.user_id,item.fullname)" ng-repeat="item in list">
+                      <td style="display:none" >{{item.user_id}}</td>
+                      <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.fullname}}</td>
+                      <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.email}}</td>
+                    </tr>
+                  </tbody>
+                  </table>
+                </div>
+                <div style="width:100%">
+                <a style="float:right" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" ng-click="add_customer()" >Aggiungi</a>
+                </div>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                  <label  for="percentuale" class="mdl-textfield__label" ng-model="Owner.user_id" style="color:orange;display:none">
+                    Percentuale</label>
+                  <input ng-currency currency-symbol="%" min=0 max=100 class="mdl-textfield__input"  ng-model="Owner.percentuale"  type="text" placeholder="Percentuale" id="searchContractor" />
+
+                </tbody>
+                </table>
+              </div>
+
+
+
                 </form>
     			<div class="center-align">
-                    <a id="save_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="add_owners()" href="javascript:;">                
+                    <a id="save_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_owner()" href="javascript:;">
                        {{datalang.Save}}
                     </a>
-                    <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="redirect('owners_list.html')" href="javascript:;">                
+                    <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="back()" href="javascript:;">
                        {{datalang.Cancel}}
                     </a>
-                     <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >       
+                     <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
                 </div>
-                
+
              </div>
             <div class="clr"></div>
-            
+
           </div>
 
         </div>
       </main>
     </div>
-
-   <script src="js/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="js/custom.js"></script>
-    <script src="js/add_owners.js"></script>
-    <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
-    <script src="js/animsition.js"></script>
-    <script src="js/sweetalert.min.js"></script> 
-    <script src="js/material.min.js"></script>
-    <script src="js/jquery.swipebox.min.js"></script>
-    <script src="js/function.js"></script>
-    <script src="js/angular.min.js"></script>
-        <script>
-            langfile = localStorage.getItem("language");
-            if (langfile == 'en')
-                document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
-            else
-                document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
-            var app2 = angular.module('myApp', []);
-            app2.controller('personCtrl', function ($scope) {
-                $scope.datalang = DATALANG;
-            });
-        </script>
+    <script>
+    $(".mdl-textfield__input").focus(function(){
+      $('label[for="'+$(this).attr("id") +'"]').show()
+    });
+    $(".mdl-textfield__input").blur(function(){
+      $('label[for="'+$(this).attr("id") +'"]').hide()
+    });
+    </script>
   </body>
 </html>

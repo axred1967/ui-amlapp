@@ -7,7 +7,7 @@ var app = {
     },
     deviceready: function() {
         // This is an event handler function, which means the scope is the event.
-        // So, we must explicitly called `app.report()` instead of `this.report()`.		
+        // So, we must explicitly called `app.report()` instead of `this.report()`.
         app.report('deviceready');
     },
     report: function(id) {
@@ -17,19 +17,19 @@ var app = {
 };
 function getChkLogin()
 {
-	
+
         chkloggedin();
-        var customer_id = localStorage.getItem("CustomerProfileId");
+/*        var customer_id = localStorage.getItem("CustomerProfileId");
         $.ajax ({
             type: "POST",
             url: SERVICEURL,
             data: {"action":"show_kyc_profile1",customer_id:customer_id},
             crossDomain: true,
             success:function(responceData){
-               
+
 			data=JSON.parse(responceData);
             if(data.RESPONSECODE=='1')
-            { 
+            {
                 var dropdown ='';
                 $('#namekyc').val(data.RESPONSE.name);
                 $('#surname').val(data.RESPONSE.surname);
@@ -40,23 +40,23 @@ function getChkLogin()
                 $('#customer_fax').val(data.RESPONSE.customer_fax);
                /* dropdown +='<option value="0" > Select Country  </option>';
                 $.each(data.countrylist, function( index, value ) {
-                       dropdown +='<option value="'+value['country_id']+'" > '+value['country_name']+' </option>'; 
+                       dropdown +='<option value="'+value['country_id']+'" > '+value['country_name']+' </option>';
                         });
                         $('#customer_resi_country').html(dropdown);
                         if(data.RESPONSE.customer_resi_country != null  )
                         {
-                              $('#customer_resi_country').val(data.RESPONSE.customer_resi_country); 
-                        } */
+                              $('#customer_resi_country').val(data.RESPONSE.customer_resi_country);
+                        }
                         if(data.RESPONSE.image != null)
                         {
                             $('#view_profile_image_plus').attr("src",BASEURL+"uploads/user/small/"+data.RESPONSE.image);
                         }
-               
-              
+
+
             }
         }
         });
-				
+*/
 }
 
 
@@ -64,7 +64,7 @@ function getChkLogin()
 function save_kyc(type)
 {
     var langfileloginchk = localStorage.getItem("language");
-    
+
     if(langfileloginchk == 'en' )
     {
         var namemsg ="Please enter Name";
@@ -72,7 +72,7 @@ function save_kyc(type)
        var mobilevalidmsg ="Please enter valid mobile number";
        var chkmobileaccpt ="Only 10 digit Mobile Number accepted";
        var validmessageaddrees = "Please enter Address of residence";
-       
+
     }
     else
     {
@@ -82,11 +82,11 @@ function save_kyc(type)
         var chkmobileaccpt ="Solo 10 cifre numero di cellulare accettato";
        var validmessageaddrees = "Si prega di inserire indirizzo di residenza";
     }
-    
-    
-    
+
+
+
     var customer_id = localStorage.getItem("CustomerProfileId");
-   
+
     var namekyc = $.trim($('#namekyc').val());
     var surname = $.trim($('#surname').val());
     var customer_profession = $.trim($('#customer_profession').val());
@@ -95,16 +95,16 @@ function save_kyc(type)
     var customer_fax = $.trim($('#customer_fax').val());
    // var customer_resi_country = $('#customer_resi_country').val();
     var cust_type = localStorage.getItem("Customertype");
-   
+
     if(namekyc=="") swal("",namemsg);
     else if(mobile=="") swal("",mobilemsg);
     else if(isNaN(mobile))swal("",mobilevalidmsg);
-   
-    
-    
+
+
+
    // else if(customer_resi_country=='') swal("",validmessageaddrees);
-    
-    
+
+
     else
     {
          $('#kyc_button1').hide();
@@ -119,17 +119,17 @@ function save_kyc(type)
                     $('#loader_img').hide();
                     $('#kyc_button1').show();
                     $('#kyc_button2').show();
-                    
+
                     data=JSON.parse(responceData);
 			if(data.RESPONSECODE=='1')
-			{ 
+			{
                              //swal("",data.RESPONSE);
                              if(type == 2)
-                             {     
+                             {
                                     redirect("kycstep02.html");
-                               
+
                              }
-                            else 
+                            else
                             {
                                 if(cust_type == 1 )
                                 {
@@ -145,14 +145,9 @@ function save_kyc(type)
 			{
                             swal("",data.RESPONSE);
 			}
-            
+
             }
         });
-    }    
+    }
+
 }
-
-
-
-setTimeout(function(){ 
-        checkthesidebarinfouser();
-}, 800);

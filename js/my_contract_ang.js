@@ -62,9 +62,19 @@ app2.controller('personCtrl', function ($scope,$http) {
            $scope.stack['my_contract.html']={}
            $scope.stack['my_contract.html'].action="view"
            localstorage('stack',JSON.stringify($scope.stack))
-
-            tocontract(d)
+           localstorage("contract_id",d.contract_id);
+           localstorage("customer_id",d.contractor_id);
+           localstorage("Customertype",1);
+           localstorage('Contract', JSON.stringify(d));
+           redirect('view_contract.html')
           };
+          $scope.add_contract = function(){
+            $scope.stack={}
+            $scope.stack['my_contract.html']={}
+            $scope.stack['my_contract.html'].action="add_contract"
+            localstorage('stack',JSON.stringify($scope.stack))
+            redirect('add_contract.html')
+           };
           $scope.back = function(d){
             back=$scope.lastkey
             delete $scope.stack[$scope.lastkey]

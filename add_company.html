@@ -45,6 +45,7 @@
          document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
      }
     </script>
+    <script src="js/ng-input-currency.js"></script>
     <script src="js/add_company_ang.js"></script>  </head>
   <style>
       .tsap_SelectPhoto
@@ -147,7 +148,7 @@
         <div class=""> <!-- card -->
         	 <div class="account-info dark-blue-bg">
                 <div class="account-navigation"> <!-- top icons -->
-                  <a class="mdl-button mdl-js-button mdl-button--icon left" ng-click="back())" href="javascript:;">
+                  <a class="mdl-button mdl-js-button mdl-button--icon left" ng-click="back()" href="javascript:;">
                     <img src="img/back-button.png">
                   </a>
                  <!-- <button class="mdl-button mdl-js-button mdl-button--icon right">
@@ -178,29 +179,44 @@
                     type="text" placeholder=" {{datalang.PIVA}}" id="company_fiscal_id" />
                     <label for="company_fiscal_id" class="mdl-textfield__label" style="color:orange;display:none">{{datalang.PIVA}}</label>
                   </div>
-<!--
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                       <label  class="mdl-textfield__label" for="compnay_doc"> &nbsp; &nbsp; {{datalang.CompanyDocument}} </label>
-                      <center> <img onclick="openuploadoptions1()" id="compnay_doc" style="height:100px;width:100px;margin-top:40px;"  src="img/add-account.png">  </center>
+                  <div ng-show="action='edit_company'">
+                    <div class="mdl-grid">
 
-                  </div>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                      <center> <img onclick="openuploadoptions()" id="compnay_doc_imagelicensew" style="height:100px;width:100px;margin-top:40px;"  src="img/add-account.png">  </center>
-                      <label class="mdl-textfield__label" for="compnay_doc_imagelicensew"> &nbsp; &nbsp; {{datalang.CompanyLicense}} </label>
+                    <div class="mdl-card mdl-shadow--2dp" >
+                      <div class="mdl-card__title">Immagine Licenza</div>
+                      <input type="hidden" id="doc_image" >
+                      <div class="mdl-card__actions mdl-card--border">
+
+                      <div class="mdl-layout-spacer"></div>
+                        <button class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
+                        <button class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
+                      </div>
+                    </div>
                   </div>
 
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input"  type="text" placeholder=" {{datalang.Companyauthorizedby}}" id="company_authorised_by" />
-                  </div>
+                    <input class="mdl-textfield__input"  type="text" ng-model="Company.authorised_by" ng-keyup="showAC($event,'company');"
+                    placeholder=" {{datalang.Companyauthorizedby}}" id="authorised_by" />
+                    <label for="authorised_by" class="mdl-textfield__label" style="color:orange;display:none">{{datalang.Companyauthorizedby}}</label>
+                    <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                    <tbody style="display:table">
+                      <tr ng-click="addWord('authorised_by',item.word)" ng-repeat="item in word.authorised_by">
+                        <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                      </tr>
+                    </tbody>
+                    </table>                </div>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input"  type="text" onfocus="(this.type='date')" onblur="(this.type='text')" placeholder=" {{datalang.DateofAutorized}}" id="company_authorisation_date" />
+                    <label for="authorisation_date" class="mdl-textfield__label" style="color:orange;display:none">{{datalang.authorisation_date}}</label>
+                    <input class="mdl-textfield__input"  type="text" ng-model="Company.authorisation_date"  onfocus="(this.type='date')" onblur="(this.type='text')"
+                    placeholder=" {{datalang.DateofAutorized}}" id="authorisation_date" />
                   </div>
                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input"  type="number" placeholder=" {{datalang.FiscalBudget}}" id="fiscal_budget" />
+                       <label for="fiscal_budget" class="mdl-textfield__label" style="color:orange;display:none">{{datalang.FiscalBudget}}</label>
+                       <input ng-input-currency class="mdl-textfield__input"   ng-model="Company.fiscal_budget"
+                        placeholder=" {{datalang.FiscalBudget}}" id="fiscal_budget" />
                   </div>
-                    <input type="hidden"  id="compnay_doc_image" >
-                    <input type="hidden"  id="company_lisence_image" >
--->
+                </div>
+
 
                 </form>
     			<div class="center-align">

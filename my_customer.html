@@ -78,7 +78,7 @@
                           <!--  <a class="mdl-button mdl-js-button mdl-button--icon left" onClick="logout()" href="javascript:void(0)">
                                 <img src="img/back-button.png">
                             </a>  -->
-                            <button onclick="redirect('add_customer.html')" class="mdl-button mdl-js-button mdl-button--icon right" style="border:2px solid #FFF">
+                            <button ng-click="add_customer()" class="mdl-button mdl-js-button mdl-button--icon right" style="border:2px solid #FFF">
                                 <!--<img src="img/add-search.png">-->
                                 <b >+</b>
                             </button>
@@ -101,11 +101,25 @@
 
                     <main class="mdl-layout__content">
                         <!-- cards grid -->
+                        <div id="no_customer" ng-hide="Customers.length != 0 " class="ng-hide"  >
+                          <div  class="mdl-cell mdl-cell--12-col">
+                            <div class="mdl-card amazing mdl-shadow--2dp">
+                              <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
+                                  <div class="mdl-grid">
+                                    <div class="mdl-cell">
+                                      <span style="cursor:pointer;" >
+                                        <strong class="blue first_letter_cap">Nessun cliente inserito ancora</strong>
+                                      </span><br/>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
 
 
-                        <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
-                        <center>  <img style="height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
-                        <div id="list_customer" ng-hide="Customers.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Customer in Customers ">
+                        <div whenScrolled="addMoreItems()"   ng-hide="Customers.length == 0 " class="ng-hide"  class="mdl-grid hidden" >
+                        <div id="list_customer"  ng-repeat="Customer in Customers ">
 
                           <div ng-click="tocustomer(Customer)" class="mdl-cell mdl-cell--12-col">
                           <div class="mdl-card amazing mdl-shadow--2dp">
@@ -130,28 +144,19 @@
                             </div>
                           </div>
                         </div>
-                        </div>
 
                         </div>
-
-                      <div id="no_customer" ng-hide="Customers.length != 0 " class="ng-hide"  >
-                        <div  class="mdl-cell mdl-cell--12-col">
-                          <div class="mdl-card amazing mdl-shadow--2dp">
-                            <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
-                                <div class="mdl-grid">
-                                  <div class="mdl-cell">
-                                    <span style="cursor:pointer;" >
-                                      <strong class="blue first_letter_cap">Nessun cliente inserito ancora</strong>
-                                    </span><br/>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
                         </div>
+                        <center>
+                          <a  ng-click="addMoreItems()"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
+                            Altri>>
+                          </a>
+                        </center>
+                      </div>
+
                         <!-- load more -->
 
-                    </main>
+                      </main>
 
                 </div>
             </main>
@@ -160,3 +165,8 @@
 
     </body>
 </html>
+<!--
+<style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
+<center>  <img style="height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
+
+-->

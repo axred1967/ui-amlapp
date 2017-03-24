@@ -1,123 +1,122 @@
-var app = {
-    initialize: function() {
-        this.bind();
-    },
-    bind: function() {
-        document.addEventListener('deviceready', getChkLogin(), false);
-    },
-    deviceready: function() {
-        // This is an event handler function, which means the scope is the event.
-        // So, we must explicitly called `app.report()` instead of `this.report()`.		
-        app.report('deviceready');
-    },
-    report: function(id) {
-        // Report the event in the console
-        console.log("Report: " + id);
-    }
-};
-function getChkLogin()
-{
-	
-        chkloggedin();
-				
-}
+
+
+ var app2 = angular.module('myApp', ['ng-currency']);
+ app2.filter('capitalize', function() {
+     return function(input, $scope) {
+         if ( input !==undefined && input.length>0)
+         return input.substring(0,1).toUpperCase()+input.substring(1);
+         else
+         return input
+
+     }
+ });
+
+ app2.controller('personCtrl', function ($scope,$http) {
+     $scope.datalang = DATALANG;
+     if (localStorage.getItem('stack')!=null) {
+       $scope.stack=JSON.parse(localStorage.getItem('stack'))
+       $scope.lastkey= Object.keys($scope.stack).pop() ;
+     }
+     $scope.word={};
+     $scope.Owner={}
+     //localstorage("back","view_contract.html");
+     switch ($scope.stack[$scope.lastkey].action){
+         case 'edit_owners' :
+              $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
+              $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+              $scope.action='edit_owners'
+              $scope.viewName="Modifica Contratto"
+              break;
+         default :
+              if($scope.stack[$scope.lastkey].load)
+                $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
+
+              $scope.viewName="Nuovo Contratto"
+              $scope.action='add_owners'
+              $scope.Owner.company_id=localStorage.getItem("CompanyID");
+               break;
+     }
 
 
 
-function add_owners()
-{  
-    var langfileloginchk = localStorage.getItem("language");
-    
-    if(langfileloginchk == 'en' )
-    {
-        var namemsg ="Please enter Name";
-       
-       var emailmsg ="Please enter Email"; 
-       var mobilemsg ="Please enter Mobile Number";
-       var mobilevalidmsg ="Please enter valid mobile number";
-       var valid_emailmsg = "Please provide a valid Email ID";
-       var chkmobileaccpt ="Only 10 digit Mobile Number accepted";
-       var validmessageaddrees = "Please enter Address of residence";
-       
-    }
-    else
-    {
-        var namemsg ="Si prega di inserire nome";
-      
-       var emailmsg ="Inserisci e-mail"; 
-       var mobilemsg ="Si prega di inserire numero di cellulare";
-       var mobilevalidmsg ="Si prega di inserire il numero di cellulare valido";
-       var valid_emailmsg = "Si prega di fornire un ID e-mail valido";
-       var chkmobileaccpt ="Solo 10 cifre numero di cellulare accettato";
-       var validmessageaddrees = "Si prega di inserire indirizzo di residenza";
-    }
-    
-    var id=localStorage.getItem("userId");
-    var comp_id=localStorage.getItem('CompanyId');
-    var email=localStorage.getItem("userEmail");
-    var customer_name = $.trim($('#customer_name').val());
-    var customer_email = $.trim($('#customer_email').val());
-    var customer_mobile_number = $.trim($('#customer_mobile_number').val());
-    var customer_address_resi = $.trim($('#customer_address_resi').val());
-    var customer_username = $.trim($('#customer_username').val());
-    var usertype = localStorage.getItem('userType');
-    
-    
-    
-    if(customer_name=="") swal("",namemsg);
-	
-    else if(customer_email=="") swal("",emailmsg);
-    
-    else if(customer_mobile_number =="") swal("",mobilemsg);
-    else if(isNaN(customer_mobile_number))swal("",mobilevalidmsg);
-    else if(customer_address_resi=='') swal("",validmessageaddrees);
-    else if(!isValidEmailAddress(customer_email) )swal("",valid_emailmsg);
-    
-    else
-    {
-        $('#save_button_cust').hide();
-        $('#cancel_button_cust').hide();
-        $('#loader_img').show();
-        
-        $.ajax ({
-            type: "POST",
-            url: SERVICEURL,
-            data: {"action":"addowners",id:id,email:email,usertype:usertype,customer_name:customer_name,customer_email:customer_email,customer_mobile_number:customer_mobile_number,customer_address_resi:customer_address_resi,comp_id:comp_id},
-            crossDomain: true,
-            success:function(responceData){
-                    $('#loader_img').hide();
-                    $('#save_button_cust').show();
-                    $('#cancel_button_cust').show();
-                    data=JSON.parse(responceData);
-			if(data.RESPONSECODE=='1')
-			{ 
-                            
-                             $('#customer_name').val('');
-                           $('#customer_email').val('');
-                            $('#customer_mobile_number').val('');
-                            $('#customer_address_resi').val('');
-                            $('#customer_username').val(''); 
-                            swal("",data.RESPONSE);
-                           setTimeout(function(){ 
-                               localstorage("CustomerProfileId",data.ID);
-                               localstorage("Customertype",2);
-                                redirect("view_owners.html");    
-                                    //redirect("owners_list.html");
-                            }, 2000);
-                            
-                             
-			}
-			else
-			{
-                            swal("",data.RESPONSE);
-			}
-            
-            }
-        });
-    }    
-}
 
-setTimeout(function(){ 
-        checkthesidebarinfouser();
-}, 800);
+     $scope.showContractorList=function(){
+     if ((typeof $scope.Owner.fullname !== "undefined" && $scope.Owner.fullname.length>4 && $scope.oldContrator!=$scope.Owner.fullname)){
+       data={ "action":"ACCustomerList", name:$scope.Owner.fullname}
+       $http.post( SERVICEURL2,  data )
+           .success(function(data) {
+                     if(data.RESPONSECODE=='1') 			{
+                       $scope.list=data.RESPONSE;
+                     }
+            })
+           .error(function() {
+                    console.log("error");
+            });
+       }
+       $scope.oldContrator=$scope.searchContractor
+     }
+     $scope.addContractorItem=function(id, name){
+           $scope.list=[];
+           $scope.Owner.fullname=name;
+           $scope.Owner.user_id=id;
+     };
+     $scope.add_owner=function(){
+//       add_contract($scope.action);
+      var langfileloginchk = localStorage.getItem("language");
+      if(langfileloginchk == 'en' )
+      {
+        var namemsg ="Please enter one existing owner name";
 
+      }
+      else
+      {
+        var namemsg ="Inserire un titolare effettivo esistente" ;
+      }
+      var  appData ={
+        id :localStorage.getItem("userId"),
+        usertype: localStorage.getItem('userType')
+      }
+      dbData=$scope.Owner
+      dbData.agent_id=appData.id
+
+      if(dbData.user_id=="") swal("",namemsg);
+
+      else
+      {
+          $('#loader_img').show();
+          data= {"action":$scope.action,appData:appData,dbData: dbData}
+          $http.post(SERVICEURL2,data)
+              .success(function(data){
+                      $('#loader_img').hide();
+                      if(data.RESPONSECODE=='1')
+                      {
+                        $scope.contract=[]
+                        swal("",data.RESPONSE);
+                        $scope.back()
+
+                      }
+                      else      {
+                          swal("",data.RESPONSE);
+                      }
+              })
+              .error(function(){
+                  console.log('error');
+              })
+      }
+       $scope.word[$e]=[]
+     }
+     $scope.back=function(){
+       back=$scope.lastkey
+       delete $scope.stack[back]
+       localstorage('stack',JSON.stringify($scope.stack))
+       redirect(back)
+     }
+     $scope.add_customer=function(){
+       $scope.stack['add_owners.html']={}
+       $scope.stack['add_owners.html'].action="add_customer_for_owner"
+       localstorage('Owner',JSON.stringify($scope.Owner))
+       localstorage('stack',JSON.stringify($scope.stack))
+       redirect('add_customer.html')
+     }
+
+})

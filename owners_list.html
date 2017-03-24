@@ -74,10 +74,10 @@
                 <div class=""> <!-- card -->
                     <div class="account-info dark-blue-bg">
                       <div class="account-navigation"> <!-- top icons -->
-                        <a class="mdl-button mdl-js-button mdl-button--icon left" href="javascript:;" onclick="redirect(back)">
+                        <a class="mdl-button mdl-js-button mdl-button--icon left" href="javascript:;" ng-click="back()">
                           <img src="img/back-button.png">
                         </a>
-                           <button class="mdl-button mdl-js-button mdl-button--icon right" onclick="add_owners()" style="border:2px solid #FFF">
+                           <button class="mdl-button mdl-js-button mdl-button--icon right" ng-click="add_owner()" style="border:2px solid #FFF">
                             <!--<img src="img/add-search.png">-->
                             <b >+</b>
                         </button>
@@ -125,9 +125,12 @@
 
                         </div>
                         <div class="mdl-grid">
-                          <div class="mdl-cell--12-col"  ng-click="toOwner(Owner)">
+                          <div class="mdl-cell--12-col"  ng-click="edit_owner(Owner)">
                             <span style="cursor:pointer;" >
-                              <strong class="blue first_letter_cap">{{Owner.name}}</strong>
+                              <strong class="blue first_letter_cap">{{Owner.fullname}}</strong>
+                            </span><br/>
+                            <span class="green" style=" cursor:pointer;"  >
+                              {{ Owner.percentuale | currency : '%' }}
                             </span><br/>
                             <span class="green" style=" cursor:pointer;"  >
                               {{Owner.email}}
