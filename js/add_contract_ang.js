@@ -81,7 +81,7 @@
                       break;
                   }
 
-              })
+            
               $scope.action='edit'
               $scope.viewName="Modifica Contratto"
               break;
