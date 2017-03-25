@@ -83,33 +83,13 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                         $('#loader_img').hide();
                         if(responceData.RESPONSECODE=='1') 			{
                           data=responceData.RESPONSE;
-                          $scope.Customer =  angular.copy(data);
-													/*
-													angular.forEach($scope.form.$error, function(field) {
-								              angular.forEach(field, function(errorField) {
-								                  //errorField.$setTouched();
-								              })
-														})*/
-														angular.forEach(data, function(field,key) {
-																//key=key.replace(".","_")
-																if(typeof $('#Customer_'+key) !== undefined){
-																	$('#'+key).val(' ')
-																	$('#Customer_'+key).val(field)
-																	$('#Customer_'+key).trigger('change')
-																	$('#Customer_'+key).parent('div.mdl-textfield').addClass('is-dirty')
-																}
-														})
-														/*
-														angular.forEach(data, function(field,key) {
-																key=key.replace(".","_")
-																if(typeof $('#'+key) !== undefined){
-																	$('#'+key).val(' ')
-																	$('#'+key).val(field[key])
-																	$('#'+key).trigger('change')
-																	$(".mdl-textfield").parent('#'+key).attr('is-dirty','')
-																}
-														})
-														*/
+                          $scope.Customer =  data;
+														$('input.mdl-textfield__input').each(
+                                  function(index){
+                                      $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                                      $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                                  }
+                              );
 
 													}
                          else

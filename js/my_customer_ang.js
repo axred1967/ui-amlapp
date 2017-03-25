@@ -67,6 +67,7 @@ app2.controller('personCtrl', function ($scope,$http) {
                          $('#loader_img').hide();
                          if(responceData.RESPONSECODE=='1') 			{
                            data=responceData.RESPONSE;
+                           $scope.loaded=data.length;
                            if (last==99999999999)
                            $scope.Customers=data;
                            else
@@ -91,7 +92,7 @@ app2.controller('personCtrl', function ($scope,$http) {
            localstorage('stack',JSON.stringify($scope.stack))
            localstorage("CustomerProfileId",d.user_id);
             localstorage("Customertype",1);
-            redirect('add_customer.html')        
+            redirect('add_customer.html')
             };
 
            $scope.add_customer = function(){

@@ -73,6 +73,12 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                           if(responceData.RESPONSECODE=='1') 			{
                             data=responceData.RESPONSE;
                             $scope.Company=data;
+                            $('input.mdl-textfield__input').each(
+                                  function(index){
+                                      $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                                      $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                                  }
+                              );
                            }
                            else
                            {

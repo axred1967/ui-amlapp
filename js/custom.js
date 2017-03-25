@@ -239,8 +239,27 @@ function convertDatestoStrings(input) {
     }
     return input
 }
+$(document).on('backbutton', function (ev) {
+       ev.preventDefault();
+       if (localStorage.getItem('stack')!=null) {
+         stack=JSON.parse(localStorage.getItem('stack'))
+         lastkey= Object.keys($scope.stack).pop() ;
+         back=lastkey
+         delete $scope.stack[back]
+         redirect(back)
+         return
+       }
+       window.history.go(-1);
+   });
 function onBackKeyDown(evt) {
-  evt.preventDefault();
-  evt.stopPropagation();
-  angular.element('[ng-controller=personCtrl]').scope().back();
+  alert('back');
+  if (localStorage.getItem('stack')!=null) {
+    stack=JSON.parse(localStorage.getItem('stack'))
+    lastkey= Object.keys($scope.stack).pop() ;
+    back=lastkey
+    delete $scope.stack[back]
+    redirect(back)
+    return
+  }
+  window.history.go(-1);
  }

@@ -39,9 +39,9 @@ app2.controller('personCtrl', function ($scope,$http) {
     $('#Profileimageagencyuseremail').html(email);
     $scope.addMoreItems =function(){
       last=99999999999
-      if ( $scope.Customers!==undefined){
-        lastkey= Object.keys($scope.Customers).pop() ;
-         last=$scope.Customers[lastkey].user_id;
+      if ( $scope.Companies!==undefined   && $scope.Companies.length>0){
+        lastkey= Object.keys($scope.Companies).pop() ;
+         last=$scope.Companies[lastkey].company_id;
       }
 
       data= {"action":"CompanyList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last}
@@ -50,6 +50,7 @@ app2.controller('personCtrl', function ($scope,$http) {
                     $('#loader_img').hide();
                     if(responceData.RESPONSECODE=='1') 			{
                       data=responceData.RESPONSE;
+                      $scope.loaded=data.length
                       if (last==99999999999)
                         $scope.Companies=data;
                       else

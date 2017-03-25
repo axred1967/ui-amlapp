@@ -1,18 +1,61 @@
+var app2 = angular.module('myApp', ['pascalprecht.translate','ng-currency','fieldMatch']);
+//Field Match directive
+angular.module('fieldMatch', [])
+   .directive('fieldMatch', ["$parse", function($parse) {
+       return {
+           require: 'ngModel',
+           link: function(scope, elem, attrs, ctrl) {
+               var me = $parse(attrs.ngModel);
+               var matchTo = $parse(attrs.fieldMatch);
+               scope.$watchGroup([me, matchTo], function(newValues, oldValues) {
+                   ctrl.$setValidity('fieldmatch', me(scope) === matchTo(scope));
+               }, true);
+           }
+       }
+   }]);
+//Run material design lite
+app2.directive("ngModel",["$timeout", function($timeout){
+            return {
+                restrict: 'A',
+                priority: -1, // lower priority than built-in ng-model so it runs first
+                link: function(scope, element, attr) {
+                    scope.$watch(attr.ngModel,function(value){
+                        $timeout(function () {
+                            if (value){
+                                element.trigger("change");
+                            } else if(element.attr('placeholder') === undefined) {
+                                if(!element.is(":focus"))
+                                    element.trigger("blur");
+                            }
+                        });
+                    });
+                }
+            };
+        }]);
 
+app2.run(function($rootScope, $timeout) {
+   $rootScope.$on('$viewContentLoaded', function(event) {
+       $timeout(function() {
+           componentHandler.upgradeAllRegistered();
+       }, 0);
+   });
+   $rootScope.render = {
+       header: true,
+       aside: true
+   }
+});
 
- var app2 = angular.module('myApp', ['ng-currency']);
- app2.filter('capitalize', function() {
-     return function(input, $scope) {
-         if ( input !==undefined && input.length>0)
-         return input.substring(0,1).toUpperCase()+input.substring(1);
-         else
-         return input
+app2.filter('capitalize', function() {
+    return function(input, $scope) {
+        if ( input !==undefined && input.length>0)
+        return input.substring(0,1).toUpperCase()+input.substring(1);
+        else
+        return input
 
-     }
- });
+    }
+});
+app2.controller('personCtrl', function ($scope,$http,$translate) {
 
- app2.controller('personCtrl', function ($scope,$http) {
-     $scope.datalang = DATALANG;
      if (localStorage.getItem('stack')!=null) {
        $scope.stack=JSON.parse(localStorage.getItem('stack'))
        $scope.lastkey= Object.keys($scope.stack).pop() ;

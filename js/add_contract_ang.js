@@ -66,14 +66,12 @@
               Contract=JSON.parse(localStorage.getItem('Contract'))
               convertDateStringsToDates(Contract)
               $scope.Contract=Contract
-              angular.forEach(Contract, function(field,key) {
-                  key=key.replace(".","_")
-                  if(field!==null && typeof $('#'+key) !== undefined  ){
-                    //$('#'+key).val(' ')
-              //      $('#'+key).val(field)
-                    //$('#'+key).trigger('change')
-                    $('#Contract_'+key).parent('div.mdl-textfield').addClass('is-dirty')
-                  }
+              $('input.mdl-textfield__input').each(
+                    function(index){
+                        $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                        $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                    }
+                );
                   switch($scope.Contract.act_for_other){
                       case "1":
                         $scope.Contract.company_id= $scope.Contract.other_id
@@ -200,7 +198,8 @@
           //$scope.formStatus = "Form is valid.";
           console.log("Form is valid.");
           console.log($scope.data);
-      }      if(langfileloginchk == 'en' )
+      }
+
       var  appData ={
         id :localStorage.getItem("userId"),
         usertype: localStorage.getItem('userType')
