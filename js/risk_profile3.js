@@ -7,20 +7,23 @@ var app = {
     },
     deviceready: function() {
         // This is an event handler function, which means the scope is the event.
-        // So, we must explicitly called `app.report()` instead of `this.report()`.		
+        // So, we must explicitly called `app.report()` instead of `this.report()`.
         app.report('deviceready');
     },
     report: function(id) {
         // Report the event in the console
         console.log("Report: " + id);
-    }
+    },
+    onDeviceReady: function() {
+       document.addEventListener("backbutton", onBackKeyDown, true);
+   }
 };
 function getChkLogin()
 {
-	
+
     chkloggedin();
 	var customer_id = localStorage.getItem("CustomerProfileId");
-	
+
 	  $.ajax ({
             type: "POST",
             url: SERVICEURL,
@@ -29,39 +32,39 @@ function getChkLogin()
             success:function(responceData){
 			data=JSON.parse(responceData);
             if(data.RESPONSECODE=='1')
-			{ 
+			{
                      if(data.RESPONSE.risk_behaviour_collaborative  == 1 )
                      {
-                        $('#risk_behaviour_collaborative1').attr("checked","checked"); 
+                        $('#risk_behaviour_collaborative1').attr("checked","checked");
                      }
                      else if(data.RESPONSE.risk_behaviour_collaborative  == 0)
                      {
-                         $('#risk_behaviour_collaborative2').attr("checked","checked");    
+                         $('#risk_behaviour_collaborative2').attr("checked","checked");
                      }
                      if(data.RESPONSE.risk_behaviour_much_collaborative  == 1 )
                      {
-                        $('#risk_behaviour_much_collaborative1').attr("checked","checked"); 
+                        $('#risk_behaviour_much_collaborative1').attr("checked","checked");
                      }
                      else if(data.RESPONSE.risk_behaviour_much_collaborative  == 0)
                      {
-                         $('#risk_behaviour_much_collaborative2').attr("checked","checked");    
+                         $('#risk_behaviour_much_collaborative2').attr("checked","checked");
                      }
                      if(data.RESPONSE.risk_behaviour_not_collaborative  == 1 )
                      {
-                        $('#risk_behaviour_not_collaborative1').attr("checked","checked"); 
+                        $('#risk_behaviour_not_collaborative1').attr("checked","checked");
                      }
                      else if(data.RESPONSE.risk_behaviour_not_collaborative  == 0)
                      {
-                         $('#risk_behaviour_not_collaborative2').attr("checked","checked");    
+                         $('#risk_behaviour_not_collaborative2').attr("checked","checked");
                      }
-                     
-                     $('#risk_behaviour_other').val(data.RESPONSE.risk_behaviour_other);  
+
+                     $('#risk_behaviour_other').val(data.RESPONSE.risk_behaviour_other);
             }
         }
         });
-	  
-	  
-			
+
+
+
 }
 function  agent_profile3(type)
 {
@@ -69,10 +72,10 @@ function  agent_profile3(type)
     var risk_behaviour_collaborative='';
     var risk_behaviour_much_collaborative='';
     var risk_behaviour_not_collaborative='';
-    var risk_behaviour_other = $('#risk_behaviour_other').val();  
+    var risk_behaviour_other = $('#risk_behaviour_other').val();
     var customer_type = localStorage.getItem("Customertype");
-    
-    if($('#risk_behaviour_collaborative1').is(':checked')) 
+
+    if($('#risk_behaviour_collaborative1').is(':checked'))
     {
         risk_behaviour_collaborative =1;
     }
@@ -80,7 +83,7 @@ function  agent_profile3(type)
     {
         risk_behaviour_collaborative =0;
     }
-    if($('#risk_behaviour_much_collaborative1').is(':checked')) 
+    if($('#risk_behaviour_much_collaborative1').is(':checked'))
     {
         risk_behaviour_much_collaborative =1;
     }
@@ -88,7 +91,7 @@ function  agent_profile3(type)
     {
         risk_behaviour_much_collaborative =0;
     }
-    if($('#risk_behaviour_not_collaborative1').is(':checked')) 
+    if($('#risk_behaviour_not_collaborative1').is(':checked'))
     {
         risk_behaviour_not_collaborative =1;
     }
@@ -96,11 +99,11 @@ function  agent_profile3(type)
     {
         risk_behaviour_not_collaborative =0;
     }
-    
+
      $('#risk_button1').hide();
         $('#risk_button2').hide();
         $('#loader_img').show();
-   
+
     $.ajax ({
             type: "POST",
             url: SERVICEURL,
@@ -112,14 +115,14 @@ function  agent_profile3(type)
                         $('#risk_button2').show();
 			data=JSON.parse(responceData);
                         if(data.RESPONSECODE=='1')
-			{ 
+			{
                             // swal("",data.RESPONSE);
                              if(type == '2' )
                               {
-                                  
+
                                   if(customer_type == 1 )
-                                  {                                  
-                                     redirect("risk_profile4.html"); 
+                                  {
+                                     redirect("risk_profile4.html");
                                   }
                                   else if(customer_type == 2)
                                     {
@@ -128,7 +131,7 @@ function  agent_profile3(type)
                               }
                               else
                               {
-                                 
+
                                     if(customer_type == 1 )
                                     {
                                         redirect("my_customer.html");
@@ -138,20 +141,17 @@ function  agent_profile3(type)
                                         redirect("owners_list.html");
                                     }
                               }
-                             
+
 			}
 			else
 			{
-                            swal("",data.RESPONSE); 
+                            swal("",data.RESPONSE);
 			}
-           
+
             }
         });
 }
 
-setTimeout(function(){ 
+setTimeout(function(){
         checkthesidebarinfouser();
 }, 800);
-
-
-

@@ -14,12 +14,11 @@ var app = {
         // Report the event in the console
         console.log("Report: " + id);
     },
-    onDeviceReady: function() {
-       document.addEventListener("backbutton", onBackKeyDown, false);
-   }
+
 };
 function getChkLogin()
 {
+        document.addEventListener("backbutton", onBackKeyDown, false);
 
         chkloggedin();
 /*

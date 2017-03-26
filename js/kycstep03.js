@@ -7,17 +7,20 @@ var app = {
     },
     deviceready: function() {
         // This is an event handler function, which means the scope is the event.
-        // So, we must explicitly called `app.report()` instead of `this.report()`.		
+        // So, we must explicitly called `app.report()` instead of `this.report()`.
         app.report('deviceready');
     },
     report: function(id) {
         // Report the event in the console
         console.log("Report: " + id);
-    }
+    },
+    onDeviceReady: function() {
+       document.addEventListener("backbutton", onBackKeyDown, true);
+   }
 };
 function getChkLogin()
 {
-	
+
         chkloggedin();
         var customer_id = localStorage.getItem("CustomerProfileId");
         $.ajax ({
@@ -28,82 +31,82 @@ function getChkLogin()
             success:function(responceData){
 			data=JSON.parse(responceData);
             if(data.RESPONSECODE=='1')
-            { 
-                
-                
-                
+            {
+
+
+
                 var dropdown ='';
                 $('#customer_address_resi').val(data.RESPONSE.customer_address_resi);
                 $('#customer_domecile_address_residence').val(data.RESPONSE.customer_domecile_address_residence);
                 $('#customer_main_nationality').val(data.RESPONSE.customer_main_nationality);
-               
+
                 dropdown +='<option value="0" > Select Country *  </option>';
                 $.each(data.countrylist, function( index, value ) {
-                       dropdown +='<option value="'+value['country_id']+'" > '+value['country_name']+' </option>'; 
+                       dropdown +='<option value="'+value['country_id']+'" > '+value['country_name']+' </option>';
                         });
                         $('#customer_resi_country').html(dropdown);
                          $('#customer_domecile_country').html(dropdown);
                         if(data.RESPONSE.customer_resi_country != null  )
                         {
-                             $('#customer_resi_country').val(data.RESPONSE.customer_resi_country); 
+                             $('#customer_resi_country').val(data.RESPONSE.customer_resi_country);
                         }
                         if(data.RESPONSE.customer_domecile_country != null)
                         {
-                             $('#customer_domecile_country').val(data.RESPONSE.customer_domecile_country); 
+                             $('#customer_domecile_country').val(data.RESPONSE.customer_domecile_country);
                         }
-               
-                
+
+
                         setTimeout(function(){ $('#customer_id_type').val(data.RESPONSE.customer_id_type); }, 800);
                        if(data.RESPONSE.image != null)
                         {
                             $('#view_profile_image_plus').attr("src",BASEURL+"uploads/user/small/"+data.RESPONSE.image);
-                        } 
-               
-              
+                        }
+
+
             }
         }
         });
-				
+
 }
 
 
 
 function save_kyc(type)
 {
-    
-    
+
+
     var langfileloginchk = localStorage.getItem("language");
-    
+
     if(langfileloginchk == 'en' )
     {
         var customer_resi_countrymsg ="Please enter Residence Country";
        var customer_address_resimsg ="Please enter Residence Address";
        var customer_address_resimsgvalid ="Please enter only Letters in Main Nationality";
-      
-      
+
+
     }
     else
     {
         var customer_resi_countrymsg ="Si prega di inserire residenza di campagna";
        var customer_address_resimsg ="Si prega di inserire Residence Indirizzo";
        var customer_address_resimsgvalid ="Si prega di inserire solo lettere a Nazionalità principale";
-      
-      
-       
-    } 
-    
-    
+
+
+
+    }
+
+
     var customer_id = localStorage.getItem("CustomerProfileId");
     var customer_type = localStorage.getItem("Customertype");
-   
-   
+
+
     var customer_address_resi = $.trim($('#customer_address_resi').val());
-    
+
     var customer_main_nationality = $.trim($('#customer_main_nationality').val());
-   
+
    var customer_resi_country = $.trim($('#customer_resi_country').val());
-   
-   
+
+
    if($('#check_residence').prop("checked") == true){
        var  customer_domecile_country  = $('#customer_domecile_country').val();
        var customer_domecile_address_residence = $.trim($('#customer_domecile_address_residence').val());
@@ -111,13 +114,13 @@ function save_kyc(type)
         var  customer_domecile_country = $.trim($('#customer_resi_country').val());
         var customer_domecile_address_residence = $.trim($('#customer_address_resi').val());
    }
-   
-   
-    
+
+
+
     if( customer_resi_country == 0 ) swal("",customer_resi_countrymsg);
     else if(customer_address_resi== '') swal("",customer_address_resimsg);
     else if(!checkletteronly(customer_main_nationality) && customer_main_nationality !='' )  swal("",customer_address_resimsgvalid)
-    
+
     else
     {
         $('#kyc_button1').hide();
@@ -134,11 +137,11 @@ function save_kyc(type)
                     $('#kyc_button2').show();
                     data=JSON.parse(responceData);
 			if(data.RESPONSECODE=='1')
-			{ 
-                           //swal("",data.RESPONSE);  
+			{
+                           //swal("",data.RESPONSE);
                           // redirect("my_customer.html");
                           if(type ==2)
-                          {        
+                          {
                                 if(customer_type == 1)
                                 {
                                     redirect("kycstep05.html");
@@ -148,7 +151,7 @@ function save_kyc(type)
                                     redirect("kycstep04.html");
                                 }
                            }
-                           else 
+                           else
                             {
                                 if(customer_type == 1 )
                                 {
@@ -164,13 +167,13 @@ function save_kyc(type)
 			{
                             swal("",data.RESPONSE);
 			}
-            
+
             }
         });
-    }    
+    }
 }
 
 
-setTimeout(function(){ 
+setTimeout(function(){
         checkthesidebarinfouser();
 }, 800);

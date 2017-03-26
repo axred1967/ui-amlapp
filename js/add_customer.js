@@ -14,12 +14,10 @@ var app = {
         // Report the event in the console
         console.log("Report: " + id);
     },
-    onDeviceReady: function() {
-       document.addEventListener("backbutton", onBackKeyDown, false);
-   }
 };
 function getChkLogin()
 {
+        document.addEventListener("backbutton", onBackKeyDown, true);
 
         chkloggedin();
 
@@ -29,6 +27,7 @@ function getChkLogin()
 
 
 
-setTimeout(function(){
+/*setTimeout(function(){
        checkthesidebarinfouser();
 }, 800);
+*/

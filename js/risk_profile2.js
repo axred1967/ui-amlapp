@@ -7,20 +7,23 @@ var app = {
     },
     deviceready: function() {
         // This is an event handler function, which means the scope is the event.
-        // So, we must explicitly called `app.report()` instead of `this.report()`.		
+        // So, we must explicitly called `app.report()` instead of `this.report()`.
         app.report('deviceready');
     },
     report: function(id) {
         // Report the event in the console
         console.log("Report: " + id);
-    }
+    },
+    onDeviceReady: function() {
+       document.addEventListener("backbutton", onBackKeyDown, true);
+   }
 };
 function getChkLogin()
 {
-	
+
     chkloggedin();
 	var customer_id = localStorage.getItem("CustomerProfileId");
-	
+
 	  $.ajax ({
             type: "POST",
             url: SERVICEURL,
@@ -29,54 +32,54 @@ function getChkLogin()
             success:function(responceData){
 			data=JSON.parse(responceData);
             if(data.RESPONSECODE=='1')
-			{ 
+			{
                      if(data.RESPONSE.risk_activity_activity  == 1 )
                      {
-                        $('#risk_activity_activity1').attr("checked","checked"); 
+                        $('#risk_activity_activity1').attr("checked","checked");
                      }
                      else if(data.RESPONSE.risk_activity_activity  == 0)
                      {
-                         $('#risk_activity_activity2').attr("checked","checked");    
+                         $('#risk_activity_activity2').attr("checked","checked");
                      }
                      if(data.RESPONSE.risk_activity_movements  == 1 )
                      {
-                        $('#risk_activity_movements1').attr("checked","checked"); 
+                        $('#risk_activity_movements1').attr("checked","checked");
                      }
                      else if(data.RESPONSE.risk_activity_movements  == 0)
                      {
-                         $('#risk_activity_movements2').attr("checked","checked");    
+                         $('#risk_activity_movements2').attr("checked","checked");
                      }
                      if(data.RESPONSE.risk_activity_financing  == 1 )
                      {
-                        $('#risk_activity_financing1').attr("checked","checked"); 
+                        $('#risk_activity_financing1').attr("checked","checked");
                      }
                      else if(data.RESPONSE.risk_activity_financing  == 0)
                      {
-                         $('#risk_activity_financing2').attr("checked","checked");    
+                         $('#risk_activity_financing2').attr("checked","checked");
                      }
                      if(data.RESPONSE.risk_activity_funds  == 1 )
                      {
-                        $('#risk_activity_funds1').attr("checked","checked"); 
+                        $('#risk_activity_funds1').attr("checked","checked");
                      }
                      else if(data.RESPONSE.risk_activity_funds  == 0)
                      {
-                         $('#risk_activity_funds2').attr("checked","checked");    
+                         $('#risk_activity_funds2').attr("checked","checked");
                      }
                      if(data.RESPONSE.risk_activity_cash  == 1 )
                      {
-                        $('#risk_activity_cash1').attr("checked","checked"); 
+                        $('#risk_activity_cash1').attr("checked","checked");
                      }
                      else if(data.RESPONSE.risk_activity_cash  == 0)
                      {
-                         $('#risk_activity_cash2').attr("checked","checked");    
+                         $('#risk_activity_cash2').attr("checked","checked");
                      }
-                     $('#risk_activity_other').val(data.RESPONSE.risk_activity_other);  
+                     $('#risk_activity_other').val(data.RESPONSE.risk_activity_other);
             }
         }
         });
-	  
-	  
-			
+
+
+
 }
 function  agent_profile2(type)
 {
@@ -88,7 +91,7 @@ function  agent_profile2(type)
     var risk_activity_cash ='';
     var risk_activity_other = $.trim($('#risk_activity_other').val());
      var customer_type = localStorage.getItem("Customertype");
-    if($('#risk_activity_activity1').is(':checked')) 
+    if($('#risk_activity_activity1').is(':checked'))
     {
         risk_activity_activity =1;
     }
@@ -96,7 +99,7 @@ function  agent_profile2(type)
     {
         risk_activity_activity =0;
     }
-    if($('#risk_activity_movements1').is(':checked')) 
+    if($('#risk_activity_movements1').is(':checked'))
     {
         risk_activity_movements =1;
     }
@@ -104,7 +107,7 @@ function  agent_profile2(type)
     {
         risk_activity_movements =0;
     }
-    if($('#risk_activity_financing1').is(':checked')) 
+    if($('#risk_activity_financing1').is(':checked'))
     {
         risk_activity_financing =1;
     }
@@ -112,7 +115,7 @@ function  agent_profile2(type)
     {
         risk_activity_financing =0;
     }
-    if($('#risk_activity_funds1').is(':checked')) 
+    if($('#risk_activity_funds1').is(':checked'))
     {
         risk_activity_funds =1;
     }
@@ -120,7 +123,7 @@ function  agent_profile2(type)
     {
         risk_activity_funds =0;
     }
-    if($('#risk_activity_cash1').is(':checked')) 
+    if($('#risk_activity_cash1').is(':checked'))
     {
         risk_activity_cash =1;
     }
@@ -142,16 +145,16 @@ function  agent_profile2(type)
                     $('#risk_button2').show();
 			data=JSON.parse(responceData);
                         if(data.RESPONSECODE=='1')
-			{ 
-                           
+			{
+
                             // swal("",data.RESPONSE);
                               if(type == '2' )
                               {
-                                   redirect("risk_profile3.html"); 
+                                   redirect("risk_profile3.html");
                               }
                               else
                               {
-                                 
+
                                     if(customer_type == 1 )
                                     {
                                         redirect("my_customer.html");
@@ -160,21 +163,18 @@ function  agent_profile2(type)
                                     {
                                         redirect("owners_list.html");
                                     }
-                              } 
-                             
+                              }
+
 			}
 			else
 			{
-                            swal("",data.RESPONSE); 
+                            swal("",data.RESPONSE);
 			}
-           
+
             }
         });
 }
 
-setTimeout(function(){ 
+setTimeout(function(){
         checkthesidebarinfouser();
 }, 800);
-
-
-

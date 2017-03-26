@@ -7,20 +7,23 @@ var app = {
     },
     deviceready: function() {
         // This is an event handler function, which means the scope is the event.
-        // So, we must explicitly called `app.report()` instead of `this.report()`.		
+        // So, we must explicitly called `app.report()` instead of `this.report()`.
         app.report('deviceready');
     },
     report: function(id) {
         // Report the event in the console
         console.log("Report: " + id);
-    }
+    },
+    onDeviceReady: function() {
+       document.addEventListener("backbutton", onBackKeyDown, true);
+   }
 };
 function getChkLogin()
 {
-	
+
         chkloggedin();
         var customer_id = localStorage.getItem("CustomerProfileId");;
-        
+
         $.ajax ({
             type: "POST",
             url: SERVICEURL,
@@ -29,7 +32,7 @@ function getChkLogin()
             success:function(responceData){
 			data=JSON.parse(responceData);
             if(data.RESPONSECODE=='1')
-            { 
+            {
                         // $('#customer_fiscal_number').val(data.RESPONSE.customer_fiscal_number);
                 $('#economic_value_of_service').val(data.RESPONSE.economic_value_of_service);
                 $('#nature_of_service').val(data.RESPONSE.nature_of_service);
@@ -38,69 +41,69 @@ function getChkLogin()
                 {
                     $('#view_profile_image_plus').attr("src",BASEURL+"uploads/user/small/"+data.RESPONSE.image);
                 }
-                
+
                 if(data.RESPONSE.sign != '')
                              {
                                  $('#sign').show();
 				$('#sign').attr('src',data.RESPONSE.sign);
                              }
-                    
+
             }
         }
         });
-				
+
 }
 
 
 
 function savekyc()
 {
-    
-    
+
+
     var langfileloginchk = localStorage.getItem("language");
-    
+
     if(langfileloginchk == 'en' )
     {
         var economic_value_of_servicemsg ="Please enter Economic value of service";
         var nature_of_servicemsg ="Please enter Nature of service";
         var scope_of_servicemsg ="Please enter Scope of service";
-      
+
     }
     else
     {
        var economic_value_of_servicemsg ="Si prega di inserire il valore economico del servizio";
        var nature_of_servicemsg ="Si prega di inserire la natura del servizio";
        var scope_of_servicemsg ="Si prega di inserire Ambito di servizio";
-       
-    } 
-    
-    
-    
+
+    }
+
+
+
     var id=localStorage.getItem("userId");
     var customer_id = localStorage.getItem("CustomerProfileId");
- 
+
     var email=localStorage.getItem("userEmail");
-    
-    
+
+
     var economic_value_of_service = $.trim($('#economic_value_of_service').val());
     var nature_of_service = $.trim($('#nature_of_service').val());
     var scope_of_service = $.trim($('#scope_of_service').val());
     var cust_type = localStorage.getItem("Customertype");
-   
-    
+
+
     if( economic_value_of_service=="") swal("",economic_value_of_servicemsg);
     else if(nature_of_service == '') swal("",nature_of_servicemsg);
     else if(scope_of_service =="") swal("",scope_of_servicemsg);
-    
-    
+
+
     else
     {
         $('#save_button_cust').hide();
         $('#cancel_button_cust').hide();
         $('#loader_img').show();
-		
+
 		 //alert($("#sig").val());
-		
+
         $.ajax ({
             type: "POST",
             url: SERVICEURL,
@@ -112,38 +115,38 @@ function savekyc()
                     $('#cancel_button_cust').show();
                     data=JSON.parse(responceData);
 			if(data.RESPONSECODE=='1')
-			{ 
-                            
-                           swal("",data.RESPONSE); 
+			{
+
+                           swal("",data.RESPONSE);
                            if(cust_type == 1 )
                            {
-                                setTimeout(function(){ 
+                                setTimeout(function(){
                                          redirect("my_customer.html");
                                         }, 3000);
-                              
+
                            }
                            else if(cust_type == 2)
                            {
-                               setTimeout(function(){ 
+                               setTimeout(function(){
                                          redirect("owners_list.html");
                                         }, 3000);
-                               
+
                            }
                            // redirect("my_customer.html");
-                             
+
 			}
 			else
 			{
                             swal("",data.RESPONSE);
 			}
-            
+
             }
         });
-    }    
+    }
 }
 
 
 
-setTimeout(function(){ 
+setTimeout(function(){
         checkthesidebarinfouser();
 }, 800);

@@ -7,22 +7,25 @@ var app = {
     },
     deviceready: function() {
         // This is an event handler function, which means the scope is the event.
-        // So, we must explicitly called `app.report()` instead of `this.report()`.		
+        // So, we must explicitly called `app.report()` instead of `this.report()`.
         app.report('deviceready');
     },
     report: function(id) {
         // Report the event in the console
         console.log("Report: " + id);
-    }
+    },
+    onDeviceReady: function() {
+       document.addEventListener("backbutton", onBackKeyDown, true);
+   }
 };
 function getChkLogin()
 {
-	
+
         chkloggedin();
 	var id=localStorage.getItem("userId");
 	var email=localStorage.getItem("userEmail");
         var agent_id = localStorage.getItem("agentProfileId");
-	
+
 	  $.ajax ({
             type: "POST",
             url: SERVICEURL,
@@ -31,7 +34,7 @@ function getChkLogin()
             success:function(responceData){
 			data=JSON.parse(responceData);
             if(data.RESPONSECODE=='1')
-			{ 
+			{
                             $('#name_agent').html(data.RESPONSE.name);
                             $('#name_agent1').html(data.RESPONSE.name);
                             $('#email_agent').html(data.RESPONSE.email);
@@ -39,17 +42,17 @@ function getChkLogin()
                             if(data.RESPONSE.imagename != null)
                             {
                                 $('#img_agent').attr("src",BASEURL+"uploads/user/small/"+data.RESPONSE.imagename);
-                            } 
+                            }
 			}
 			else
 			{
-                            
+
 			}
             }
         });
-	  
-	  
-			
+
+
+
 }
 
 
@@ -66,15 +69,15 @@ function close_account()
             success:function(responceData){
 			data=JSON.parse(responceData);
                         if(data.RESPONSECODE=='1')
-			{ 
+			{
                              swal("",data.RESPONSE, "success");
                              setTimeout(function(){ redirect('my_agent.html');  }, 800);
 			}
 			else
 			{
-                            swal("",data.RESPONSE, "error"); 
+                            swal("",data.RESPONSE, "error");
 			}
-           
+
             }
         });
     }
@@ -85,11 +88,6 @@ function edit_info()
     redirect('edit_agent.html');
 }
 
-setTimeout(function(){ 
+setTimeout(function(){
         checkthesidebarinfouser();
 }, 800);
-  
-
-
-
-

@@ -11,7 +11,8 @@ var SERVICEURL2 = "http://www.euriskoformazione.com/amlapp/service.php";
 
 function chkloggedin()
 {
-    var chksession = localStorage.getItem('userId');
+     //document.addEventListener("backbutton", onBackKeyDown, true);
+     var chksession = localStorage.getItem('userId');
     var typesi = localStorage.getItem('userType');
     var langfile = localStorage.getItem("language");
     if (!chksession)
@@ -39,6 +40,7 @@ function chkloggedin()
         }
             //setTimeout(function(){$("#loginName").html(localStorage.getItem("userName"));}, 1000);
     }
+
 }
 
 function chklogin()
@@ -239,18 +241,7 @@ function convertDatestoStrings(input) {
     }
     return input
 }
-$(document).on('backbutton', function (ev) {
-       ev.preventDefault();
-       if (localStorage.getItem('stack')!=null) {
-         stack=JSON.parse(localStorage.getItem('stack'))
-         lastkey= Object.keys($scope.stack).pop() ;
-         back=lastkey
-         delete $scope.stack[back]
-         redirect(back)
-         return
-       }
-       window.history.go(-1);
-   });
+
 function onBackKeyDown(evt) {
   alert('back');
   if (localStorage.getItem('stack')!=null) {

@@ -59,6 +59,7 @@
        $scope.stack=JSON.parse(localStorage.getItem('stack'))
        $scope.lastkey= Object.keys($scope.stack).pop() ;
      }
+     $scope.Contrac={}
      $scope.word={};
      //localstorage("back","view_contract.html");
      switch ($scope.stack[$scope.lastkey].action){
@@ -66,12 +67,6 @@
               Contract=JSON.parse(localStorage.getItem('Contract'))
               convertDateStringsToDates(Contract)
               $scope.Contract=Contract
-              $('input.mdl-textfield__input').each(
-                    function(index){
-                        $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                        $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                    }
-                );
                   switch($scope.Contract.act_for_other){
                       case "1":
                         $scope.Contract.company_id= $scope.Contract.other_id
@@ -81,7 +76,7 @@
                       break;
                   }
 
-            
+
               $scope.action='edit'
               $scope.viewName="Modifica Contratto"
               break;
@@ -89,6 +84,12 @@
               $scope.viewName="Nuovo Contratto"
                break;
      }
+     $('input.mdl-textfield__input').each(
+           function(index){
+               $(this).parent('div.mdl-textfield').addClass('is-dirty');
+               $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+           }
+       );
 
 
 
