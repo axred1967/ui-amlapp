@@ -58,11 +58,44 @@ app2.filter('capitalize', function() {
     }
 });
 app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
+    $('#loader_img').hide()
     $scope.action="";
+    $scope.Docs={}
     $scope.Doc={}
     $scope.word={};
     $scope.stack={}
-    if (localStorage.getItem('stack')!=null ) {
+    $scope.addMoreItems =function(){
+      last=99999999999
+      if ( $scope.Contracts!==undefined && $scope.Contracts.length>0){
+        lastkey= Object.keys($scope.Contracts).pop() ;
+         last=$scope.Contracts[lastkey].id;
+      }
+
+      data={ "action":"documentList", dbData:dbData}
+      $('#loader_img').show();
+      $http.post(SERVICEURL2,  data )
+          .success(function(responceData)  {
+                    $('#loader_img').hide();
+                    if(responceData.RESPONSECODE=='1') 			{
+                      data=responceData.RESPONSE;
+                      $scope.loaded=data.length
+                      if (last==99999999999)
+                        $scope.Docs=data;
+                      else
+                        $scope.Docs=$scope.Docs.concat(data);
+                      //$scope.Customers=data;
+                     }
+                     else   {
+                        console.log('no docs')
+                     }
+           })
+          .error(function() {
+                   console.log("error");
+           });
+
+
+    }
+   if (localStorage.getItem('stack')!=null ) {
       $scope.stack=JSON.parse(localStorage.getItem('stack'))
       $scope.lastkey= Object.keys($scope.stack).pop() ;
       if($scope.stack[$scope.lastkey]!==undefined && $scope.stack[$scope.lastkey].action!==undefined){
@@ -76,36 +109,18 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
 
     //localstorage("back","view_contract.html");
     switch ($scope.action){
-        case 'edit' :
-             Doc=JSON.parse(localStorage.getItem('Doc'))
-             convertDateStringsToDates(Doc)
-             $scope.Doc=Doc
-             $scope.action='edit'
-             $scope.viewName="Modifica Documento"
+        case 'list_from_view_contract' :
+             $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+             convertDateStringsToDates($scope.Contract)
+             $scope.Doc.per_id=$scope.Contract.contract_id
+             $scope.Doc.per='contract'
+             $scope.viewName="Documenti Contratto"
              dbData=$scope.Doc
              data={ "action":"documentList", dbData:dbData}
-             $http.post( SERVICEURL2,  data )
-                 .success(function(data) {
-                           if(data.RESPONSECODE=='1') 			{
-                             //$word=$($search.currentTarget).attr('id');
-                             $scope.word[$search]=data.RESPONSE;
-                           }
-                  })
-                 .error(function() {
-                          console.log("error");
-                  });
+             $scope.addMoreItems()
 
 
              break;
-             case 'add_for_contract' :
-                  Contract=JSON.parse(localStorage.getItem('Doc'))
-                  convertDateStringsToDates(Contract)
-                  $scope.Doc.per="Contract"
-                  $scope.Doc.per_id=Contract.id
-                  $scope.action='add'
-                  $scope.viewName="Aggiungi Documento"
-
-                  break;
         default :
              $scope.Doc.image_name=""
              $scope.Doc.doc_date=new Date()
@@ -119,6 +134,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
               $(this).parent('div.mdl-textfield').removeClass('is-invalid');
           }
       );
+
 
 
 
@@ -153,10 +169,11 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
       $scope.Doc.image_name=""
     }
 
-    $scope.uploadfromgallery=function()
+    $scope.uploadfromgallery=function(Doc)
     {
+      localstorage('Contract', JSON.stringify($scope.Doc));
        // alert('cxccx');
-       navigator.camera.getPicture($scope.uploadPhoto,
+       navigator.camera.getPicture($scope.uploadPhoto(Doc),
             function(message) {
                 alert('get picture failed');
             },
@@ -167,10 +184,11 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
             }
         );
     }
-    $scope.add_photo=function()
+    $scope.add_photo=function(Doc)
     {
+      localstorage('Contract', JSON.stringify($scope.Doc));
        // alert('cxccx');
-       navigator.camera.getPicture($scope.uploadPhoto,
+       navigator.camera.getPicture($scope.uploadPhoto(Doc),
             function(message) {
                 alert('get picture failed');
             },
@@ -185,6 +203,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
     $scope.uploadPhoto=function(imageURI){
       $("#agent_image").hide();
       $('#profileimgloader').show();
+      $scope.Doc=JSON.parse(localstorage.getItem('Doc'))
 
        var options = new FileUploadOptions();
        options.fileKey="file";
@@ -202,15 +221,16 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
     }
     $scope.winFT=function (r)
     {
+      $scope.Doc=JSON.parse(localstorage.getItem('Doc'))
         $('#doc_image').val(review_info.response);
        // var review_selected_image  =  review_info.review_id;
         //$('#review_id_checkin').val(review_selected_image);
-        data={ "action":"get_document_image_name_multi", id:$scope.Doc.per_id,for:$scope.Doc.per}
+        data={ "action":"documentList", dbData:dbData}
         $http.post( SERVICEURL2,  data )
             .success(function(data) {
                       if(data.RESPONSECODE=='1') 			{
                         //$word=$($search.currentTarget).attr('id');
-                        $scope.word[$search]=data.RESPONSE;
+                        $scope.Docs=data.RESPONSE;
                       }
              })
             .error(function() {
@@ -265,6 +285,15 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
           console.log('error');
         })
     }
+    $scope.add_document=function(){
+      $scope.stack={}
+      $scope.stack['my_document.html']={}
+      $scope.stack['my_document.html'].action="add_document_for_contract"
+      localstorage('stack',JSON.stringify($scope.stack))
+      Doc={per_id:$scope.contract_id,per:'contract'}
+      localstorage('Doc',JSON.stringify(Doc))
+      redirect('add_document.html')    }
+
     $scope.addWord=function($search,$word){
       res = $search.split(".")
       $scope[res[0]][res[1]]=$word

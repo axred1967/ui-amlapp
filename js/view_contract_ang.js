@@ -105,6 +105,13 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     localstorage("CustomerProfileId",$scope.Contract.contractor_id);
     redirect('add_customer.html')
  };
+ $scope.edit_docu = function(Contract){
+	 $scope.stack['view_contract.html']={}
+	 $scope.stack['view_contract.html'].action="list_from_view_contract"
+	 localstorage('stack',JSON.stringify($scope.stack))
+	 localstorage('Contract', JSON.stringify($scope.Contract));
+	 redirect('my_document.html')
+};
  $scope.edit_kyc = function(){
    $scope.stack['view_contract.html']={}
    $scope.stack['view_contract.html'].action="edit_kyc"

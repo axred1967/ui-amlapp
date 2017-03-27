@@ -45,8 +45,7 @@ app2.controller('personCtrl', function ($scope,$http) {
                       if (last==99999999999)
                         $scope.Contracts=data;
                       else
-                        $scope.Companies=$scope.Contracts.concat(data);
-                         $scope.Contracts=data;
+                        $scope.Contracts=$scope.Contracts.concat(data);
                       //$scope.Customers=data;
                      }
                      else   {

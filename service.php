@@ -1883,14 +1883,17 @@ case 'show_kyc_profile6' :
 }
 case 'documentList' :
 {
-
-  $getimaglist = $db->getRows("SELECT  * FROM customer_documents WHERE for_id ='".$_REQUEST['dbData']['for_id']."' for ='".$_REQUEST['dbData']['for']." ORDER BY  id DESC ");
+  $getimaglist=array();
+  $getimaglist = $db->getRows("SELECT  * FROM documents WHERE per_id ='".$_REQUEST['dbData']['per_id']."' AND per ='".$_REQUEST['dbData']['per']."' ORDER BY  id DESC ");
 
   if(count($getimaglist) > 0 && is_array($getimaglist) )
   {
     $data = array('RESPONSECODE'=> 1 , 'RESPONSE'=> $getimaglist);
   }
-  else
+  else if (count($getimaglist) == 0 ){
+    $data = array('RESPONSECODE'=> 1 , 'RESPONSE'=> $getimaglist);
+
+  } else
   {
     $data = array('RESPONSECODE'=> 0 , 'RESPONSE'=> '');
 
@@ -1931,7 +1934,7 @@ case 'upload_document_image_multi' :
     smart_resize_image("uploads/document/".$for ."_". $user_id . DS . "resize/$newfile", 210, 194);
   }
 
-  $aryData = array("imagename" =>	$newfile,"for"  =>$_REQUEST['for'],"doc_id"=>$user_id);
+  $aryData = array("imagename" =>	$newfile,"for"  =>$_REQUEST['for'],"per_id"=>$user_id);
 
   $flgIn = $db->insertAry("tmp_image",$aryData);
 
