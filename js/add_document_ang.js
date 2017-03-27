@@ -123,7 +123,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
 
 
 
-
     $scope.showAC=function($search,$table){
       var id=localStorage.getItem("userId");
       var usertype = localStorage.getItem('userType');

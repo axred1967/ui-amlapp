@@ -185,6 +185,8 @@ function fail(error)
     $('#profileimgloader').hide();
 
 }
+/*
 setTimeout(function(){
         checkthesidebarinfouser();
 }, 800);
+*/

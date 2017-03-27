@@ -49,95 +49,97 @@
     }
     </script>
     <script src="js/ng-currency.js"></script>
-</head>
-<style>
-.first_letter_cap
-{
-  text-transform: capitalize;
-}
-</style>
+  </head>
+  <style>
+  .first_letter_cap
+  {
+    text-transform: capitalize;
+  }
+  </style>
 
 
-<body  >
+  <body  >
 
-  <div ng-app="myApp" ng-controller="personCtrl"  id="menulist">
-    <div class="mdl-layout mdl-js-layout mdl-layout--overlay-drawer-button">
+    <div ng-app="myApp" ng-controller="personCtrl" class="animsition">
+      <div class="mdl-layout mdl-js-layout mdl-layout--overlay-drawer-button">
 
-      <!-- Sidebar -->
-      <div id="sidebar_agency" class="mdl-layout__drawer">
-        <!-- Top -->
+        <!-- Sidebar -->
 
-      </div>
-      <!-- Page Content -->
-      <main class="mdl-layout__content">
-        <div class=""> <!-- card -->
-          <div class="account-info dark-blue-bg">
-            <div class="account-navigation"> <!-- top icons -->
-              <!--  <a class="mdl-button mdl-js-button mdl-button--icon left" onClick="logout()" href="javascript:void(0)">
-              <img src="img/back-button.png">
-            </a>  -->
-            <button ng-click="add_document()" class="mdl-button mdl-js-button mdl-button--icon right" style="border:2px solid #FFF">
-              <!--<img src="img/add-search.png">-->
-              <b >+</b>
-            </button>
-            <div class="mdl-layout-spacer"></div>
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right right">
-              <label class="mdl-button mdl-js-button mdl-button--icon"
-              for="waterfall-exp">
-              <i class="material-icons">search</i>
-            </label>
-            <div class="mdl-textfield__expandable-holder">
-              <input class="mdl-textfield__input" type="text" name="sample"
-              id="waterfall-exp" />
-            </div>
-          </div>
-          <span class="main-heading">{{viewName}}</span>
-          <div class="clr"></div>
-        </div>
-      </div>
-
-
-      <main class="mdl-layout__content">
-        <!-- cards grid -->
-        <center><h5>{{Contract.CPU}}</h5></center>
-        <center>  <img style="height:50px;width:50px;margin-top:20px;" class="hide" id="loader_img" src="img/loader2.gif"  > </center>
-        <div id="list_doc" class="mdl-grid"  ng-hide="Docs.length == 0 " class="ng-hide" ng-repeat="Doc in Docs ">
-
-          <div  class="mdl-cell mdl-cell--12-col">
-
-            <div class="demo-card-image mdl-card mdl-shadow--2dp">
-              <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
-              <img ng-show="Doc.image_name.length>0" ng-src ="{{Doc.image_name.length>0 ? Doc.image_name :'' }}" ></img>
-              <div class="mdl-card__actions">
+        <!-- Page Content -->
+        <main class="mdl-layout__content">
+          <div class=""> <!-- card -->
+            <div class="account-info dark-blue-bg">
+              <div class="account-navigation"> <!-- top icons -->
+                <a class="mdl-button mdl-js-button mdl-button--icon left" ng-click="back()" href="javascript:;">
+                  <img src="img/back-button.png">
+                </a>
+                <button ng-click="add_document()" class="mdl-button mdl-js-button mdl-button--icon right" style="border:2px solid #FFF">
+                  <!--<img src="img/add-search.png">-->
+                  <b >+</b>
+                </button>
                 <div class="mdl-layout-spacer"></div>
-                <button id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo(Doc)" ><i class="material-icons">add_a_photo</i></button>
-                <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
-                  <span >{{'Scatta una foto'|translate}}.</span>
-                </span>
-                <button id="addGallery" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery(Doc)" ><i class="material-icons">insert_photo</i></button>
-                <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
-                  <span >{{'Scegli da Galleria'|translate}}.</span>
-                </span>
-                <button id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc(Doc)" ><i class="material-icons">delete</i></button>
-                <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
-                  <span >{{'Cancella'|translate}}.</span>
-                </span>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right right">
+                  <label class="mdl-button mdl-js-button mdl-button--icon"
+                  for="waterfall-exp">
+                  <i class="material-icons">search</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                  <input class="mdl-textfield__input" type="text" name="sample"
+                  id="waterfall-exp" />
+                </div>
               </div>
-              <div class="mdl-card__actions" ng-click="toDoc(Doc)">
-
-                {{Doc.doc_type}}<div class="mdl-layout-spacer"></div>
-                {{Doc.doc_date | date : 'short-date'}}<br/>
+              <span class="main-heading">{{viewName | translate}} </span>
+              <div class="clr">
               </div>
 
             </div>
           </div>
 
-          <center ng-hide="loaded < 5">
-            <a  ng-click="addMoreItems()"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
-              Altri>>
-            </a>
+
+
+          <!-- cards grid -->
+
+          <center>
+            <h5>{{Contract.CPU}}</h5>
+            <img style="height:50px;width:50px;margin-top:20px;" class="hide" id="loader_img" src="img/loader2.gif"  >
           </center>
-        </div>
+          <div id="list_doc" class="mdl-grid"  ng-hide="Docs.length == 0 " class="ng-hide" ng-repeat="Doc in Docs ">
+
+            <div  class="mdl-cell mdl-cell--12-col">
+
+              <div class="demo-card-image mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
+                <img ng-show="Doc.image_name.length>0" ng-src ="{{Doc.image_name.length>0 ? Doc.image_name :'' }}" ></img>
+                <div class="mdl-card__actions">
+                  <div class="mdl-layout-spacer"></div>
+                  <button id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo(Doc)" ><i class="material-icons">add_a_photo</i></button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
+                    <span >{{'Scatta una foto'|translate}}.</span>
+                  </span>
+                  <button id="addGallery" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery(Doc)" ><i class="material-icons">insert_photo</i></button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
+                    <span >{{'Scegli da Galleria'|translate}}.</span>
+                  </span>
+                  <button id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc(Doc)" ><i class="material-icons">delete</i></button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+                    <span >{{'Cancella'|translate}}.</span>
+                  </span>
+                </div>
+                <div class="mdl-card__actions" ng-click="toDoc(Doc)">
+
+                  {{Doc.doc_type}}<div class="mdl-layout-spacer"></div>
+                  {{Doc.doc_date | date : 'short-date'}}<br/>
+                </div>
+
+              </div>
+            </div>
+
+            <center ng-hide="loaded < 5">
+              <a  ng-click="addMoreItems()"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
+                Altri>>
+              </a>
+            </center>
+          </div>
           <div id="no_contract" ng-show="Docs.length == 0 "   >
             <div  class="mdl-cell mdl-cell--12-col">
               <div class="mdl-card amazing mdl-shadow--2dp">
@@ -156,12 +158,11 @@
 
           <!-- load more -->
 
-        </main>
 
-      </div>
-    </main>
+        </div>
+      </main>
+    </div>
   </div>
-</div>
 
 </body>
 </html>
