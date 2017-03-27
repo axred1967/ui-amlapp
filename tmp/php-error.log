@@ -1,0 +1,202 @@
+[27-Mar-2017 01:26:36 Europe/Rome] passato upload_document_image_multi
+
+[27-Mar-2017 01:26:36 Europe/Rome] passato di qui Array
+(
+    [action] => upload_document_image_multi
+    [userid] => 86
+    [for] => contract
+)
+
+
+[27-Mar-2017 01:26:36 Europe/Rome] controllo/web/htdocs/www.euriskoformazione.com/home/amlapp/uploads/document/contract_86
+
+[27-Mar-2017 01:26:36 Europe/Rome] db insert ary insert into tmp_image  (imagename,for,doc_id) values ('45d7c34315a8ec2ab8ccb6dce6f04b1d.jpg','contract','86')
+
+[27-Mar-2017 01:29:34 Europe/Rome] passato ContractList
+
+[27-Mar-2017 01:29:34 Europe/Rome] db get_rows SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[27-Mar-2017 01:29:34 Europe/Rome] get val - SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[27-Mar-2017 01:29:34 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.status,
+  us.user_id, concat(us.name,' ',us.surname) as fullname,us.email,us.mobile_number,us.image,us.user_id,cmy.name,concat(op.name,' ',op.surname) as other_name
+  FROM contract co JOIN users us ON co.contractor_id = us.user_id
+  left JOIN risk rk ON rk.cpu = co.cpu
+  LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
+  LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2 WHERE co.agency_id ='14' AND co.status <> 2   and co.id <  99999999999 ORDER BY co.id DESC 
+
+[27-Mar-2017 01:29:34 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:29:34 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:29:35 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:29:35 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:29:35 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:29:35 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:29:44 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:29:44 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:35:14 Europe/Rome] passato upload_document_image_multi
+
+[27-Mar-2017 01:35:14 Europe/Rome] passato di qui Array
+(
+    [action] => upload_document_image_multi
+    [userid] => 86
+    [for] => contract
+)
+
+
+[27-Mar-2017 01:35:14 Europe/Rome] controllo/web/htdocs/www.euriskoformazione.com/home/amlapp/uploads/document/contract_86
+
+[27-Mar-2017 01:35:14 Europe/Rome] db insert ary insert into tmp_image  (imagename,per,doc_id) values ('b254ab25ddaf02b10d812eb09a74a2ef.jpg','contract','86')
+
+[27-Mar-2017 01:37:32 Europe/Rome] passato ContractList
+
+[27-Mar-2017 01:37:32 Europe/Rome] db get_rows SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[27-Mar-2017 01:37:32 Europe/Rome] get val - SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[27-Mar-2017 01:37:32 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.status,
+  us.user_id, concat(us.name,' ',us.surname) as fullname,us.email,us.mobile_number,us.image,us.user_id,cmy.name,concat(op.name,' ',op.surname) as other_name
+  FROM contract co JOIN users us ON co.contractor_id = us.user_id
+  left JOIN risk rk ON rk.cpu = co.cpu
+  LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
+  LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2 WHERE co.agency_id ='14' AND co.status <> 2   and co.id <  99999999999 ORDER BY co.id DESC 
+
+[27-Mar-2017 01:37:32 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:37:32 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:37:32 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:37:32 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:37:34 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:37:34 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:37:43 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:37:43 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:37:47 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:37:47 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:37:56 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:37:56 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:38:19 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:38:19 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:38:19 Europe/Rome] passato ContractList
+
+[27-Mar-2017 01:38:19 Europe/Rome] db get_rows SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[27-Mar-2017 01:38:19 Europe/Rome] get val - SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[27-Mar-2017 01:38:19 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.status,
+  us.user_id, concat(us.name,' ',us.surname) as fullname,us.email,us.mobile_number,us.image,us.user_id,cmy.name,concat(op.name,' ',op.surname) as other_name
+  FROM contract co JOIN users us ON co.contractor_id = us.user_id
+  left JOIN risk rk ON rk.cpu = co.cpu
+  LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
+  LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2 WHERE co.agency_id ='14' AND co.status <> 2   and co.id <  99999999999 ORDER BY co.id DESC 
+
+[27-Mar-2017 01:38:19 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:38:19 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:38:23 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:38:23 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:38:31 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:38:31 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:40:33 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:40:33 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:40:33 Europe/Rome] passato ContractList
+
+[27-Mar-2017 01:40:33 Europe/Rome] db get_rows SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[27-Mar-2017 01:40:33 Europe/Rome] get val - SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[27-Mar-2017 01:40:33 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.status,
+  us.user_id, concat(us.name,' ',us.surname) as fullname,us.email,us.mobile_number,us.image,us.user_id,cmy.name,concat(op.name,' ',op.surname) as other_name
+  FROM contract co JOIN users us ON co.contractor_id = us.user_id
+  left JOIN risk rk ON rk.cpu = co.cpu
+  LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
+  LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2 WHERE co.agency_id ='14' AND co.status <> 2   and co.id <  99999999999 ORDER BY co.id DESC 
+
+[27-Mar-2017 01:40:34 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:40:34 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:40:48 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:40:48 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:40:56 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:40:56 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:41:06 Europe/Rome] passato fetchuserimage
+
+[27-Mar-2017 01:41:06 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[27-Mar-2017 01:43:02 Europe/Rome] passato upload_document_image_multi
+
+[27-Mar-2017 01:43:02 Europe/Rome] passato di qui Array
+(
+    [action] => upload_document_image_multi
+    [userid] => 86
+    [for] => contract
+)
+
+
+[27-Mar-2017 01:43:02 Europe/Rome] controllo/web/htdocs/www.euriskoformazione.com/home/amlapp/uploads/document/contract_86
+
+[27-Mar-2017 01:43:02 Europe/Rome] db insert ary insert into tmp_image  (imagename,per,doc_id) values ('1b54ed28d07ada41d364c93644ccf0f1.jpg','contract','86')
+
+[27-Mar-2017 02:07:31 Europe/Rome] passato upload_document_image_multi
+
+[27-Mar-2017 02:07:31 Europe/Rome] passato di qui Array
+(
+    [action] => upload_document_image_multi
+    [userid] => 86
+    [for] => contract
+)
+
+
+[27-Mar-2017 02:07:31 Europe/Rome] controllo/web/htdocs/www.euriskoformazione.com/home/amlapp/uploads/document/contract_86
+
+[27-Mar-2017 02:07:31 Europe/Rome] MOVE:uploads/document/contract_86/3b389b19d20514a6e36f12deebc86514.jpg
+
+[27-Mar-2017 02:07:31 Europe/Rome] db insert ary insert into tmp_image  (imagename,doc_id) values ('3b389b19d20514a6e36f12deebc86514.jpg','86')
+
+[27-Mar-2017 02:09:05 Europe/Rome] passato GETupload_document_image_multi
+
+[27-Mar-2017 02:09:05 Europe/Rome] passato di qui Array
+(
+    [action] => upload_document_image_multi
+    [userid] => 86
+    [for] => contract
+)
+
+
+[27-Mar-2017 02:09:05 Europe/Rome] controllo/web/htdocs/www.euriskoformazione.com/home/amlapp/uploads/document/contract_86
+
+[27-Mar-2017 02:09:05 Europe/Rome] MOVE:uploads/document/contract_86/821df2092a33f94a5b3a7d0c781bb6fe.jpg
+
+[27-Mar-2017 02:09:05 Europe/Rome] db insert ary insert into tmp_image  (imagename,doc_id) values ('821df2092a33f94a5b3a7d0c781bb6fe.jpg','86')
+

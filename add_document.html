@@ -1,137 +1,235 @@
 <!DOCTYPE html>
 <html class="no-js">
-    <head>
-        <meta charset="utf-8">
-        <title>Tax</title>
-        <meta name="description" content="">
-        <meta name="HandheldFriendly" content="True">
-        <meta name="MobileOptimized" content="320">
-        <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+<head>
+  <meta charset="utf-8">
+  <title>Tax</title>
+  <meta name="description" content="">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
 
-        <!-- Stylesheets -->
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/css/animsition.css"> -->
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/css/animsition.css"> -->
 
-        <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
-        <link rel="stylesheet" href="css/material.css">
-        <link rel="stylesheet" href="css/swipebox.min.css">
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/stylesheet.css">
-        <script src="js/angular.min.js"></script>
-    </head>
-    <style>
-        .tsap_SelectPhoto
-        {
-            background-color: #4A4A4A;
-            color: #FFF;
-            display: block;
-            width: 180px;
-            margin: auto;
-            height: 47px;
-            line-height: 46px;
-            font-size: 18px;
-            border: 1px solid #4A4A4A;
-            border-radius: 7px;
-            transition: all 0.2s ease 0s;
-            text-align: center;
-        }
-    </style>
+  <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+  <link rel="stylesheet" href="css/material.css">
+  <link rel="stylesheet" href="css/swipebox.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/stylesheet.css">
+  <script src="js/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="js/custom.js"></script>
+  <script src="js/add_document.js"></script>
+  <script type="text/javascript" src="cordova.js" </script>
+    <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
+    <script src="js/animsition.js"></script>
+    <script src="js/sweetalert.min.js"></script>
+    <script src="js/material.min.js"></script>
+    <script src="js/jquery.swipebox.min.js"></script>
+    <script src="js/function.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script src="js/angular-translate.min.js"></script>
+    <script src="js/add_document_ang.js"></script>
+    <script>
+    langfile = localStorage.getItem("language");
+    if (langfile == 'en')
+    document.write('<scri' + 'pt src="js/enlang_ang.js"></' + 'script>');
+    else
+    document.write('<scri' + 'pt src="js/itlang_ang.js"></' + 'script>');
+    if(langfile ==  "en"){
+      //             $.getScript("js/i18n/angular-locale_en.js");
+      document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
+    }
+    else{
+      //             $.getScript("js/i18n/angular-locale_it.js");
+      document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
+    }
+    </script>
+    <script src="js/ng-currency.js"></script>
+  </head>
+  <style>
+  .tsap_SelectPhoto
+  {
+    background-color: #4A4A4A;
+    color: #FFF;
+    display: block;
+    width: 180px;
+    margin: auto;
+    height: 47px;
+    line-height: 46px;
+    font-size: 18px;
+    border: 1px solid #4A4A4A;
+    border-radius: 7px;
+    transition: all 0.2s ease 0s;
+    text-align: center;
+  }
+  </style>
 
-    <body  >
-      Ciao
-        <div ng-app="myApp" ng-controller="personCtrl" class="animsition">
-            <div class="mdl-layout mdl-js-layout mdl-layout--overlay-drawer-button">
+  <body  >
+    <div ng-app="myApp" ng-controller="personCtrl" class="animsition">
+      <div class="mdl-layout mdl-js-layout mdl-layout--overlay-drawer-button">
 
-                <!-- Sidebar -->
+        <!-- Sidebar -->
 
-                <!-- Page Content -->
-                <main class="mdl-layout__content">
-                    <div class=""> <!-- card -->
-                        <div class="account-info dark-blue-bg">
-                            <div class="account-navigation"> <!-- top icons -->
-                                 <a class="mdl-button mdl-js-button mdl-button--icon left" onclick="redirect('multipledocuments.html')" href="javascript:;">
-                                    <img src="img/back-button.png">
-                                  </a>
-                                <!--<button class="mdl-button mdl-js-button mdl-button--icon right">
-                                    <i class="material-icons">close</i>
-                                </button> -->
-                                <span class="main-heading">{{datalang.Adddocument}} </span>
-                                <div class="clr"></div>
-                            </div>
-                        </div>
-
-
-                        <div class="account-data add-customer-data"> <!-- text fields -->
-                            <div class="mdl-card mdl-shadow--2dp ">
-                                <form action="#">
-
-
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                                        <input class="mdl-textfield__input" type="text" placeholder=" {{datalang.Documenttitle}} *" id="doc_name" />
-                                    </div>
-                                    <input type="hidden" id="doc_image" >
-                                    <div class="mdl-grid">
-                                      <div class="mdl-cell center">
-                                        <div id="add_photo" onclick="add_photo()" class="icon material-icons md-36 " style="fill:red">add_a_photo</div>
-                                                    <div class="mdl-tooltip mdl-tooltip--large" for="add_photo">add a photo</div>
-                                        </div>
-                                    <div class="mdl-cell center ">
-                                      <div id="add_gallery" onclick="uploadfromgallery()"  class="center icon material-icons blue">insert_photo</div>
-                                      <div class="mdl-tooltip mdl-tooltip--large" for="add_gallery">from gallery</div>
-                                      </div>
-                                  <!----
-                                  <div class="mdl-cell">
-                                <div id="add_doc" class="icon material-icons orange">insert_drive_file</div>
-                                            <div class="mdl-tooltip mdl-tooltip--large" for="add_doc">add a file</div>
-                                </div>
-                                -->
-                                </div>
-
-
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                                        <center> <img id="agent_image" style="height:100px;width:100px;"  src="img/add-account.png"> <img style="display:none;height:100px;width:100px;" class="profile-Img" src="img/load.gif" id="profileimgloader"> </center>
-                                    </div>
-                                </form>
-                                <div class="center-align">
-                                    <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="save_kyc(1)" href="javascript:;">
-                                        {{datalang.Save}}
-                                    </a>
-
-                                    <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
-                                </div>
-
-                            </div>
-                            <div class="clr"></div>
-
-                        </div>
-
-                    </div>
-                </main>
+        <!-- Page Content -->
+        <main class="mdl-layout__content">
+          <div class=""> <!-- card -->
+            <div class="account-info dark-blue-bg">
+              <div class="account-navigation"> <!-- top icons -->
+                <a class="mdl-button mdl-js-button mdl-button--icon left" onclick="redirect('multipledocuments.html')" href="javascript:;">
+                  <img src="img/back-button.png">
+                </a>
+                <!--<button class="mdl-button mdl-js-button mdl-button--icon right">
+                <i class="material-icons">close</i>
+              </button> -->
+              <span class="main-heading">{{viewName | translate}} </span>
+              <div class="clr"></div>
             </div>
+          </div>
+
+
+          <div class="account-data add-customer-data"> <!-- text fields -->
+            <div class="mdl-card mdl-shadow--2dp ">
+              <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--12-col">
+                  <form name="form"  novalidate>
+                    <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                      <input type="hidden" ng-model="Doc.per" val="contract">
+                      <input class="mdl-textfield__input" type="text"
+                      ng-model="Doc.doc_name "
+                      id="Doc_doc_name" name="Doc_doc_name" />
+                      <label  for="Doc_doc_name" class="mdl-textfield__label" >{{'Nome documento' | translate }}</label>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="Doc_doc_name" ng-show="form.Doc_doc_name.$invalid && form.Doc_doc_name.$touched">
+                        <span ng-show="form.Doc_doc_name.$error.required">Required.</span>
+                      </span>
+
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                      <input class="mdl-textfield__input" type="text"
+                      ng-keyup="showAC('Doc.doc_type');"
+                      ng-model="Doc.doc_type "
+                      id="Doc_doc_type" name="Doc_doc_type" />
+                      <label  for="Doc_doc_type" class="mdl-textfield__label" >{{'Tipo documento' | translate }}</label>
+                      <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                        <tbody style="display:table">
+                          <tr ng-click="addWord('Doc_doc_type',item.word)" ng-repeat="item in word.Doc_doc_type">
+                            <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="Doc_doc_type" ng-show="form.Doc_doc_type.$invalid && form.Doc_doc_type.$touched">
+                        <span ng-show="form.Doc_doc_type.$error.required">Required.</span>
+                      </span>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                        <input class="mdl-textfield__input" type="date" id="Doc_doc_date" name="Doc_doc_date"
+                          value=" "   ng-keyup="showAC($event,'contract');"
+                        ng-model="Doc.doc_date"   ng-required="true"
+                        />
+                        <label class="mdl-textfield__label" for="Contract_contract_value_eov">{{'Data Documento' | translate }}*</label>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="Doc_doc_date" ng-show="form.Doc_doc_date.$invalid && form.Doc_doc_date.$touched">
+                          <span ng-show="form.Doc_doc_date.$error.required">{{'Richiesto'|translate}}.</span>
+                        </span>
+
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="demo-card-image mdl-card mdl-shadow--2dp">
+                        <div class="mdl-card__title mdl-card--expand">Immagine</div>
+                        <img ng-show="Doc.image_name.length>0" ng-src ="{{Doc.image_name.length>0 ? Doc.image_name :'' }}" ></img>
+                        <div class="mdl-card__actions">
+                          <div class="mdl-layout-spacer"></div>
+                          <button id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
+                          <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
+                            <span >{{'Scatta una foto'|translate}}.</span>
+                          </span>
+                          <button id="addGallery" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
+                          <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
+                            <span >{{'Scegli da Galleria'|translate}}.</span>
+                          </span>
+                          <button id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
+                          <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+                            <span >{{'Cancella'|translate}}.</span>
+                          </span>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <div class="center-align" style="margin-top:20px">
+                      <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="save_kyc(1)" href="javascript:;">
+                        {{"Save"|translate}}
+                      </a>
+                    </div>
+                  </fieldset>
+                      <!----
+                      <div class="mdl-cell">
+                      <div id="add_doc" class="icon material-icons orange">insert_drive_file</div>
+                      <div class="mdl-tooltip mdl-tooltip--large" for="add_doc">add a file</div>
+                    </div>
+                  -->
+                </form>
+              </div>
+
+            </div>
+
+          </div>
         </div>
-        <script src="js/jquery-2.1.4.min.js"></script>
-        <script type="text/javascript" src="js/custom.js"></script>
-        <script src="js/add_document.js"></script>
-        <script src="cordova.js"></script>
-        <script type="text/javascript">$(document).ready(function () {
-                                            app.initialize();
-                                        });
-        </script>
-        <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/js/jquery.animsition.js"></script> -->
-        <script src="js/animsition.js"></script>
-        <script src="js/sweetalert.min.js"></script>
-        <script src="js/material.min.js"></script>
-        <script src="js/jquery.swipebox.min.js"></script>
-        <script src="js/function.js"></script>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+<script>
+$(document).ready(function() {
+  function resize_img(){
+    $('.demo-card-image img').each(function() {
 
-        <script>
-            langfile = localStorage.getItem("language");
-            if (langfile == 'en')
-                document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
-            else
-                document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
+      var maxWidth = $('.demo-card-image').width(); // Max width for the image
+      var maxHeight = $('.demo-card-image').width();    // Max height for the image
+      var ratio = 16/9;  // Used for aspect ratio
+      var width = $(this).width();    // Current image width
+      var height = $(this).height();  // Current image height
+      $(this).show()
 
-        </script>
-    </body>
+      // Check if the current width is larger than the max
+      if(width > maxWidth){
+        ratio = maxWidth / width;   // get ratio for scaling image
+        $(this).css("width", maxWidth); // Set new width
+        $(this).css("height", height * ratio);  // Scale height based on ratio
+        $(this).css("backgroud-size",  maxWidth +'px' + height*ratio+'px' );  // Scale height based on ratio
+        height = height * ratio;    // Reset height to match scaled image
+        width = width * ratio;    // Reset width to match scaled image
+      }
+
+      // Check if current height is larger than max
+      if(height > maxHeight){
+        ratio = maxHeight / height; // get ratio for scaling image
+        $(this).css("height", maxHeight);   // Set new height
+        $(this).css("width", width * ratio);    // Scale width based on ratio
+        $(this).css("backgroud-size",  width * ratio +'px' + maxheight+'px' );  // Scale height based on ratio
+        $(this).css("backgroud-size",  width * ratio +'px' + maxheight+'px' );  // Scale height based on ratio
+        width = width * ratio;    // Reset width to match scaled image
+        height = height * ratio;    // Reset height to match scaled image
+      }
+      //$(this).parent( ".demo-card-image").css('background-image','url('+$(this).attr('src')+')')
+      //$(this).parent( ".demo-card-image").attr('width',$(this).width())
+      //$(this).parent( ".demo-card-image").attr('height',$(this).height())
+      //$(this).parent( ".demo-card-image").css('background-size',$(this).width()  +'px' + $(this).height()  +'px')
+      //$(this).hide()
+
+
+    });
+  }
+  resize_img();
+});
+
+</script>
 </html>

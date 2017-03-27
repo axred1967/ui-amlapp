@@ -1,5 +1,3 @@
-var app2 = angular.module('myApp', []);
-
 
 var app = {
     initialize: function() {
@@ -12,29 +10,21 @@ var app = {
         // This is an event handler function, which means the scope is the event.
         // So, we must explicitly called `app.report()` instead of `this.report()`.
         app.report('deviceready');
-        document.addEventListener("backbutton", onBackKeyDown, true);
     },
     report: function(id) {
         // Report the event in the console
         console.log("Report: " + id);
     }
 };
-function onDeviceReady() {
-    // Register the event listener
-    document.addEventListener("backbutton", onBackKeyDown, false);
-}
-
 function getChkLogin()
 {
+  document.addEventListener("backbutton", onBackKeyDown, true);
 
         chkloggedin();
 
 
 
 }
-app2.controller('personCtrl', function ($scope) {
-                $scope.datalang = DATALANG;
-            });
 
 
 function save_kyc(type)

@@ -11,7 +11,6 @@ var SERVICEURL2 = "http://www.euriskoformazione.com/amlapp/service.php";
 
 function chkloggedin()
 {
-     //document.addEventListener("backbutton", onBackKeyDown, true);
      var chksession = localStorage.getItem('userId');
     var typesi = localStorage.getItem('userType');
     var langfile = localStorage.getItem("language");
