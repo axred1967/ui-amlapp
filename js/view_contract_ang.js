@@ -105,7 +105,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     localstorage("CustomerProfileId",$scope.Contract.contractor_id);
     redirect('add_customer.html')
  };
- $scope.edit_docu = function(Contract){
+ $scope.edit_docu = function(){
 	 $scope.stack['view_contract.html']={}
 	 $scope.stack['view_contract.html'].action="list_from_view_contract"
 	 localstorage('stack',JSON.stringify($scope.stack))
