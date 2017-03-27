@@ -97,11 +97,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       $scope.lastkey= Object.keys($scope.stack).pop() ;
       if($scope.stack[$scope.lastkey]!==undefined && $scope.stack[$scope.lastkey].action!==undefined){
         $scope.action=$scope.stack[$scope.lastkey].action;
-      }else
-      {
-        $scope.action=$location.search().action
-        $scope.Doc=$location.search()
       }
+
     }
 
     //localstorage("back","view_contract.html");
@@ -239,53 +236,13 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
     }
 
-    $scope.add_document=function(){
-      if ($scope.form.$invalid) {
-          angular.forEach($scope.form.$error, function(field) {
-              angular.forEach(field, function(errorField) {
-                  errorField.$setTouched();
-              })
-          });
-          $scope.formStatus = "Dati non Validi.";
-          console.log("Form is invalid.");
-					return
-      } else {
-          //$scope.formStatus = "Form is valid.";
-          console.log("Form is valid.");
-          console.log($scope.data);
-      }
 
-      var  appData ={
-        id :localStorage.getItem("userId"),
-        usertype: localStorage.getItem('userType')
-      }
-      dbData=$scope.DOC
-
-      var langfileloginchk = localStorage.getItem("language");
-      data= {"action":"savedocument",dbData:dbData}
-      $http.post(SERVICEURL2,data)
-        .success(function(data){
-          $('#loader_img').hide();
-          if(data.RESPONSECODE=='1')
-          {
-            $scope.Doc=data
-            swal("",data.RESPONSE);
-            $scope.back()
-          }
-          else      {
-            swal("",data.RESPONSE);
-          }
-        })
-        .error(function(){
-          console.log('error');
-        })
-    }
     $scope.add_document=function(){
       $scope.stack={}
       $scope.stack['my_document.html']={}
       $scope.stack['my_document.html'].action="add_document_for_contract"
       localstorage('stack',JSON.stringify($scope.stack))
-      Doc={per_id:$scope.contract_id,per:'contract'}
+      Doc={per_id:$scope.Contract.contract_id,per:'contract'}
       localstorage('Doc',JSON.stringify(Doc))
       redirect('add_document.html')    }
 

@@ -1,8 +1,5 @@
 var app2 = angular.module('myApp', ['pascalprecht.translate','ng-currency','fieldMatch']);
 //Field Match directive
-app2.config(['$locationProvider', function($locationProvider) {
-   $locationProvider.html5Mode(true);
-}]);
 angular.module('fieldMatch', [])
    .directive('fieldMatch', ["$parse", function($parse) {
        return {
@@ -67,12 +64,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
       $scope.lastkey= Object.keys($scope.stack).pop() ;
       if($scope.stack[$scope.lastkey]!==undefined && $scope.stack[$scope.lastkey].action!==undefined){
         $scope.action=$scope.stack[$scope.lastkey].action;
-      }else
-      {
-        $scope.action=$location.search().action
-        $scope.Doc=$location.search()
-      }
     }
+  }
 
     //localstorage("back","view_contract.html");
     switch ($scope.action){
@@ -97,15 +90,17 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
 
 
              break;
-             case 'add_for_contract' :
-                  Contract=JSON.parse(localStorage.getItem('Doc'))
-                  convertDateStringsToDates(Contract)
-                  $scope.Doc.per="Contract"
-                  $scope.Doc.per_id=Contract.id
+             case 'add_document_for_contract' :
+                  Doc=JSON.parse(localStorage.getItem('Doc'))
+                  convertDateStringsToDates(Doc)
+                  $scope.Doc.per=Doc.per
+                  $scope.Doc.per_id=Doc.per_id
+                  $scope.Doc.doc_date=new Date()
                   $scope.action='add'
                   $scope.viewName="Aggiungi Documento"
 
                   break;
+
         default :
              $scope.Doc.image_name=""
              $scope.Doc.doc_date=new Date()
