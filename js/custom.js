@@ -243,6 +243,7 @@ function convertDatestoStrings(input) {
 
 function onBackKeyDown(evt) {
   alert('back');
+  console.log('indietro')
   if (localStorage.getItem('stack')!=null) {
     stack=JSON.parse(localStorage.getItem('stack'))
     lastkey= Object.keys($scope.stack).pop() ;

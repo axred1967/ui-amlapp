@@ -4,7 +4,7 @@ var app = {
         this.bind();
     },
     bind: function() {
-        document.addEventListener('deviceready', getChkLogin(), false);
+        document.addEventListener('deviceready', getChkLogin, false);
     },
     deviceready: function() {
         // This is an event handler function, which means the scope is the event.
@@ -18,8 +18,20 @@ var app = {
 };
 function getChkLogin()
 {
-        document.addEventListener("backbutton", onBackKeyDown, false);
+        document.addEventListener("backbutton", function(e){
+          alert('back');
+          console.log('indietro')
+          if (localStorage.getItem('stack')!=null) {
+            stack=JSON.parse(localStorage.getItem('stack'))
+            lastkey= Object.keys($scope.stack).pop() ;
+            back=lastkey
+            delete $scope.stack[back]
+            redirect(back)
+            return
+          }
+          window.history.go(-1);
 
+        }, true);
         chkloggedin();
 
 
