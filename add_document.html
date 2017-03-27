@@ -97,41 +97,41 @@
                 <div class="mdl-cell mdl-cell--12-col">
                   <form name="form"  novalidate>
                     <fieldset>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                      <input type="hidden" ng-model="Doc.per" val="contract">
-                      <input class="mdl-textfield__input" type="text"
-                      ng-model="Doc.doc_name "
-                      id="Doc_doc_name" name="Doc_doc_name" />
-                      <label  for="Doc_doc_name" class="mdl-textfield__label" >{{'Nome documento' | translate }}</label>
-                      <span class="mdl-tooltip mdl-tooltip--validation" for="Doc_doc_name" ng-show="form.Doc_doc_name.$invalid && form.Doc_doc_name.$touched">
-                        <span ng-show="form.Doc_doc_name.$error.required">Required.</span>
-                      </span>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                        <input type="hidden" ng-model="Doc.per" val="contract">
+                        <input class="mdl-textfield__input" type="text"
+                        ng-model="Doc.doc_name "
+                        id="Doc_doc_name" name="Doc_doc_name" />
+                        <label  for="Doc_doc_name" class="mdl-textfield__label" >{{'Nome documento' | translate }}</label>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="Doc_doc_name" ng-show="form.Doc_doc_name.$invalid && form.Doc_doc_name.$touched">
+                          <span ng-show="form.Doc_doc_name.$error.required">Required.</span>
+                        </span>
 
                       </div>
                     </fieldset>
                     <fieldset>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                      <input class="mdl-textfield__input" type="text"
-                      ng-keyup="showAC('Doc.doc_type');"
-                      ng-model="Doc.doc_type "
-                      id="Doc_doc_type" name="Doc_doc_type" />
-                      <label  for="Doc_doc_type" class="mdl-textfield__label" >{{'Tipo documento' | translate }}</label>
-                      <table class="mdl-data-table mdl-js-data-table  border-none  ">
-                        <tbody style="display:table">
-                          <tr ng-click="addWord('Doc_doc_type',item.word)" ng-repeat="item in word.Doc_doc_type">
-                            <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <span class="mdl-tooltip mdl-tooltip--validation" for="Doc_doc_type" ng-show="form.Doc_doc_type.$invalid && form.Doc_doc_type.$touched">
-                        <span ng-show="form.Doc_doc_type.$error.required">Required.</span>
-                      </span>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                        <input class="mdl-textfield__input" type="text"
+                        ng-keyup="showAC('Doc.doc_type');"
+                        ng-model="Doc.doc_type "
+                        id="Doc_doc_type" name="Doc_doc_type" />
+                        <label  for="Doc_doc_type" class="mdl-textfield__label" >{{'Tipo documento' | translate }}</label>
+                        <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                          <tbody style="display:table">
+                            <tr ng-click="addWord('Doc_doc_type',item.word)" ng-repeat="item in word.Doc_doc_type">
+                              <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="Doc_doc_type" ng-show="form.Doc_doc_type.$invalid && form.Doc_doc_type.$touched">
+                          <span ng-show="form.Doc_doc_type.$error.required">Required.</span>
+                        </span>
                       </div>
                     </fieldset>
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                         <input class="mdl-textfield__input" type="date" id="Doc_doc_date" name="Doc_doc_date"
-                          value=" "   ng-keyup="showAC($event,'contract');"
+                        value=" "   ng-keyup="showAC($event,'contract');"
                         ng-model="Doc.doc_date"   ng-required="true"
                         />
                         <label class="mdl-textfield__label" for="Contract_contract_value_eov">{{'Data Documento' | translate }}*</label>
@@ -142,7 +142,7 @@
                       </div>
                     </fieldset>
                     <fieldset>
-                        <div class="demo-card-image mdl-card mdl-shadow--2dp">
+                      <div class="demo-card-image mdl-card mdl-shadow--2dp">
                         <div class="mdl-card__title mdl-card--expand">Immagine</div>
                         <img ng-show="Doc.image_name.length>0" ng-src ="{{Doc.image_name.length>0 ? Doc.image_name :'' }}" ></img>
                         <div class="mdl-card__actions">
@@ -159,32 +159,32 @@
                           <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
                             <span >{{'Cancella'|translate}}.</span>
                           </span>
+                        </div>
                       </div>
-                    </div>
-                  </fieldset>
-                  <fieldset>
-                    <div class="center-align" style="margin-top:20px">
-                      <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="save_kyc(1)" href="javascript:;">
-                        {{"Save"|translate}}
-                      </a>
-                    </div>
-                  </fieldset>
-                      <!----
-                      <div class="mdl-cell">
-                      <div id="add_doc" class="icon material-icons orange">insert_drive_file</div>
-                      <div class="mdl-tooltip mdl-tooltip--large" for="add_doc">add a file</div>
-                    </div>
-                  -->
-                </form>
-              </div>
-
+                    </fieldset>
+                    <fieldset>
+                      <div class="center-align" style="margin-top:20px">
+                        <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="save_kyc(1)" href="javascript:;">
+                          {{"Save"|translate}}
+                        </a>
+                      </div>
+                    </fieldset>
+                    <!----
+                    <div class="mdl-cell">
+                    <div id="add_doc" class="icon material-icons orange">insert_drive_file</div>
+                    <div class="mdl-tooltip mdl-tooltip--large" for="add_doc">add a file</div>
+                  </div>
+                -->
+              </form>
             </div>
 
           </div>
+
         </div>
       </div>
-    </main>
-  </div>
+    </div>
+  </main>
+</div>
 </div>
 </body>
 <script>

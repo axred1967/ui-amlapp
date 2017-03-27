@@ -1,8 +1,5 @@
 var app2 = angular.module('myApp', ['pascalprecht.translate','ng-currency','fieldMatch']);
 //Field Match directive
-app2.config(['$locationProvider', function($locationProvider) {
-   $locationProvider.html5Mode(true);
-}]);
 angular.module('fieldMatch', [])
    .directive('fieldMatch', ["$parse", function($parse) {
        return {
@@ -57,7 +54,7 @@ app2.filter('capitalize', function() {
 
     }
 });
-app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
+app2.controller('personCtrl', function ($scope,$http,$translate) {
     $('#loader_img').hide()
     $scope.action="";
     $scope.Docs={}
@@ -122,9 +119,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
 
              break;
         default :
-             $scope.Doc.image_name=""
-             $scope.Doc.doc_date=new Date()
-             $scope.viewName="Nuovo Documento"
+             $scope.viewName="Documenti Contratto"
               break;
     }
 
