@@ -54,7 +54,7 @@ app2.filter('capitalize', function() {
 
     }
 });
-app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
+app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.action="";
     $scope.Doc={}
     $scope.word={};
@@ -203,7 +203,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
             .success(function(data) {
                       if(data.RESPONSECODE=='1') 			{
                         //$word=$($search.currentTarget).attr('id');
-                        $scope.word[$search]=data.RESPONSE;
+                        $scope.Doc.doc_image=data.RESPONSE.imagename;
                       }
              })
             .error(function() {

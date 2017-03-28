@@ -47,7 +47,7 @@ app2.run(function($rootScope, $timeout) {
 app2.controller('personCtrl', function ($scope,$http,$location) {
 
 
-
+    $scope.loaded=-1;
     var id=localStorage.getItem("userId");
   	var email=localStorage.getItem("userEmail");
     $('#loader_img').hide();
@@ -71,7 +71,7 @@ app2.controller('personCtrl', function ($scope,$http,$location) {
         lastkey= Object.keys($scope.Contracts).pop() ;
          last=$scope.Contracts[lastkey].id;
       }
-
+      $('#loader_img').show()
       data= {"action":"ContractList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last}
       $http.post(SERVICEURL2,  data )
           .success(function(responceData)  {

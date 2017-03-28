@@ -214,15 +214,18 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.winFT=function (r)
     {
       $scope.Doc=JSON.parse(localstorage.getItem('Doc'))
+      var foundItem = $filter('filter')($scope.Docs, { id: $scope.Doc.id  }, true)[0];
+      var review_info   =JSON.parse(r.response);
+      var id = review_info.id;
         $('#doc_image').val(review_info.response);
        // var review_selected_image  =  review_info.review_id;
         //$('#review_id_checkin').val(review_selected_image);
-        data={ "action":"documentList", dbData:dbData}
+        data={ "action":"get_document_image_name_multi", id:id}
         $http.post( SERVICEURL2,  data )
             .success(function(data) {
                       if(data.RESPONSECODE=='1') 			{
                         //$word=$($search.currentTarget).attr('id');
-                        $scope.Docs=data.RESPONSE;
+                        $scope.Docs[foudItem].doc_image=data.RESPONSE.imagename;
                       }
              })
             .error(function() {
