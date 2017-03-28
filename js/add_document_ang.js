@@ -214,9 +214,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         $http.post( SERVICEURL2,  data )
             .success(function(data) {
                       if(data.RESPONSECODE=='1') 			{
-                        $http.post( LOG,  {data:data.RESPONSE})
                         $scope.Doc.doc_image=data.RESPONSE;
-                        $scope.Doc.IMGURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
+                        $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
+                        $http.post( LOG,  {data:data.RESPONSE ,doc:$scope.doc})
 
                       }
              })
