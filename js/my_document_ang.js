@@ -160,9 +160,22 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         }
         $scope.oldWord= $($search.currentTarget).val()
     }
-    $scope.deleteDoc=function()
+    $scope.deleteDoc=function(Doc )
     {
-      $scope.Doc.image_name=""
+      navigator.notification.confirm(
+          'Vuoi cancellare il Documento!', // message
+          function(button) {
+           if ( button == 1 ) {
+               $scope.deleteDoc2(Doc);
+           }
+          },            // callback to invoke with index of button pressed
+          'Sei sicuro?',           // title
+          ['Si','No']     // buttonLabels
+          );
+
+    }
+    $scope.deleteDoc2=function(Doc){
+      $http.post(SERVICEURL2,{action:'delete',table:'documents','primary':'id',id:Doc.id })
     }
 
     $scope.uploadfromgallery=function(Doc)
@@ -265,3 +278,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     }
 
 })
+function onConfirm(buttonIndex,$scope,doc) {
+    if (buttonIndex=1)
+      $scope.deleteDoc(doc)
+}

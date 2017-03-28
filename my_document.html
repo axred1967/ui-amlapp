@@ -124,11 +124,11 @@
                     <span >{{'Scegli da Galleria'|translate}}.</span>
                   </span>
                   <button id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc(Doc)" ><i class="material-icons">delete</i></button>
-                  <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc(Doc)" >
                     <span >{{'Cancella'|translate}}.</span>
                   </span>
                 </div>
-                <div class="mdl-card__actions" style="background-color:white" ng-click="toDoc(Doc)">
+                <div class="mdl-card__actions" style="background-color:white" ng-click="toDoc(Doc.id)">
 
                   {{Doc.doc_type}}<div class="mdl-layout-spacer"></div>
                   {{Doc.doc_date |  date : 'shortDate'}}<br/>

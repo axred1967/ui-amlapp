@@ -251,10 +251,10 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         id :localStorage.getItem("userId"),
         usertype: localStorage.getItem('userType')
       }
-      dbData=$scope.DOC
+      dbData=$scope.Doc
 
       var langfileloginchk = localStorage.getItem("language");
-      data= {"action":"savedocument",dbData:dbData}
+      data= {"action":"savedocument",type:$scope.action, dbData:dbData}
       $http.post(SERVICEURL2,data)
         .success(function(data){
           $('#loader_img').hide();

@@ -4,8 +4,8 @@ header('Access-Control-Allow-Methods: GET, POST');
 include_once("config.php");
 error_log("passato1 ".$_SERVER['REQUEST_METHOD']. $_REQUEST['action'].PHP_EOL);
 if (strlen($_REQUEST['action']) ==0 && $_SERVER['REQUEST_METHOD'] == 'POST' && empty( $_POST ))
-  $_POST=$_REQUEST = json_decode( file_get_contents( 'php://input' ), true );
-  error_log("passato ".$_SERVER['REQUEST_METHOD']. $_REQUEST['action'].PHP_EOL);
+$_POST=$_REQUEST = json_decode( file_get_contents( 'php://input' ), true );
+error_log("passato ".$_SERVER['REQUEST_METHOD']. $_REQUEST['action'].PHP_EOL);
 
 switch($_REQUEST['action'])
 {
@@ -1967,12 +1967,15 @@ case 'get_document_image_name_multi' :
 case 'savedocument' :
 {
   $aryData = $_REQUEST['dbData'];
-
-  $flgIn = $db->insertAry("contract_documents",$aryData);
+  if ($_REQUEST['type']=='add')
+  $flgIn = $db->insertAry("documents",$aryData);
+  if ($_REQUEST['type']=='edit')
+  $flgIn = $db->updateAry("documents",$aryData);
 
   $data = array(
     'RESPONSECODE'	=>  1,
     'RESPONSE'	=> $imagename,
+    'lastid'=> $flgIn
   );
   echo json_encode($data);
   break;
@@ -2018,8 +2021,20 @@ case 'upload_imagecontract' :
   $data = array( 'response' => $newfile,'file_name' => $_FILES["file"]["tmp_name"] );
   echo json_encode($data);
   break;
-
 }
+case 'deleterow':
+{
+  $where = "where " . $_REQUEST['primary'] ."=". $_REQUEST['id'];
+  $flgIn=$db->delete($_REQUEST['table'],$where);
+  if ($flgIn>0)
+  $data=array(  'RESPONSECODE'	=>  1,   'RESPONSE'	=> "cancellato");
+  else
+  $data=array(  'RESPONSECODE'	=>  0,   'RESPONSE'	=> "errore");
+  echo json_encode($data);
+  break;
+}
+
+
 
 
 

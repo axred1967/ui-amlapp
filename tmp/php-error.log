@@ -1,0 +1,591 @@
+[28-Mar-2017 16:04:59 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:04:59 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:04:59 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:04:59 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:04:59 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:04:59 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:07:22 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:07:22 Europe/Rome] passato POSTContractList
+
+[28-Mar-2017 16:07:22 Europe/Rome] db get_rows SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[28-Mar-2017 16:07:22 Europe/Rome] get val - SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[28-Mar-2017 16:07:22 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.status,
+  us.user_id, concat(us.name,' ',us.surname) as fullname,us.email,us.mobile_number,us.image,us.user_id,cmy.name,concat(op.name,' ',op.surname) as other_name
+  FROM contract co JOIN users us ON co.contractor_id = us.user_id
+  left JOIN risk rk ON rk.cpu = co.cpu
+  LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
+  LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2 WHERE co.agency_id ='14' AND co.status <> 2   and co.id <  99999999999 ORDER BY co.id DESC 
+
+[28-Mar-2017 16:07:23 Europe/Rome] passato1 POSTfetchuserimage
+
+[28-Mar-2017 16:07:23 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 16:07:23 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 16:07:24 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:07:24 Europe/Rome] passato POSTview_Contract_info
+
+[28-Mar-2017 16:07:24 Europe/Rome] view_Contract_info1-77
+
+
+[28-Mar-2017 16:07:24 Europe/Rome] view_Contract_infoxxSELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.contractor_id,co.role_for_other,
+    co.contract_eov,co.act_for_other,
+    concat(us.name,' ',us.surname) as fullname,us.surname,us.name as name1, us.email,us.mobile_number,us.image,us.user_id as other_id,rk.status,cmy.company_id,cmy.name,concat(op.name,' ',op.surname) as other_name
+
+    FROM contract co JOIN users us ON co.contractor_id = us.user_id
+    left JOIN risk rk ON rk.cpu = co.cpu
+    LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
+    LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2
+    WHERE co.id ='77'  
+
+
+[28-Mar-2017 16:07:24 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.contractor_id,co.role_for_other,
+    co.contract_eov,co.act_for_other,
+    concat(us.name,' ',us.surname) as fullname,us.surname,us.name as name1, us.email,us.mobile_number,us.image,us.user_id as other_id,rk.status,cmy.company_id,cmy.name,concat(op.name,' ',op.surname) as other_name
+
+    FROM contract co JOIN users us ON co.contractor_id = us.user_id
+    left JOIN risk rk ON rk.cpu = co.cpu
+    LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
+    LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2
+    WHERE co.id ='77'  
+
+[28-Mar-2017 16:07:24 Europe/Rome] view_Contract_infox2-Array
+(
+    [contract_id] => 77
+    [nature_contract] => Assicurazioni vita
+    [scope_contract] => Risparmio
+    [CPU] => 9/2017
+    [contract_date] => 2017-02-10
+    [kyc_status] => 0
+    [contract_value] => 10000
+    [contractor_id] => 131
+    [role_for_other] => Socio 33%
+    [contract_eov] => 2019-02-10
+    [act_for_other] => 1
+    [fullname] => Rosy Magliano
+    [surname] => Magliano
+    [name1] => Rosy
+    [email] => rosy@euriskoformazione.it
+    [mobile_number] => 3993993933
+    [image] => 
+    [other_id] => 131
+    [status] => 
+    [company_id] => 
+    [name] => 
+    [other_name] => 
+)
+-
+
+
+[28-Mar-2017 16:07:25 Europe/Rome] passato1 POSTfetchuserimage
+
+[28-Mar-2017 16:07:25 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 16:07:25 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 16:07:27 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:07:27 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:07:27 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:07:27 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:07:27 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:07:27 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:07:31 Europe/Rome] passato1 POSTfetchuserimage
+
+[28-Mar-2017 16:07:31 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 16:07:31 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 16:07:37 Europe/Rome] REMOTELOG POSTArray
+(
+    [data] => http://www.euriskoformazione.com/amlapp/service.php?action=upload_document_image_multi&userid=77&for=contract
+)
+
+
+[28-Mar-2017 16:07:38 Europe/Rome] passato1 POSTupload_document_image_multi
+
+[28-Mar-2017 16:07:38 Europe/Rome] passato POSTupload_document_image_multi
+
+[28-Mar-2017 16:07:38 Europe/Rome] passato di qui Array
+(
+    [action] => upload_document_image_multi
+    [userid] => 77
+    [for] => contract
+)
+
+
+[28-Mar-2017 16:07:38 Europe/Rome] controllo/web/htdocs/www.euriskoformazione.com/home/amlapp/uploads/document/contract_77
+
+[28-Mar-2017 16:07:38 Europe/Rome] MOVE:/tmp/phpwqcb30uploads/document/contract_77/dee0c6356114cf55bc891b8dccfed0e8.jpg
+
+[28-Mar-2017 16:07:38 Europe/Rome] COPY:uploads/document/contract_77/dee0c6356114cf55bc891b8dccfed0e8.jpg---uploads/document/contract_77/resize/dee0c6356114cf55bc891b8dccfed0e8.jpg
+
+[28-Mar-2017 16:07:38 Europe/Rome] db insert ary insert into tmp_image  (imagename,per_id) values ('dee0c6356114cf55bc891b8dccfed0e8.jpg','77')
+
+[28-Mar-2017 16:07:38 Europe/Rome] REMOTELOG POSTArray
+(
+    [r] => Array
+        (
+            [bytesSent] => 39573
+            [responseCode] => 200
+            [response] => {"id":114,"response":"dee0c6356114cf55bc891b8dccfed0e8.jpg","file_name":"\/tmp\/phpwqcb30"}
+            [objectId] => 
+        )
+
+    [Doc] => Array
+        (
+            [per] => contract
+            [per_id] => 77
+            [doc_date] => 2017-03-28T14:07:29.976Z
+        )
+
+)
+
+
+[28-Mar-2017 16:07:38 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:07:38 Europe/Rome] passato POSTget_document_image_name_multi
+
+[28-Mar-2017 16:07:38 Europe/Rome] db get_rows select imagename from tmp_image where id='114' 
+
+[28-Mar-2017 16:07:38 Europe/Rome] get val - select imagename from tmp_image where id='114' 
+
+[28-Mar-2017 16:07:38 Europe/Rome] REMOTELOG POSTArray
+(
+    [data] => dee0c6356114cf55bc891b8dccfed0e8.jpg
+)
+
+
+[28-Mar-2017 16:07:48 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:07:48 Europe/Rome] passato POSTACWord
+
+[28-Mar-2017 16:07:48 Europe/Rome] 1
+[28-Mar-2017 16:07:48 Europe/Rome] db get_rows SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[28-Mar-2017 16:07:48 Europe/Rome] get val - SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[28-Mar-2017 16:07:48 Europe/Rome] db get_rows SELECT distinct doc_type  as word from  documents
+    WHERE doc_type   like '%Cart%'  AND agency_id=14 ORDER BY doc_type  ASC limit 5 
+
+[28-Mar-2017 16:08:39 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:08:39 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:08:39 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:08:39 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:08:39 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:08:39 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:08:49 Europe/Rome] passato1 POSTfetchuserimage
+
+[28-Mar-2017 16:08:49 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 16:08:49 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 16:09:01 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:09:01 Europe/Rome] passato POSTsavedocument
+
+[28-Mar-2017 16:09:04 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:09:04 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:09:04 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:09:04 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:09:04 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:09:04 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:10:09 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:10:09 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:10:09 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:10:09 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:10:09 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:10:09 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:11:19 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:11:19 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:11:19 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:11:19 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:11:19 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:11:19 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:12:47 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:12:47 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:12:47 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:12:47 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:12:47 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:12:47 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:13:17 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:13:17 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:13:17 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:13:17 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:13:17 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:13:17 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:13:27 Europe/Rome] passato1 POSTfetchuserimage
+
+[28-Mar-2017 16:13:27 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 16:13:27 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 16:13:36 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:13:36 Europe/Rome] passato POSTsavedocument
+
+[28-Mar-2017 16:13:39 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:13:39 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:13:39 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:13:39 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:13:39 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:13:39 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:13:46 Europe/Rome] passato1 POSTfetchuserimage
+
+[28-Mar-2017 16:13:46 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 16:13:46 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 16:15:14 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:15:14 Europe/Rome] passato POSTsavedocument
+
+[28-Mar-2017 16:15:17 Europe/Rome] passato1 POSTfetchuserimage
+
+[28-Mar-2017 16:15:17 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 16:15:17 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 16:15:31 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:15:31 Europe/Rome] passato POSTsavedocument
+
+[28-Mar-2017 16:15:45 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:15:45 Europe/Rome] passato POSTsavedocument
+
+[28-Mar-2017 16:16:33 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:16:33 Europe/Rome] passato POSTsavedocument
+
+[28-Mar-2017 16:16:33 Europe/Rome] db insert ary insert into documents  (0,id,agency_id,per,per_id,doc_name,doc_type,doc_date,doc_image,log_date,ip) values ('49','49','14','contract','77','Prova','Carta d\'identità','2017-09-01T00:00:00.000Z','333e86ff5c791f078d2dcd080f25b8f9.jpg','2017-03-15 09:16:56',NULL)
+
+[28-Mar-2017 16:16:36 Europe/Rome] passato1 POSTfetchuserimage
+
+[28-Mar-2017 16:16:36 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 16:16:36 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 16:16:46 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:16:46 Europe/Rome] passato POSTsavedocument
+
+[28-Mar-2017 16:16:46 Europe/Rome] db insert ary insert into documents  (0,id,agency_id,per,per_id,doc_name,doc_type,doc_date,doc_image,log_date,ip) values ('49','49','14','contract','77','Prova','Carta d\'identità','2017-09-01T00:00:00.000Z','333e86ff5c791f078d2dcd080f25b8f9.jpg','2017-03-15 09:16:56',NULL)
+
+[28-Mar-2017 16:17:00 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:17:00 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:17:00 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:17:00 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:17:00 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:17:00 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:17:30 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:17:30 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:17:30 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:17:30 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:17:30 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:17:30 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:19:19 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:19:19 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:19:19 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:19:19 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:19:19 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:19:19 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:20:19 Europe/Rome] passato1 POSTfetchuserimage
+
+[28-Mar-2017 16:20:19 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 16:20:19 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 16:20:30 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:20:30 Europe/Rome] passato POSTsavedocument
+
+[28-Mar-2017 16:20:30 Europe/Rome] db insert ary insert into documents  () values ()
+
+[28-Mar-2017 16:20:37 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:20:37 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:20:37 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:20:37 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:20:37 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:20:37 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:21:24 Europe/Rome] passato1 POSTfetchuserimage
+
+[28-Mar-2017 16:21:24 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 16:21:24 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 16:22:42 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:22:42 Europe/Rome] passato POSTsavedocument
+
+[28-Mar-2017 16:22:42 Europe/Rome] tolgo colonne non presentiArray
+(
+    [0] => id
+    [1] => agency_id
+    [2] => per
+    [3] => per_id
+    [4] => doc_name
+    [5] => doc_type
+    [6] => doc_date
+    [7] => doc_image
+    [8] => log_date
+    [9] => ip
+)
+
+-PAssateArray
+(
+    [0] => 49
+    [1] => 14
+    [2] => contract
+    [3] => 77
+    [4] => Prova
+    [5] => Carta d'identità
+    [6] => 2017-09-01T00:00:00.000Z
+    [7] => 333e86ff5c791f078d2dcd080f25b8f9.jpg
+    [8] => 2017-03-15 09:16:56
+    [9] => 
+    [id] => 49
+    [agency_id] => 14
+    [per] => contract
+    [per_id] => 77
+    [doc_name] => Prova2
+    [doc_type] => Carta d'identità
+    [doc_date] => 2017-09-01T00:00:00.000Z
+    [doc_image] => 333e86ff5c791f078d2dcd080f25b8f9.jpg
+    [log_date] => 2017-03-15 09:16:56
+    [ip] => 
+    [IMAGEURI] => http://www.euriskoformazione.com/amlapp/uploads/document/contract_77/resize/
+)
+-Sql1048735_2-Array
+(
+    [0] => id
+    [1] => agency_id
+    [2] => per
+    [3] => per_id
+    [4] => doc_name
+    [5] => doc_type
+    [6] => doc_date
+    [7] => doc_image
+    [8] => log_date
+    [9] => ip
+)
+
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentiid
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentiagency_id
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentiper
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentiper_id
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentidoc_name
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentidoc_type
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentidoc_date
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentidoc_image
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentilog_date
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentiip
+
+[28-Mar-2017 16:22:42 Europe/Rome] db update ary update documents set id='49',agency_id='14',per='contract',per_id='77',doc_name='Prova2',doc_type='Carta d\'identità',doc_date='2017-09-01T00:00:00.000Z',doc_image='333e86ff5c791f078d2dcd080f25b8f9.jpg',log_date='2017-03-15 09:16:56',ip=NULL
+
+[28-Mar-2017 16:22:42 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:22:42 Europe/Rome] passato POSTsavedocument
+
+[28-Mar-2017 16:22:42 Europe/Rome] tolgo colonne non presentiArray
+(
+    [0] => id
+    [1] => agency_id
+    [2] => per
+    [3] => per_id
+    [4] => doc_name
+    [5] => doc_type
+    [6] => doc_date
+    [7] => doc_image
+    [8] => log_date
+    [9] => ip
+)
+
+-PAssateArray
+(
+    [0] => 49
+    [1] => 14
+    [2] => contract
+    [3] => 77
+    [4] => Prova
+    [5] => Carta d'identità
+    [6] => 2017-09-01T00:00:00.000Z
+    [7] => 333e86ff5c791f078d2dcd080f25b8f9.jpg
+    [8] => 2017-03-15 09:16:56
+    [9] => 
+    [id] => 49
+    [agency_id] => 14
+    [per] => contract
+    [per_id] => 77
+    [doc_name] => Prova2
+    [doc_type] => Carta d'identità
+    [doc_date] => 2017-09-01T00:00:00.000Z
+    [doc_image] => 333e86ff5c791f078d2dcd080f25b8f9.jpg
+    [log_date] => 2017-03-15 09:16:56
+    [ip] => 
+    [IMAGEURI] => http://www.euriskoformazione.com/amlapp/uploads/document/contract_77/resize/
+)
+-Sql1048735_2-Array
+(
+    [0] => id
+    [1] => agency_id
+    [2] => per
+    [3] => per_id
+    [4] => doc_name
+    [5] => doc_type
+    [6] => doc_date
+    [7] => doc_image
+    [8] => log_date
+    [9] => ip
+)
+
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentiid
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentiagency_id
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentiper
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentiper_id
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentidoc_name
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentidoc_type
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentidoc_date
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentidoc_image
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentilog_date
+
+[28-Mar-2017 16:22:42 Europe/Rome]  colonne  presentiip
+
+[28-Mar-2017 16:22:42 Europe/Rome] db update ary update documents set id='49',agency_id='14',per='contract',per_id='77',doc_name='Prova2',doc_type='Carta d\'identità',doc_date='2017-09-01T00:00:00.000Z',doc_image='333e86ff5c791f078d2dcd080f25b8f9.jpg',log_date='2017-03-15 09:16:56',ip=NULL
+
+[28-Mar-2017 16:22:57 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:22:57 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:22:57 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:22:57 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:22:57 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:22:57 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:25:30 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:25:30 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:25:30 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:25:30 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:25:30 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:25:30 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:26:31 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:26:31 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:26:31 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 16:26:31 Europe/Rome] passato1 POST
+
+[28-Mar-2017 16:26:31 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 16:26:31 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
