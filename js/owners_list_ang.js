@@ -10,9 +10,13 @@ var app2 = angular.module('myApp', []);
 
 app2.controller('personCtrl', function ($scope,$http) {
     $scope.datalang = DATALANG;
-    if (localStorage.getItem('stack')!=null) {
-      $scope.stack=JSON.parse(localStorage.getItem('stack'))
-      $scope.lastkey= Object.keys($scope.stack).pop() ;
+    $scope.page={}
+
+    page=localStorage.getItem('owners_list.html')
+    if ( page!= null && page.length >0 ){
+      $scope.page=JSON.parse(page)
+      $scope.action=$scope.page.action
+
     }
     $scope.Company=[];
     $scope.Owner=[];
@@ -58,20 +62,14 @@ app2.controller('personCtrl', function ($scope,$http) {
                 swal("", 'Errore')
                  console.log("error");
          });
-         $scope.tocustomer = function(d){
-            tocustomer(d)
-          };
+
           $scope.add_owner=function(Owner){
-            $scope.stack['owners_list.html']={}
-            $scope.stack['owners_list.html'].action="add_owners"
-            localstorage('stack',JSON.stringify($scope.stack))
+            localstorage('add_owners.html',JSON.stringify({action:'',location:'owners_list.html'}))
             redirect('add_owners.html')
 
           }
           $scope.edit_owner=function(Owner){
-            $scope.stack['owners_list.html']={}
-            $scope.stack['owners_list.html'].action="edit_owners"
-            localstorage('stack',JSON.stringify($scope.stack))
+            localstorage('add_owners.html',JSON.stringify({action:'edit_owners',load:true,location:'owners_list.html'}))
 
             localstorage('Owner',JSON.stringify(Owner))
             redirect('add_owners.html')
@@ -79,7 +77,7 @@ app2.controller('personCtrl', function ($scope,$http) {
           }
 
           $scope.back=function(){
-            switch ($scope.stack[$scope.lastkey].action){
+            switch ($scope.page.action){
                case'add_company_for_contract':
                     if ($scope.lastid!==undefined && $scope.lastid>0 ){
                     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
@@ -89,10 +87,7 @@ app2.controller('personCtrl', function ($scope,$http) {
                     }
                     break;
             }
-            back=$scope.lastkey
-            delete $scope.stack[back]
-            localstorage('stack',JSON.stringify($scope.stack))
-            redirect(back)
+            redirect($scope.page.location)
           }
 
       console.log($scope.Contracts);

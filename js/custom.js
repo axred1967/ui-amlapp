@@ -242,15 +242,19 @@ function convertDatestoStrings(input) {
 }
 
 function onBackKeyDown(evt) {
-  alert('back');
+//  alert('back');
+//alert("previous url is: " + window.history.previous.href);
   console.log('indietro')
   if (localStorage.getItem('stack')!=null) {
     stack=JSON.parse(localStorage.getItem('stack'))
+    if (stack.lenght>0) {
     lastkey= Object.keys($scope.stack).pop() ;
     back=lastkey
-    delete $scope.stack[back]
+    delete stack[back]
     redirect(back)
     return
+    }
   }
-  window.history.go(-1);
- }
+  if(window.history.previous!==undefined)
+    window.history.back();
+}

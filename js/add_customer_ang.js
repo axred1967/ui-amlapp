@@ -62,12 +62,15 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.Customer.email="x "
     $scope.Customer.mobile= " "
 */
-    if (localStorage.getItem('stack')!=null) {
-      $scope.stack=JSON.parse(localStorage.getItem('stack'))
-      $scope.lastkey= Object.keys($scope.stack).pop() ;
-    }
+	$scope.page={}
 
-    switch ($scope.stack[$scope.lastkey].action){
+	page=localStorage.getItem('add_customer.html')
+	if ( page!= null && page.length >0 ){
+		$scope.page=JSON.parse(page)
+		$scope.action=$scope.page.action
+
+	}
+	    switch ($scope.stack[$scope.lastkey].action){
         case 'add_customer':
             $scope.viewName="Inserisci Cliente"
             $scope.action="addcustomer"
@@ -152,10 +155,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
 
    $scope.back=function(){
-    back=$scope.lastkey
-    action=$scope.stack[back].action
-    delete $scope.stack[back]
-    switch (action){
+
+    switch ($scope.page.action){
        case'add_customer_for_contract':
             if ($scope.lastid!==undefined && $scope.lastid>0 ){
             $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
@@ -183,8 +184,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
             }
             break;
     }
+		redirect($scope.page.location)
 
-    localstorage('stack',JSON.stringify($scope.stack))
-    redirect(back)
   }
 })

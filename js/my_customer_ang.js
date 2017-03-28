@@ -17,7 +17,7 @@ app2.directive('whenScrolled', function() {
 });
 
 app2.controller('personCtrl', function ($scope,$http) {
-    $scope.stack={}
+   $scope.page={}
     $scope.datalang = DATALANG;
     var id=localStorage.getItem("userId");
   	var email=localStorage.getItem("userEmail");
@@ -87,18 +87,14 @@ app2.controller('personCtrl', function ($scope,$http) {
          $scope.addMoreItems()
 
          $scope.tocustomer = function(d){
-           $scope.stack['my_customer.html']={}
-           $scope.stack['my_customer.html'].action="update_customer"
-           localstorage('stack',JSON.stringify($scope.stack))
+           localstorage('add_customer.html',JSON.stringify({action:'update_customer',location:'my_customer.html'}))
            localstorage("CustomerProfileId",d.user_id);
             localstorage("Customertype",1);
             redirect('add_customer.html')
             };
 
            $scope.add_customer = function(){
-             $scope.stack['my_customer.html']={}
-             $scope.stack['my_customer.html'].action="add_customer"
-             localstorage('stack',JSON.stringify($scope.stack))
+             localstorage('add_customer.html',JSON.stringify({action:'add_customer',location:'my_customer.html'}))
              redirect('add_customer.html')
            };
       console.log($scope.Contracts);

@@ -52,11 +52,15 @@ app2.filter('capitalize', function() {
 });
 app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.word={};
-    if (localStorage.getItem('stack')!=null) {
-      $scope.stack=JSON.parse(localStorage.getItem('stack'))
-      $scope.lastkey= Object.keys($scope.stack).pop() ;
-    }
-    switch ($scope.stack[$scope.lastkey].action){
+    $scope.page={}
+
+    page=localStorage.getItem('add_company.html')
+  	if ( page!= null && page.length >0 ){
+  		$scope.page=JSON.parse(page)
+  		$scope.action=$scope.page.action
+
+  	}
+    switch ($scope.action){
         case 'add_company_for_contract':
             $scope.viewName="Inserisci Società"
             $scope.action="add_company"
@@ -161,7 +165,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
     }
   $scope.back=function(){
-    switch ($scope.stack[$scope.lastkey].action){
+    switch ($scope.page.action){
        case'add_company_for_contract':
             if ($scope.lastid!==undefined && $scope.lastid>0 ){
             $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
@@ -171,9 +175,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
             }
             break;
     }
-    back=$scope.lastkey
-    delete $scope.stack[back]
-    localstorage('stack',JSON.stringify($scope.stack))
-    redirect(back)
+    redirect($scope.page.location)
   }
 })

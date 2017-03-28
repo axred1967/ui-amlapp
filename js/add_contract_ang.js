@@ -55,14 +55,20 @@
      }
  });
  app2.controller('personCtrl', function ($scope,$http,$translate) {
-     if (localStorage.getItem('stack')!=null) {
-       $scope.stack=JSON.parse(localStorage.getItem('stack'))
-       $scope.lastkey= Object.keys($scope.stack).pop() ;
-     }
+    $scope.page={}
+
+   if (localStorage.getItem('add_contract.html').length >0 ){
+     $scope.page=JSON.parse(localStorage.getItem('view_contract.html'))
+     $scope.action=$scope.page.action
+
+   }
+
+   console.log('action'+$scope.action);
+
      $scope.Contrac={}
      $scope.word={};
      //localstorage("back","view_contract.html");
-     switch ($scope.stack[$scope.lastkey].action){
+     switch ($scope.action){
          case 'edit' :
               Contract=JSON.parse(localStorage.getItem('Contract'))
               convertDateStringsToDates(Contract)
@@ -240,31 +246,22 @@
               })
      }
      $scope.add_customer=function(){
-       $scope.stack['add_contract.html']={}
-       $scope.stack['add_contract.html'].action="add_customer_for_contract"
-       localstorage('stack',JSON.stringify($scope.stack))
+       localstorage('add_customer.html',JSON.stringify({action:"add_customer_for_contract",location:"view_contract.html"}))
        redirect('add_customer.html')
 
      }
      $scope.add_company=function(){
-       $scope.stack['add_contract.html']={}
-       $scope.stack['add_contract.html'].action="add_company_for_contract"
-       localstorage('stack',JSON.stringify($scope.stack))
+       localstorage('add_company.html',JSON.stringify({action:"add_company_for_contract",location:"view_contract.html"}))
        redirect('add_company.html')
 
      }
      $scope.add_other=function(){
-       $scope.stack['add_contract.html']={}
-       $scope.stack['add_contract.html'].action="add_other_for_contract"
-       localstorage('stack',JSON.stringify($scope.stack))
+       localstorage('add_company.html',JSON.stringify({action:"add_other_for_contract",location:"view_contract.html"}))
        redirect('add_customer.html')
 
      }
      $scope.back=function(){
-       back=$scope.lastkey
-       delete $scope.stack[back]
-      localstorage('stack',JSON.stringify($scope.stack))
-       redirect(back)
+       redirect($scope.page.location)
      }
 
 })

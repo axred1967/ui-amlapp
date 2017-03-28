@@ -1,7 +1,50 @@
-var app2 = angular.module('myApp', []);
+var app2 = angular.module('myApp', ['pascalprecht.translate','ng-currency','fieldMatch']);
+angular.module('fieldMatch', [])
+   .directive('fieldMatch', ["$parse", function($parse) {
+       return {
+           require: 'ngModel',
+           link: function(scope, elem, attrs, ctrl) {
+               var me = $parse(attrs.ngModel);
+               var matchTo = $parse(attrs.fieldMatch);
+               scope.$watchGroup([me, matchTo], function(newValues, oldValues) {
+                   ctrl.$setValidity('fieldmatch', me(scope) === matchTo(scope));
+               }, true);
+           }
+       }
+   }]);
+//Run material design lite
+app2.directive("ngModel",["$timeout", function($timeout){
+            return {
+                restrict: 'A',
+                priority: -1, // lower priority than built-in ng-model so it runs first
+                link: function(scope, element, attr) {
+                    scope.$watch(attr.ngModel,function(value){
+                        $timeout(function () {
+                            if (value){
+                                element.trigger("change");
+                            } else if(element.attr('placeholder') === undefined) {
+                                if(!element.is(":focus"))
+                                    element.trigger("blur");
+                            }
+                        });
+                    });
+                }
+            };
+        }]);
 
-app2.controller('personCtrl', function ($scope,$http) {
-    $scope.datalang = DATALANG;
+app2.run(function($rootScope, $timeout) {
+   $rootScope.$on('$viewContentLoaded', function(event) {
+       $timeout(function() {
+           componentHandler.upgradeAllRegistered();
+       }, 0);
+   });
+   $rootScope.render = {
+       header: true,
+       aside: true
+   }
+});
+
+app2.controller('personCtrl', function ($scope,$http,$location) {
 
 
 
@@ -60,10 +103,7 @@ app2.controller('personCtrl', function ($scope,$http) {
     }
    $scope.addMoreItems()
    $scope.tocontract = function(d){
-     $scope.stack={}
-     $scope.stack['my_contract.html']={}
-     $scope.stack['my_contract.html'].action="view"
-     localstorage('stack',JSON.stringify($scope.stack))
+     localstorage('view_contract.html',JSON.stringify({action:'view',location:'my_contract.html'}))
      localstorage("contract_id",d.contract_id);
      localstorage("customer_id",d.contractor_id);
      localstorage("Customertype",1);
@@ -71,18 +111,12 @@ app2.controller('personCtrl', function ($scope,$http) {
      redirect('view_contract.html')
     };
     $scope.add_contract = function(){
-      $scope.stack={}
-      $scope.stack['my_contract.html']={}
-      $scope.stack['my_contract.html'].action="add_contract"
-      localstorage('stack',JSON.stringify($scope.stack))
+      localstorage('add_contract.html',JSON.stringify({action:'add_contract',location:'my_contract.html'}))
       redirect('add_contract.html')
      };
     $scope.back = function(d){
-      back=$scope.lastkey
-      delete $scope.stack[$scope.lastkey]
-      localstorage('stack',JSON.stringify($scope.stack))
-      redirect(back)
-    }
+       redirect($scope.page.location)
+         }
 console.log($scope.Contracts);
 
 

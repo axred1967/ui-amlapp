@@ -55,12 +55,14 @@ app2.filter('capitalize', function() {
 }
 });
 app2.controller('personCtrl', function ($scope,$http,$translate) {
-    if (localStorage.getItem('stack')!=null) {
-      $scope.stack=JSON.parse(localStorage.getItem('stack'))
-      $scope.lastkey= Object.keys($scope.stack).pop() ;
-    }
+	page=localStorage.getItem('view_contract.html')
+	if ( page!= null && page.length >0 ){
+		$scope.page=JSON.parse(page)
+		$scope.action=$scope.page.action
 
+	}
 
+		console.log('action'+$scope.action);
     var id=localStorage.getItem("userId");
   	var email=localStorage.getItem("userEmail");
     var contract_id = localStorage.getItem("contract_id");
@@ -92,38 +94,32 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       edit_risk_account(id)
   };
   $scope.edit_contract = function(){
-    $scope.stack['view_contract.html']={}
-    $scope.stack['view_contract.html'].action="edit"
-    localstorage('stack',JSON.stringify($scope.stack))
+		localstorage('add_contract.html',JSON.stringify({action:'edit',location:'view_contract.html'}))
     localstorage('Contract', JSON.stringify($scope.Contract));
     redirect('add_contract.html')
  };
   $scope.edit_profile = function(){
-    $scope.stack['view_contract.html']={}
-    $scope.stack['view_contract.html'].action="update_customer"
-    localstorage('stack',JSON.stringify($scope.stack))
+		localstorage('add_customer.html',JSON.stringify({action:'update_customer',location:'view_contract.html'}))
     localstorage("CustomerProfileId",$scope.Contract.contractor_id);
     redirect('add_customer.html')
  };
  $scope.edit_docu = function(){
-	 $scope.stack['view_contract.html']={}
-	 $scope.stack['view_contract.html'].action="list_from_view_contract"
-	 localstorage('stack',JSON.stringify($scope.stack))
+	 localstorage('my_document.html',JSON.stringify({action:'list_from_view_contract',location:'view_contract.html'}))
 	 localstorage('Contract', JSON.stringify($scope.Contract));
 	 redirect('my_document.html')
 };
  $scope.edit_kyc = function(){
-   $scope.stack['view_contract.html']={}
-   $scope.stack['view_contract.html'].action="edit_kyc"
-   localstorage('stack',JSON.stringify($scope.stack))
+	 localstorage('kyc.html',JSON.stringify({action:'edit_kyc',location:'view_contract.html'}))
    localstorage('Contract',JSON.stringify($scope.Contract))
    redirect('kyc.html')
 };
+$scope.owners = function(){
+	localstorage('owners_lsit.html',JSON.stringify({action:'',location:'view_contract.html'}))
+	localstorage('Contract',JSON.stringify($scope.Contract))
+	redirect('owners_lsit.html')
+};
 
  $scope.back = function(d){
-   back=$scope.lastkey
-   delete $scope.stack[back]
-   localstorage('stack',JSON.stringify($scope.stack))
-   redirect(back)
+       redirect($scope.page.location)
  }
 })

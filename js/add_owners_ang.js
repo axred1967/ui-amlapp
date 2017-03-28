@@ -55,32 +55,35 @@ app2.filter('capitalize', function() {
     }
 });
 app2.controller('personCtrl', function ($scope,$http,$translate) {
+  $scope.page={}
+  page=localStorage.getItem('add_owners.html')
+	if ( page!= null && page.length >0 ){
+		$scope.page=JSON.parse(page)
+		$scope.action=$scope.page.action
 
-     if (localStorage.getItem('stack')!=null) {
-       $scope.stack=JSON.parse(localStorage.getItem('stack'))
-       $scope.lastkey= Object.keys($scope.stack).pop() ;
-     }
+	}
      $scope.word={};
      $scope.Owner={}
      //localstorage("back","view_contract.html");
-     switch ($scope.stack[$scope.lastkey].action){
+     switch ($scope.action){
          case 'edit_owners' :
               $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
               $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
               $scope.action='edit_owners'
-              $scope.viewName="Modifica Contratto"
+              $scope.viewName="Modifica TE"
               break;
          default :
-              if($scope.stack[$scope.lastkey].load)
+              if($scope.page.load!==undefined && $scope.page.load)
                 $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
 
-              $scope.viewName="Nuovo Contratto"
+              $scope.viewName="Nuovo TE"
               $scope.action='add_owners'
               $scope.Owner.company_id=localStorage.getItem("CompanyID");
                break;
      }
 
-
+     if($scope.page.load!==undefined && $scope.page.load)
+       $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
 
 
      $scope.showContractorList=function(){
@@ -149,16 +152,12 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
        $scope.word[$e]=[]
      }
      $scope.back=function(){
-       back=$scope.lastkey
-       delete $scope.stack[back]
-       localstorage('stack',JSON.stringify($scope.stack))
-       redirect(back)
+//       windows.histoery.back()
+       redirect($scope.page.location)
      }
      $scope.add_customer=function(){
-       $scope.stack['add_owners.html']={}
-       $scope.stack['add_owners.html'].action="add_customer_for_owner"
+       localstorage('add_customer.html',JSON.stringify({action:'add_customer_for_owner',location:'add_owners.html'}))
        localstorage('Owner',JSON.stringify($scope.Owner))
-       localstorage('stack',JSON.stringify($scope.stack))
        redirect('add_customer.html')
      }
 

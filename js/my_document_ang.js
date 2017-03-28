@@ -56,18 +56,26 @@ app2.filter('capitalize', function() {
 });
 app2.controller('personCtrl', function ($scope,$http,$translate) {
     $('#loader_img').hide()
+    $scope.page={}
     $scope.action="";
     $scope.Docs={}
     $scope.Doc={}
     $scope.word={};
-    $scope.stack={}
+
+   if (localStorage.getItem('my_document.html').length >0 ){
+     $scope.page=JSON.parse(localStorage.getItem('view_contract.html'))
+     $scope.action=$scope.page.action
+
+   }
+
+   console.log('action'+$scope.action);
     $scope.addMoreItems =function(){
       last=99999999999
       if ( $scope.Contracts!==undefined && $scope.Contracts.length>0){
         lastkey= Object.keys($scope.Contracts).pop() ;
          last=$scope.Contracts[lastkey].id;
       }
-
+      dbData=$scope.Doc
       data={ "action":"documentList", dbData:dbData}
       $('#loader_img').show();
       $http.post(SERVICEURL2,  data )
@@ -92,16 +100,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
 
     }
-   if (localStorage.getItem('stack')!=null ) {
-      $scope.stack=JSON.parse(localStorage.getItem('stack'))
-      $scope.lastkey= Object.keys($scope.stack).pop() ;
-      if($scope.stack[$scope.lastkey]!==undefined && $scope.stack[$scope.lastkey].action!==undefined){
-        $scope.action=$scope.stack[$scope.lastkey].action;
-      }
 
-    }
-
-    //localstorage("back","view_contract.html");
+    $scope.addMoreItems()
     switch ($scope.action){
         case 'list_from_view_contract' :
              $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
@@ -238,10 +238,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
 
     $scope.add_document=function(){
-      $scope.stack={}
-      $scope.stack['my_document.html']={}
-      $scope.stack['my_document.html'].action="add_document_for_contract"
-      localstorage('stack',JSON.stringify($scope.stack))
+      localstorage('add_document.html',JSON.stringify({action:"add_document_for_contract",location:"my_document.html"}))
       Doc={per_id:$scope.Contract.contract_id,per:'contract'}
       localstorage('Doc',JSON.stringify(Doc))
       redirect('add_document.html')    }
@@ -252,10 +249,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       $scope.word[res[1]]=[]
     }
     $scope.back=function(){
-      back=$scope.lastkey
-      delete $scope.stack[back]
      localstorage('stack',JSON.stringify($scope.stack))
-      redirect(back)
+      redirect(scope.page.location)
     }
 
 })

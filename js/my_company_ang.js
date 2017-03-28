@@ -71,27 +71,18 @@ app2.controller('personCtrl', function ($scope,$http) {
 
 
          $scope.tocompany = function(d){
-           $scope.stack={}
            localstorage("CompanyID",d.company_id);
-           $scope.stack['my_company.html']={}
-           $scope.stack['my_company.html'].action="edit_company"
-           localstorage('stack',JSON.stringify($scope.stack))
+           localstorage('add_company.html',JSON.stringify({action:'edit_company',location:'my_company.html'}))
            redirect('add_company.html')
          };
          $scope.add_company = function(){
-           $scope.stack={}
-           $scope.stack['my_company.html']={}
-           $scope.stack['my_company.html'].action="add_company"
-           localstorage('stack',JSON.stringify($scope.stack))
+           localstorage('add_company.html',JSON.stringify({action:'add_company',location:'my_company.html'}))
            redirect('add_company.html')
          };
           $scope.toowners = function(d){
-            $scope.stack={}
+            localstorage('owners_list.html',JSON.stringify({action:'owners_list',location:'my_company.html'}))
             localstorage("Company_name",d.name);
             localstorage("CompanyID",d.company_id);
-            $scope.stack['my_company.html']={}
-            $scope.stack['my_company.html'].action="owners_list"
-            localstorage('stack',JSON.stringify($scope.stack))
             redirect('owners_list.html')
            };
 
