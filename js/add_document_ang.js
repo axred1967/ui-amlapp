@@ -89,6 +89,16 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
 
              break;
+             case 'edit_document_for_contract' :
+                  Doc=JSON.parse(localStorage.getItem('Doc'))
+                  convertDateStringsToDates(Doc)
+                  $scope.Doc=Doc
+                  $scope.action='edit'
+                  $scope.viewName="Modifica Documento"
+  
+
+
+                  break;
              case 'add_document_for_contract' :
                   Doc=JSON.parse(localStorage.getItem('Doc'))
                   convertDateStringsToDates(Doc)
@@ -177,7 +187,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
     $scope.uploadPhoto=function(imageURI){
 
-
        var options = new FileUploadOptions();
        options.fileKey="file";
        options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
@@ -206,6 +215,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                       if(data.RESPONSECODE=='1') 			{
                         $http.post( LOG,  {data:data.RESPONSE})
                         $scope.Doc.doc_image=data.RESPONSE;
+                        $scope.Doc.IMGURI=BASEURL+'uploads/document/'+Doc.per+'_'+Doc.per_id +'/resize/'
+
                       }
              })
             .error(function() {

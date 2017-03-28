@@ -111,7 +111,8 @@
 
               <div class="demo-card-image mdl-card mdl-shadow--2dp">
                 <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
-                <img ng-show="Doc.image_name.length>0" ng-src ="{{Doc.image_name.length>0 ? Doc.image_name :'' }}" ></img>
+                <img ng-click="edit_doc(Doc)" ng-show="Doc.doc_image.length>0" ng-src ="{{Doc.doc_image.length>0 ? Doc.IMAGEURI+ Doc.doc_image :'' }}" ></img>
+
                 <div class="mdl-card__actions">
                   <div class="mdl-layout-spacer"></div>
                   <button id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo(Doc)" ><i class="material-icons">add_a_photo</i></button>
@@ -127,10 +128,10 @@
                     <span >{{'Cancella'|translate}}.</span>
                   </span>
                 </div>
-                <div class="mdl-card__actions" ng-click="toDoc(Doc)">
+                <div class="mdl-card__actions" style="background-color:white" ng-click="toDoc(Doc)">
 
                   {{Doc.doc_type}}<div class="mdl-layout-spacer"></div>
-                  {{Doc.doc_date | date : 'short-date'}}<br/>
+                  {{Doc.doc_date |  date : 'shortDate'}}<br/>
                 </div>
 
               </div>

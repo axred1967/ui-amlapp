@@ -83,6 +83,10 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                     $('#loader_img').hide();
                     if(responceData.RESPONSECODE=='1') 			{
                       data=responceData.RESPONSE;
+                      angular.forEach(data,function(value,key) {
+                        data[key].IMAGEURI=BASEURL+'uploads/document/'+data[key].per+'_'+data[key].per_id +'/resize/'
+
+                      })
                       $scope.loaded=data.length
                       if (last==99999999999)
                         $scope.Docs=data;
@@ -245,6 +249,10 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       Doc={per_id:$scope.Contract.contract_id,per:'contract'}
       localstorage('Doc',JSON.stringify(Doc))
       redirect('add_document.html')    }
+      $scope.edit_doc=function(Doc){
+        localstorage('add_document.html',JSON.stringify({action:"edit_document_for_contract",location:"my_document.html"}))
+        localstorage('Doc',JSON.stringify(Doc))
+        redirect('add_document.html')    }
 
     $scope.addWord=function($search,$word){
       res = $search.split(".")
