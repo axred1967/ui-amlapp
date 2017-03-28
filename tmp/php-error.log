@@ -24,3 +24,37 @@
 
 [28-Mar-2017 12:13:38 Europe/Rome] db insert ary insert into tmp_image  (imagename,per_id) values ('f0c5e211f4fac7a5d22859370265f57f.jpg','77')
 
+[28-Mar-2017 12:13:38 Europe/Rome] REMOTELOG POSTArray
+(
+    [r] => Array
+        (
+            [bytesSent] => 302473
+            [responseCode] => 200
+            [response] => {"id":108,"response":"f0c5e211f4fac7a5d22859370265f57f.jpg","file_name":"\/tmp\/phpgD900C"}
+            [objectId] => 
+        )
+
+    [Doc] => Array
+        (
+            [per] => contract
+            [per_id] => 77
+            [doc_date] => 2017-03-28T10:13:02.712Z
+        )
+
+)
+
+
+[28-Mar-2017 12:13:38 Europe/Rome] passato1 POST
+
+[28-Mar-2017 12:13:38 Europe/Rome] passato POSTget_document_image_name_multi
+
+[28-Mar-2017 12:13:38 Europe/Rome] db get_rows select imagename from tmp_image where id='108' 
+
+[28-Mar-2017 12:13:38 Europe/Rome] get val - select imagename from tmp_image where id='108' 
+
+[28-Mar-2017 12:13:38 Europe/Rome] REMOTELOG POSTArray
+(
+    [data] => f0c5e211f4fac7a5d22859370265f57f.jpg
+)
+
+
