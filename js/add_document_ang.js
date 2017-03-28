@@ -203,9 +203,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         data={ "action":"get_document_image_name_multi", id:id}
         $http.post( SERVICEURL2,  data )
             .success(function(data) {
+              alert(data)
                       if(data.RESPONSECODE=='1') 			{
-                        $http.post( LOG,  {data:data.RESPONSE})
-//$word=$($search.currentTarget).attr('id');
                         $scope.Doc.doc_image=data.RESPONSE.imagename;
                       }
              })
