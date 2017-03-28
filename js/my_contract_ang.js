@@ -47,6 +47,7 @@ app2.run(function($rootScope, $timeout) {
 app2.controller('personCtrl', function ($scope,$http,$location) {
 
 
+
     $scope.loaded=-1;
     var id=localStorage.getItem("userId");
   	var email=localStorage.getItem("userEmail");

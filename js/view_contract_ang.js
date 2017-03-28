@@ -67,7 +67,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   	var email=localStorage.getItem("userEmail");
     var contract_id = localStorage.getItem("contract_id");
     data= {"action":"view_Contract_info",id:id,email:email,contract_id:contract_id}
-
+	
     $http.post( SERVICEURL2,  data )
         .success(function(responceData) {
                   $('#loader_img').hide();

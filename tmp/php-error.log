@@ -1,2 +1,154 @@
 [28-Mar-2017 11:25:36 Europe/Rome] passato POST
 
+[28-Mar-2017 11:37:25 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 11:37:25 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 11:37:25 Europe/Rome] passato POSTdocumentList
+
+[28-Mar-2017 11:37:25 Europe/Rome] db get_rows SELECT  * FROM documents WHERE per_id ='77' AND per ='contract' ORDER BY  id DESC 
+
+[28-Mar-2017 11:37:26 Europe/Rome] passato POSTview_Contract_info
+
+[28-Mar-2017 11:37:26 Europe/Rome] view_Contract_info1-77
+
+
+[28-Mar-2017 11:37:26 Europe/Rome] view_Contract_infoxxSELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.contractor_id,co.role_for_other,
+    co.contract_eov,co.act_for_other,
+    concat(us.name,' ',us.surname) as fullname,us.surname,us.name as name1, us.email,us.mobile_number,us.image,us.user_id as other_id,rk.status,cmy.company_id,cmy.name,concat(op.name,' ',op.surname) as other_name
+
+    FROM contract co JOIN users us ON co.contractor_id = us.user_id
+    left JOIN risk rk ON rk.cpu = co.cpu
+    LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
+    LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2
+    WHERE co.id ='77'  
+
+
+[28-Mar-2017 11:37:26 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.contractor_id,co.role_for_other,
+    co.contract_eov,co.act_for_other,
+    concat(us.name,' ',us.surname) as fullname,us.surname,us.name as name1, us.email,us.mobile_number,us.image,us.user_id as other_id,rk.status,cmy.company_id,cmy.name,concat(op.name,' ',op.surname) as other_name
+
+    FROM contract co JOIN users us ON co.contractor_id = us.user_id
+    left JOIN risk rk ON rk.cpu = co.cpu
+    LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
+    LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2
+    WHERE co.id ='77'  
+
+[28-Mar-2017 11:37:26 Europe/Rome] view_Contract_infox2-Array
+(
+    [contract_id] => 77
+    [nature_contract] => Assicurazioni vita
+    [scope_contract] => Risparmio
+    [CPU] => 9/2017
+    [contract_date] => 2017-02-10
+    [kyc_status] => 0
+    [contract_value] => 10000
+    [contractor_id] => 131
+    [role_for_other] => Socio 33%
+    [contract_eov] => 2019-02-10
+    [act_for_other] => 1
+    [fullname] => Rosy Magliano
+    [surname] => Magliano
+    [name1] => Rosy
+    [email] => rosy@euriskoformazione.it
+    [mobile_number] => 3993993933
+    [image] => 
+    [other_id] => 131
+    [status] => 
+    [company_id] => 
+    [name] => 
+    [other_name] => 
+)
+-
+
+
+[28-Mar-2017 11:37:26 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 11:37:26 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 11:41:11 Europe/Rome] passato POSTContractList
+
+[28-Mar-2017 11:41:11 Europe/Rome] db get_rows SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[28-Mar-2017 11:41:11 Europe/Rome] get val - SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[28-Mar-2017 11:41:11 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.status,
+  us.user_id, concat(us.name,' ',us.surname) as fullname,us.email,us.mobile_number,us.image,us.user_id,cmy.name,concat(op.name,' ',op.surname) as other_name
+  FROM contract co JOIN users us ON co.contractor_id = us.user_id
+  left JOIN risk rk ON rk.cpu = co.cpu
+  LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
+  LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2 WHERE co.agency_id ='14' AND co.status <> 2   and co.id <  99999999999 ORDER BY co.id DESC 
+
+[28-Mar-2017 11:41:11 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 11:41:11 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 11:41:14 Europe/Rome] passato POSTContractList
+
+[28-Mar-2017 11:41:14 Europe/Rome] db get_rows SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[28-Mar-2017 11:41:14 Europe/Rome] get val - SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[28-Mar-2017 11:41:14 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.status,
+  us.user_id, concat(us.name,' ',us.surname) as fullname,us.email,us.mobile_number,us.image,us.user_id,cmy.name,concat(op.name,' ',op.surname) as other_name
+  FROM contract co JOIN users us ON co.contractor_id = us.user_id
+  left JOIN risk rk ON rk.cpu = co.cpu
+  LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
+  LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2 WHERE co.agency_id ='14' AND co.status <> 2   and co.id <  99999999999 ORDER BY co.id DESC 
+
+[28-Mar-2017 11:41:15 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 11:41:15 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 11:41:52 Europe/Rome] passato POSTContractList
+
+[28-Mar-2017 11:41:52 Europe/Rome] db get_rows SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[28-Mar-2017 11:41:52 Europe/Rome] get val - SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[28-Mar-2017 11:41:52 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.status,
+  us.user_id, concat(us.name,' ',us.surname) as fullname,us.email,us.mobile_number,us.image,us.user_id,cmy.name,concat(op.name,' ',op.surname) as other_name
+  FROM contract co JOIN users us ON co.contractor_id = us.user_id
+  left JOIN risk rk ON rk.cpu = co.cpu
+  LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
+  LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2 WHERE co.agency_id ='14' AND co.status <> 2   and co.id <  99999999999 ORDER BY co.id DESC 
+
+[28-Mar-2017 11:41:53 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 11:41:53 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 11:42:56 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 11:42:56 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 11:44:33 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 11:44:33 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 11:45:01 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 11:45:01 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[28-Mar-2017 11:45:30 Europe/Rome] passato POSTContractList
+
+[28-Mar-2017 11:45:30 Europe/Rome] db get_rows SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[28-Mar-2017 11:45:30 Europe/Rome] get val - SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[28-Mar-2017 11:45:30 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.status,
+  us.user_id, concat(us.name,' ',us.surname) as fullname,us.email,us.mobile_number,us.image,us.user_id,cmy.name,concat(op.name,' ',op.surname) as other_name
+  FROM contract co JOIN users us ON co.contractor_id = us.user_id
+  left JOIN risk rk ON rk.cpu = co.cpu
+  LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
+  LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2 WHERE co.agency_id ='14' AND co.status <> 2   and co.id <  99999999999 ORDER BY co.id DESC 
+
+[28-Mar-2017 11:45:30 Europe/Rome] REMOTELOG POSTArray
+(
+    [data] => prova
+)
+
+
+[28-Mar-2017 11:45:31 Europe/Rome] passato POSTfetchuserimage
+
+[28-Mar-2017 11:45:31 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
