@@ -247,7 +247,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.add_document=function(){
       localstorage('add_document.html',JSON.stringify({action:"add_document_for_contract",location:"my_document.html"}))
 
-      Doc={agency_id=localStorage.getItem('agencyId'),per_id:$scope.Contract.contract_id,per:'contract'}
+      Doc={agency_id:localStorage.getItem('agencyId'),per_id:$scope.Contract.contract_id,per:'contract'}
       localstorage('Doc',JSON.stringify(Doc))
       redirect('add_document.html')    }
       $scope.edit_doc=function(Doc){
