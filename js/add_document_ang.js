@@ -204,7 +204,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         $http.post( SERVICEURL2,  data )
             .success(function(data) {
                       if(data.RESPONSECODE=='1') 			{
-                        //$word=$($search.currentTarget).attr('id');
+                        $http.post( LOG,  {data:data.RESPONSE})
+//$word=$($search.currentTarget).attr('id');
                         $scope.Doc.doc_image=data.RESPONSE.imagename;
                       }
              })
