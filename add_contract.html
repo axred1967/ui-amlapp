@@ -115,7 +115,7 @@
                     <input class="mdl-textfield__input" type="text" id="Contract_nature_contract" name="Contract_nature_contract" minlength="3"  value=" "   ng-keyup="showAC('Contract.nature_contract');"
                     ng-model="Contract.nature_contract "  ng-change="Contract.nature_contract=(Contract.nature_contract| capitalize)" minlength="3"
                     />
-                    <label class="mdl-textfield__label" for="Contract_nature_contract">{{'Scopo del Contratto'|translate}} *</label>
+                    <label class="mdl-textfield__label" for="Contract_nature_contract">{{'Natura del Contratto'|translate}} *</label>
                     <table class="mdl-data-table mdl-js-data-table  border-none  ">
                       <tbody style="display:table">
                         <tr ng-click="addWord('Contract.nature_contract',item.word)" ng-repeat="item in word.nature_contract">

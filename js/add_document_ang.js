@@ -95,7 +95,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                   $scope.Doc=Doc
                   $scope.action='edit'
                   $scope.viewName="Modifica Documento"
-  
+
 
 
                   break;
@@ -133,6 +133,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       res = $search.split(".")
       $search=res[1]
       $word=$scope[res[0]][res[1]]
+      if ($table===undefined)
       $table=res[0].toLowerCase()
 
       if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
@@ -153,7 +154,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     }
     $scope.deleteDoc=function()
     {
-      $scope.Doc.image_name=""
+      $scope.Doc.doc_image=""
     }
 
     $scope.uploadfromgallery=function()
@@ -215,7 +216,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                       if(data.RESPONSECODE=='1') 			{
                         $http.post( LOG,  {data:data.RESPONSE})
                         $scope.Doc.doc_image=data.RESPONSE;
-                        $scope.Doc.IMGURI=BASEURL+'uploads/document/'+Doc.per+'_'+Doc.per_id +'/resize/'
+                        $scope.Doc.IMGURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
 
                       }
              })

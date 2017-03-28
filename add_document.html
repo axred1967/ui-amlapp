@@ -111,13 +111,13 @@
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                         <input class="mdl-textfield__input" type="text"
-                        ng-keyup="showAC('Doc.doc_type');"
+                        ng-keyup="showAC('Doc.doc_type', 'documents');"
                         ng-model="Doc.doc_type "
                         id="Doc_doc_type" name="Doc_doc_type" />
                         <label  for="Doc_doc_type" class="mdl-textfield__label" >{{'Tipo documento' | translate }}</label>
                         <table class="mdl-data-table mdl-js-data-table  border-none  ">
                           <tbody style="display:table">
-                            <tr ng-click="addWord('Doc_doc_type',item.word)" ng-repeat="item in word.Doc_doc_type">
+                            <tr ng-click="addWord('Doc.doc_type',item.word)" ng-repeat="item in word.doc_type">
                               <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
                             </tr>
                           </tbody>
@@ -163,7 +163,7 @@
                     </fieldset>
                     <fieldset>
                       <div class="center-align" style="margin-top:20px">
-                        <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" onclick="save_kyc(1)" href="javascript:;">
+                        <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ngclick="add_document()" href="javascript:;">
                           {{"Save"|translate}}
                         </a>
                       </div>

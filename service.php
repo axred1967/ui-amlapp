@@ -229,17 +229,26 @@ case 'login' :
     }
     elseif($chkuser['user_id']!='' && $chkuser['status']=='1')
     {
+      if($chkuser['user_type'] =='1')
+      {
+        $agencyId = $db->getVal("SELECT agency_id FROM agency WHERE user_id = '".$chkuser['user_id']."'  ");
+
+      }else{
+        $agencyId = $db->getVal("SELECT agency_id FROM agent WHERE user_id = '".$chkuser['user_id']."'  ");
+
+      }
+
       if($chkuser['user_type'] == 2 )
       {
         $agentprovilige = $db->getRow("SELECT * FROM agent WHERE user_id = '".$chkuser['user_id']."' ");
 
-        $data = array('RESPONSECODE'=> 1 ,"userId"=>$chkuser['user_id'],"name"  =>$chkuser['name'],"usertype" => $chkuser['user_type'], "email" => $chkuser['email'],"image_name" => $chkuser["image"],"privilige" => $agentprovilige['agent_previledge'] );
+        $data = array('RESPONSECODE'=> 1 ,"userId"=>$chkuser['user_id'],"name"  =>$chkuser['name'],"usertype" => $chkuser['user_type'], "email" => $chkuser['email'],"image_name" => $chkuser["image"],"privilige" => $agentprovilige['agent_previledge'],"agencyId"=>$agencyId );
 
 
       }
       else
       {
-        $data = array('RESPONSECODE'=> 1 ,"userId"=>$chkuser['user_id'],"name"  =>$chkuser['name'],"usertype" => $chkuser['user_type'], "email" => $chkuser['email'],"image_name" => $chkuser["image"] );
+        $data = array('RESPONSECODE'=> 1 ,"userId"=>$chkuser['user_id'],"name"  =>$chkuser['name'],"usertype" => $chkuser['user_type'], "email" => $chkuser['email'],"image_name" => $chkuser["image"],"agencyId"=>$agencyId );
       }
 
     }
@@ -254,6 +263,7 @@ case 'login' :
   {
     $data = array('RESPONSECODE'=> 0 ,'RESPONSE'=> "Error");
   }
+  error_log(print_r($data,1));
   echo json_encode($data);
   break;
 }
@@ -531,7 +541,7 @@ case 'ACWord' :
   $getcustomerlist=array();
   if (strlen($_REQUEST['search'])>0){
     $sql="SELECT distinct " . $_REQUEST['word']."  as word from  ". $_REQUEST['table'] ."
-    WHERE " . $_REQUEST['word']."   like '%".$_REQUEST['search']. "%'  AND agency_id=".$agencyvalue." ORDER BY " . $_REQUEST['word']. "  ASC limit 5 ";
+    WHERE " . $_REQUEST['word']."   like '%".addslashes($_REQUEST['search']). "%'  AND agency_id=".$agencyvalue." ORDER BY " . $_REQUEST['word']. "  ASC limit 5 ";
     $getcustomerlist = $db->getRows($sql);
 
   }
