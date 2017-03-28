@@ -8,6 +8,7 @@ document.title = SITE_TITLE;
 var BASEURL = "http://www.euriskoformazione.com/amlapp/";
 var SERVICEURL = "http://www.euriskoformazione.com/amlapp/service.php";
 var SERVICEURL2 = "http://www.euriskoformazione.com/amlapp/service.php";
+var LOG = "http://www.euriskoformazione.com/amlapp/log.php";
 
 function chkloggedin()
 {

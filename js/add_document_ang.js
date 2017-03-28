@@ -176,8 +176,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     }
 
     $scope.uploadPhoto=function(imageURI){
-      $("#agent_image").hide();
-      $('#profileimgloader').show();
+
 
        var options = new FileUploadOptions();
        options.fileKey="file";
@@ -188,6 +187,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
        options.params = params;
        var ft = new FileTransfer();
+       $http.post( LOG,  data:BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per)
+  
        ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
 
 
