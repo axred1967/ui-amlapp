@@ -2,9 +2,10 @@
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
 include_once("config.php");
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty( $_POST ))
+error_log("passato1 ".$_SERVER['REQUEST_METHOD']. $_REQUEST['action'].PHP_EOL);
+if (strlen($_REQUEST['action']) ==0 && $_SERVER['REQUEST_METHOD'] == 'POST' && empty( $_POST ))
   $_POST=$_REQUEST = json_decode( file_get_contents( 'php://input' ), true );
-error_log("passato ".$_SERVER['REQUEST_METHOD']. $_REQUEST['action'].PHP_EOL);
+  error_log("passato ".$_SERVER['REQUEST_METHOD']. $_REQUEST['action'].PHP_EOL);
 
 switch($_REQUEST['action'])
 {

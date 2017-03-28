@@ -196,10 +196,11 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     }
     $scope.winFT=function (r)
     {
-        $('#doc_image').val(review_info.response);
-       // var review_selected_image  =  review_info.review_id;
-        //$('#review_id_checkin').val(review_selected_image);
-        data={ "action":"get_document_image_name_multi", id:$scope.Doc.per_id,for:$scope.Doc.per}
+      var review_info   =JSON.parse(r.response);
+      var id = review_info.id;
+      $http.post( LOG,  {r:r,Doc:$scope.Doc})
+      //$('#review_id_checkin').val(review_selected_image);
+        data={ "action":"get_document_image_name_multi", id:id}
         $http.post( SERVICEURL2,  data )
             .success(function(data) {
                       if(data.RESPONSECODE=='1') 			{
