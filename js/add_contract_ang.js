@@ -56,9 +56,9 @@
  });
  app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.page={}
-
-   if (localStorage.getItem('add_contract.html').length >0 ){
-     $scope.page=JSON.parse(localStorage.getItem('view_contract.html'))
+    page=localStorage.getItem('add_contract.html')
+   if (page.length >0 ){
+     $scope.page=JSON.parse(page)
      $scope.action=$scope.page.action
 
    }
@@ -246,17 +246,17 @@
               })
      }
      $scope.add_customer=function(){
-       localstorage('add_customer.html',JSON.stringify({action:"add_customer_for_contract",location:"view_contract.html"}))
+       localstorage('add_customer.html',JSON.stringify({action:"add_customer_for_contract",location:"add_contract.html"}))
        redirect('add_customer.html')
 
      }
      $scope.add_company=function(){
-       localstorage('add_company.html',JSON.stringify({action:"add_company_for_contract",location:"view_contract.html"}))
+       localstorage('add_company.html',JSON.stringify({action:"add_company_for_contract",location:"add_contract.html"}))
        redirect('add_company.html')
 
      }
      $scope.add_other=function(){
-       localstorage('add_company.html',JSON.stringify({action:"add_other_for_contract",location:"view_contract.html"}))
+       localstorage('add_company.html',JSON.stringify({action:"add_other_for_contract",location:"add_contract.html"}))
        redirect('add_customer.html')
 
      }

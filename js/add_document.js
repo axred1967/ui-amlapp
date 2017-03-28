@@ -4,7 +4,7 @@ var app = {
         this.bind();
     },
     bind: function() {
-        document.addEventListener('deviceready', getChkLogin(), false);
+        document.addEventListener('deviceready', getChkLogin, false);
     },
     deviceready: function() {
         // This is an event handler function, which means the scope is the event.
@@ -18,7 +18,7 @@ var app = {
 };
 function getChkLogin()
 {
-  document.addEventListener("backbutton", onBackKeyDown, true);
+//  document.addEventListener("backbutton", onBackKeyDown, true);
 
         chkloggedin();
 

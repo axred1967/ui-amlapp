@@ -58,14 +58,13 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
     $scope.action="";
     $scope.Doc={}
     $scope.word={};
-    $scope.stack={}
-    if (localStorage.getItem('stack')!=null ) {
-      $scope.stack=JSON.parse(localStorage.getItem('stack'))
-      $scope.lastkey= Object.keys($scope.stack).pop() ;
-      if($scope.stack[$scope.lastkey]!==undefined && $scope.stack[$scope.lastkey].action!==undefined){
-        $scope.action=$scope.stack[$scope.lastkey].action;
-    }
-  }
+    $scope.page={}
+    page=localStorage.getItem('add_document.html')
+   if (page.length >0 ){
+     $scope.page=JSON.parse(page)
+     $scope.action=$scope.page.action
+
+   }
 
     //localstorage("back","view_contract.html");
     switch ($scope.action){
@@ -265,10 +264,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$location) {
       $scope.word[res[1]]=[]
     }
     $scope.back=function(){
-      back=$scope.lastkey
-      delete $scope.stack[back]
-     localstorage('stack',JSON.stringify($scope.stack))
-      redirect(back)
+      redirect($scope.page.location)
     }
 
 })

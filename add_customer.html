@@ -90,7 +90,7 @@
                           ng-model="Customer.surname"  ng-change="Customer.surname=(Customer.surname| capitalize)" minlength="3"
                           ng-required="true" />
                           <label class="mdl-textfield__label" for=""Customer_surname"">{{'Surname'|translate}} *</label>
-                          <span class="mdl-tooltip mdl-tooltip--validation" for="custome_surname" ng-show="form.Customer_surname.$invalid && form.Customer_surname.$touched">
+                          <span class="mdl-tooltip mdl-tooltip--validation" for="Custome_surname" ng-show="form.Customer_surname.$invalid && form.Customer_surname.$touched">
                             <span ng-show="form.Customer_surname.$error.required">{{'Richiesto'| translate}}</span>
                           </span>
                         </div>
@@ -100,7 +100,7 @@
                             <input class="mdl-textfield__input" type="email" id="Customer_email" name="Customer_email" value=" "
                             ng-model="Customer.email" ng-change="Customer.email=(Customer.email| capitalize)" ng-required="true" />
                             <label class="mdl-textfield__label" for="email">{{'EmailID' | translate}}*</label>
-                            <span class="mdl-tooltip mdl-tooltip--validation" for="Customer.email" ng-show="form.Customer_email.$invalid && form.Customer_email.$touched">
+                            <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_email" ng-show="form.Customer_email.$invalid && form.Customer_email.$touched">
                                           <span ng-show="form.Customer_email.$error.required">Required.</span>
                             <span ng-show="form.Customer_email.$error.pattern">{{'mail non valida.'| translate}}</span>
                             </span>
@@ -111,7 +111,7 @@
                               <input class="mdl-textfield__input" type="text" id="Customer_mobile"  name="Customer_mobile" value=" " pattern=""
                               ng-model="Customer.mobile" ng-change="Customer.mobile=(Customer.mobile| capitalize)"  />
                               <label class="mdl-textfield__label" for="mobile">{{'Mobile' | translate}}*</label>
-                              <span class="mdl-tooltip mdl-tooltip--validation" for="Customer.mobile" ng-show="form.Customer_mobile.$invalid && form.Customer_mobile.$touched">
+                              <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_mobile" ng-show="form.Customer_mobile.$invalid && form.Customer_mobile.$touched">
                                             <span ng-show="form.Customer_mobile.$error.required">Required.</span>
                               <span ng-show="form.Customer_mobile.$error.pattern">{{' numero telefono non valida.'| translate}}</span>
                               </span>

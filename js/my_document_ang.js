@@ -61,9 +61,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.Docs={}
     $scope.Doc={}
     $scope.word={};
-
-   if (localStorage.getItem('my_document.html').length >0 ){
-     $scope.page=JSON.parse(localStorage.getItem('view_contract.html'))
+    page=localStorage.getItem('my_document.html')
+   if (page.length >0 ){
+     $scope.page=JSON.parse(page)
      $scope.action=$scope.page.action
 
    }
@@ -249,8 +249,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       $scope.word[res[1]]=[]
     }
     $scope.back=function(){
-     localstorage('stack',JSON.stringify($scope.stack))
-      redirect(scope.page.location)
+      redirect($scope.page.location)
     }
 
 })

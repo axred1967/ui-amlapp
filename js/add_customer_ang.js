@@ -70,7 +70,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 		$scope.action=$scope.page.action
 
 	}
-	    switch ($scope.stack[$scope.lastkey].action){
+	    switch ($scope.action){
         case 'add_customer':
             $scope.viewName="Inserisci Cliente"
             $scope.action="addcustomer"

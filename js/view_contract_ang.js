@@ -113,10 +113,20 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
    localstorage('Contract',JSON.stringify($scope.Contract))
    redirect('kyc.html')
 };
-$scope.owners = function(){
-	localstorage('owners_lsit.html',JSON.stringify({action:'',location:'view_contract.html'}))
+$scope.edit_risk = function(){
+	localstorage('risk_profile1.html',JSON.stringify({action:'',location:'view_contract.html'}))
 	localstorage('Contract',JSON.stringify($scope.Contract))
-	redirect('owners_lsit.html')
+	redirect('risk_profile1.html')
+};
+$scope.print_kyc = function(){
+	localstorage('contract_form.html',JSON.stringify({action:'',location:'view_contract.html'}))
+	localstorage('Contract',JSON.stringify($scope.Contract))
+	redirect('contract_form.html')
+};
+$scope.owners = function(){
+	localstorage('owners_list.html',JSON.stringify({action:'',location:'view_contract.html'}))
+	localstorage('Contract',JSON.stringify($scope.Contract))
+	redirect('owners_list.html')
 };
 
  $scope.back = function(d){
