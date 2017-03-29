@@ -86,7 +86,7 @@
                   <i class="material-icons">search</i>
                 </label>
                 <div class="mdl-textfield__expandable-holder">
-                  <input class="mdl-textfield__input" type="text" name="sample"
+                  <input ng-model="searchDoc.doc_name" class="mdl-textfield__input" type="text" name="sample"
                   id="waterfall-exp" />
                 </div>
               </div>
@@ -105,9 +105,9 @@
             <h5>{{Contract.CPU}}</h5>
             <img style="height:50px;width:50px;margin-top:20px;" class="hide" id="loader_img" src="img/loader2.gif"  >
           </center>
-          <div id="list_doc" class="mdl-grid"  ng-hide="Docs.length == 0 " class="ng-hide" ng-repeat="Doc in Docs ">
+          <div id="list_doc" class="mdl-grid"  ng-hide="Docs.length == 0 " class="ng-hide" ng-repeat="Doc in Docs | filter:searchDoc.doc_name:strict ">
 
-            <div  class="mdl-cell mdl-cell--12-col">
+            <div ng-hide="Doc.deleted" class="mdl-cell mdl-cell--12-col">
 
               <div class="demo-card-image mdl-card mdl-shadow--2dp">
                 <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>

@@ -39,7 +39,7 @@ function getChkLogin()
 
 setTimeout(function(){
         var id=localStorage.getItem("userId");
-	var email=localStorage.getItem("userEmail");
+	      var email=localStorage.getItem("userEmail");
         var usertype = localStorage.getItem('userType');
          var name = localStorage.getItem("Name");
 

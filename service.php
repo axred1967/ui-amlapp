@@ -2022,9 +2022,17 @@ case 'upload_imagecontract' :
   echo json_encode($data);
   break;
 }
-case 'deleterow':
+case 'delete':
 {
-  $where = "where " . $_REQUEST['primary'] ."=". $_REQUEST['id'];
+  $where = " where " . $_REQUEST['primary'] ."=". $_REQUEST['id'];
+error_log($where.PHP_EOL);
+if ($_REQUEST['table']=='documents'){
+  $doc=$db->getRow("select * from documents where id =" .$_REQUEST['id']);
+  $flgIn=$db->delete('tmp_image',"where imagename='".$doc['doc_image']."'");
+  @unlink("uploads/document/".$doc['per']."_" .$doc['per_id']."/".$doc['doc_image']);
+  @unlink("uploads/document/".$doc['per']."_" .$doc['per_id']."/resize/".$doc['doc_image']);
+error_log("uploads/document/".$doc['per']."_" .$doc['per_id']."/resize/".$doc['doc_image']);
+}
   $flgIn=$db->delete($_REQUEST['table'],$where);
   if ($flgIn>0)
   $data=array(  'RESPONSECODE'	=>  1,   'RESPONSE'	=> "cancellato");

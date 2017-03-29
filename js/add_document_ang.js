@@ -216,7 +216,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                       if(data.RESPONSECODE=='1') 			{
                         $scope.Doc.doc_image=data.RESPONSE;
                         $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
-                        $http.post( LOG,  {data:data.RESPONSE ,doc:$scope.Doc})
+                      //  $http.post( LOG,  {dt:data.RESPONSE ,doc:$scope.Doc})
 
                       }
              })

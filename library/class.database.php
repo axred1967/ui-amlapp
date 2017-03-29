@@ -211,7 +211,7 @@ class MySqlDb
 			$strField="";
 			$strVal="";
 			foreach($aryVal as $field=>$val)
-			{				if (in_array($field,$fields) && $field!=0){
+			{				if (in_array($field,$fields) && $field!='0'){
 
 				$strField.=$field.",";
 				if(is_null($val)) { $strVal.='NULL,'; }
@@ -280,7 +280,7 @@ class MySqlDb
 	{
 		$sql="delete from {$tblName}";
 		if(!is_null($condition)) { $sql.=" ".$condition; }
-		$rs=$this->query($sql);
+		$rs=$this->query($sql);		error_log('db'.$sql);
 		if($rs)
 		{
 			return $this->getAffectedRows();

@@ -165,19 +165,45 @@
 
                   </div>
                 </fieldset>
-                <div class="mdl-grid">
+                <fieldset ng-controller="docCtrl">
+                  <div id="list_doc" class="mdl-grid"  ng-hide="Docs.length == 0 " class="ng-hide" ng-repeat="Doc in Docs ">
 
-                  <div class="mdl-card mdl-shadow--2dp" >
-                    <div class="mdl-card__title">Immagine Contratto</div>
-                    <input type="hidden" id="doc_image" >
-                    <div class="mdl-card__actions mdl-card--border">
+                    <div ng-hide="Doc.deleted" class="mdl-cell mdl-cell--12-col">
 
-                      <div class="mdl-layout-spacer"></div>
-                      <button class="mdl-button mdl-button--icon mdl-button--colored" onclick="add_photo()" ><i class="material-icons">add_a_photo</i></button>
-                      <button class="mdl-button mdl-button--icon mdl-button--colored" onclick="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
-                    </div>
-                  </div>
-                </div>
+                      <div class="demo-card-image mdl-card mdl-shadow--2dp">
+                        <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
+                        <img ng-click="edit_doc(Doc)" ng-show="Doc.doc_image.length>0" ng-src ="{{Doc.doc_image.length>0 ? Doc.IMAGEURI+ Doc.doc_image :'' }}" ></img>
+
+                        <div class="mdl-card__actions">
+                          <div class="mdl-layout-spacer"></div>
+                          <button ng-hide="Docs.length>0 " id="addDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_document()" ><i class="material-icons">add</i></button>
+                          <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc(Doc)" >
+                            <span >{{'Cancella'|translate}}.</span>
+                          </span>
+
+                          <button ng-hide="Docs.length==0 "id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo(Doc)" ><i class="material-icons">add_a_photo</i></button>
+                          <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
+                            <span >{{'Scatta una foto'|translate}}.</span>
+                          </span>
+                          <button ng-hide="Docs.length==0 " id="addGallery" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery(Doc)" ><i class="material-icons">insert_photo</i></button>
+                          <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
+                            <span >{{'Scegli da Galleria'|translate}}.</span>
+                          </span>
+
+                          <button ng-hide="Docs.length==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc(Doc)" ><i class="material-icons">delete</i></button>
+                          <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc(Doc)" >
+                            <span >{{'Cancella'|translate}}.</span>
+                          </span>
+                        </div>
+                        <div class="mdl-card__actions" style="background-color:white" ng-click="toDoc(Doc.id)">
+
+                          {{Doc.doc_type}}<div class="mdl-layout-spacer"></div>
+                          {{Doc.doc_date |  date : 'shortDate'}}<br/>
+                        </div>
+
+                      </div>
+                    </div>                </fieldset>
+
                 <fieldset>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
                     <label  for="searchContractor" class="mdl-textfield__label" >{{'Cerca Firmatario' | translate }}</label>

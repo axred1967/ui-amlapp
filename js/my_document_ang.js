@@ -139,6 +139,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.showAC=function($search,$table){
       var id=localStorage.getItem("userId");
       var usertype = localStorage.getItem('userType');
+
       res = $search.split(".")
       $search=res[1]
       $word=$scope[res[0]][res[1]]
@@ -176,6 +177,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     }
     $scope.deleteDoc2=function(Doc){
       $http.post(SERVICEURL2,{action:'delete',table:'documents','primary':'id',id:Doc.id })
+      Doc.deleted=true;
     }
 
     $scope.uploadfromgallery=function(Doc)
@@ -243,6 +245,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                       if(data.RESPONSECODE=='1') 			{
                         //$word=$($search.currentTarget).attr('id');
                         $scope.Docs[foudItem].doc_image=data.RESPONSE.imagename;
+                        $scope.save_document($scope.Docs[foudItem])
+                        //$scope.apply()
                       }
              })
             .error(function() {
@@ -257,24 +261,32 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     }
 
 
-    $scope.add_document=function(){
-      localstorage('add_document.html',JSON.stringify({action:"add_document_for_contract",location:"my_document.html"}))
+    $scope.save_document=function(Doc){
 
-      Doc={agency_id:localStorage.getItem('agencyId'),per_id:$scope.Contract.contract_id,per:'contract'}
-      localstorage('Doc',JSON.stringify(Doc))
-      redirect('add_document.html')    }
-      $scope.edit_doc=function(Doc){
-        localstorage('add_document.html',JSON.stringify({action:"edit_document_for_contract",location:"my_document.html"}))
-        localstorage('Doc',JSON.stringify(Doc))
-        redirect('add_document.html')    }
+      var  appData ={
+        id :localStorage.getItem("userId"),
+        usertype: localStorage.getItem('userType')
+      }
+      dbData=Doc
 
-    $scope.addWord=function($search,$word){
-      res = $search.split(".")
-      $scope[res[0]][res[1]]=$word
-      $scope.word[res[1]]=[]
-    }
-    $scope.back=function(){
-      redirect($scope.page.location)
+      var langfileloginchk = localStorage.getItem("language");
+      data= {"action":"savedocument",type:$scope.action, dbData:dbData}
+      $http.post(SERVICEURL2,data)
+        .success(function(data){
+          $('#loader_img').hide();
+          if(data.RESPONSECODE=='1')
+          {
+            //$scope.Doc=data
+            swal("",data.RESPONSE);
+            //$scope.back()
+          }
+          else      {
+            swal("",data.RESPONSE);
+          }
+        })
+        .error(function(){
+          console.log('error');
+        })
     }
 
 })
