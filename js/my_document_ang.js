@@ -58,9 +58,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $('#loader_img').hide()
     $scope.page={}
     $scope.action="";
-    $scope.Docs={}
-    $scope.Doc={}
-    $scope.word={};
+    $scope.Docs=[]
+    $scope.Doc=[]
+    $scope.word=[];
     page=localStorage.getItem('my_document.html')
    if (page.length >0 ){
      $scope.page=JSON.parse(page)
@@ -260,6 +260,16 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
     }
 
+    $scope.add_document=function(){
+      localstorage('add_document.html',JSON.stringify({action:"add_document_for_contract",location:"my_document.html"}))
+
+      Doc={agency_id:localStorage.getItem('agencyId'),per_id:$scope.Contract.contract_id,per:'contract'}
+      localstorage('Doc',JSON.stringify(Doc))
+      redirect('add_document.html')    }
+      $scope.edit_doc=function(Doc){
+        localstorage('add_document.html',JSON.stringify({action:"edit_document_for_contract",location:"my_document.html"}))
+        localstorage('Doc',JSON.stringify(Doc))
+        redirect('add_document.html')    }
 
     $scope.save_document=function(Doc){
 
