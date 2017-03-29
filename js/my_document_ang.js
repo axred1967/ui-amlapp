@@ -270,7 +270,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       dbData=Doc
 
       var langfileloginchk = localStorage.getItem("language");
-      data= {"action":"savedocument",type:$scope.action, dbData:dbData}
+      data= {"action":"savedocument",type:'edit', dbData:dbData}
+      $('#loader_img').show();
       $http.post(SERVICEURL2,data)
         .success(function(data){
           $('#loader_img').hide();
