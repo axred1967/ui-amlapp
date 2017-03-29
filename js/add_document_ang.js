@@ -102,8 +102,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
              case 'add_document_for_contract' :
                   Doc=JSON.parse(localStorage.getItem('Doc'))
                   convertDateStringsToDates(Doc)
-                  $scope.Doc.per=Doc.per
-                  $scope.Doc.per_id=Doc.per_id
+                  $scope.Doc=Doc
                   $scope.Doc.doc_date=new Date()
                   $scope.action='add'
                   $scope.viewName="Aggiungi Documento"
