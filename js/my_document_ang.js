@@ -298,6 +298,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
           console.log('error');
         })
     }
+    $scope.back=function(){
+      redirect($scope.page.location)
+    }
 
 })
 function onConfirm(buttonIndex,$scope,doc) {
