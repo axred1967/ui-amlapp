@@ -1,28 +1,422 @@
-[30-Mar-2017 09:24:47 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+[30-Mar-2017 09:43:16 Europe/Rome] db get_rows select image,name from users where user_id='85' 
 
-[30-Mar-2017 09:24:48 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+[30-Mar-2017 09:43:52 Europe/Rome] REMOTELOG POSTArray
+(
+    [r] => prima di caricare da remoto
+)
 
-[30-Mar-2017 09:24:57 Europe/Rome] db get_rows SELECT agency_id FROM agency WHERE user_id = '85'  
 
-[30-Mar-2017 09:24:57 Europe/Rome] get val - SELECT agency_id FROM agency WHERE user_id = '85'  
+[30-Mar-2017 09:43:52 Europe/Rome] db get_rows SELECT agency_id FROM agency WHERE user_id = '85'  
 
-[30-Mar-2017 09:24:57 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.status,
+[30-Mar-2017 09:43:52 Europe/Rome] get val - SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[30-Mar-2017 09:43:52 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.status,
   us.user_id, concat(us.name,' ',us.surname) as fullname,us.email,us.mobile_number,us.image,us.user_id,cmy.name,concat(op.name,' ',op.surname) as other_name
   FROM contract co JOIN users us ON co.contractor_id = us.user_id
   left JOIN risk rk ON rk.cpu = co.cpu
   LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
   LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2 WHERE co.agency_id ='14' AND co.status <> 2   and co.id <  99999999999 ORDER BY co.id DESC limit 5
 
-[30-Mar-2017 09:25:26 Europe/Rome] db get_rows SELECT agency_id FROM agency WHERE user_id = '85'  
+[30-Mar-2017 09:43:52 Europe/Rome] REMOTELOG POSTArray
+(
+    [r] => dopo caricamento
+    [data] => Array
+        (
+            [0] => Array
+                (
+                    [0] => 90
+                    [1] => Assicurazioni vita
+                    [2] => Assicurazion
+                    [3] => 10/2017
+                    [4] => 2017-03-29
+                    [5] => 0
+                    [6] => 1000
+                    [7] => 0
+                    [8] => 165
+                    [9] => Willia Pesaresi
+                    [10] => alessandro@reuriskoformazione.it
+                    [11] => 33333
+                    [12] => 
+                    [13] => 165
+                    [14] => 
+                    [15] => 
+                    [contract_id] => 90
+                    [nature_contract] => Assicurazioni vita
+                    [scope_contract] => Assicurazion
+                    [CPU] => 10/2017
+                    [contract_date] => 2017-03-29
+                    [kyc_status] => 0
+                    [contract_value] => 1000
+                    [status] => 0
+                    [user_id] => 165
+                    [fullname] => Willia Pesaresi
+                    [email] => alessandro@reuriskoformazione.it
+                    [mobile_number] => 33333
+                    [image] => 
+                    [name] => 
+                    [other_name] => 
+                )
 
-[30-Mar-2017 09:25:26 Europe/Rome] get val - SELECT agency_id FROM agency WHERE user_id = '85'  
+            [1] => Array
+                (
+                    [0] => 89
+                    [1] => Assicurazioni vita
+                    [2] => Assicurazion
+                    [3] => 10/2017
+                    [4] => 2017-03-29
+                    [5] => 0
+                    [6] => 1000
+                    [7] => 0
+                    [8] => 165
+                    [9] => Willia Pesaresi
+                    [10] => alessandro@reuriskoformazione.it
+                    [11] => 33333
+                    [12] => 
+                    [13] => 165
+                    [14] => 
+                    [15] => 
+                    [contract_id] => 89
+                    [nature_contract] => Assicurazioni vita
+                    [scope_contract] => Assicurazion
+                    [CPU] => 10/2017
+                    [contract_date] => 2017-03-29
+                    [kyc_status] => 0
+                    [contract_value] => 1000
+                    [status] => 0
+                    [user_id] => 165
+                    [fullname] => Willia Pesaresi
+                    [email] => alessandro@reuriskoformazione.it
+                    [mobile_number] => 33333
+                    [image] => 
+                    [name] => 
+                    [other_name] => 
+                )
 
-[30-Mar-2017 09:25:26 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.status,
+            [2] => Array
+                (
+                    [0] => 88
+                    [1] => Vita
+                    [2] => Assicurazione
+                    [3] => 10/2017
+                    [4] => 2017-03-29
+                    [5] => 0
+                    [6] => 1000
+                    [7] => 0
+                    [8] => 165
+                    [9] => Willia Pesaresi
+                    [10] => alessandro@reuriskoformazione.it
+                    [11] => 33333
+                    [12] => 
+                    [13] => 165
+                    [14] => 
+                    [15] => 
+                    [contract_id] => 88
+                    [nature_contract] => Vita
+                    [scope_contract] => Assicurazione
+                    [CPU] => 10/2017
+                    [contract_date] => 2017-03-29
+                    [kyc_status] => 0
+                    [contract_value] => 1000
+                    [status] => 0
+                    [user_id] => 165
+                    [fullname] => Willia Pesaresi
+                    [email] => alessandro@reuriskoformazione.it
+                    [mobile_number] => 33333
+                    [image] => 
+                    [name] => 
+                    [other_name] => 
+                )
+
+            [3] => Array
+                (
+                    [0] => 87
+                    [1] => Vita
+                    [2] => Assicurazione
+                    [3] => 10/2017
+                    [4] => 2017-03-29
+                    [5] => 0
+                    [6] => 1000
+                    [7] => 0
+                    [8] => 165
+                    [9] => Willia Pesaresi
+                    [10] => alessandro@reuriskoformazione.it
+                    [11] => 33333
+                    [12] => 
+                    [13] => 165
+                    [14] => 
+                    [15] => 
+                    [contract_id] => 87
+                    [nature_contract] => Vita
+                    [scope_contract] => Assicurazione
+                    [CPU] => 10/2017
+                    [contract_date] => 2017-03-29
+                    [kyc_status] => 0
+                    [contract_value] => 1000
+                    [status] => 0
+                    [user_id] => 165
+                    [fullname] => Willia Pesaresi
+                    [email] => alessandro@reuriskoformazione.it
+                    [mobile_number] => 33333
+                    [image] => 
+                    [name] => 
+                    [other_name] => 
+                )
+
+            [4] => Array
+                (
+                    [0] => 77
+                    [1] => Assicurazioni vita
+                    [2] => Risparmio
+                    [3] => 9/2017
+                    [4] => 2017-02-10
+                    [5] => 0
+                    [6] => 10000
+                    [7] => 0
+                    [8] => 131
+                    [9] => Rosy Magliano
+                    [10] => rosy@euriskoformazione.it
+                    [11] => 3993993933
+                    [12] => 
+                    [13] => 131
+                    [14] => 
+                    [15] => 
+                    [contract_id] => 77
+                    [nature_contract] => Assicurazioni vita
+                    [scope_contract] => Risparmio
+                    [CPU] => 9/2017
+                    [contract_date] => 2017-02-10
+                    [kyc_status] => 0
+                    [contract_value] => 10000
+                    [status] => 0
+                    [user_id] => 131
+                    [fullname] => Rosy Magliano
+                    [email] => rosy@euriskoformazione.it
+                    [mobile_number] => 3993993933
+                    [image] => 
+                    [name] => 
+                    [other_name] => 
+                )
+
+        )
+
+)
+
+
+[30-Mar-2017 09:43:52 Europe/Rome] REMOTELOG POSTArray
+(
+    [r] => dopo caricamento
+)
+
+
+[30-Mar-2017 09:43:53 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+
+[30-Mar-2017 09:43:56 Europe/Rome] db get_rows SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[30-Mar-2017 09:43:56 Europe/Rome] get val - SELECT agency_id FROM agency WHERE user_id = '85'  
+
+[30-Mar-2017 09:43:56 Europe/Rome] db get_rows SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.status,
   us.user_id, concat(us.name,' ',us.surname) as fullname,us.email,us.mobile_number,us.image,us.user_id,cmy.name,concat(op.name,' ',op.surname) as other_name
   FROM contract co JOIN users us ON co.contractor_id = us.user_id
   left JOIN risk rk ON rk.cpu = co.cpu
   LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
   LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2 WHERE co.agency_id ='14' AND co.status <> 2   and co.id <  99999999999 ORDER BY co.id DESC limit 5
 
-[30-Mar-2017 09:25:26 Europe/Rome] db get_rows select image,name from users where user_id='85' 
+[30-Mar-2017 09:43:56 Europe/Rome] REMOTELOG POSTArray
+(
+    [r] => prima di caricare da remoto
+)
+
+
+[30-Mar-2017 09:43:56 Europe/Rome] REMOTELOG POSTArray
+(
+    [r] => dopo caricamento
+    [data] => Array
+        (
+            [0] => Array
+                (
+                    [0] => 90
+                    [1] => Assicurazioni vita
+                    [2] => Assicurazion
+                    [3] => 10/2017
+                    [4] => 2017-03-29
+                    [5] => 0
+                    [6] => 1000
+                    [7] => 0
+                    [8] => 165
+                    [9] => Willia Pesaresi
+                    [10] => alessandro@reuriskoformazione.it
+                    [11] => 33333
+                    [12] => 
+                    [13] => 165
+                    [14] => 
+                    [15] => 
+                    [contract_id] => 90
+                    [nature_contract] => Assicurazioni vita
+                    [scope_contract] => Assicurazion
+                    [CPU] => 10/2017
+                    [contract_date] => 2017-03-29
+                    [kyc_status] => 0
+                    [contract_value] => 1000
+                    [status] => 0
+                    [user_id] => 165
+                    [fullname] => Willia Pesaresi
+                    [email] => alessandro@reuriskoformazione.it
+                    [mobile_number] => 33333
+                    [image] => 
+                    [name] => 
+                    [other_name] => 
+                )
+
+            [1] => Array
+                (
+                    [0] => 89
+                    [1] => Assicurazioni vita
+                    [2] => Assicurazion
+                    [3] => 10/2017
+                    [4] => 2017-03-29
+                    [5] => 0
+                    [6] => 1000
+                    [7] => 0
+                    [8] => 165
+                    [9] => Willia Pesaresi
+                    [10] => alessandro@reuriskoformazione.it
+                    [11] => 33333
+                    [12] => 
+                    [13] => 165
+                    [14] => 
+                    [15] => 
+                    [contract_id] => 89
+                    [nature_contract] => Assicurazioni vita
+                    [scope_contract] => Assicurazion
+                    [CPU] => 10/2017
+                    [contract_date] => 2017-03-29
+                    [kyc_status] => 0
+                    [contract_value] => 1000
+                    [status] => 0
+                    [user_id] => 165
+                    [fullname] => Willia Pesaresi
+                    [email] => alessandro@reuriskoformazione.it
+                    [mobile_number] => 33333
+                    [image] => 
+                    [name] => 
+                    [other_name] => 
+                )
+
+            [2] => Array
+                (
+                    [0] => 88
+                    [1] => Vita
+                    [2] => Assicurazione
+                    [3] => 10/2017
+                    [4] => 2017-03-29
+                    [5] => 0
+                    [6] => 1000
+                    [7] => 0
+                    [8] => 165
+                    [9] => Willia Pesaresi
+                    [10] => alessandro@reuriskoformazione.it
+                    [11] => 33333
+                    [12] => 
+                    [13] => 165
+                    [14] => 
+                    [15] => 
+                    [contract_id] => 88
+                    [nature_contract] => Vita
+                    [scope_contract] => Assicurazione
+                    [CPU] => 10/2017
+                    [contract_date] => 2017-03-29
+                    [kyc_status] => 0
+                    [contract_value] => 1000
+                    [status] => 0
+                    [user_id] => 165
+                    [fullname] => Willia Pesaresi
+                    [email] => alessandro@reuriskoformazione.it
+                    [mobile_number] => 33333
+                    [image] => 
+                    [name] => 
+                    [other_name] => 
+                )
+
+            [3] => Array
+                (
+                    [0] => 87
+                    [1] => Vita
+                    [2] => Assicurazione
+                    [3] => 10/2017
+                    [4] => 2017-03-29
+                    [5] => 0
+                    [6] => 1000
+                    [7] => 0
+                    [8] => 165
+                    [9] => Willia Pesaresi
+                    [10] => alessandro@reuriskoformazione.it
+                    [11] => 33333
+                    [12] => 
+                    [13] => 165
+                    [14] => 
+                    [15] => 
+                    [contract_id] => 87
+                    [nature_contract] => Vita
+                    [scope_contract] => Assicurazione
+                    [CPU] => 10/2017
+                    [contract_date] => 2017-03-29
+                    [kyc_status] => 0
+                    [contract_value] => 1000
+                    [status] => 0
+                    [user_id] => 165
+                    [fullname] => Willia Pesaresi
+                    [email] => alessandro@reuriskoformazione.it
+                    [mobile_number] => 33333
+                    [image] => 
+                    [name] => 
+                    [other_name] => 
+                )
+
+            [4] => Array
+                (
+                    [0] => 77
+                    [1] => Assicurazioni vita
+                    [2] => Risparmio
+                    [3] => 9/2017
+                    [4] => 2017-02-10
+                    [5] => 0
+                    [6] => 10000
+                    [7] => 0
+                    [8] => 131
+                    [9] => Rosy Magliano
+                    [10] => rosy@euriskoformazione.it
+                    [11] => 3993993933
+                    [12] => 
+                    [13] => 131
+                    [14] => 
+                    [15] => 
+                    [contract_id] => 77
+                    [nature_contract] => Assicurazioni vita
+                    [scope_contract] => Risparmio
+                    [CPU] => 9/2017
+                    [contract_date] => 2017-02-10
+                    [kyc_status] => 0
+                    [contract_value] => 10000
+                    [status] => 0
+                    [user_id] => 131
+                    [fullname] => Rosy Magliano
+                    [email] => rosy@euriskoformazione.it
+                    [mobile_number] => 3993993933
+                    [image] => 
+                    [name] => 
+                    [other_name] => 
+                )
+
+        )
+
+)
+
+
+[30-Mar-2017 09:43:56 Europe/Rome] REMOTELOG POSTArray
+(
+    [r] => dopo caricamento
+)
+
+
+[30-Mar-2017 09:43:56 Europe/Rome] db get_rows select image,name from users where user_id='85' 
 

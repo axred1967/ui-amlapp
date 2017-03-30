@@ -10,7 +10,7 @@ var app = {
         this.bind();
     },
     bind: function() {
-        document.addEventListener('deviceready', getChkLogin(), false);
+        document.addEventListener('deviceready', getChkLogin, false);
     },
     deviceready: function() {
         // This is an event handler function, which means the scope is the event.
@@ -20,10 +20,7 @@ var app = {
     report: function(id) {
         // Report the event in the console
         console.log("Report: " + id);
-    },
-    onDeviceReady: function() {
-       document.addEventListener("backbutton", onBackKeyDown, true);
-   }
+    }
 };
 function getChkLogin()
 {

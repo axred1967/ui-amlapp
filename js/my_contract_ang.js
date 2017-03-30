@@ -85,7 +85,6 @@ app2.controller('personCtrl', function ($scope,$http) {
                         $scope.Contracts=data;
                       else
                         $scope.Contracts=$scope.Contracts.concat(data);
-                        $http.post( LOG,  {r:"dopo caricamento"})
                       //$scope.Customers=data;
                      }
                      else   {
