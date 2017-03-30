@@ -95,6 +95,7 @@
               <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--12-col">
                   <form name="form"  novalidate>
+                  <div ng-hide="Doc.showOnlyImage">
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                         <input type="hidden" ng-model="Doc.per" val="contract">
@@ -140,6 +141,7 @@
 
                       </div>
                     </fieldset>
+                  </div>
                     <fieldset>
                       <div class="demo-card-image mdl-card mdl-shadow--2dp">
                         <div class="mdl-card__title mdl-card--expand">Immagine</div>

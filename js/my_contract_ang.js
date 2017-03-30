@@ -46,7 +46,13 @@ app2.run(function($rootScope, $timeout) {
 
 app2.controller('personCtrl', function ($scope,$http,$location) {
 
+  curr_page= window.location.pathname.replace(/^\//, '');
+  page=localStorage.getItem(curr_page)
+  if (page.length >0 ){
+    $scope.page=JSON.parse(page)
+    $scope.action=$scope.page.action
 
+  }
 
     $scope.loaded=-1;
     var id=localStorage.getItem("userId");
@@ -104,7 +110,7 @@ app2.controller('personCtrl', function ($scope,$http,$location) {
     }
    $scope.addMoreItems()
    $scope.tocontract = function(d){
-     localstorage('view_contract.html',JSON.stringify({action:'view',location:'my_contract.html'}))
+     localstorage('view_contract.html',JSON.stringify({action:'view',location:curr_page}))
      localstorage("contract_id",d.contract_id);
      localstorage("customer_id",d.contractor_id);
      localstorage("Customertype",1);
@@ -112,7 +118,7 @@ app2.controller('personCtrl', function ($scope,$http,$location) {
      redirect('view_contract.html')
     };
     $scope.add_contract = function(){
-      localstorage('add_contract.html',JSON.stringify({action:'add_contract',location:'my_contract.html'}))
+      localstorage('add_contract.html',JSON.stringify({action:'add_contract',location:curr_page}))
       redirect('add_contract.html')
      };
     $scope.back = function(d){

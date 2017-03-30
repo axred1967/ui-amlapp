@@ -259,9 +259,11 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
           $('#loader_img').hide();
           if(data.RESPONSECODE=='1')
           {
-            $scope.Doc=data
-            swal("",data.RESPONSE);
-            $scope.back()
+            //$scope.Doc=data
+            //swal("",data.RESPONSE);
+            if (data.lastid !==undefined && data.lastid>0)
+              $scope.lastid=data.lastid
+              $scope.back()
           }
           else      {
             swal("",data.RESPONSE);
@@ -277,6 +279,19 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       $scope.word[res[1]]=[]
     }
     $scope.back=function(){
+      switch ($scope.page.action){
+        case 'add_document_for_contract':
+          if ($scope.lastid!== undefinde && $scope.lastid>0){
+            $scope.Doc.id=$scope.lastid
+            localStorage('Doc',JSON.stringify($scope.Doc))
+            precpage=JSON.parse(localStorage.getItem($scope.page.location))
+            precpage.loadDoc=true
+            localStorage($scope.page.location,JSON.stringify(precpage))
+
+          }
+          break;
+
+      }
       redirect($scope.page.location)
     }
 

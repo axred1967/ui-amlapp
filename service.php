@@ -1,11 +1,11 @@
-<?php
+<?php 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
 include_once("config.php");
-error_log("passato1 ".$_SERVER['REQUEST_METHOD']. $_REQUEST['action'].PHP_EOL);
+//error_log("passato1 ".$_SERVER['REQUEST_METHOD']. $_REQUEST['action'].PHP_EOL);
 if (strlen($_REQUEST['action']) ==0 && $_SERVER['REQUEST_METHOD'] == 'POST' && empty( $_POST ))
 $_POST=$_REQUEST = json_decode( file_get_contents( 'php://input' ), true );
-error_log("passato ".$_SERVER['REQUEST_METHOD']. $_REQUEST['action'].PHP_EOL);
+//error_log("passato ".$_SERVER['REQUEST_METHOD']. $_REQUEST['action'].PHP_EOL);
 
 switch($_REQUEST['action'])
 {
@@ -263,7 +263,7 @@ case 'login' :
   {
     $data = array('RESPONSECODE'=> 0 ,'RESPONSE'=> "Error");
   }
-  error_log(print_r($data,1));
+  //error_log(print_r($data,1));
   echo json_encode($data);
   break;
 }
@@ -416,7 +416,7 @@ case 'CustomerList' :
     $agencyvalue = $db->getVal("SELECT agency_id FROM agency WHERE user_id = '".$_REQUEST['id']."'  ");
     $sql.=" WHERE us.agency_id ='".$agencyvalue."'  AND us.status <> 2 and us.user_type='3' ".$where." ORDER BY us.user_id DESC limit 5 ";
   }
-  error_log($_REQUEST['action']."1-".$_REQUEST['id'] .$sql.  PHP_EOL);
+  //error_log($_REQUEST['action']."1-".$_REQUEST['id'] .$sql.  PHP_EOL);
 
   $getcustomerlist = $db->getRows($sql);
   if(count($getcustomerlist) > 0 && is_array($getcustomerlist) )
@@ -528,7 +528,7 @@ case 'ACCompanyList' :
 }
 case 'ACWord' :
 {
-  error_log($_REQUEST['usertype']);
+  //error_log($_REQUEST['usertype']);
   if($_REQUEST['usertype'] =='1')
   {
     $agencyvalue = $db->getVal("SELECT agency_id FROM agency WHERE user_id = '".$_REQUEST['id']."'  ");
@@ -560,13 +560,13 @@ case 'ACWord' :
 }
 case 'addcustomer' :
 {
-  error_log($_REQUEST['action']."prima insert -".$_REQUEST['id'] .print_r($_REQUEST,1). print_r($_REQUEST['dbData'],1).  PHP_EOL);
+  //error_log($_REQUEST['action']."prima insert -".$_REQUEST['id'] .print_r($_REQUEST,1). print_r($_REQUEST['dbData'],1).  PHP_EOL);
   $error='';
   if($_REQUEST['dbData']['email']!='')
   {
     $sql="select email  from users where email='".trim($_REQUEST['dbData']['email'])."'";
     $aryCheckEmail=$db->getVal($sql);
-    error_log($_REQUEST['action']."dopo controllo email  -".$_REQUEST['id'] .$sql.  PHP_EOL);
+    //error_log($_REQUEST['action']."dopo controllo email  -".$_REQUEST['id'] .$sql.  PHP_EOL);
   }
 
   if($aryCheckEmail!='')
@@ -599,16 +599,16 @@ case 'addcustomer' :
     if(!is_null($flgIn))
     {
       $lastid=$db->getVal("SELECT LAST_INSERT_ID()");
-      error_log($_REQUEST['action']."dopo insert -".print_r($_REQUEST['dbData'],1). print_r($agency,1). print_r($aryData,1) .$sql.  PHP_EOL);
+      //error_log($_REQUEST['action']."dopo insert -".print_r($_REQUEST['dbData'],1). print_r($agency,1). print_r($aryData,1) .$sql.  PHP_EOL);
       $vars = array(
         'email' => $_REQUEST['dbData']['email'],
         'password' => $random_passw,
         'agency_name' => $agency['agency_name']
       );
 
-      error_log($_REQUEST['action']."prima -".print_r($vars,1) .$sql.  PHP_EOL);
+      //error_log($_REQUEST['action']."prima -".print_r($vars,1) .$sql.  PHP_EOL);
       mail_template($_REQUEST['dbData']['email'],'add_customer',$vars, $_REQUEST['lang']);
-      error_log($_REQUEST['action']."dopo-".$_REQUEST['id'] .$sql.  PHP_EOL);
+      //error_log($_REQUEST['action']."dopo-".$_REQUEST['id'] .$sql.  PHP_EOL);
       $data = array('ID'=>$flgIn,'RESPONSECODE'=>1 ,'RESPONSE'=> "Customer Added successfully","lastid"=>$lastid);
     }
     else
@@ -626,7 +626,7 @@ case 'addcustomer' :
 }
 case 'addcontract' :
 {
-  error_log("addContract1 ". print_r($_REQUEST,1).PHP_EOL .$_REQUEST['appData']['usertype'] .PHP_EOL);
+  //error_log("addContract1 ". print_r($_REQUEST,1).PHP_EOL .$_REQUEST['appData']['usertype'] .PHP_EOL);
   if ($_REQUEST['appData']['usertype'] >=3 &&  $_REQUEST['appData']['usertype'] <1){
     $error="Non hai i privilegi per salvare un contratto";
     $data = array('RESPONSECODE'=> 0 , 'RESPONSE'=>$error);
@@ -651,7 +651,7 @@ case 'addcontract' :
   $num++;
   $CPU=$num ."/" .$anno;
   $aryData['CPU']=$CPU;
-  error_log("EDIT::". $_REQUEST['edit'] .PHP_EOL);
+  //error_log("EDIT::". $_REQUEST['edit'] .PHP_EOL);
   if ($_REQUEST['edit']=="edit"){
     $flgIn=$db->updateAry("contract",$aryData, "where id='".$_REQUEST['dbData']['contract_id']."'");
     $ok="Contratto Aggiornato Correttamente";
@@ -664,13 +664,12 @@ case 'addcontract' :
     }
   }
   else {
-    $ok="Contratto Inserito Correttamente";
 
     $flgIn=$db->insertAry("contract",$aryData);
     $ok="Contratto Inserito Correttamente";
     if(!is_null($flgIn))  {
       // inserisco riga valutazione rischio.
-      $lastid=$this->getVal("SELECT LAST_INSERT_ID()");
+      $lastid=$db->getVal("SELECT LAST_INSERT_ID()");
       $aryData['contractor_id']=$lastid;
       $flgIn=$db->insertAry("customer",$aryData);
 
@@ -835,7 +834,7 @@ case 'view_Customer_Profile_info' :
   {      // print_r($_REQUEST['customer_id']);
     $sql="SELECT us.* FROM  users us
     WHERE us.user_id='".trim($_REQUEST['customer_id'])."' ";
-    error_log($_REQUEST['action']."1-".$_REQUEST['customer_id'] .$sql.  PHP_EOL);
+    //error_log($_REQUEST['action']."1-".$_REQUEST['customer_id'] .$sql.  PHP_EOL);
     $userDetails=$db->getRow($sql);
 
     if($userDetails['user_id']!='')
@@ -854,7 +853,7 @@ case 'view_Customer_Profile_info' :
 }
 case 'view_Contract_info' :
 {
-  error_log($_REQUEST['action']."1-".$_REQUEST['contract_id'] . PHP_EOL .$_REQUEST['appData']['usertype'] .PHP_EOL);
+  //error_log($_REQUEST['action']."1-".$_REQUEST['contract_id'] . PHP_EOL .$_REQUEST['appData']['usertype'] .PHP_EOL);
 
   if($_REQUEST['contract_id']!='' )
   {      // print_r($_REQUEST['customer_id']);
@@ -867,10 +866,10 @@ case 'view_Contract_info' :
     LEFT JOIN company cmy ON co.other_id =cmy.company_id and co.act_for_other=1
     LEFT JOIN users op ON co.other_id =op.user_id  and co.act_for_other=2
     WHERE co.id ='".$_REQUEST['contract_id']."'  ";
-    error_log($_REQUEST['action']."xx". $sql .PHP_EOL .$_REQUEST['appData']['usertype'] .PHP_EOL);
+    //error_log($_REQUEST['action']."xx". $sql .PHP_EOL .$_REQUEST['appData']['usertype'] .PHP_EOL);
 
     $ContractDetails=$db->getRow($sql);
-    error_log($_REQUEST['action']."x2-". print_r($ContractDetails,1) ."-".$ContractDetails['id'] .PHP_EOL .$_REQUEST['appData']['usertype'] .PHP_EOL);
+    //error_log($_REQUEST['action']."x2-". print_r($ContractDetails,1) ."-".$ContractDetails['id'] .PHP_EOL .$_REQUEST['appData']['usertype'] .PHP_EOL);
 
     if($ContractDetails['contract_id']!='')
     {
@@ -1301,7 +1300,7 @@ case 'OwnersList' :
   FROM company_owners co
   JOIN users us  ON  co.user_id = us.user_id
   WHERE co.company_id ='".$_REQUEST['company_id']."'  AND us.status <> 2 ORDER BY co.id DESC  ";
-  error_log($_REQUEST['action']."1-".$_REQUEST['id'] .$sql.  PHP_EOL);
+  //error_log($_REQUEST['action']."1-".$_REQUEST['id'] .$sql.  PHP_EOL);
   $getcustomerlist = $db->getRows($sql);
 
 
@@ -1381,7 +1380,7 @@ case 'CompanyList' :
     $agencyvalue = $db->getVal("SELECT agency_id FROM agency WHERE user_id = '".$_REQUEST['id']."'  ");
     $sql.=" WHERE agency_id ='".$agencyvalue."' AND status <> 2 ORDER BY company_id DESC";
   }
-  error_log($_REQUEST['action']."1-".$_REQUEST['id'] .$sql.  PHP_EOL);
+  //error_log($_REQUEST['action']."1-".$_REQUEST['id'] .$sql.  PHP_EOL);
 
   // $getcompanylist = $db->getRows("SELECT  * FROM company WHERE agency_id ='".$_REQUEST['id']."' And status <> 2 ORDER BY  company_id DESC ");
   $getcompanylist = $db->getRows($sql);
@@ -1427,7 +1426,7 @@ case 'add_company' :
   $error=" Invalid  Authorization  date";
 }
 */
-error_log($_REQUEST['action']."1-".$_REQUEST['id'] .$sql.  PHP_EOL);
+//error_log($_REQUEST['action']."1-".$_REQUEST['id'] .$sql.  PHP_EOL);
 
 if($error=='')
 {
@@ -1568,11 +1567,11 @@ case 'add_owners' :
 
   }
   $error='';
-  error_log('add owners: ' . print_r($_REQUEST,1) .print_r($_REQUEST['dbData'],1) . PHP_EOL);
+  //error_log('add owners: ' . print_r($_REQUEST,1) .print_r($_REQUEST['dbData'],1) . PHP_EOL);
   if($_REQUEST['dbData']['user_id']!='')
   {
     $sql="select user_id  from company_owners where user_id='".trim($_REQUEST['dbData']['user_id'])."'";
-    error_log('add owenrs: ' . $sql . PHP_EOL);
+    //error_log('add owenrs: ' . $sql . PHP_EOL);
     $aryCheckEmail=$db->getVal();
   }
 
@@ -1611,11 +1610,11 @@ case 'edit_owners' :
 
   }
   $error='';
-  error_log('add owners: ' . print_r($_REQUEST,1) .print_r($_REQUEST['dbData'],1) . PHP_EOL);
+  //error_log('add owners: ' . print_r($_REQUEST,1) .print_r($_REQUEST['dbData'],1) . PHP_EOL);
   if($_REQUEST['dbData']['user_id']!='')
   {
     $sql="select user_id  from company_owners where user_id='".trim($_REQUEST['dbData']['user_id'])."'";
-    error_log('add owenrs: ' . $sql . PHP_EOL);
+    //error_log('add owenrs: ' . $sql . PHP_EOL);
     $aryCheckEmail=$db->getVal();
   }
 
@@ -1895,7 +1894,8 @@ case 'show_kyc_profile6' :
 case 'documentList' :
 {
   $getimaglist=array();
-  $getimaglist = $db->getRows("SELECT  * FROM documents WHERE per_id ='".$_REQUEST['dbData']['per_id']."' AND per ='".$_REQUEST['dbData']['per']."' ORDER BY  id DESC ");
+
+  $getimaglist = $db->getRows("SELECT  * FROM documents WHERE per_id ='".$_REQUEST['dbData']['per_id']."' AND per ='".$_REQUEST['dbData']['per']."' " .$_REQUESTE['where']." ORDER BY  id DESC ");
 
   if(count($getimaglist) > 0 && is_array($getimaglist) )
   {
@@ -1924,21 +1924,21 @@ case 'deletecustimage' :
 }
 case 'upload_document_image_multi' :
 {
-  error_log("passato di qui ". print_r($_REQUEST,1) .PHP_EOL);
+  //error_log("passato di qui ". print_r($_REQUEST,1) .PHP_EOL);
   $for=$_REQUEST['for'] ;
   $newfile=md5(microtime()).".jpg";
   $user_id = $_REQUEST['userid'];
-  error_log("controllo" .PATH_UPLOAD . "document" . DS . $for ."_".  $user_id .PHP_EOL);
+  //error_log("controllo" .PATH_UPLOAD . "document" . DS . $for ."_".  $user_id .PHP_EOL);
   if (!file_exists(PATH_UPLOAD . "document" . DS . $for ."_".  $user_id)) {
-    error_log("MKDIR:". PATH_UPLOAD . "document" . DS . $for ."_". $user_id .PHP_EOL);
+    //error_log("MKDIR:". PATH_UPLOAD . "document" . DS . $for ."_". $user_id .PHP_EOL);
 
     mkdir(PATH_UPLOAD . "document" . DS . $for ."_". $user_id, 0777, true);
     mkdir(PATH_UPLOAD . "document" . DS . $for ."_". $user_id . DS . 'resize', 0777, true);
   }
-  error_log("MOVE:". $_FILES['file']['tmp_name']. "uploads/document/".$for ."_". $user_id . DS . $newfile .PHP_EOL);
+  //error_log("MOVE:". $_FILES['file']['tmp_name']. "uploads/document/".$for ."_". $user_id . DS . $newfile .PHP_EOL);
 
   if (move_uploaded_file($_FILES['file']['tmp_name'], "uploads/document/".$for ."_". $user_id . DS . $newfile)) {
-    error_log("COPY:". "uploads/document/".$for ."_" . $user_id . DS . $newfile ."---" . "uploads/document/".$for ."_". $user_id . DS . "resize/" . $newfile.PHP_EOL);
+    //error_log("COPY:". "uploads/document/".$for ."_" . $user_id . DS . $newfile ."---" . "uploads/document/".$for ."_". $user_id . DS . "resize/" . $newfile.PHP_EOL);
 
 
     copy("uploads/document/".$for ."_" . $user_id . DS . $newfile, "uploads/document/".$for ."_". $user_id . DS . "resize/" . $newfile);
@@ -2025,13 +2025,13 @@ case 'upload_imagecontract' :
 case 'delete':
 {
   $where = " where " . $_REQUEST['primary'] ."=". $_REQUEST['id'];
-error_log($where.PHP_EOL);
+//error_log($where.PHP_EOL);
 if ($_REQUEST['table']=='documents'){
   $doc=$db->getRow("select * from documents where id =" .$_REQUEST['id']);
   $flgIn=$db->delete('tmp_image',"where imagename='".$doc['doc_image']."'");
   @unlink("uploads/document/".$doc['per']."_" .$doc['per_id']."/".$doc['doc_image']);
   @unlink("uploads/document/".$doc['per']."_" .$doc['per_id']."/resize/".$doc['doc_image']);
-error_log("uploads/document/".$doc['per']."_" .$doc['per_id']."/resize/".$doc['doc_image']);
+//error_log("uploads/document/".$doc['per']."_" .$doc['per_id']."/resize/".$doc['doc_image']);
 }
   $flgIn=$db->delete($_REQUEST['table'],$where);
   if ($flgIn>0)
