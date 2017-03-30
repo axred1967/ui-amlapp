@@ -17,11 +17,10 @@ var app = {
 };
 function getChkLogin()
 {
-  $http.post( LOG,  {r:"prima di login"})
 
 
     chkloggedin();
-    $http.post( LOG,  {r:"passato login"})
+    
 
 }
 
