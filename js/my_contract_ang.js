@@ -1,5 +1,6 @@
 var app2 = angular.module('myApp', ['pascalprecht.translate']);
 
+
 app2.controller('personCtrl', function ($scope,$http,$translate) {
 //alert(window.location.pathname.replace(/^\//, ''));
    curr_page= window.location.pathname.replace(/^\//, '');
