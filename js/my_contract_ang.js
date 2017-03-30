@@ -1,48 +1,4 @@
-var app2 = angular.module('myApp', ['pascalprecht.translate','ng-currency','fieldMatch']);
-angular.module('fieldMatch', [])
-   .directive('fieldMatch', ["$parse", function($parse) {
-       return {
-           require: 'ngModel',
-           link: function(scope, elem, attrs, ctrl) {
-               var me = $parse(attrs.ngModel);
-               var matchTo = $parse(attrs.fieldMatch);
-               scope.$watchGroup([me, matchTo], function(newValues, oldValues) {
-                   ctrl.$setValidity('fieldmatch', me(scope) === matchTo(scope));
-               }, true);
-           }
-       }
-   }]);
-//Run material design lite
-app2.directive("ngModel",["$timeout", function($timeout){
-            return {
-                restrict: 'A',
-                priority: -1, // lower priority than built-in ng-model so it runs first
-                link: function(scope, element, attr) {
-                    scope.$watch(attr.ngModel,function(value){
-                        $timeout(function () {
-                            if (value){
-                                element.trigger("change");
-                            } else if(element.attr('placeholder') === undefined) {
-                                if(!element.is(":focus"))
-                                    element.trigger("blur");
-                            }
-                        });
-                    });
-                }
-            };
-        }]);
-
-app2.run(function($rootScope, $timeout) {
-   $rootScope.$on('$viewContentLoaded', function(event) {
-       $timeout(function() {
-           componentHandler.upgradeAllRegistered();
-       }, 0);
-   });
-   $rootScope.render = {
-       header: true,
-       aside: true
-   }
-});
+var app2 = angular.module('myApp', ['pascalprecht.translate']);
 
 app2.controller('personCtrl', function ($scope,$http,$translate) {
 //alert(window.location.pathname.replace(/^\//, ''));
@@ -56,6 +12,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
     $scope.loaded=-1;
     $scope.addMoreItems =function(){
+      alert('additem');
       var id=localStorage.getItem("userId");
       var email=localStorage.getItem("userEmail");
       var usertype = localStorage.getItem('userType');
@@ -70,6 +27,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       data= {"action":"ContractList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last}
       $http.post(SERVICEURL2,  data )
           .success(function(responceData)  {
+            alert('ciclo');
                     $('#loader_img').hide();
                     if(responceData.RESPONSECODE=='1') 			{
                       data=responceData.RESPONSE;
