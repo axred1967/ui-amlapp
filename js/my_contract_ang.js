@@ -45,7 +45,7 @@ app2.run(function($rootScope, $timeout) {
 });
 
 app2.controller('personCtrl', function ($scope,$http) {
-alert(window.location.pathname.replace(/^\//, ''));
+//alert(window.location.pathname.replace(/^\//, ''));
    curr_page= window.location.pathname.replace(/^\//, '');
   page=localStorage.getItem(curr_page)
   if (page.length >0 ){
@@ -55,24 +55,11 @@ alert(window.location.pathname.replace(/^\//, ''));
   }
 
     $scope.loaded=-1;
-    var id=localStorage.getItem("userId");
-  	var email=localStorage.getItem("userEmail");
-    $('#loader_img').hide();
-    var usertype = localStorage.getItem('userType');
-     var image = localStorage.getItem("Profileimageagencyuser");
-     var priviledge = localStorage.getItem("priviligetype");
-     if(priviledge == 0 && usertype  == '2'  )
-     {
-         redirect("my_profile_agent_noprve.html");
-     }
-    if(image != null)
-    {
-            $('#Profileimageagencyuser').attr("src",BASEURL+"uploads/user/small/"+image);
-
-    }
-    $('#Profileimageagencyusername').html(name);
-    $('#Profileimageagencyuseremail').html(email);
     $scope.addMoreItems =function(){
+      var id=localStorage.getItem("userId");
+      var email=localStorage.getItem("userEmail");
+      var usertype = localStorage.getItem('userType');
+       var priviledge = localStorage.getItem("priviligetype");
       last=99999999999
       if ( $scope.Contracts!==undefined && $scope.Contracts.length>0){
         lastkey= Object.keys($scope.Contracts).pop() ;
@@ -87,6 +74,7 @@ alert(window.location.pathname.replace(/^\//, ''));
                     if(responceData.RESPONSECODE=='1') 			{
                       data=responceData.RESPONSE;
                       $scope.loaded=data.length
+                      $http.post( LOG,  {r:"dopo caricamento",data:data})
                       angular.forEach(data,function(value,key) {
                         if (data[key].name !== null && data[key].name.length>0)
                             data[key].fullname=data[key].name
@@ -97,6 +85,7 @@ alert(window.location.pathname.replace(/^\//, ''));
                         $scope.Contracts=data;
                       else
                         $scope.Contracts=$scope.Contracts.concat(data);
+                        $http.post( LOG,  {r:"dopo caricamento"})
                       //$scope.Customers=data;
                      }
                      else   {
@@ -125,7 +114,6 @@ alert(window.location.pathname.replace(/^\//, ''));
     $scope.back = function(d){
        redirect($scope.page.location)
          }
-console.log($scope.Contracts);
 
 
 });
