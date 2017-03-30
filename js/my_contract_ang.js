@@ -44,7 +44,7 @@ app2.run(function($rootScope, $timeout) {
    }
 });
 
-app2.controller('personCtrl', function ($scope,$http) {
+app2.controller('personCtrl', function ($scope,$http,$translate) {
 //alert(window.location.pathname.replace(/^\//, ''));
    curr_page= window.location.pathname.replace(/^\//, '');
   page=localStorage.getItem(curr_page)

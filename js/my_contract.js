@@ -17,9 +17,11 @@ var app = {
 };
 function getChkLogin()
 {
+  $http.post( LOG,  {r:"prima di login"})
 
 
     chkloggedin();
+    $http.post( LOG,  {r:"passato login"})
 
 }
 
@@ -27,13 +29,3 @@ function getChkLogin()
 setTimeout(function(){
         checkthesidebarinfouser();
 }, 800);
-
-
-
-function tocontract(d)
-{
-    localstorage("contract_id",d.contract_id);
-    localstorage("customer_id",d.contractor_id);
-    localstorage("Customertype",1);
-    window.location = 'view_contract.html';
-}
