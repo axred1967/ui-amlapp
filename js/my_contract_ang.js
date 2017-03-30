@@ -45,8 +45,8 @@ app2.run(function($rootScope, $timeout) {
 });
 
 app2.controller('personCtrl', function ($scope,$http) {
-
-  curr_page= window.location.pathname.replace(/^\//, '');
+alert(window.location.pathname.replace(/^\//, ''));
+   curr_page= window.location.pathname.replace(/^\//, '');
   page=localStorage.getItem(curr_page)
   if (page.length >0 ){
     $scope.page=JSON.parse(page)
