@@ -75,6 +75,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
              $scope.action='edit'
              $scope.viewName="Modifica Documento"
              dbData=$scope.Doc
+             $scope.loaded=true
              data={ "action":"documentList", dbData:dbData}
              $http.post( SERVICEURL2,  data )
                  .success(function(data) {
@@ -92,6 +93,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
              case 'edit_document_for_contract' :
                   Doc=JSON.parse(localStorage.getItem('Doc'))
                   convertDateStringsToDates(Doc)
+                  $scope.loaded=true
                   $scope.Doc=Doc
                   $scope.action='edit'
                   $scope.viewName="Modifica Documento"
@@ -106,6 +108,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                   $scope.Doc.doc_date=new Date()
                   $scope.action='add'
                   $scope.viewName="Aggiungi Documento"
+                  $scope.loaded=false
 
                   break;
 
@@ -215,6 +218,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                       if(data.RESPONSECODE=='1') 			{
                         $scope.Doc.doc_image=data.RESPONSE;
                         $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
+                        $scope.loaded=true
                       //  $http.post( LOG,  {dt:data.RESPONSE ,doc:$scope.Doc})
 
                       }
@@ -263,7 +267,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
             //swal("",data.RESPONSE);
             if (data.lastid !==undefined && data.lastid>0)
               $scope.lastid=data.lastid
-              $scope.back()
+            $scope.back()
           }
           else      {
             swal("",data.RESPONSE);

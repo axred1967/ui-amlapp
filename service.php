@@ -1,4 +1,4 @@
-<?php 
+<?php
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
 include_once("config.php");
@@ -434,7 +434,11 @@ case 'CustomerList' :
 case 'ContractList' :
 {
   if (strlen($_REQUEST['last'])>0){
-    $where = " and co.id <  " .$_REQUEST['last'];
+    $last = " and co.id <  " .$_REQUEST['last'];
+
+  }
+  if (strlen($_REQUEST['last'])>0){
+    $last = " and co.id <  " .$_REQUEST['last'];
 
   }
   $sql= "SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.status,
@@ -449,13 +453,13 @@ case 'ContractList' :
 
     if($_REQUEST['priviledge'] == 1 )
     {
-      $sql.="  WHERE co.agent_id ='".$_REQUEST['id']."' AND co.status <> 2 ".$where." ORDER BY co.id DESC ";
+      $sql.="  WHERE co.agent_id ='".$_REQUEST['id']."' AND co.status <> 2 ".$where.$last." ORDER BY co.id DESC limit 5";
 
     }
     else if($_REQUEST['priviledge'] == 2)
     {
       $agencyvalue = $db->getVal("SELECT agency_id FROM agent WHERE user_id = '".$_REQUEST['id']."'  ");
-      $sql.=" WHERE co.agency_id ='".$agencyvalue ."' AND co.status <> 2 ".$where." ORDER BY co.id DESC ";
+      $sql.=" WHERE co.agency_id ='".$agencyvalue ."' AND co.status <> 2 ".$where.$last." ORDER BY co.id DESC limit 5 ";
 
 
     }
@@ -463,7 +467,7 @@ case 'ContractList' :
   else if($_REQUEST['usertype'] =='1')
   {
     $agencyvalue = $db->getVal("SELECT agency_id FROM agency WHERE user_id = '".$_REQUEST['id']."'  ");
-    $sql.=" WHERE co.agency_id ='".$agencyvalue ."' AND co.status <> 2  ".$where." ORDER BY co.id DESC ";
+    $sql.=" WHERE co.agency_id ='".$agencyvalue ."' AND co.status <> 2  ".$where.$last." ORDER BY co.id DESC limit 5";
 
 
   }

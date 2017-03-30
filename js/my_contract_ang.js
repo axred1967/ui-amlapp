@@ -44,7 +44,7 @@ app2.run(function($rootScope, $timeout) {
    }
 });
 
-app2.controller('personCtrl', function ($scope,$http,$location) {
+app2.controller('personCtrl', function ($scope,$http) {
 
   curr_page= window.location.pathname.replace(/^\//, '');
   page=localStorage.getItem(curr_page)
@@ -76,7 +76,8 @@ app2.controller('personCtrl', function ($scope,$http,$location) {
       last=99999999999
       if ( $scope.Contracts!==undefined && $scope.Contracts.length>0){
         lastkey= Object.keys($scope.Contracts).pop() ;
-         last=$scope.Contracts[lastkey].id;
+         last=$scope.Contracts[lastkey].contract_id;
+
       }
       $('#loader_img').show()
       data= {"action":"ContractList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last}
