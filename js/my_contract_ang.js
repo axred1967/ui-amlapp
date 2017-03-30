@@ -5,7 +5,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 //alert(window.location.pathname.replace(/^\//, ''));
    curr_page= window.location.pathname.replace(/^\//, '');
   page=localStorage.getItem(curr_page)
-  if (page.length >0 ){
+  if (page!= null && page.length >0 ){
     $scope.page=JSON.parse(page)
     $scope.action=$scope.page.action
 
@@ -13,7 +13,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
     $scope.loaded=-1;
     $scope.addMoreItems =function(){
-      alert('additem');
       var id=localStorage.getItem("userId");
       var email=localStorage.getItem("userEmail");
       var usertype = localStorage.getItem('userType');
@@ -28,7 +27,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       data= {"action":"ContractList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last}
       $http.post(SERVICEURL2,  data )
           .success(function(responceData)  {
-            alert('ciclo');
                     $('#loader_img').hide();
                     if(responceData.RESPONSECODE=='1') 			{
                       data=responceData.RESPONSE;
@@ -71,7 +69,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
      };
     $scope.back = function(d){
        redirect($scope.page.location)
-         }
+     }
 
 
 });
