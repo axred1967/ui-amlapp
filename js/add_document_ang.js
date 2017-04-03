@@ -289,15 +289,10 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         case 'add_document_for_contract':
           if ($scope.lastid!== undefined && $scope.lastid>0){
             $scope.Doc.id=$scope.lastid
-            $http.post( LOG,  {Back:"dopo precpage1"})
-            localStorage('Doc',JSON.stringify($scope.Doc))
-            $http.post( LOG,  {Back:"dopo precpage2", "Doc":$scope.Doc})
+            localstorage('Doc',JSON.stringify($scope.Doc))
             precPage=JSON.parse(localStorage.getItem($scope.page.location))
-            $http.post( LOG,  {Back:"dopo precpag3", prePage:precPage})
             precPage.addDoc=true
-            $http.post( LOG,  {Back:"dopo precpage4"})
-            localStorage($scope.page.location,JSON.stringify(precPage))
-            $http.post( LOG,  {Back:"dopo precpage5"})
+            localstorage($scope.page.location,JSON.stringify(precPage))
 
           }
           break;
