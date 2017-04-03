@@ -290,8 +290,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
           if ($scope.lastid!== undefined && $scope.lastid>0){
             $scope.Doc.id=$scope.lastid
             localStorage('Doc',JSON.stringify($scope.Doc))
-            precpage=JSON.parse(localStorage.getItem($scope.page.location))
-            precpage.addDoc=true
+            precPage=JSON.parse(localStorage.getItem($scope.page.location))
+            $http.post( LOG,  {Back:"dopo precpage", "Doc":$scope.Doc,prepage:precPage})
+            precPage.addDoc=true
             localStorage($scope.page.location,JSON.stringify(precpage))
 
           }
