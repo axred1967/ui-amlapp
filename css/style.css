@@ -1375,3 +1375,15 @@ overflow-x: hidden;
 	font-size: 14px;
 	font-weight: 500;
 }
+table.viewContract{
+	display:table;
+ /*table-layout:fixed;*/
+	width:100%;
+
+
+}
+td.wordwrap{
+	word-wrap:break-word;
+
+
+}

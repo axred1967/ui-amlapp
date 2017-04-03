@@ -1,6 +1,7 @@
 <?php
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 include_once("config.php");
 //error_log("passato1 ".$_SERVER['REQUEST_METHOD']. $_REQUEST['action'].PHP_EOL);
 if (strlen($_REQUEST['action']) ==0 && $_SERVER['REQUEST_METHOD'] == 'POST' && empty( $_POST ))
