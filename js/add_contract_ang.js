@@ -57,6 +57,8 @@
  app2.controller('personCtrl', function ($scope,$http,$translate) {
    $scope.init=function(){
      $scope.page={}
+alert(window.location.pathname)
+alert(window.location)
      curr_page= window.location.pathname.replace(/^\//, '');
 
      page=localStorage.getItem(curr_page)
@@ -277,8 +279,8 @@
         usertype: localStorage.getItem('userType')
       }
       // aggiorno il campo blog per contenere Json
-      if ($scope.Contracts.Docs.length>0 )
-        $scope.Contracts.Docs=JSON.Parse($scope.Contracts.Docs)
+      if ($scope.Contract.Docs.length>0 )
+        $scope.Contract.Docs=JSON.Parse($scope.Contracts.Docs)
 
       dbData=$scope.Contract
       // metto i documenti in json
