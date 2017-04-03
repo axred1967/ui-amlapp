@@ -289,7 +289,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
             $scope.Doc.id=$scope.lastid
             localStorage('Doc',JSON.stringify($scope.Doc))
             precpage=JSON.parse(localStorage.getItem($scope.page.location))
-            precpage.loadDoc=true
+            precpage.addDoc=true
             localStorage($scope.page.location,JSON.stringify(precpage))
 
           }

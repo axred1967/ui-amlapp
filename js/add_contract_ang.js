@@ -85,19 +85,44 @@
           }
 
 
-          $scope.action='edit'
-          $scope.viewName="Modifica Contratto"
-          break;
+
+          case 'edit' :
+            Contract=JSON.parse(localStorage.getItem('Contract'))
+            convertDateStringsToDates(Contract)
+            $scope.Contract=Contract
+            switch($scope.Contract.act_for_other){
+              case "1":
+              $scope.Contract.company_id= $scope.Contract.other_id
+              break;
+              case "2":
+              $scope.Contract.user_id= $scope.Contract.other_id
+              break;
+            }
+            if ($scope.Contract.Docs===undefined || $scope.Contract.Docs.lenght==0){
+              $scope.Contract.Docs=[]
+              $scope.Contract.Docs[0]={}
+              $scope.Contract.DocsLoaded=0;
+              $scope.Contract.Docs[0].doc_name="Immagine Contratto"
+              $scope.Contract.Docs[0].doc_type="Contratto di Servizio"
+              $scope.Contract.contract_date=new Date()
+              $scope.Contract.contract_eov=new Date()
+
+            }
+
+
+            $scope.action='edit'
+            $scope.viewName="Modifica Contratto"
+            break;
+
 
         case 'add_contract' :
-         if ($scope.page.loadDoc){
-             Docs=JSON.parse(localStorage.getItem('Doc'))
-             convertDateStringsToDates(Docs)
+         if ($scope.page.addDoc){
+             Doc=JSON.parse(localStorage.getItem('Doc'))
+             convertDateStringsToDates(Doc)
              Contract=JSON.parse(localStorage.getItem('Contract'))
              convertDateStringsToDates(Contract)
              $scope.Contract=Contract
-             $scope.Contract.Docs=Docs
-             $scope.Contract.Docs[$scope.Contract.DocsLoaded]=Doc
+             $scope.Contract.Docs[Docs.length]=Doc
              $scope.Contract.DocsLoaded++
            }else {
              $scope.Contract={}
@@ -253,10 +278,11 @@
       }
       // aggiorno il campo blog per contenere Json
       if ($scope.Contracts.Docs.length>0 )
-        $scope.Contracts.Docs=JSON.Parse($scope.Contracts.Docu)
+        $scope.Contracts.Docs=JSON.Parse($scope.Contracts.Docs)
 
       dbData=$scope.Contract
-
+      // metto i documenti in json
+      //dbData.Docs=JSON.parse($scope.Contract.Docs)
       switch(dbData.act_for_other){
           case "1":
             dbData.other_id= $scope.Contract.company_id
@@ -415,10 +441,12 @@
       Doc.agency_id=localStorage.getItem('agencyId')
       Doc.per='contract'
       Doc.showOnlyImage=true
+      Doc.indice=$scope.Contract.Docs.length
 
       localstorage('Doc',JSON.stringify(Doc))
-      localstorage('Contract',JSON.stringify(Contract))
-      redirect('add_document.html')    }
+      localstorage('Contract',JSON.stringify($scope.Contract))
+      redirect('add_document.html')
+     }
 
       $scope.edit_doc=function(Doc){
         localstorage('add_document.html',JSON.stringify({action:"edit_document_for_contract",location:curr_page}))
