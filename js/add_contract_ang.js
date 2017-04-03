@@ -57,9 +57,8 @@
  app2.controller('personCtrl', function ($scope,$http,$translate) {
    $scope.init=function(){
      $scope.page={}
-alert(window.location.pathname)
-alert(window.location)
-     curr_page= window.location.pathname.replace(/^\//, '');
+
+     curr_page= basename()
 
      page=localStorage.getItem(curr_page)
     if (page.length >0 ){

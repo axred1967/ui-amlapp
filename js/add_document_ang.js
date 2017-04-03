@@ -59,7 +59,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.Doc={}
     $scope.word={};
     $scope.page={}
-    page=localStorage.getItem('add_document.html')
+    curr_page= basename()
+    page=localStorage.getItem(curr_page)
    if (page.length >0 ){
      $scope.page=JSON.parse(page)
      $scope.action=$scope.page.action

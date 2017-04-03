@@ -1,3 +1,4 @@
+
 var app2 = angular.module('myApp',['pascalprecht.translate','fieldMatch']);
 //Field Match directive
 angular.module('fieldMatch', [])
@@ -55,7 +56,8 @@ app2.filter('capitalize', function() {
 }
 });
 app2.controller('personCtrl', function ($scope,$http,$translate) {
-	page=localStorage.getItem('view_contract.html')
+	curr_page=basename()
+	page=localStorage.getItem(curr_page)
 	if ( page!= null && page.length >0 ){
 		$scope.page=JSON.parse(page)
 		$scope.action=$scope.page.action
@@ -67,7 +69,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   	var email=localStorage.getItem("userEmail");
     var contract_id = localStorage.getItem("contract_id");
     data= {"action":"view_Contract_info",id:id,email:email,contract_id:contract_id}
-	
+
     $http.post( SERVICEURL2,  data )
         .success(function(responceData) {
                   $('#loader_img').hide();
