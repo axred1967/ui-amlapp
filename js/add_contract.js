@@ -18,7 +18,6 @@ var app = {
 };
 function getChkLogin()
 {
-        document.addEventListener("backbutton", onBackKeyDown, false);
 
         chkloggedin();
 
