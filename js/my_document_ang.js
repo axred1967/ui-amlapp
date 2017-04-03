@@ -59,7 +59,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.page={}
     $scope.action="";
     $scope.Docs=[]
-    $scope.Doc=[]
+    $scope.Doc={}
     $scope.word=[];
     page=localStorage.getItem('my_document.html')
    if (page.length >0 ){
@@ -105,7 +105,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
     }
 
-    $scope.addMoreItems()
     switch ($scope.action){
         case 'list_from_view_contract' :
              $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
@@ -123,6 +122,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
              $scope.viewName="Documenti Contratto"
               break;
     }
+    $scope.addMoreItems()
 
     $('input.mdl-textfield__input').each(
           function(index){
