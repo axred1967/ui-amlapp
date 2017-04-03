@@ -1376,10 +1376,9 @@ overflow-x: hidden;
 	font-weight: 500;
 }
 table.viewContract{
-	display:table;
  /*table-layout:fixed;*/
-	width:100%;
-
+display:table;
+width:auto!important;
 
 }
 td.wordwrap{

@@ -124,7 +124,7 @@
                 <button  class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_contract(Contract.contractor_id)"  >
                     {{'EditContract' | translate }}
                   </button>
-                <table class="viewContract" style="" align="center" class="mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+                <table align="center" class="viewContract mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
                   <tbody>
 
                     <tr>
@@ -153,8 +153,8 @@
                       <td>{{Contract.contract_value | currency}}</td>
                     </tr>
                     <tr>
-                        <td>email:</td>
-                      <td class="wordwrap" >{{Contract.email}}</td>
+                        <td class="wordwrap">email:</td>
+                      <td>{{Contract.email}}</td>
                     </tr>
                     <tr>
                         <td>mobile:</td>

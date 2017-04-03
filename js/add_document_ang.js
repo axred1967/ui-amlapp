@@ -284,9 +284,10 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       $scope.word[res[1]]=[]
     }
     $scope.back=function(){
+      $http.post( LOG,  {Back:"da add doc", "action":$scope.action,lastid:$scope.lastid })
       switch ($scope.page.action){
         case 'add_document_for_contract':
-          if ($scope.lastid!== undefinde && $scope.lastid>0){
+          if ($scope.lastid!== undefined && $scope.lastid>0){
             $scope.Doc.id=$scope.lastid
             localStorage('Doc',JSON.stringify($scope.Doc))
             precpage=JSON.parse(localStorage.getItem($scope.page.location))
