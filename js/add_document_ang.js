@@ -284,7 +284,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       $scope.word[res[1]]=[]
     }
     $scope.back=function(){
-      $http.post( LOG,  {Back:"da add doc", "action":$scope.action,lastid:$scope.lastid })
       switch ($scope.page.action){
         case 'add_document_for_contract':
           if ($scope.lastid!== undefined && $scope.lastid>0){
