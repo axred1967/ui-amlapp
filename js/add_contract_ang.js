@@ -424,6 +424,7 @@
       Doc.doc_type="Contratto di Servizio"
       Doc.agency_id=localStorage.getItem('agencyId')
       Doc.per='contract'
+      Doc.id=null
       Doc.showOnlyImage=true
       Doc.indice=$scope.Contract.Docs.length
 
