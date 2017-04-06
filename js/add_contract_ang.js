@@ -110,6 +110,17 @@
 
             }
 
+            if ($scope.page.addDoc){
+                Doc=JSON.parse(localStorage.getItem('Doc'))
+                convertDateStringsToDates(Doc)
+                Contract=JSON.parse(localStorage.getItem('Contract'))
+                convertDateStringsToDates(Contract)
+                $scope.Contract=Contract
+                $scope.Contract.Docs[Docs.length]=Doc
+                $scope.Contract.DocsLoaded++
+              }
+              
+
 
             $scope.action='edit'
             $scope.viewName="Modifica Contratto"
@@ -117,6 +128,8 @@
 
 
         case 'add_contract' :
+        $http.post( LOG,  {Back:"da add doc", "page":$scope.page})
+
          if ($scope.page.addDoc){
              Doc=JSON.parse(localStorage.getItem('Doc'))
              convertDateStringsToDates(Doc)
