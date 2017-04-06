@@ -863,8 +863,8 @@ case 'view_Contract_info' :
   if($_REQUEST['contract_id']!='' )
   {      // print_r($_REQUEST['customer_id']);
     $sql= "SELECT co.id as contract_id, co.nature_contract,co.scope_contract,co.CPU,co.contract_date,co.kyc_status,co.contract_value,co.contractor_id,co.role_for_other,
-    co.contract_eov,co.act_for_other,co.Docs,
-    concat(us.name,' ',us.surname) as fullname,us.surname,us.name as name1, us.email,us.mobile_number,us.image,us.user_id as other_id,rk.status,cmy.company_id,cmy.name,concat(op.name,' ',op.surname) as other_name
+    co.contract_eov,co.act_for_other,co.Docs,co.other_id,
+    concat(us.name,' ',us.surname) as fullname,us.surname,us.name as name1, us.email,us.mobile_number,us.image,rk.status,cmy.company_id,cmy.name,concat(op.name,' ',op.surname) as other_name
 
     FROM contract co JOIN users us ON co.contractor_id = us.user_id
     left JOIN risk rk ON rk.cpu = co.cpu

@@ -259,7 +259,7 @@
 
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                         <input class="mdl-textfield__input" type="text" ng-model="Contract.role_for_other" ng-keyup="showAC('Contract.role_for_other');"
-                        id="Contract_role_for_other" name="Contract_role_for_other"  ng-required=" {{Contract.act_for_other>0}}"
+                        id="Contract_role_for_other" name="Contract_role_for_other"  ng-required="Contract.act_for_other>0"
                         ng-focus="resetAC()"
                         />
                         <label for="Contract_role_for_other" class="mdl-textfield__label" >{{'kindofDelegation' | translate }}</label>
@@ -284,7 +284,7 @@
                           type="text" placeholder=" {{'SearchCompanyByEmail' | translate }}" ng-focus="resetAC()"
                           id="FindCompany" name="FindCompany" ng-required=" {{Contract.act_for_other==1}}" />
                           <input ng-model="Contract.company_id"  type="text" style="display:none" id="Company" name="Company"  ng-required="Contract.act_for_other==1"/>
-                          <label class="mdl-textfield__label" for="FindCompany" style="color:orange;display:none">{{'SearchCompanyByEmail' | translate }}</label>
+                          <label class="mdl-textfield__label" for="FindCompany" >{{'SearchCompanyByEmail' | translate }}</label>
                           <table class="mdl-data-table mdl-js-data-table  border-none  ">
                             <tbody>
                               <tr ng-click="addCompanyItem(item)" ng-repeat="item in listCompany">

@@ -292,7 +292,7 @@
       }
       // aggiorno il campo blog per contenere Json
       if ($scope.Contract.Docs.length>0 )
-        $scope.Contract.Docs=JSON.Parse($scope.Contracts.Docs)
+        $scope.Contract.Docs=JSON.stringify($scope.Contract.Docs)
 
       dbData=$scope.Contract
       // metto i documenti in json
