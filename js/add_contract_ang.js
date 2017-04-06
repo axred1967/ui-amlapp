@@ -373,7 +373,7 @@
     $scope.uploadPhoto=function(imageURI){
       $("#agent_image").hide();
       $('#profileimgloader').show();
-      $scope.Doc=JSON.parse(localstorage.getItem('Doc'))
+      $scope.Doc=JSON.parse(localStorage.getItem('Doc'))
 
        var options = new FileUploadOptions();
        options.fileKey="file";
@@ -391,7 +391,7 @@
     }
     $scope.winFT=function (r)
     {
-      $scope.Doc=JSON.parse(localstorage.getItem('Doc'))
+      $scope.Doc=JSON.parse(localStorage.getItem('Doc'))
       var foundItem = $filter('filter')($scope.Docs, { id: $scope.Doc.id  }, true)[0];
       var review_info   =JSON.parse(r.response);
       var id = review_info.id;
