@@ -310,7 +310,7 @@
 
 
           $('#loader_img').show();
-          data= {"action":"addcontract",appData,dbData,edit:$scope.action}
+          data= {"action":"addcontract",appData:appData,dbData:dbData,edit:$scope.action}
           $http.post(SERVICEURL2,data)
               .success(function(data){
                       $('#loader_img').hide();
