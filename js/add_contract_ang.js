@@ -72,22 +72,7 @@
       $scope.word={};
       //localstorage("back","view_contract.html");
       switch ($scope.action){
-        case 'view' :
-          Contract=JSON.parse(localStorage.getItem('Contract'))
-          convertDateStringsToDates(Contract)
-          $scope.Contract=Contract
-          switch($scope.Contract.act_for_other){
-            case "1":
-            $scope.Contract.company_id= $scope.Contract.other_id
-            break;
-            case "2":
-            $scope.Contract.user_id= $scope.Contract.other_id
-            break;
-          }
-
-
-
-          case 'edit' :
+        case 'edit' :
             Contract=JSON.parse(localStorage.getItem('Contract'))
             convertDateStringsToDates(Contract)
             $scope.Contract=Contract
@@ -99,71 +84,11 @@
               $scope.Contract.user_id= $scope.Contract.other_id
               break;
             }
-            if ($scope.Contract.Docs===undefined ||  $scope.Contract.Docs.lenght===undefined ||  $scope.Contract.Docs.lenght==0){
-              $scope.Contract.Docs=[]
-              $scope.Contract.Docs[0]={}
-              $scope.Contract.DocsLoaded=0;
-              $scope.Contract.Docs[0].doc_name="Immagine Contratto"
-              $scope.Contract.Docs[0].doc_type="Contratto di Servizio"
-              $scope.Contract.contract_date=new Date()
-              $scope.Contract.contract_eov=new Date()
-
-            }
-
-            if ($scope.page.addDoc){
-                Doc=JSON.parse(localStorage.getItem('Doc'))
-                convertDateStringsToDates(Doc)
-                Contract=JSON.parse(localStorage.getItem('Contract'))
-                convertDateStringsToDates(Contract)
-                $scope.Contract=Contract
-                if ($scope.Contract.Docs.length!==undefined){
-                  $scope.Contract.Docs[Contract.Docs.length]=Doc
-
-                }
-               else {
-                 $scope.Contract.Docs=[]
-                 $scope.Contract.Docs[0]=Doc
-               }                $scope.Contract.DocsLoaded++
-              }
-
-
-
             $scope.action='edit'
             $scope.viewName="Modifica Contratto"
             break;
 
-
         case 'add_contract' :
-        $http.post( LOG,  {Back:"da add doc", "page":$scope.page})
-
-         if ($scope.page.addDoc){
-             Doc=JSON.parse(localStorage.getItem('Doc'))
-             convertDateStringsToDates(Doc)
-             Contract=JSON.parse(localStorage.getItem('Contract'))
-             convertDateStringsToDates(Contract)
-             $scope.Contract=Contract
-             if ($scope.Contract.Docs.length!==undefined){
-               $scope.Contract.Docs[Contract.Docs.length]=Doc
-
-             }
-            else {
-              $scope.Contract.Docs=[]
-              $scope.Contract.Docs[0]=Doc
-            }
-             $scope.Contract.DocsLoaded++
-           }else {
-             $scope.Contract={}
-             $scope.Contract.Docs=[]
-             $scope.Contract.Docs[0]={}
-             $scope.Contract.DocsLoaded=0;
-             $scope.Contract.Docs[0].doc_name="Immagine Contratto"
-             $scope.Contract.Docs[0].doc_type="Contratto di Servizio"
-             $scope.Contract.contract_date=new Date()
-             $scope.Contract.contract_eov=new Date()
-
-           }
-
-
           $scope.action='add'
           $scope.viewName="Nuovo Contratto"
           break;
@@ -171,6 +96,32 @@
           $scope.viewName="Nuovo Contratto"
           $scope.action='add'
           break;
+      }
+      if ($scope.page.addDoc){
+          Doc=JSON.parse(localStorage.getItem('Doc'))
+          convertDateStringsToDates(Doc)
+          Contract=JSON.parse(localStorage.getItem('Contract'))
+          convertDateStringsToDates(Contract)
+          $scope.Contract=Contract
+          if ($scope.Contract.Docs.length!==undefined){
+            $scope.Contract.Docs[Contract.Docs.lengt]=Doc
+          }
+         else {
+           $scope.Contract.Docs=[]
+           $scope.Contract.Docs[0]=Doc
+         }
+          $scope.Contract.DocsLoaded++
+        }
+
+      if ($scope.Contract.Docs===undefined ||  $scope.Contract.Docs.lenght===undefined ||  $scope.Contract.Docs.lenght==0){
+        $scope.Contract.Docs=[]
+        $scope.Contract.Docs[0]={}
+        $scope.Contract.DocsLoaded=0;
+        $scope.Contract.Docs[0].doc_name="Immagine Contratto"
+        $scope.Contract.Docs[0].doc_type="Contratto di Servizio"
+        $scope.Contract.contract_date=new Date()
+        $scope.Contract.contract_eov=new Date()
+
       }
       $('input.mdl-textfield__input').each(
             function(index){
