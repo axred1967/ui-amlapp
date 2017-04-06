@@ -116,8 +116,14 @@
                 Contract=JSON.parse(localStorage.getItem('Contract'))
                 convertDateStringsToDates(Contract)
                 $scope.Contract=Contract
-                $scope.Contract.Docs[Docs.length]=Doc
-                $scope.Contract.DocsLoaded++
+                if ($scope.Contract.Docs.length!==undefined){
+                  $scope.Contract.Docs[Contract.Docs.length]=Doc
+
+                }
+               else {
+                 $scope.Contract.Docs=[]
+                 $scope.Contract.Docs[0]=Doc
+               }                $scope.Contract.DocsLoaded++
               }
 
 
