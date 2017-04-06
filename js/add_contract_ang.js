@@ -371,8 +371,7 @@
     }
 
     $scope.uploadPhoto=function(imageURI){
-      $("#agent_image").hide();
-      $('#profileimgloader').show();
+      $("#loader_img").show()
       $scope.Doc=JSON.parse(localStorage.getItem('Doc'))
 
        var options = new FileUploadOptions();
@@ -404,16 +403,17 @@
                       if(data.RESPONSECODE=='1') 			{
                         //$word=$($search.currentTarget).attr('id');
                         $scope.Docs[foudItem].doc_image=data.RESPONSE.imagename;
+                        $("#loader_img").hide()
                       }
              })
             .error(function() {
-                     console.log("error");
+              $("#loader_img").hide()
+               console.log("error");
              });
     }
     $scope.failFT =function (error)
     {
-        $("#agent_image").show();
-        $('#profileimgloader').hide();
+      $("#loader_img").hide()
 
     }
 

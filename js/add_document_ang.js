@@ -162,7 +162,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
     $scope.uploadfromgallery=function()
     {
-       // alert('cxccx');
+      $("#loader_img").show()
        navigator.camera.getPicture($scope.uploadPhoto,
             function(message) {
                 alert('get picture failed');
@@ -176,6 +176,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     }
     $scope.add_photo=function()
     {
+      $("#loader_img").show()
        // alert('cxccx');
        navigator.camera.getPicture($scope.uploadPhoto,
             function(message) {
@@ -220,18 +221,19 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                         $scope.Doc.doc_image=data.RESPONSE;
                         $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
                         $scope.loaded=true
+                        $("#loader_img").hide()
                       //  $http.post( LOG,  {dt:data.RESPONSE ,doc:$scope.Doc})
 
                       }
              })
             .error(function() {
+                    $("#loader_img").hide()
                      console.log("error");
              });
     }
     $scope.failFT =function (error)
     {
-        $("#agent_image").show();
-        $('#profileimgloader').hide();
+      $("#loader_img").hide()
 
     }
 
