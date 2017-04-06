@@ -84,6 +84,10 @@
               $scope.Contract.user_id= $scope.Contract.other_id
               break;
             }
+            if (! ($scope.Contract.Docs instanceof Array) && $scope.Contract.Docs.length>0){
+              $scope.Contract.Docs=JSON.parse($scope.Contract.Docs)
+            }
+
             $scope.action='edit'
             $scope.viewName="Modifica Contratto"
             break;
@@ -97,12 +101,14 @@
           $scope.action='add'
           break;
       }
+
       if ($scope.page.addDoc){
           Doc=JSON.parse(localStorage.getItem('Doc'))
           convertDateStringsToDates(Doc)
           Contract=JSON.parse(localStorage.getItem('Contract'))
           convertDateStringsToDates(Contract)
           $scope.Contract=Contract
+
           if ($scope.Contract.Docs.length!==undefined){
             $scope.Contract.Docs[Contract.Docs.length-1]=Doc
           }
