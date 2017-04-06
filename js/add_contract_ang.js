@@ -109,8 +109,8 @@
           convertDateStringsToDates(Contract)
           $scope.Contract=Contract
 
-          if ($scope.Contract.Docs.length!==undefined){
-            $scope.Contract.Docs[Contract.Docs.length-1]=Doc
+          if ($scope.Contract.Docs.length!==undefined|| $scope.Contract.Docs.length>0 ){
+            $scope.Contract.Docs[Contract.Docs.length]=Doc
           }
          else {
            $scope.Contract.Docs=[]
@@ -343,7 +343,7 @@
     {
       localstorage('Doc', JSON.stringify($scope.Doc));
        // alert('cxccx');
-       navigator.camera.getPicture($scope.uploadPhoto(Doc),
+       navigator.camera.getPicture($scope.uploadPhoto,
             function(message) {
                 alert('get picture failed');
             },
@@ -358,7 +358,7 @@
     {
       localstorage('Doc', JSON.stringify($scope.Doc));
        // alert('cxccx');
-       navigator.camera.getPicture($scope.uploadPhoto(Doc),
+       navigator.camera.getPicture($scope.uploadPhoto,
             function(message) {
                 alert('get picture failed');
             },
