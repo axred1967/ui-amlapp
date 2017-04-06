@@ -341,7 +341,7 @@
 
     $scope.uploadfromgallery=function(Doc)
     {
-      localstorage('Doc', JSON.stringify($scope.Doc));
+      localstorage('Doc', JSON.stringify(Doc));
        // alert('cxccx');
        navigator.camera.getPicture($scope.uploadPhoto,
             function(message) {
@@ -356,7 +356,7 @@
     }
     $scope.add_photo=function(Doc)
     {
-      localstorage('Doc', JSON.stringify($scope.Doc));
+      localstorage('Doc', JSON.stringify(Doc));
        // alert('cxccx');
        navigator.camera.getPicture($scope.uploadPhoto,
             function(message) {

@@ -1967,8 +1967,8 @@ case 'get_document_image_name_multi' :
     'RESPONSE'	=> $imagename,
   );
   if ($_REQUEST['DocId']>0){
-      $aryData=array("image_name"=>$imagename)
-      $db->updateAry('documents',$aryData,"where id=".$_REQUEST['DocId'])
+      $aryData=array("image_name"=>$imagename);
+      $db->updateAry('documents',$aryData,"where id=".$_REQUEST['DocId']);
 
   }
   echo json_encode($data);
