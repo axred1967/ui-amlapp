@@ -99,7 +99,7 @@
               $scope.Contract.user_id= $scope.Contract.other_id
               break;
             }
-            if ($scope.Contract.Docs===undefined || $scope.Contract.Docs.lenght==0){
+            if ($scope.Contract.Docs===undefined ||  $scope.Contract.Docs.lenght===undefined ||  $scope.Contract.Docs.lenght==0){
               $scope.Contract.Docs=[]
               $scope.Contract.Docs[0]={}
               $scope.Contract.DocsLoaded=0;
@@ -119,7 +119,7 @@
                 $scope.Contract.Docs[Docs.length]=Doc
                 $scope.Contract.DocsLoaded++
               }
-              
+
 
 
             $scope.action='edit'

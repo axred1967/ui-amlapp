@@ -128,37 +128,35 @@
                   <tbody>
 
                     <tr>
-                      <td  >Firmatario :</td>
+                      <td  >{{'Firmatario' | translate}} :</td>
                       <td class="blue">{{Contract.fullname}}</td>
 
                     </tr>
                     <tr>
-                      <td  >Tipo Delega :</td>
+                      <td  >{{'Delega' | translate}} :</td>
                       <td class="blue">{{Contract.role_for_other}}</td>
 
                     </tr>
 
                     <tr>
-                      <td  >Tipo Polizza :</td>
+                      <td  >{{'Polizza' | translate}} :</td>
                       <td class="blue">{{Contract.nature_contract}}</td>
 
                     </tr>
                     <tr>
-                      <td >Stipulato il :</td>
+                      <td >{{'Stipulato i' | translate}}l :</td>
                       <td>{{Contract.contract_date | date : 'shortDate'}}</td>
 
                     </tr>
                     <tr>
-                        <td>Valore</td>
+                        <td>{{'Valore' | translate}}</td>
                       <td>{{Contract.contract_value | currency}}</td>
                     </tr>
                     <tr>
-                        <td class="wordwrap">email:</td>
-                      <td>{{Contract.email}}</td>
+                        <td colspan="2" class="wordwrap">{{Contract.email}}</td>
                     </tr>
                     <tr>
-                        <td>mobile:</td>
-                      <td>{{Contract.mobile_number}}</td>
+                      <td colspan="2" class="wordwrap">{{Contract.mobile_number}}</td>
                     </tr>
                   </tbody>
                 </table>
