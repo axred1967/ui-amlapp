@@ -104,7 +104,7 @@
           convertDateStringsToDates(Contract)
           $scope.Contract=Contract
           if ($scope.Contract.Docs.length!==undefined){
-            $scope.Contract.Docs[Contract.Docs.lengt]=Doc
+            $scope.Contract.Docs[Contract.Docs.length-1]=Doc
           }
          else {
            $scope.Contract.Docs=[]
