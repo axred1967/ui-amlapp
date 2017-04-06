@@ -397,7 +397,7 @@
         $('#doc_image').val(review_info.response);
        // var review_selected_image  =  review_info.review_id;
         //$('#review_id_checkin').val(review_selected_image);
-        data={ "action":"get_document_image_name_multi", id:id}
+        data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id}
         $http.post( SERVICEURL2,  data )
             .success(function(data) {
                       if(data.RESPONSECODE=='1') 			{

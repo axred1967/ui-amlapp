@@ -1966,6 +1966,11 @@ case 'get_document_image_name_multi' :
     'RESPONSECODE'	=>  1,
     'RESPONSE'	=> $imagename,
   );
+  if ($_REQUEST['DocId']>0){
+      $aryData=array("image_name"=>$imagename)
+      $db->updateAry('documents',$aryData,"where id=".$_REQUEST['DocId'])
+
+  }
   echo json_encode($data);
   break;
 }
@@ -1975,7 +1980,7 @@ case 'savedocument' :
   if ($_REQUEST['type']=='add')
   $flgIn = $db->insertAry("documents",$aryData);
   if ($_REQUEST['type']=='edit')
-  $flgIn = $db->updateAry("documents",$aryData);
+  $flgIn = $db->updateAry("documents",$aryData,"where id=".$aryData['id']);
 
   $data = array(
     'RESPONSECODE'	=>  1,
