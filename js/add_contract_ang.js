@@ -113,7 +113,7 @@
           $scope.Contract.DocsLoaded++
         }
 
-      if ($scope.Contract.Docs===undefined ||  $scope.Contract.Docs.lenght===undefined ||  $scope.Contract.Docs.lenght==0){
+      if ($scope.Contract.Docs===undefined ||  $scope.Contract.Docs.length===undefined ||  $scope.Contract.Docs.length==0){
         $scope.Contract.Docs=[]
         $scope.Contract.Docs[0]={}
         $scope.Contract.DocsLoaded=0;
