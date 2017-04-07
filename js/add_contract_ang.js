@@ -58,7 +58,7 @@
    $scope.init=function(){
      $scope.page={}
 
-     curr_page= basename()
+     curr_page= base_name()
 
      page=localStorage.getItem(curr_page)
     if (page.length >0 ){
@@ -339,8 +339,9 @@
       Doc.deleted=true;
     }
 
-    $scope.uploadfromgallery=function(Doc)
+    $scope.uploadfromgallery=function(Doc,index)
     {
+      Doc.index=index
       localstorage('Doc', JSON.stringify(Doc));
        // alert('cxccx');
        navigator.camera.getPicture($scope.uploadPhoto,
@@ -354,8 +355,9 @@
             }
         );
     }
-    $scope.add_photo=function(Doc)
+    $scope.add_photo=function(Doc, index)
     {
+      Doc.index=index
       localstorage('Doc', JSON.stringify(Doc));
        // alert('cxccx');
        navigator.camera.getPicture($scope.uploadPhoto,
@@ -391,7 +393,6 @@
     $scope.winFT=function (r)
     {
       $scope.Doc=JSON.parse(localStorage.getItem('Doc'))
-      var foundItem = $filter('filter')($scope.Docs, { id: $scope.Doc.id  }, true)[0];
       var review_info   =JSON.parse(r.response);
       var id = review_info.id;
         $('#doc_image').val(review_info.response);
@@ -402,7 +403,7 @@
             .success(function(data) {
                       if(data.RESPONSECODE=='1') 			{
                         //$word=$($search.currentTarget).attr('id');
-                        $scope.Docs[foudItem].doc_image=data.RESPONSE.imagename;
+                        $scope.Docs[Doc.index].doc_image=data.RESPONSE.imagename;
                         $("#loader_img").hide()
                       }
              })
@@ -425,6 +426,7 @@
       Doc.agency_id=localStorage.getItem('agencyId')
       Doc.per='contract'
       Doc.id=null
+      Doc.image_name=null
       Doc.showOnlyImage=true
       Doc.indice=$scope.Contract.Docs.length
 

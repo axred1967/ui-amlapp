@@ -4,7 +4,7 @@ var app2 = angular.module('myApp', ['pascalprecht.translate']);
 app2.controller('personCtrl', function ($scope,$http,$translate) {
 //alert(window.location.pathname.replace(/^\//, ''));
 
-  curr_page= basename()
+  curr_page= base_name()
   page=localStorage.getItem(curr_page)
   if (page!= null && page.length >0 ){
     $scope.page=JSON.parse(page)

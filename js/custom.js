@@ -259,6 +259,6 @@ function onBackKeyDown(evt) {
   if(window.history.previous!==undefined)
     window.history.back();
 }
-function basename(path) {
+function base_name(path) {
    return String(window.location).split('/').reverse()[0];
 }

@@ -170,7 +170,7 @@
                 ng-model="Contract.docu"  type="hidden"
                 />
                 <fieldset>
-                  <div id="list_doc"   ng-repeat="Doc in Contract.Docs ">
+                  <div id="list_doc"   ng-repeat="Doc in Contract.Docs " ng-init="DocIndex=$index">
                     <div ng-hide="Doc.deleted" >
 
                       <div class="demo-card-image mdl-card mdl-shadow--2dp">
@@ -185,16 +185,16 @@
                             <span >{{'Aggiungi Immagine'|translate}}.</span>
                           </span>
 
-                          <button ng-hide="Contract.DocsLoaded==0 "id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo(Doc)" ><i class="material-icons">add_a_photo</i></button>
+                          <button ng-hide="Contract.DocsLoaded==0 "id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo(Doc,DocIndex)" ><i class="material-icons">add_a_photo</i></button>
                           <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
                             <span >{{'Scatta una foto'|translate}}.</span>
                           </span>
-                          <button ng-hide="Contract.DocsLoaded==0 " id="addGallery" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery(Doc)" ><i class="material-icons">insert_photo</i></button>
+                          <button ng-hide="Contract.DocsLoaded==0 " id="addGallery" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery(Doc,DocIndex)" ><i class="material-icons">insert_photo</i></button>
                           <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
                             <span >{{'Scegli da Galleria'|translate}}.</span>
                           </span>
 
-                          <button ng-hide="Contract.DocsLoaded==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc(Doc)" ><i class="material-icons">delete</i></button>
+                          <button ng-hide="Contract.DocsLoaded==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc(Doc,DocIndex)" ><i class="material-icons">delete</i></button>
                           <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
                             <span >{{'Cancella'|translate}}.</span>
                           </span>
