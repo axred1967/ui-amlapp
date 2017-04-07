@@ -133,20 +133,20 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
           options.params = params;
           var ft = new FileTransfer();
           $http.post( LOG,  {data:BASEURL+"service.php?action=upload_user_image&userid="+userid})
-          ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_user_image&userid="+userid), win, fail, options);
+          ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_user_image&userid="+userid), $scope.winFT, $scope.failFT, options);
 
 //          ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
 
 
 
        }
-       $scope.win=function (r)
+       $scope.winFT=function (r)
        {
          var review_info   =JSON.parse(r.response);
          $scope.Customer.image=review_info.response
 
        }
-       $scope.fail =function (error)
+       $scope.failFT =function (error)
        {
          $("#loader_img").hide()
 
