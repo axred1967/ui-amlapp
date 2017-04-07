@@ -153,7 +153,7 @@ case 'saveProfileAx':
   if($error=='')
   {
 
-  $aryData=$_REQUEST['dbData']
+  $aryData=$_REQUEST['dbData'];
   $flgIn=$db->updateAry("users",$aryData,"where user_id='".$_REQUEST['id']."'");
   if(!is_null($flgIn))
   {

@@ -140,13 +140,13 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
 
        }
-       $scope.winFT=function (r)
+       $scope.win=function (r)
        {
          var review_info   =JSON.parse(r.response);
          $scope.Customer.image=review_info.response
 
        }
-       $scope.failFT =function (error)
+       $scope.fail =function (error)
        {
          $("#loader_img").hide()
 
