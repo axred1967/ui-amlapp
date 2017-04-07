@@ -1386,3 +1386,12 @@ td.wordwrap{
 
 
 }
+.account-info{
+	width:100%;
+	position:fixed;
+	z-index:2;
+	top:0;
+}
+.account-data{
+	margin-top:65px
+}

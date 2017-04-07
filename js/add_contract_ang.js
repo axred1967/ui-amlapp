@@ -116,7 +116,8 @@
            $scope.Contract.Docs=[]
            $scope.Contract.Docs[0]=Doc
          }
-          $scope.Contract.DocsLoaded++
+          $scope.Contract.DocsLoaded=Contract.Docs.length+1
+          $scope.page.addDoc=false;
         }
 
       if ($scope.Contract.Docs===undefined ||  $scope.Contract.Docs.length===undefined ||  $scope.Contract.Docs.length==0){
@@ -403,7 +404,7 @@
             .success(function(data) {
                       if(data.RESPONSECODE=='1') 			{
                         //$word=$($search.currentTarget).attr('id');
-                        $scope.Docs[Doc.index].doc_image=data.RESPONSE.imagename;
+                        $scope.Cotnract.Docs[Doc.index].doc_image=data.RESPONSE;
                         $("#loader_img").hide()
                       }
              })

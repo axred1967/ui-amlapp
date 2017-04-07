@@ -301,5 +301,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       }
       redirect($scope.page.location)
     }
+    $('#loader_img').hide();
 
 })
