@@ -392,7 +392,7 @@
     }
     $scope.winFT=function (r)
     {
-      $scope.Doc=JSON.parse(localStorage.getItem('Doc'))
+      Doc=JSON.parse(localStorage.getItem('Doc'))
       var review_info   =JSON.parse(r.response);
       var id = review_info.id;
         $('#doc_image').val(review_info.response);
