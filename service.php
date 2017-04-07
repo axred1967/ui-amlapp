@@ -145,6 +145,34 @@ switch($_REQUEST['action'])
 
 
 }
+case 'saveProfileAx':
+{
+  $error='';
+
+
+  if($error=='')
+  {
+
+  $aryData=$_REQUEST['dbData']
+  $flgIn=$db->updateAry("users",$aryData,"where user_id='".$_REQUEST['id']."'");
+  if(!is_null($flgIn))
+  {
+    $data = array('RESPONSECODE'=>1 ,'RESPONSE'=> "Details Saved Successfully");
+  }
+  else
+  {
+    $data = array('RESPONSECODE'=> 0 , 'RESPONSE'=> "Error");
+  }
+}
+else
+{
+  $data = array('RESPONSECODE'=> 0 , 'RESPONSE'=> $error);
+}
+echo json_encode($data);
+break;
+
+
+}
 
 
 case 'viewkyc5':{
@@ -685,6 +713,10 @@ case 'addcontract' :
 
 
       );
+      foreach ($_REQUEST['Docs'] as $doc){
+        $ary=array("per_id"=>$lastid);
+        $db->updateAry($ary,"documents","where id=".$docs['id']);
+      }
       $db->insertAry("risk", $arydata2);
       $data = array('ID'=>$flgIn,'RESPONSECODE'=>1 ,'RESPONSE'=> $ok, "lastid"=>$lastid);
       echo json_encode($data);

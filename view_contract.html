@@ -118,8 +118,8 @@
             </div>
           </div>
         -->
-		  <div class="contact-about view-agent">
-              <div class="mdl-card mdl-shadow--2dp about">
+		  <div class="list-data-content ">
+              <div style="text-align:center" class="mdl-card mdl-shadow--2dp about">
                 <h5 class="orange" id="name_agent">{{Contract.CPU}} - {{Contract.owner}}</h5>
                 <button  class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_contract(Contract.contractor_id)"  >
                     {{'EditContract' | translate }}
@@ -160,7 +160,7 @@
                     </tr>
                   </tbody>
                 </table>
-
+                <br/>
                 <div class="mdl-card__actions mdl-card--border">
                   <div class="mdl-cell">
                     <button class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_profile(Contract)"  >

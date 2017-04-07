@@ -426,6 +426,8 @@
       Doc.doc_type="Contratto di Servizio"
       Doc.agency_id=localStorage.getItem('agencyId')
       Doc.per='contract'
+      if ($scope.Contract.contract_id===undefined && $scope.Contract.contract_id>0)
+        Doc.per_id=$scope.Contract.contract_id;
       Doc.id=null
       Doc.image_name=null
       Doc.showOnlyImage=true

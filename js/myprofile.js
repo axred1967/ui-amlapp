@@ -1,4 +1,3 @@
-var app2 = angular.module('myApp', []);
 var app = {
     initialize: function() {
         this.bind();
@@ -8,7 +7,7 @@ var app = {
     },
     deviceready: function() {
         // This is an event handler function, which means the scope is the event.
-        // So, we must explicitly called `app.report()` instead of `this.report()`.		
+        // So, we must explicitly called `app.report()` instead of `this.report()`.
         app.report('deviceready');
     },
     report: function(id) {
@@ -18,20 +17,16 @@ var app = {
 };
 function getChkLogin()
 {
-    
-            
-//            
-            app2.controller('personCtrl', function ($scope) {
-                alert('2');
-               // $scope.datalang = DATALANG;
-            });
-    
-    
-	
+
+
+//
+
+
+
         chkloggedin();
 	var id=localStorage.getItem("userId");
 	var email=localStorage.getItem("userEmail");
-	
+
 	  $.ajax ({
             type: "POST",
             url: SERVICEURL,
@@ -40,14 +35,14 @@ function getChkLogin()
             success:function(responceData){
 			data=JSON.parse(responceData);
             if(data.RESPONSECODE=='1')
-            { 
+            {
                 $('#name').val(data.RESPONSE.name);
                 $('#email').val(data.RESPONSE.email);
                 $('#mobile_number').val(data.RESPONSE.mobile_number);
                 if(data.RESPONSE.imagename !=null)
                 {
                     $('#agent_image').attr("src",BASEURL+"uploads/user/small/"+data.RESPONSE.imagename);
-                } 
+                }
 
                     if(data.RESPONSE.type == '2' )
                     {
@@ -65,30 +60,25 @@ function getChkLogin()
             }
             }
         });
-	  
-	  
-			
+
+
+
 }
-app2.controller('personCtrl', function ($scope) {
-               
-                $scope.datalang = DATALANG;
-               
-            });
-    
+
 function update_profile()
 {
-   
-    
+
+
   var langfileloginchk = localStorage.getItem("language");
-    
+
     if(langfileloginchk == 'en' )
     {
         var namemsg ="Please enter Name";
         var mobilemsg ="Please enter Mobile Number";
         var mobilevalidmsg ="Please enter valid mobile number";
         var chkmobileaccpt ="Only 10 digit Mobile Number accepted";
-       
-       
+
+
     }
     else
     {
@@ -96,28 +86,28 @@ function update_profile()
        var mobilemsg ="Si prega di inserire numero di cellulare";
        var mobilevalidmsg ="Si prega di inserire il numero di cellulare valido";
        var chkmobileaccpt ="Solo 10 cifre numero di cellulare accettato";
-       
-    }   
-    
+
+    }
+
    var id=localStorage.getItem("userId");
    var email=localStorage.getItem("userEmail");
-   
+
    var mobile_number = $.trim($('#mobile_number').val());
     var name = $.trim($('#name').val());
-    
+
     if(name=="") swal("",namemsg);
-	
+
     else if(mobile_number=="") swal("",mobilemsg);
     else if(isNaN(mobile_number))swal("",mobilevalidmsg);
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     else
     {
-	
+
 	  $.ajax ({
             type: "POST",
             url: SERVICEURL,
@@ -126,16 +116,16 @@ function update_profile()
             success:function(responceData){
                     data=JSON.parse(responceData);
 			if(data.RESPONSECODE=='1')
-			{ 
+			{
                              localstorage("Name",name);
                             swal("",data.RESPONSE);
-                             
+
 			}
 			else
 			{
                             swal("",data.RESPONSE);
 			}
-            
+
             }
         });
     }
@@ -143,13 +133,13 @@ function update_profile()
 
 function changepasswordpopup()
 {
-   $(".fancybox").fancybox(); 
+   $(".fancybox").fancybox();
    $("#popup3").click();
 }
 function change_password()
 {
     var langfileloginchk = localStorage.getItem("language");
-    
+
     if(langfileloginchk == 'en' )
     {
         var current_passwordMsg ="Please enter Curent Password";
@@ -157,8 +147,8 @@ function change_password()
         var re_new_passwordmsg ="Please enter Confirm Password";
         var re_new_passwordmsgnotmatch  ="New Password doesn't match with Confirm Password ";
         var pswdleng ="minimum  Password length is 6";
-       
-       
+
+
     }
     else
     {
@@ -167,18 +157,18 @@ function change_password()
         var re_new_passwordmsg ="Si prega di inserire Conferma password";
         var re_new_passwordmsgnotmatch  ="Nuova password non corrisponde con Conferma password ";
         var pswdleng ="lunghezza minima della password è di 6";
-       
-    } 
-    
-    
+
+    }
+
+
     var id=localStorage.getItem("userId");
    var email=localStorage.getItem("userEmail");
     var current_password = $.trim($('#current_password').val());
     var new_password = $.trim($('#new_password').val());
     var re_new_password = $.trim($('#re_new_password').val());
-    
+
     if(current_password=="") swal("", current_passwordMsg);
-	
+
     else if(new_password=="") swal("",new_passwordmsg);
     else if(re_new_password=="") swal("",re_new_passwordmsg);
     else if(new_password.length < 6) swal("",pswdleng);
@@ -194,22 +184,22 @@ function change_password()
             success:function(responceData){
                     data=JSON.parse(responceData);
 			if(data.RESPONSECODE=='1')
-			{ 
+			{
                             $('#current_password').val('');
                             $('#new_password').val('');
                             $('#re_new_password').val('');
                             swal("",data.RESPONSE);
-                            $.fancybox.close(); 
-                             
+                            $.fancybox.close();
+
 			}
 			else
 			{
                             swal("",data.RESPONSE);
 			}
-            
+
             }
         });
-    }    
+    }
 }
 
 
@@ -217,25 +207,25 @@ function uploadfromgallery()
 {
    // alert('cxccx');
    navigator.camera.getPicture(uploadPhoto,
-        function(message) { 
-            //alert('get picture failed'); 
+        function(message) {
+            //alert('get picture failed');
         },
-        { 
-            quality: 50, 
+        {
+            quality: 50,
             destinationType: navigator.camera.DestinationType.FILE_URI,
-            sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY 
+            sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
         }
     );
 }
 
-function uploadPhoto(imageURI) 
+function uploadPhoto(imageURI)
 {
   // $("#agent_image").hide();
-  // $('#profileimgloader').show(); 
+  // $('#profileimgloader').show();
    $("#agent_image").attr("src","img/load.gif");
-    
+
     var userid = localStorage.getItem("userId");
-   
+
     var options = new FileUploadOptions();
     options.fileKey="file";
     options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
@@ -248,14 +238,14 @@ function uploadPhoto(imageURI)
     ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_user_image&userid="+userid), win, fail, options);
 }
 
-function win(r) 
-{ 
-    
+function win(r)
+{
+
   // alert(r.responseCode); alert(r.response);
    // alert(r.responseCode);
     var userid = localStorage.getItem("userId");
-   // var review_info   =JSON.parse(r.response); 
-   // var review_selected_image  =  review_info.review_id; 
+   // var review_info   =JSON.parse(r.response);
+   // var review_selected_image  =  review_info.review_id;
     //$('#review_id_checkin').val(review_selected_image);
     $.ajax ({
         type: "POST",
@@ -266,12 +256,12 @@ function win(r)
             //alert(responceData);
             data=JSON.parse(responceData);
             if(data.RESPONSECODE==1)
-            { 
-               
+            {
+
                 //$("#agent_image").show();
-               // $('#profileimgloader').hide(); 
+               // $('#profileimgloader').hide();
                 localstorage("image",data.RESPONSE);
-                
+
                 localstorage("Profileimageagencyuser",data.RESPONSE);
                 swal("","Image saved successfully ");
                // $('#agent_image').show();
@@ -281,15 +271,15 @@ function win(r)
     });
 }
 
-function fail(error) 
-{ 
+function fail(error)
+{
     $("#agent_image").attr("src","img/add-account.png");
-   // $('#profileimgloader').hide(); 
-   
-}  
+   // $('#profileimgloader').hide();
+
+}
 
 
 
-setTimeout(function(){ 
+setTimeout(function(){
        checkthesidebarinfouser();
 }, 800);
