@@ -106,21 +106,48 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     }
 
     switch ($scope.action){
-        case 'list_from_view_contract' :
-             $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-             convertDateStringsToDates($scope.Contract)
-             $scope.Doc.per_id=$scope.Contract.contract_id
-             $scope.Doc.per='contract'
-             $scope.viewName="Documenti Contratto"
-             dbData=$scope.Doc
-             data={ "action":"documentList", dbData:dbData}
-             $scope.addMoreItems()
+      case 'list_from_view_contract' :
+      $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+      convertDateStringsToDates($scope.Contract)
+      DocFor=Contract.CPU
+      $scope.Doc.per_id=$scope.Contract.contract_id
+      $scope.Doc.per='contract'
+      $scope.viewName="Documenti Contratto"
+      dbData=$scope.Doc
+      data={ "action":"documentList", dbData:dbData}
+      $scope.addMoreItems()
 
 
-             break;
-        default :
-             $scope.viewName="Documenti Contratto"
-              break;
+      break;
+      case 'list_from_my_company' :
+      companyId=localStorage.getItem("CompanyID");
+      DocFor=localStorage.getItem("Company_name");
+
+      $scope.Doc.per_id=companyId
+      $scope.Doc.per='company'
+      $scope.viewName="Documenti Società"
+      dbData=$scope.Doc
+      data={ "action":"documentList", dbData:dbData}
+      $scope.addMoreItems()
+
+
+      break;
+      case 'list_from_my_customer' :
+      customerId=localStorage.getItem("customerId");
+      DocFor=localStorage.getItem("customerName");
+
+      $scope.Doc.per_id=customerId
+      $scope.Doc.per='customer'
+      $scope.viewName="Documenti persona"
+      dbData=$scope.Doc
+      data={ "action":"documentList", dbData:dbData}
+      $scope.addMoreItems()
+
+
+      break;
+      default :
+      $scope.viewName="Documenti Contratto"
+      break;
     }
     $scope.addMoreItems()
 

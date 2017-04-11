@@ -20,13 +20,8 @@
   <script src="js/jquery-2.1.4.min.js"></script>
   <script type="text/javascript" src="js/custom.js"></script>
   <script src="js/owners_list.js"></script>
-  <!--<script src="cordova.js"></script> -->
-  <script type="text/javascript">$(document).ready(function () {
-    app.initialize();
-  });
-  </script>
-
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/js/jquery.animsition.js"></script> -->
+  <script type="text/javascript" src="cordova.js"> </script>
+  <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
   <script src="js/animsition.js"></script>
   <script src="js/sweetalert.min.js"></script>
   <script src="js/material.min.js"></script>
@@ -34,12 +29,14 @@
   <script src="js/function.js"></script>
   <script src="js/angular.min.js"></script>
   <script src="js/angular-route.min.js"></script>
+  <script src="js/angular-translate.min.js"></script>
+  <script src="js/owners_list_ang.js"></script>
   <script>
   langfile = localStorage.getItem("language");
   if (langfile == 'en')
-  document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
+  document.write('<scri' + 'pt src="js/enlang_ang.js"></' + 'script>');
   else
-  document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
+  document.write('<scri' + 'pt src="js/itlang_ang.js"></' + 'script>');
   if(langfile ==  "en"){
     //             $.getScript("js/i18n/angular-locale_en.js");
     document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
@@ -49,7 +46,7 @@
     document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
   }
   </script>
-  <script src="js/owners_list_ang.js"></script>
+  <script src="js/ng-currency.js"></script>
 </head>
 <style>
 .first_letter_cap
@@ -60,15 +57,9 @@
 
 <body >
   <!-- Page Content -->
-  <div class="mdl-layout mdl-js-layout mdl-layout--overlay-drawer-button">
-
-    <!-- Sidebar -->
-    <!--
-    <div id="sidebar_agency" class="mdl-layout__drawer">
-
-  </div>
-  <!-- Top -->
   <div ng-app="myApp" ng-controller="personCtrl"  id="menulist">
+
+
 
     <main class="mdl-layout__content">
       <div class=""> <!-- card -->
@@ -96,81 +87,73 @@
           <div class="clr"></div>
         </div>
       </div>
-      <!--  <div class="account-info mdl-color--primary grey-gradient">
-
-      <div class="account-navigation">
-      <div class="add-account-container">
-      <a href="#">
-      <div class="add-account">
-      <img src="img/add-account.png">
     </div>
-  </a>
-</div>
+
+    <div class="list-data-content">
+      <center>  <h4>{{'OwnersList' |translate  }} </h4></center>
+      <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
+      <center>  <img style="height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
+      <div id="list_owner" ng-hide="Owners.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Owner in Owners ">
+        <div class="mdl-cell mdl-cell--12-col">
+          <div class="mdl-card amazing mdl-shadow--2dp">
+            <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
+              <div style="cursor:pointer;"  class="minilogo customer-listing1"></div>
+              <div class="card-author">
 
 
-</div>
-</div>  -->
+              </div>
+              <div class="mdl-grid">
+                <div class="mdl-cell--12-col"  ng-click="edit_owner(Owner)">
+                  <span style="cursor:pointer;" >
+                    <strong class="blue first_letter_cap">{{Owner.fullname}}</strong>
+                  </span><br/>
+                  <span class="green" style=" cursor:pointer;"  >
+                    {{ Owner.percentuale | currency : '%' }}
+                  </span><br/>
+                  <span class="green" style=" cursor:pointer;"  >
+                    {{Owner.email}}
+                  </span><br/>
+                  <span class="green" style=" cursor:pointer;"  class="long-email">
+                    {{Owner.fiscal_id}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="mdl-card__actions mdl-card--border " style="font-size:12px">
+              <div class="mdl-layout-spacer"></div>
 
-<main class="mdl-layout__content">
-  <center>  <h4>{{datalang.OwnersList}} </h4></center>
-  <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
-  <center>  <img style="height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
-  <div id="list_owner" ng-hide="Owners.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Owner in Owners ">
-    <div class="mdl-cell mdl-cell--12-col">
-      <div class="mdl-card amazing mdl-shadow--2dp">
-        <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
-          <div style="cursor:pointer;"  class="minilogo customer-listing1"></div>
-          <div class="card-author">
-
-
-          </div>
-          <div class="mdl-grid">
-            <div class="mdl-cell--12-col"  ng-click="edit_owner(Owner)">
-              <span style="cursor:pointer;" >
-                <strong class="blue first_letter_cap">{{Owner.fullname}}</strong>
-              </span><br/>
-              <span class="green" style=" cursor:pointer;"  >
-                {{ Owner.percentuale | currency : '%' }}
-              </span><br/>
-              <span class="green" style=" cursor:pointer;"  >
-                {{Owner.email}}
-              </span><br/>
-              <span class="green" style=" cursor:pointer;"  class="long-email">
-                {{Owner.fiscal_id}}
+              <button  name="deleteOwn" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteOwn(Owner)" >
+                <i class="material-icons">delete</i>
+              </button>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+                <span >{{'Cancella'|translate}}.</span>
               </span>
             </div>
           </div>
+
         </div>
       </div>
 
-    </div>
-  </div>
-
-  <div id="no_Owner" ng-hide="Owners.length != 0 " class="ng-hide"  >
-    <div  class="mdl-cell mdl-cell--12-col">
-      <div class="mdl-card amazing mdl-shadow--2dp">
-        <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
-          <div class="mdl-grid">
-            <div class="mdl-cell-12-col">
-              <span style="cursor:pointer;" >
-                <strong class="blue first_letter_cap">Nessun Titolare Effettivo per {{Company.name}} ancora inserito</strong>
-              </span><br/>
+      <div id="no_Owner" ng-hide="Owners.length != 0 " class="ng-hide"  >
+        <div  class="mdl-cell mdl-cell--12-col">
+          <div class="mdl-card amazing mdl-shadow--2dp">
+            <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
+              <div class="mdl-grid">
+                <div class="mdl-cell-12-col">
+                  <span style="cursor:pointer;" >
+                    <strong class="blue first_letter_cap">Nessun Titolare Effettivo per {{Company.name}} ancora inserito</strong>
+                  </span><br/>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-
-  <!-- load more -->
-
-</main>
-
+  </main>
 </div>
-</main>
-</div>
-</div>
+
 
 </body>
 </html>

@@ -3,7 +3,7 @@ var app = {
         this.bind();
     },
     bind: function() {
-        document.addEventListener('deviceready', getChkLogin, false);
+      document.addEventListener('deviceready', getChkLogin, false);
     },
     deviceready: function() {
         // This is an event handler function, which means the scope is the event.
@@ -19,10 +19,16 @@ function getChkLogin()
 {
 
 
-
     chkloggedin();
 
+
 }
+
+
+setTimeout(function(){
+        checkthesidebarinfouser();
+}, 800);
+
 function tocompany(d)
 {
     localstorage("CompanyID",d.company_id);
@@ -41,13 +47,3 @@ function toowners(d)
     localstorage("back","my_company.html");
     redirect("owners_list.html");
 }
-
-
-
-
-
-/*
-setTimeout(function(){
-        checkthesidebarinfouser();
-}, 800);
-*/

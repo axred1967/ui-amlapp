@@ -17,31 +17,36 @@
         <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/stylesheet.css">
         <script src="js/jquery-2.1.4.min.js"></script>
-         <script type="text/javascript" src="js/custom.js"></script>
-         <script src="js/kyc.js"></script>
-         <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
-         <script src="js/animsition.js"></script>
-         <script src="js/sweetalert.min.js"></script>
-         <script src="js/material.min.js"></script>
-         <script src="js/jquery.swipebox.min.js"></script>
-         <script src="js/function.js"></script>
-         <script src="js/angular.min.js"></script>
-        <script>
-        langfile = localStorage.getItem("language");
-        if (langfile == 'en')
-            document.write('<scri' + 'pt src="js/enlang.js"></' + 'script>');
-        else
-            document.write('<scri' + 'pt src="js/itlang.js"></' + 'script>');
-        if(langfile ==  "en"){
-    //             $.getScript("js/i18n/angular-locale_en.js");
-             document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
-         }
-         else{
-    //             $.getScript("js/i18n/angular-locale_it.js");
-             document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
-         }
-        </script>
-        <script src="js/kyc_ang.js"></script>
+        <script type="text/javascript" src="js/custom.js"></script>
+        <script src="js/kyc.js"></script>
+        <script type="text/javascript" src="cordova.js"> </script>
+          <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
+          <script src="js/animsition.js"></script>
+          <script src="js/sweetalert.min.js"></script>
+          <script src="js/material.min.js"></script>
+          <script src="js/jquery.swipebox.min.js"></script>
+          <script src="js/function.js"></script>
+          <script src="js/angular.min.js"></script>
+          <script src="js/angular-route.min.js"></script>
+          <script src="js/angular-translate.min.js"></script>
+          <script src="js/kyc_ang.js"></script>
+          <script>
+          langfile = localStorage.getItem("language");
+          if (langfile == 'en')
+          document.write('<scri' + 'pt src="js/enlang_ang.js"></' + 'script>');
+          else
+          document.write('<scri' + 'pt src="js/itlang_ang.js"></' + 'script>');
+          if(langfile ==  "en"){
+            //             $.getScript("js/i18n/angular-locale_en.js");
+            document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
+          }
+          else{
+            //             $.getScript("js/i18n/angular-locale_it.js");
+            document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
+          }
+          </script>
+          <script src="js/ng-currency.js"></script>
+
     </head>
     <body  >
         <div ng-app="myApp" ng-controller="personCtrl" class="animsition">
@@ -55,7 +60,7 @@
                     <div class=""> <!-- card -->
                         <div class="account-info dark-blue-bg">
                             <div class="account-navigation"> <!-- top icons -->
-                                <!-- <a class="mdl-button mdl-js-button mdl-button--icon left" href="add-customer.html">
+                                <!-- <a class="mdl-button mdl-js-button mdl-button--icon left" href="add-Kyc.html">
                                    <img src="img/back-button.png">
                                  </a>
                                 <button class="mdl-button mdl-js-button mdl-button--icon right">
@@ -77,48 +82,87 @@
                                 </div>
                             </div>
                         </div> -->
-                        <div class="account-data add-customer-data"> <!-- text fields -->
-                            <div class="mdl-card mdl-shadow--2dp ">
-                                <form action="#">
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                                        <input ng-model="Kyc.customer_name" class="mdl-textfield__input" type="text" placeholder=" {{datalang.Name}} *" id="namekyc" />
-                                        <label class="mdl-textfield__label" for="Kyc.customer_name" style="color:orange;display:none">{{datalang.Name}}</label>
+                        <div class="account-data add-Kyc-data"> <!-- text fields -->
+                          <div class="mdl-card mdl-shadow--2dp ">
+                            <div class="mdl-grid">
+                              <div class="mdl-cell mdl-cell--12-col">
+                                <h5 ng-if="formStatus">{{formStatus}}</h5>
+                                <form name="form" novalidate >
+                                  <fieldset>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                      <input class="mdl-textfield__input" type="text" id="Kyc_name" name="Kyc_name"  pattern="[A-Za-z\s]*"
+                                      ng-model="Kyc.customer_name"  ng-change="Kyc.name=(Kyc.name| capitalize)" minlength="3" ng-required="true"
+                                      />
+                                      <label class="mdl-textfield__label" for="Kyc_name">{{'Name'|translate}} *</label>
+                                      <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_name" ng-show="form.Kyc_name.$invalid && form.Kyc_name.$touched">
+                                        <span ng-show="form.Kyc_name.$error.required">{{'Richiesto'| translate}}</span>
+                                      </span>
                                     </div>
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                                        <input ng-model="Kyc.customer_surname" class="mdl-textfield__input" type="text" placeholder=" {{datalang.Surname}}" id="surname" />
-                                        <label class="mdl-textfield__label" for="Kyc.customer_surname" style="color:orange;display:none">{{datalang.Name}}</label>
+                                  </fieldset>
+                                  <fieldset>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                      <input class="mdl-textfield__input" type="text" id="Kyc_surname" name="Kyc_surname"value=" "  pattern="[A-Za-z\s]*"
+                                      ng-model="Kyc.customer_surname"  ng-change="Kyc.surname=(Kyc.surname| capitalize)" minlength="3"
+                                      ng-required="true" />
+                                      <label class="mdl-textfield__label" for="Kyc_surname">{{'Surname'|translate}} *</label>
+                                      <span class="mdl-tooltip mdl-tooltip--validation" for="Custome_surname" ng-show="form.Kyc_surname.$invalid && form.Kyc_surname.$touched">
+                                        <span ng-show="form.Kyc_surname.$error.required">{{'Richiesto'| translate}}</span>
+                                      </span>
                                     </div>
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                                        <input ng-model="Kyc.customer_email" readonly class="mdl-textfield__input" type="text" placeholder=" {{datalang.EmailID}}" id="email" />
-                                        <label class="mdl-textfield__label" for="customer_name" style="color:orange;display:none">{{datalang.Name}}</label>
+                                  </fieldset>
+                                  <fieldset>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                      <input class="mdl-textfield__input" type="email" id="Kyc_customer_email" name="Kyc_customer_email" value=" "
+                                      ng-model="Kyc.customer_email" ng-change="Kyc.email=(Kyc.email| capitalize)" ng-required="true" />
+                                      <label class="mdl-textfield__label" for="email">{{'EmailID' | translate}}*</label>
+                                      <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_customer_email" ng-show="form.Kyc_customer_email.$invalid && form.Kyc_customer_email.$touched">
+                                        <span ng-show="form.Kyc_customer_email.$error.required">Required.</span>
+                                        <span ng-show="form.Kyc_customer_email.$error.pattern">{{'mail non valida.'| translate}}</span>
+                                      </span>
                                     </div>
-                                    <!--<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                                        <select class="mdl-textfield__input" placeholder=" {{datalang.Country }} *" id="customer_resi_country"> </select>
-                                    </div> -->
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                                        <input ng-model="Kyc.customer_profession" class="mdl-textfield__input" type="text" placeholder=" {{datalang.Profession}}" id="customer_profession" />
-                                        <label class="mdl-textfield__label" for="customer_name" style="color:orange;display:none">{{datalang.Name}}</label>
+                                  </fieldset>
+                                  <fieldset>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                      <input class="mdl-textfield__input" type="text" id="Kyc_mobile"  name="Kyc_mobile" value=" "
+                                      ng-model="Kyc.customer_mobile"   />
+                                      <label class="mdl-textfield__label" for="Kyc_mobile">{{'Mobile' | translate}}*</label>
+                                      <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_mobile" ng-show="form.Kyc_mobile.$invalid && form.Kyc_mobile.$touched">
+                                        <span ng-show="form.Kyc_mobile.$error.required">Required.</span>
+                                        <span ng-show="form.Kyc_mobile.$error.pattern">{{' numero telefono non valida.'| translate}}</span>
+                                      </span>
                                     </div>
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                                        <input ng-model="Kyc.customer_mobile_number" class="mdl-textfield__input" type="text" placeholder=" {{datalang.Mobile}} *" id="mobile" />
-                                        <label class="mdl-textfield__label" for="customer_name" style="color:orange;display:none">{{datalang.Name}}</label>
+                                  </fieldset>
+                                  <fieldset>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                      <input class="mdl-textfield__input" type="text" id="Kyc_customer_tel"  name="Kyc_customer_tel" value=" "
+                                      ng-model="Kyc.customer_tel"   />
+                                      <label class="mdl-textfield__label" for="Kyc_customer_tel">{{'Telefono' | translate}}*</label>
+                                      <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_customer_tel" ng-show="form.Kyc_customer_tel.$invalid && form.Kyc_customer_tel.$touched">
+                                        <span ng-show="form.Kyc_customer_tel.$error.required">Required.</span>
+                                        <span ng-show="form.Kyc_customer_tel.$error.pattern">{{' numero telefono non valida.'| translate}}</span>
+                                      </span>
                                     </div>
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                                        <input ng-model="Kyc.customer_tel"  class="mdl-textfield__input" type="text" placeholder=" {{datalang.Tel }}" id="customer_tel" />
-                                        <label class="mdl-textfield__label" for="customer_name" style="color:orange;display:none">{{datalang.Name}}</label>
+                                  </fieldset>
+                                  <fieldset>
+                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                      <input class="mdl-textfield__input" type="text" id="Kyc_customer_fax"  name="Kyc_customer_fax" value=" "
+                                      ng-model="Kyc.customer_fax"   />
+                                      <label class="mdl-textfield__label" for="Kyc_customer_fax">{{'Fax' | translate}}*</label>
+                                      <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_customer_fax" ng-show="form.Kyc_customer_fax.$invalid && form.Kyc_customer_fax.$touched">
+                                        <span ng-show="form.Kyc_customer_fax.$error.required">Required.</span>
+                                        <span ng-show="form.Kyc_customer_fax.$error.pattern">{{' numero fax non valida.'| translate}}</span>
+                                      </span>
                                     </div>
-                                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                                        <input ng-model="Kyc.customer_fax" class="mdl-textfield__input" type="text" placeholder=" {{datalang.Fax}}" id="customer_fax" />
-                                        <label class="mdl-textfield__label" for="customer_name" style="color:orange;display:none">{{datalang.Name}}</label>
-                                    </div>
+                                  </fieldset>
                                 </form>
-
+                              </div>
+                            </div>
                                 <div class="center-align">
                                     <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="save_kyc(1)" href="javascript:;">
-                                        {{datalang.SaveExit}}
+                                        {{'SaveExit' |translate}}
                                     </a>
                                     <a id="kyc_button2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="save_kyc(2)" href="javascript:;">
-                                        {{datalang.SaveNext}}
+                                        {{'SaveNext'|translate}}
                                     </a>
                                     <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
                                 </div>

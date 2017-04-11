@@ -1,24 +1,73 @@
+var app2 = angular.module('myApp', ['pascalprecht.translate','ng-currency','fieldMatch']);
+//Field Match directive
+angular.module('fieldMatch', [])
+   .directive('fieldMatch', ["$parse", function($parse) {
+       return {
+           require: 'ngModel',
+           link: function(scope, elem, attrs, ctrl) {
+               var me = $parse(attrs.ngModel);
+               var matchTo = $parse(attrs.fieldMatch);
+               scope.$watchGroup([me, matchTo], function(newValues, oldValues) {
+                   ctrl.$setValidity('fieldmatch', me(scope) === matchTo(scope));
+               }, true);
+           }
+       }
+   }]);
+//Run material design lite
+app2.directive("ngModel",["$timeout", function($timeout){
+            return {
+                restrict: 'A',
+                priority: -1, // lower priority than built-in ng-model so it runs first
+                link: function(scope, element, attr) {
+                    scope.$watch(attr.ngModel,function(value){
+                        $timeout(function () {
+                            if (value){
+                                element.trigger("change");
+                            } else if(element.attr('placeholder') === undefined) {
+                                if(!element.is(":focus"))
+                                    element.trigger("blur");
+                            }
+                        });
+                    });
+                }
+            };
+        }]);
 
-var app2 = angular.module('myApp', []);
-app2.directive('whenScrolled', function() {
-  return {
-
-      link: function($scope, elem, attr) {
-              var $myWindow = angular.element($window);
-              var $myDoc = angular.element($document);
-
-              $myWindow.bind('scroll', function() {
-                  if ($myWindow.height() + $myWindow.scrollTop() >= $myDoc.height()) {
-                      $scope.$apply(attr.isScrolled);
-                  }
-              });
-          }
-  }
-
+app2.run(function($rootScope, $timeout) {
+   $rootScope.$on('$viewContentLoaded', function(event) {
+       $timeout(function() {
+           componentHandler.upgradeAllRegistered();
+       }, 0);
+   });
+   $rootScope.render = {
+       header: true,
+       aside: true
+   }
 });
 
-app2.controller('personCtrl', function ($scope,$http) {
-    $scope.datalang = DATALANG;
+app2.filter('capitalize', function() {
+    return function(input, $scope) {
+        if ( input !==undefined && input.length>0)
+        return input.substring(0,1).toUpperCase()+input.substring(1);
+        else
+        return input
+
+    }
+});
+
+
+app2.controller('personCtrl', function ($scope,$http,$translate) {
+    //$scope.datalang = DATALANG;
+    $scope.page={}
+    curr_page=base_name()
+  	page=localStorage.getItem(curr_page)
+  	if ( page!= null && page.length >0 ){
+  		$scope.page=JSON.parse(page)
+  		$scope.action=$scope.page.action
+
+  	}
+
+
     $scope.Companies= [];
     var id=localStorage.getItem("userId");
   	var email=localStorage.getItem("userEmail");
@@ -72,20 +121,24 @@ app2.controller('personCtrl', function ($scope,$http) {
 
          $scope.tocompany = function(d){
            localstorage("CompanyID",d.company_id);
-           localstorage('add_company.html',JSON.stringify({action:'edit_company',location:'my_company.html'}))
+           localstorage('add_company.html',JSON.stringify({action:'edit_company',location:curr_page}))
            redirect('add_company.html')
          };
          $scope.add_company = function(){
-           localstorage('add_company.html',JSON.stringify({action:'add_company',location:'my_company.html'}))
+           localstorage('add_company.html',JSON.stringify({action:'add_company',location:curr_page}))
            redirect('add_company.html')
          };
           $scope.toowners = function(d){
-            localstorage('owners_list.html',JSON.stringify({action:'owners_list',location:'my_company.html'}))
+            localstorage('owners_list.html',JSON.stringify({action:'owners_list',location:curr_page}))
             localstorage("Company_name",d.name);
             localstorage("CompanyID",d.company_id);
             redirect('owners_list.html')
            };
-
-
-      console.log($scope.Contracts);
+           $scope.toDocs = function(d){
+          	 localstorage('my_document.html',JSON.stringify({action:'list_from_my_company',location:curr_page}))
+             localstorage("CompanyID",d.company_id);
+             localstorage("Company_name",d.name);
+          	 redirect('my_document.html')
+          };
+          console.log($scope.Contracts);
 });

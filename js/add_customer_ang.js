@@ -87,6 +87,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 			if(responceData.RESPONSECODE=='1') 			{
 				data=responceData.RESPONSE;
 				$scope.Customer =  data;
+				$scope.Customer.IMAGEURI=BASEURL+"uploads/user/small/"
 				$('input.mdl-textfield__input').each(
 					function(index){
 						$(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -186,6 +187,71 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 			break;
 		}
 		redirect($scope.page.location)
+
+	}
+	$scope.deleteDoc=function()
+	{
+		$scope.Doc.doc_image=""
+	}
+
+	$scope.uploadfromgallery=function()
+	{
+		$("#loader_img").show()
+		 navigator.camera.getPicture($scope.uploadPhoto,
+					function(message) {
+							alert('get picture failed');
+					},
+					{
+							quality: 50,
+							destinationType: navigator.camera.DestinationType.FILE_URI,
+							sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+					}
+			);
+	}
+	$scope.add_photo=function()
+	{
+		$("#loader_img").show()
+		 // alert('cxccx');
+		 navigator.camera.getPicture($scope.uploadPhoto,
+					function(message) {
+							alert('get picture failed');
+					},
+					{
+							quality: 50,
+							destinationType: navigator.camera.DestinationType.FILE_URI,
+							sourceType: navigator.camera.PictureSourceType.CAMERA
+					}
+			);
+	}
+
+	$scope.uploadPhoto=function(imageURI){
+		 userid=localStorage.getItem("userId")
+		 var options = new FileUploadOptions();
+		 options.fileKey="file";
+		 options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
+		 options.mimeType="text/plain";
+		 options.chunkedMode = false;
+		 var params = new Object();
+
+		 options.params = params;
+		 var ft = new FileTransfer();
+		 $http.post( LOG,  {data:BASEURL+"service.php?action=upload_user_image&userid="+userid})
+		 ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_user_image&userid="+userid), $scope.winFT, $scope.failFT, options);
+
+//          ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
+
+
+
+	}
+	$scope.winFT=function (r)
+	{
+		var review_info   =JSON.parse(r.response);
+		$scope.Customer.image=review_info.response
+
+	}
+	$scope.failFT =function (error)
+	{
+		$("#loader_img").hide()
 
 	}
 })

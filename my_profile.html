@@ -34,6 +34,7 @@
     <script src="js/angular-route.min.js"></script>
     <script src="js/angular-translate.min.js"></script>
     <script src="js/myprofile_ang.js"></script>
+    <script src="js/jquery.fancybox.pack.js"></script>
     <script>
     langfile = localStorage.getItem("language");
     if (langfile == 'en')
@@ -117,11 +118,11 @@
             <div class="mdl-grid">
               <div class="mdl-cell mdl-cell--12-col">
 
-                <form action="#">
+                <form action="#"name="form" novalidate="">
                   <fieldset>
                     <div class="demo-card-image mdl-card mdl-shadow--2dp">
-                      <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
-                      <img  ng-show="Doc.doc_image.length>0" ng-src ="{{Customer.image.length>0 ? Doc.IMAGEURI+ Customer.image :'' }}" ></img>
+                      <div class="mdl-card__title mdl-card--expand">{{'Immagine Profilo'|translate}}</div>
+                      <img  ng-show="Customer.image.length>0" ng-src ="{{Customer.image.length>0 ? Customer.IMAGEURI+ Customer.image :'' }}" ></img>
                       <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
 
                       <div class="mdl-card__actions">
@@ -180,8 +181,8 @@
                       </fieldset>
                       <fieldset>
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                              <input class="mdl-textfield__input" type="text" id="Customer_mobile"  name="Customer_mobile" value=" " pattern=""
-                              ng-model="Customer.mobile" ng-change="Customer.mobile=(Customer.mobile| capitalize)"  />
+                              <input class="mdl-textfield__input" type="text" id="Customer_mobile"  name="Customer_mobile" value=" "
+                              ng-model="Customer.mobile_number"  />
                               <label class="mdl-textfield__label" for="mobile">{{'Mobile' | translate}}*</label>
                               <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_mobile" ng-show="form.Customer_mobile.$invalid && form.Customer_mobile.$touched">
                                             <span ng-show="form.Customer_mobile.$error.required">Required.</span>
@@ -195,7 +196,7 @@
               </div>
             </div>
             <div class="center-align">
-              <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="update_profile()" href="javascript:;">
+              <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="save_profile()" href="javascript:;">
                 {{'Save'|translate}}
               </a>
               <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" click="redirect('index.html')" href="javascript:;">
@@ -212,23 +213,34 @@
     </main>
   </div>
   <a id="popup3"  href="#pop-up3" class="no-accent-color fancybox" style="display:none">Pop</a>
-  <div class="mdl-card mdl-shadow--2dp about popupclientissue" id="pop-up3" style="display:none">
-    <form action="#">
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-        <input class="mdl-textfield__input" type="text" placeholder="  {{'CurrentPassword'|translate}}" id="current_password" />
+  <div class="mdl-card mdl-shadow--2dp " id="pop-up3" style="display:none">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <form action="#">
+          <fieldset>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+              <input class="mdl-textfield__input" type="text" placeholder="  {{'CurrentPassword'|translate}}" id="current_password" />
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+              <input class="mdl-textfield__input" type="text" placeholder=" {{'NewPassword'|translate}}" id="new_password" />
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+              <input class="mdl-textfield__input" type="text" placeholder=" {{'ConfirmPassword'|translate}}" id="re_new_password" />
+            </div>
+          </fieldset>
+        </form>
+
+        <br><br>
+        <div class="center-align">
+          <a style="" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="change_password()" href="javascript:;">
+            {{'Submit'|translate}}
+          </a>
+        </div>
       </div>
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-        <input class="mdl-textfield__input" type="text" placeholder=" {{'NewPassword'|translate}}" id="new_password" />
-      </div>
-      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-        <input class="mdl-textfield__input" type="text" placeholder=" {{'ConfirmPassword'|translate}}" id="re_new_password" />
-      </div>
-    </form>
-    <br><br>
-    <div class="center-align">
-      <a style="width:95%;" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="change_password()" href="javascript:;">
-        {{'Submit'|translate}}
-      </a>
 
     </div>
   </div>

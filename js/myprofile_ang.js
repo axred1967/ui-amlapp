@@ -58,9 +58,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   var id=localStorage.getItem("userId");
   var email=localStorage.getItem("userEmail");
   data= {"action":"view_Customer_Profile_info",customer_id:id,email:email}
-  $scope.Doc={}
-  $scope.Doc.doc_name="Immagine Profilo"
-  $scope.Doc.IMGURI=BASEURL+"uploads/user/small/"
 
   $http.post( SERVICEURL2,  data )
       .success(function(responceData) {
@@ -68,7 +65,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                 if(responceData.RESPONSECODE=='1') 			{
                   data=responceData.RESPONSE;
                   $scope.Customer =  data;
-                  $scope.Doc.image_name=data.image
+                  $scope.Customer.doc_name="Immagine Profilo"
+                  $scope.Customer.IMAGEURI=BASEURL+"uploads/user/small/"
                     $('input.mdl-textfield__input').each(
                           function(index){
                               $(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -170,14 +168,14 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
          lang=localStorage.getItem('language');
        	var usertype = localStorage.getItem('userType');
            $('#loader_img').show();
-           data={ "action":'saveProfileAx', lang:lang, dbData: $scope.Customer}
+           data={ "action":'saveProfileAx',id:id, lang:lang, dbData: $scope.Customer}
            $http.post( SERVICEURL2,  data )
                .success(function(data) {
                          $('#loader_img').hide();
                          if(data.RESPONSECODE=='1') 			{
                             swal("",data.RESPONSE);
                             $scope.lastid=data.lastid
-                            $scope.back()
+                            redirect('index.html')
                           }
                           else
                           {

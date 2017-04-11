@@ -17,7 +17,6 @@ var app = {
 };
 function getChkLogin()
 {
-        document.addEventListener("backbutton", onBackKeyDown, true);
 
         chkloggedin();
 
@@ -27,7 +26,6 @@ function getChkLogin()
 
 
 
-/*setTimeout(function(){
+setTimeout(function(){
        checkthesidebarinfouser();
 }, 800);
-*/

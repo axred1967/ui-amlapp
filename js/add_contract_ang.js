@@ -58,14 +58,13 @@
    $scope.init=function(){
      $scope.page={}
 
-     curr_page= base_name()
+     curr_page=base_name()
+   	page=localStorage.getItem(curr_page)
+   	if ( page!= null && page.length >0 ){
+   		$scope.page=JSON.parse(page)
+   		$scope.action=$scope.page.action
 
-     page=localStorage.getItem(curr_page)
-    if (page.length >0 ){
-      $scope.page=JSON.parse(page)
-      $scope.action=$scope.page.action
-
-    }
+   	}
 
     console.log('action'+$scope.action);
 

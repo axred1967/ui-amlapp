@@ -1,181 +1,182 @@
 <!DOCTYPE html>
 <html class="no-js">
-  <head>
-    <meta charset="utf-8">
-    <title>Tax</title>
-    <meta name="description" content="">
-    <meta name="HandheldFriendly" content="True">
-    <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+<head>
+  <meta charset="utf-8">
+  <title>Tax</title>
+  <meta name="description" content="">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="css/animsition.css">
-    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
-    <link rel="stylesheet" href="css/material.css">
-    <link rel="stylesheet" href="css/swipebox.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/stylesheet.css">
-    <script src="js/jquery-2.1.4.min.js"></script>
-     <script type="text/javascript" src="js/custom.js"></script>
-     <script src="js/add_customer.js"></script>
-     <script type="text/javascript" src="cordova.js" </script>
-     <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
-     <script src="js/animsition.js"></script>
-     <script src="js/sweetalert.min.js"></script>
-     <script src="js/material.min.js"></script>
-     <script src="js/jquery.swipebox.min.js"></script>
-     <script src="js/function.js"></script>
-     <script src="js/angular.min.js"></script>
-     <script src="js/angular-route.min.js"></script>
-     <script src="js/angular-translate.min.js"></script>
-     <script src="js/add_customer_ang.js"></script>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="css/animsition.css">
+  <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+  <link rel="stylesheet" href="css/material.css">
+  <link rel="stylesheet" href="css/swipebox.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/stylesheet.css">
+  <script src="js/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="js/custom.js"></script>
+  <script src="js/add_customer.js"></script>
+  <script type="text/javascript" src="cordova.js" </script>
+    <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
+    <script src="js/animsition.js"></script>
+    <script src="js/sweetalert.min.js"></script>
+    <script src="js/material.min.js"></script>
+    <script src="js/jquery.swipebox.min.js"></script>
+    <script src="js/function.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script src="js/angular-translate.min.js"></script>
+    <script src="js/add_customer_ang.js"></script>
     <script>
     langfile = localStorage.getItem("language");
     if (langfile == 'en')
-        document.write('<scri' + 'pt src="js/enlang_ang.js"></' + 'script>');
+    document.write('<scri' + 'pt src="js/enlang_ang.js"></' + 'script>');
     else
-        document.write('<scri' + 'pt src="js/itlang_ang.js"></' + 'script>');
+    document.write('<scri' + 'pt src="js/itlang_ang.js"></' + 'script>');
     if(langfile ==  "en"){
-//             $.getScript("js/i18n/angular-locale_en.js");
-         document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
-     }
-     else{
-//             $.getScript("js/i18n/angular-locale_it.js");
-         document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
-     }
+      //             $.getScript("js/i18n/angular-locale_en.js");
+      document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
+    }
+    else{
+      //             $.getScript("js/i18n/angular-locale_it.js");
+      document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
+    }
     </script>
     <script src="js/ng-currency.js"></script>
-    </head>
+  </head>
   <body>
     <div ng-app="myApp" ng-controller="personCtrl" class="animsition">
       <!-- Page Content -->
       <main class="mdl-layout__content">
         <div class=""> <!-- card -->
-        	 <div class="account-info dark-blue-bg">
-                <div class="account-navigation"> <!-- top icons -->
-                  <a class="mdl-button mdl-js-button mdl-button--icon left" href="javascript:;" ng-click="back()">
-                    <img src="img/back-button.png">
-                  </a>
-                 <!-- <button class="mdl-button mdl-js-button mdl-button--icon right">
-                    <i class="material-icons">close</i>
-                  </button> -->
-                  <span class="main-heading">{{viewName |translate}}</span>
-                  <div class="clr"></div>
-                  </div>
+          <div class="account-info dark-blue-bg">
+            <div class="account-navigation"> <!-- top icons -->
+              <a class="mdl-button mdl-js-button mdl-button--icon left" href="javascript:;" ng-click="back()">
+                <img src="img/back-button.png">
+              </a>
+              <!-- <button class="mdl-button mdl-js-button mdl-button--icon right">
+              <i class="material-icons">close</i>
+            </button> -->
+            <span class="main-heading">{{viewName |translate}}</span>
+            <div class="clr"></div>
+          </div>
+        </div>
+
+
+        <div class="account-data add-customer-data"> <!-- text fields -->
+          <div class="mdl-card mdl-shadow--2dp">
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--12-col">
+                <h5 ng-if="formStatus">{{formStatus}}</h5>
+                <form name="form" novalidate >
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="text" id="Customer_name" name="Customer_name"  pattern="[A-Za-z\s]*"
+                      ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="true"
+                      />
+                      <label class="mdl-textfield__label" for="Customer_name">{{'Name'|translate}} *</label>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_name" ng-show="form.Customer_name.$invalid && form.Customer_name.$touched">
+                        <span ng-show="form.Customer_name.$error.required">{{'Richiesto'| translate}}</span>
+                      </span>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="text" id="Customer_surname" name="Customer_surname"value=" "  pattern="[A-Za-z\s]*"
+                      ng-model="Customer.surname"  ng-change="Customer.surname=(Customer.surname| capitalize)" minlength="3"
+                      ng-required="true" />
+                      <label class="mdl-textfield__label" for=""Customer_surname"">{{'Surname'|translate}} *</label>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="Custome_surname" ng-show="form.Customer_surname.$invalid && form.Customer_surname.$touched">
+                        <span ng-show="form.Customer_surname.$error.required">{{'Richiesto'| translate}}</span>
+                      </span>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="email" id="Customer_email" name="Customer_email" value=" "
+                      ng-model="Customer.email" ng-change="Customer.email=(Customer.email| capitalize)" ng-required="true" />
+                      <label class="mdl-textfield__label" for="email">{{'EmailID' | translate}}*</label>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_email" ng-show="form.Customer_email.$invalid && form.Customer_email.$touched">
+                        <span ng-show="form.Customer_email.$error.required">Required.</span>
+                        <span ng-show="form.Customer_email.$error.pattern">{{'mail non valida.'| translate}}</span>
+                      </span>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="text" id="Customer_mobile"  name="Customer_mobile" value=" "
+                      ng-model="Customer.mobile_number" ng-change="Customer.mobile=(Customer.mobile| capitalize)"  />
+                      <label class="mdl-textfield__label" for="mobile">{{'Mobile' | translate}}*</label>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_mobile" ng-show="form.Customer_mobile.$invalid && form.Customer_mobile.$touched">
+                        <span ng-show="form.Customer_mobile.$error.required">Required.</span>
+                        <span ng-show="form.Customer_mobile.$error.pattern">{{' numero telefono non valida.'| translate}}</span>
+                      </span>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <div class="demo-card-image mdl-card mdl-shadow--2dp">
+                      <div class="mdl-card__title mdl-card--expand">{{'Immagine Cliente'|translate}}</div>
+                      <img  ng-show="Customer.image.length>0" ng-src ="{{Customer.image.length>0 ? Customer.IMAGEURI+ Customer.image :'' }}" ></img>
+                      <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
+
+                      <div class="mdl-card__actions">
+                        <div class="mdl-layout-spacer"></div>
+
+                        <button id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
+                          <span >{{'Scatta una foto'|translate}}.</span>
+                        </span>
+                        <button id="addGallery" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
+                          <span >{{'Scegli da Galleria'|translate}}.</span>
+                        </span>
+
+                        <button ng-hide="DocLoaded==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+                          <span >{{'Cancella'|translate}}.</span>
+                        </span>
+                      </div>
+
+                    </div>
+
+                  </fieldset>
+                </div>
               </div>
 
 
-          <div class="account-data add-customer-data"> <!-- text fields -->
-          	<div class="mdl-card mdl-shadow--2dp">
-              <div class="mdl-grid">
-                      <div class="mdl-cell mdl-cell--12-col">
-                      <h5 ng-if="formStatus">{{formStatus}}</h5>
-                <form name="form" novalidate >
-                  <fieldset>
-                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" id="Customer_name" name="Customer_name"  pattern="[A-Za-z\s]*"
-                        ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="true"
-                         />
-                        <label class="mdl-textfield__label" for="Customer_name">{{'Name'|translate}} *</label>
-                        <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_name" ng-show="form.Customer_name.$invalid && form.Customer_name.$touched">
-                        <span ng-show="form.Customer_name.$error.required">{{'Richiesto'| translate}}</span>
-                        </span>
-                      </div>
-                    </fieldset>
-                    <fieldset>
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                          <input class="mdl-textfield__input" type="text" id="Customer_surname" name="Customer_surname"value=" "  pattern="[A-Za-z\s]*"
-                          ng-model="Customer.surname"  ng-change="Customer.surname=(Customer.surname| capitalize)" minlength="3"
-                          ng-required="true" />
-                          <label class="mdl-textfield__label" for=""Customer_surname"">{{'Surname'|translate}} *</label>
-                          <span class="mdl-tooltip mdl-tooltip--validation" for="Custome_surname" ng-show="form.Customer_surname.$invalid && form.Customer_surname.$touched">
-                            <span ng-show="form.Customer_surname.$error.required">{{'Richiesto'| translate}}</span>
-                          </span>
-                        </div>
-                      </fieldset>
-                    <fieldset>
-                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="email" id="Customer_email" name="Customer_email" value=" "
-                            ng-model="Customer.email" ng-change="Customer.email=(Customer.email| capitalize)" ng-required="true" />
-                            <label class="mdl-textfield__label" for="email">{{'EmailID' | translate}}*</label>
-                            <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_email" ng-show="form.Customer_email.$invalid && form.Customer_email.$touched">
-                                          <span ng-show="form.Customer_email.$error.required">Required.</span>
-                            <span ng-show="form.Customer_email.$error.pattern">{{'mail non valida.'| translate}}</span>
-                            </span>
-                          </div>
-                      </fieldset>
-                      <fieldset>
-                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                              <input class="mdl-textfield__input" type="text" id="Customer_mobile"  name="Customer_mobile" value=" " pattern=""
-                              ng-model="Customer.mobile" ng-change="Customer.mobile=(Customer.mobile| capitalize)"  />
-                              <label class="mdl-textfield__label" for="mobile">{{'Mobile' | translate}}*</label>
-                              <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_mobile" ng-show="form.Customer_mobile.$invalid && form.Customer_mobile.$touched">
-                                            <span ng-show="form.Customer_mobile.$error.required">Required.</span>
-                              <span ng-show="form.Customer_mobile.$error.pattern">{{' numero telefono non valida.'| translate}}</span>
-                              </span>
-                            </div>
-                        </fieldset>
-                      </div>
-                </div>
-<!--
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" ng-model="Customer.name "  ng-change="Customer.name=(Customer.name| capitalize)"
-                    min-length="4" required="" placeholder="  {{'Name' | translate}}" id="customer_name" />
-                    <label class="mdl-textfield__label" for="customer_name" style="color:orange;display:none">{{'Name' | translate}}</label>
-                    <span class="mdl-tooltip mdl-tooltip--validation" for="Customer.name" ng-show="form.Customer_name.$invalid && form.Customer_name.$touched">
-                    <span ng-show="form.Customer_name.$error.required">Required.</span>
-                  </span>
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" ng-model="Customer.surname " ng-change="Customer.surname=(Customer.surname| capitalize)"
-                    placeholder="  {{'Surname' | translate}}" id="customer_surname" />
-                    <label class="mdl-textfield__label" for="customer_surname" style="color:orange;display:none">{{'Surname' | translate}}</label>
-                  </div>
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="email" ng-model="Customer.email" placeholder=" {{'EmailID' | translate}}" id="customer_email" />
-                    <label class="mdl-textfield__label" for="customer_email" style="color:orange;display:none">{{'EmailID' | translate}}</label>
-                  </div>
-
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" ng-model="Customer.mobile_number" placeholder=" {{'Mobile' | translate}}" id="customer_mobile_number" />
-                    <label class="mdl-textfield__label" for="customer_mobile_number" style="color:orange;display:none">{{'Mobile' | translate}}</label>
-                  </div>
-<!--
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" ng-model="Customer.address_resi" placeholder=" {{'Addressofresidence' | translate}}" id="customer_address_resi" />
-                  </div>
--->
-
-                </form>
-    			<div class="center-align">
-                    <a id="save_button_cust"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_customer()" href="javascript:;">
-                      {{'Save' | translate}}
-                    </a>
-                    <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="back()" href="javascript:;">
-                      {{'Cancel' | translate}}
-                    </a>
-                     <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
-                </div>
-
-             </div>
-            <div class="clr"></div>
+            </form>
+            <div class="center-align">
+              <a id="save_button_cust"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_customer()" href="javascript:;">
+                {{'Save' | translate}}
+              </a>
+              <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="back()" href="javascript:;">
+                {{'Cancel' | translate}}
+              </a>
+              <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
+            </div>
 
           </div>
+          <div class="clr"></div>
 
         </div>
-      </main>
-    </div>
-<script>
-//gestione label
-/*
-$(".mdl-textfield__input").focus(function(){
+
+      </div>
+    </main>
+  </div>
+  <script>
+  //gestione label
+  /*
+  $(".mdl-textfield__input").focus(function(){
   $('label[for="'+$(this).attr("id") +'"]').show()
 });
 $(".mdl-textfield__input").blur(function(){
-  $('label[for="'+$(this).attr("id") +'"]').hide()
+$('label[for="'+$(this).attr("id") +'"]').hide()
 });
 */
 </script>
-  </body>
+</body>
 </html>
