@@ -262,3 +262,11 @@ function onBackKeyDown(evt) {
 function base_name(path) {
    return String(window.location).split('/').reverse()[0];
 }
+function IsJsonString(str) {
+    try {
+        js=JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return js;
+}

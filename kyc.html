@@ -83,6 +83,7 @@
                             </div>
                         </div> -->
                         <div class="account-data add-Kyc-data"> <!-- text fields -->
+                          <center><h4> {{'Adeguata Verifica'| translate}} </h4></center>
                           <div class="mdl-card mdl-shadow--2dp ">
                             <div class="mdl-grid">
                               <div class="mdl-cell mdl-cell--12-col">
@@ -91,7 +92,7 @@
                                   <fieldset>
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                       <input class="mdl-textfield__input" type="text" id="Kyc_name" name="Kyc_name"  pattern="[A-Za-z\s]*"
-                                      ng-model="Kyc.customer_name"  ng-change="Kyc.name=(Kyc.name| capitalize)" minlength="3" ng-required="true"
+                                      ng-model="Kyc.contractor_data.name"  ng-change="Kyc.name=(Kyc.name| capitalize)" minlength="3" ng-required="true"
                                       />
                                       <label class="mdl-textfield__label" for="Kyc_name">{{'Name'|translate}} *</label>
                                       <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_name" ng-show="form.Kyc_name.$invalid && form.Kyc_name.$touched">
@@ -102,7 +103,7 @@
                                   <fieldset>
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                       <input class="mdl-textfield__input" type="text" id="Kyc_surname" name="Kyc_surname"value=" "  pattern="[A-Za-z\s]*"
-                                      ng-model="Kyc.customer_surname"  ng-change="Kyc.surname=(Kyc.surname| capitalize)" minlength="3"
+                                      ng-model="Kyc.contractor_data.surname"  ng-change="Kyc.surname=(Kyc.surname| capitalize)" minlength="3"
                                       ng-required="true" />
                                       <label class="mdl-textfield__label" for="Kyc_surname">{{'Surname'|translate}} *</label>
                                       <span class="mdl-tooltip mdl-tooltip--validation" for="Custome_surname" ng-show="form.Kyc_surname.$invalid && form.Kyc_surname.$touched">
@@ -113,7 +114,7 @@
                                   <fieldset>
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                       <input class="mdl-textfield__input" type="email" id="Kyc_customer_email" name="Kyc_customer_email" value=" "
-                                      ng-model="Kyc.customer_email" ng-change="Kyc.email=(Kyc.email| capitalize)" ng-required="true" />
+                                      ng-model="Kyc.contractor_data.email" ng-change="Kyc.email=(Kyc.email| capitalize)" ng-required="true" />
                                       <label class="mdl-textfield__label" for="email">{{'EmailID' | translate}}*</label>
                                       <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_customer_email" ng-show="form.Kyc_customer_email.$invalid && form.Kyc_customer_email.$touched">
                                         <span ng-show="form.Kyc_customer_email.$error.required">Required.</span>
@@ -124,7 +125,7 @@
                                   <fieldset>
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                       <input class="mdl-textfield__input" type="text" id="Kyc_mobile"  name="Kyc_mobile" value=" "
-                                      ng-model="Kyc.customer_mobile"   />
+                                      ng-model="Kyc.contractor_data.mobile"   />
                                       <label class="mdl-textfield__label" for="Kyc_mobile">{{'Mobile' | translate}}*</label>
                                       <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_mobile" ng-show="form.Kyc_mobile.$invalid && form.Kyc_mobile.$touched">
                                         <span ng-show="form.Kyc_mobile.$error.required">Required.</span>
@@ -135,7 +136,7 @@
                                   <fieldset>
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                       <input class="mdl-textfield__input" type="text" id="Kyc_customer_tel"  name="Kyc_customer_tel" value=" "
-                                      ng-model="Kyc.customer_tel"   />
+                                      ng-model="Kyc.contractor_data.tel"   />
                                       <label class="mdl-textfield__label" for="Kyc_customer_tel">{{'Telefono' | translate}}*</label>
                                       <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_customer_tel" ng-show="form.Kyc_customer_tel.$invalid && form.Kyc_customer_tel.$touched">
                                         <span ng-show="form.Kyc_customer_tel.$error.required">Required.</span>
@@ -146,7 +147,7 @@
                                   <fieldset>
                                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                       <input class="mdl-textfield__input" type="text" id="Kyc_customer_fax"  name="Kyc_customer_fax" value=" "
-                                      ng-model="Kyc.customer_fax"   />
+                                      ng-model="Kyc.contractor_data.fax"   />
                                       <label class="mdl-textfield__label" for="Kyc_customer_fax">{{'Fax' | translate}}*</label>
                                       <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_customer_fax" ng-show="form.Kyc_customer_fax.$invalid && form.Kyc_customer_fax.$touched">
                                         <span ng-show="form.Kyc_customer_fax.$error.required">Required.</span>
