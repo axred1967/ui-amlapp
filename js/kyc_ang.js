@@ -148,7 +148,12 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
   $scope.back=function(passo){
     if (passo>0){
+        localstorage('kycstep0'+passo+'.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
         redirect('kycstep0'+passo+'.html')
+        return;
+    }
+    if (passo==-1){
+        redirect($scope.page.prev_page)
         return;
     }
     redirect($scope.page.location)

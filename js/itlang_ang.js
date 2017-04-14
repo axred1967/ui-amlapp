@@ -2,6 +2,8 @@ app2.config(['$translateProvider', function ($translateProvider) {
   $translateProvider.translations('it', {
 		Login : 'Accesso',
 			Profile: 'Il mio Profilo',
+      SavePrev: 'Salva & Precendete',
+      Identification:'Identificazione',
 							Logintoyouracount : 'Accedi al tuo account',
 							Amlapp  :  'AML APP',
 							Notmemberyet : 'NON SEI ANCORA UN MEMBRO?',
@@ -76,7 +78,7 @@ app2.config(['$translateProvider', function ($translateProvider) {
 							Pep : 'PEP ',
 							PEPNOT : 'PEP-NOT',
 							Annualincome : 'Reddito annuo',
-							YourAddress : 'Il tuo indirizzo',
+							YourAddress : 'Residenza',
 							ResidenceCountry  : 'Paese di residenza',
 							DomicileCountry  : 'domicilio Paese',
 							AddressofDomicileResidence  : 'Indirizzo di domicilio Residence',
@@ -138,7 +140,7 @@ app2.config(['$translateProvider', function ($translateProvider) {
 							placeofidentification:'Place Of Identification',
 							dateofidentification:'Date Of Identification',
   						 placeofidentification_validitymsg:"Please Enter Place Of Identification",
-						 weatherdomiciledifferentfromresedence:"Whether residence different from domicile",
+						 weatherdomiciledifferentfromresedence:"Indirizzo di residenza diverso di quello di domicilio",
 
 						//27 feb 2017
 						customercontactinfo:" Modifica Cliente",

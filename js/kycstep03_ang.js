@@ -74,13 +74,14 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     var email=localStorage.getItem("userEmail");
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     appData=$scope.Contract
-    data= {"action":"kycAx",appData:appData, country:false}
+    data= {"action":"kycAx",appData:appData,country:true}
     $http.post( SERVICEURL2,  data )
     .success(function(responceData) {
       $('#loader_img').hide();
       if(responceData.RESPONSECODE=='1') 			{
         data=responceData.RESPONSE;
         $scope.Kyc=data;
+        $scope.countryList=responceData.countrylist
         if ($scope.Kyc.date_of_identification===undefined || $scope.Kyc.date_of_identification)
         $scope.Kyc.date_of_identification=new Date()
         $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
