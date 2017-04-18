@@ -19,7 +19,6 @@
   <link rel="stylesheet" href="css/stylesheet.css">
   <script src="js/jquery-2.1.4.min.js"></script>
   <script type="text/javascript" src="js/custom.js"></script>
-  <script src="js/kycstep03.js"></script>
   <script type="text/javascript" src="cordova.js"> </script>
   <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
   <script src="js/animsition.js"></script>
@@ -64,7 +63,7 @@
         <div class=""> <!-- card -->
           <div class="account-info dark-blue-bg">
             <div class="account-navigation"> <!-- top icons -->
-              <span class="main-heading">{{'YourAddress' | translate}}</span>
+              <span class="main-heading">{{'Dati Fiscali e PEP' | translate}}</span>
               <div class="clr"></div>
             </div>
           </div>
@@ -206,6 +205,132 @@
                         </span>
                       </div>
                     </fieldset>
+
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+
+                        <div class="mdl-grid">
+                          <div class="mdl-cell ">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEP-1">
+                              <input type="radio" id="PEP-1" ng-model="Kyc.contract_data.check_pep" class="mdl-radio__button" name="PEP" value="1" >
+                              <span class="mdl-radio__label" >{{'dichiara di essere PEP'| translate}}</span>
+                            </label>
+                          </div>
+
+                          <div class="mdl-cell">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEP-0">
+                              <input type="radio" id="PEP-0" ng-model="Kyc.contract_data.check_pep" class="mdl-radio__button" name="PEP" value="0"  checked>
+                              <span class="mdl-radio__label">{{'Dichiara di Non Essere PEP '| translate}}</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                    <fieldset ng-show="Kyc.contract_data.check_pep==1">
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="pep_charge" name="pep_charge"
+                        ng-model="Kyc.contractor_data.pep_charge"
+                        minlength="3"   ng-required="Kyc.contract_data.check_pep==1"
+                        ng-keyup="showAC('users.pep_charge','pep_charge');"
+
+                        ng-focus="resetAC()"
+                        />
+                        <label class="mdl-textfield__label" for="pep_charge">{{'Tipo di carica ricoperta'|translate}} *</label>
+                        <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                          <tbody style="display:table">
+                            <tr ng-click="addWord(Kyc.contractor_data.pep_charge',item.word)" ng-repeat="item in word.profession">
+                              <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="pep_charge" ng-show="form.pep_charge.$invalid && form.pep_charge.$touched">
+                          <span ng-show="form.pep_charge.$error.required">{{'Richiesto'| translate}}</span>
+                        </span>
+                      </div>
+                    </fieldset>
+
+                    <fieldset ng-show="Kyc.contract_data.check_pep==1">
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+
+                        <div class="mdl-grid">
+                          <div class="mdl-cell ">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEPDOM-1">
+                              <input type="radio" id="PEPDOM-1" ng-model="Contract.pep_domestic" class="mdl-radio__button" name="PEPDOM" value="1" >
+                              <span class="mdl-radio__label" >{{'PEP Domestico'| translate}}</span>
+                            </label>
+                          </div>
+
+                          <div class="mdl-cell">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEPDOM-0">
+                              <input type="radio" id="PEPDOM-0" ng-model="Contract.pep_domestic" class="mdl-radio__button" name="PEPDOM" value="0"  checked>
+                              <span class="mdl-radio__label">{{'PEP estero'| translate}}</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="customer_profession" name="customer_profession"
+                        ng-model="Kyc.contractor_data.profession"
+                        minlength="3"   ng-required="true"
+                        ng-keyup="showAC('users.profession','customer_profession');"
+
+                        ng-focus="resetAC()"
+                        />
+                        <label class="mdl-textfield__label" for="customer_profession">{{'Professione'|translate}} *</label>
+                        <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                          <tbody style="display:table">
+                            <tr ng-click="addWord('Kyc.contractor_data.profession',item.word)" ng-repeat="item in word.profession">
+                              <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="customer_profession" ng-show="form.customer_profession.$invalid && form.customer_profession.$touched">
+                          <span ng-show="form.customer_profession.$error.required">{{'Richiesto'| translate}}</span>
+                        </span>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input ng-currency class="mdl-textfield__input" type="text" id="kyc_annual_income" name="kyc_annual_income" minlength="3"  value=" "
+                        ng-model="Kyc.contractor_data.annual_income"   minlength="3"
+                        />
+                        <label class="mdl-textfield__label" for="kyc_annual_income">{{'Annualincome' | translate }}*</label>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="kyc_annual_income" ng-show="form.kyc_annual_income.$invalid && form.kyc_annual_income.$touched">
+                          <span ng-show="form.kyc_annual_income.$error.required">{{'Richiesto'|translate}}.</span>
+                        </span>
+
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="customer_fiscal_number" name="customer_fiscal_number"
+                        ng-model="Kyc.contractor_data.fiscal_number"
+                        minlength="3"   ng-required="true"
+
+                        ng-focus="resetAC()"
+                        />
+                        <label class="mdl-textfield__label" for="customer_fiscal_number">{{'FiscalNumber'|translate}} *</label>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="customer_fiscal_number" ng-show="form.customer_fiscal_number.$invalid && form.customer_fiscal_number.$touched">
+                          <span ng-show="form.customer_fiscal_number.$error.required">{{'Richiesto'| translate}}</span>
+                        </span>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input ng-currency class="mdl-textfield__input" type="text" id="kyc_annual_income" name="kyc_annual_income" minlength="3"  value=" "
+                        ng-model="Kyc.contractor_data.annual_income"   minlength="3"
+                        />
+                        <label class="mdl-textfield__label" for="kyc_annual_income">{{'Annualincome' | translate }}*</label>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="kyc_annual_income" ng-show="form.kyc_annual_income.$invalid && form.kyc_annual_income.$touched">
+                          <span ng-show="form.kyc_annual_income.$error.required">{{'Richiesto'|translate}}.</span>
+                        </span>
+
+                      </div>
+                    </fieldset>
+
+
 
 
                   </form>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <title>Tax</title>
+  <meta name="description" content="">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" type="text/css" href="font-awesome-4.6.2/css/font-awesome.min.css">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/css/animsition.css"> -->
+
+  <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+  <link rel="stylesheet" href="css/material.css">
+  <link rel="stylesheet" href="css/swipebox.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/stylesheet.css">
+  <link rel="stylesheet" href="css/jquery.fancybox.css">
+  <script src="js/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="js/custom.js"></script>
+  <script type="text/javascript" src="cordova.js" </script>
+    <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
+    <script src="js/animsition.js"></script>
+    <script src="js/sweetalert.min.js"></script>
+    <script src="js/material.min.js"></script>
+    <script src="js/jquery.swipebox.min.js"></script>
+    <script src="js/function.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script src="js/angular-translate.min.js"></script>
+    <script src="js/kyc_company_ang.js"></script>
+    <script>
+    langfile = localStorage.getItem("language");
+    if (langfile == 'en')
+    document.write('<scri' + 'pt src="js/enlang_ang.js"></' + 'script>');
+    else
+    document.write('<scri' + 'pt src="js/itlang_ang.js"></' + 'script>');
+    if(langfile ==  "en"){
+      //             $.getScript("js/i18n/angular-locale_en.js");
+      document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
+    }
+    else{
+      //             $.getScript("js/i18n/angular-locale_it.js");
+      document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
+    }
+    </script>
+    <script src="js/ng-currency.js"></script></head>
+
+    <body>
+      <div ng-app="myApp" ng-controller="personCtrl"  class="animsition">
+        <!-- Page Content -->
+        <main class="mdl-layout__content">
+          <div class=""> <!-- card -->
+            <div class="account-info dark-blue-bg">
+              <div class="account-navigation"> <!-- top icons -->
+                <a class="mdl-button mdl-js-button mdl-button--icon left" ng-click="back()" href="javascript:;">
+                  <img src="img/back-button.png">
+                </a>
+                <!-- <button class="mdl-button mdl-js-button mdl-button--icon right">
+                <i class="material-icons">close</i>
+              </button> -->
+              <span class="main-heading">{{viewName |translate}}</span>
+              <div class="clr"></div>
+            </div>
+          </div>
+
+
+          <div class="account-data add-Company-data"> <!-- text fields -->
+            <div class="mdl-card mdl-shadow--2dp ">
+              <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--12-col">
+                  <form name="form" novalidate>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                        <input class="mdl-textfield__input"  ng-model="Kyc.company_data.name "  ng-change="Kyc.company_data.name=(Kyc.company_data.name| capitalize)"
+                        type="text" ng-required="true" id="company_name" name="company_name" />
+                        <label for="company_name" class="mdl-textfield__label">{{ 'Companyname' | translate}}</label>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="company_name" minlength="3" ng-show="form.company_name.$invalid && form.company_name.$touched">
+                          <span ng-show="form.company_name.$error.required">{{'Richiesto'|translate}}.</span>
+                        </div>
+                      </fieldset>
+                      <fieldset>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                          <input class="mdl-textfield__input"   ng-model="Kyc.company_data.address "   type="text" placeholder=" {{ 'Addresscompany' | translate}}"
+                          id="company_address" name="company_address" ng-required="true" />
+                          <label for="company_address" class="mdl-textfield__label">{{ 'Companyname' | translate}}</label>
+                          <span class="mdl-tooltip mdl-tooltip--validation" for="company_address" minlength="3" ng-show="form.company_address.$invalid && form.company_address.$touched">
+                            <span ng-show="form.company_address.$error.required">{{'Richiesto'|translate}}.</span>
+                          </div>
+                        </fieldset>
+                        <fieldset>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                            <input class="mdl-textfield__input"  ng-model="Kyc.company_data.fiscal_id"  ng-change="Kyc.company_data.fiscal_id=(Kyc.company_data.fiscal_id| uppercase) "
+                            type="text" placeholder=" {{ 'PIVA' | translate}}"
+                            id="company_fiscal_id" name="company_fiscal_id" />
+                            <label for="company_fiscal_id" class="mdl-textfield__label">{{ 'PIVA' | translate}}</label>
+                            <span class="mdl-tooltip mdl-tooltip--validation" for="company_fiscal_id" minlength="3" ng-show="form.company_fiscal_id.$invalid && form.company_fiscal_id.$touched">
+                              <span ng-show="form.company_fiscal_id.$error.required">{{'Richiesto'|translate}}.</span>
+                            </div>
+                          </fieldset>
+
+                          <fieldset>
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                              <input class="mdl-textfield__input"  type="text" ng-model="Kyc.company_data.authorised_by" ng-keyup="showAC($event,'company');"
+                              placeholder=" {{ 'Companyauthorizedby' | translate}}"
+                              id="authorised_by" name="authorised_by" />
+                              <label for="authorised_by" class="mdl-textfield__label">{{ 'Companyauthorizedby' | translate}}</label>
+                              <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                                <tbody style="display:table">
+                                  <tr ng-click="addWord('authorised_by',item.word)" ng-repeat="item in word.authorised_by">
+                                    <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <span class="mdl-tooltip mdl-tooltip--validation" for="authorised_by" minlength="3" ng-show="form.authorised_by.$invalid && form.authorised_by.$touched">
+                                <span ng-show="form.authorised_by.$error.required">{{'Richiesto'|translate}}.</span>
+                              </div>
+                            </fieldset>
+                            <fieldset>
+                              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                                <input class="mdl-textfield__input"  type="date" ng-model="Kyc.company_data.authorisation_date"
+                                placeholder=" {{ 'DateofAutorized' | translate}}"
+                                id="authorisation_date" name="authorisation_date" />
+                                <label for="authorisation_date" class="mdl-textfield__label" >{{ 'DateofAutorized' | translate}}</label>
+                                <span class="mdl-tooltip mdl-tooltip--validation" for="authorisation_date" minlength="3" ng-show="form.authorisation_date.$invalid && form.authorisation_date.$touched">
+                                  <span ng-show="form.authorisation_date.$error.required">{{'Richiesto'|translate}}.</span>
+                                </div>
+                              </fieldset>
+                              <fieldset>
+
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                                  <input ng-currency class="mdl-textfield__input"   ng-model="Kyc.company_data.fiscal_budget"
+                                  placeholder=" {{ 'FiscalBudget' | translate}}" id="fiscal_budget" name="fiscal_budget" />
+                                  <label for="fiscal_budget" class="mdl-textfield__label" >{{ 'FiscalBudget' | translate}}</label>
+                                  <span class="mdl-tooltip mdl-tooltip--validation" for="fiscal_budget" minlength="3" ng-show="form.fiscal_budget.$invalid && form.fiscal_budget.$touched">
+                                    <span ng-show="form.fiscal_budget.$error.required">{{'Richiesto'|translate}}.</span>
+                                  </div>
+                                </fieldset>
+                                <fieldset>
+                                  <div class="demo-card-image mdl-card mdl-shadow--2dp">
+                                    <div class="mdl-card__title mdl-card--expand">{{'Immagine Società'|translate}}</div>
+                                    <img  ng-show="Kyc.company_data.image.length>0" ng-src ="{{Kyc.company_data.image.length>0 ? Kyc.company_data.IMAGEURI+ Kyc.company_data.image :'' }}" ></img>
+                                    <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
+
+                                    <div class="mdl-card__actions">
+                                      <div class="mdl-layout-spacer"></div>
+
+                                      <button id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
+                                      <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
+                                        <span >{{'Scatta una foto'|translate}}.</span>
+                                      </span>
+                                      <button id="addGallery" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
+                                      <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
+                                        <span >{{'Scegli da Galleria'|translate}}.</span>
+                                      </span>
+
+                                      <button ng-hide="DocLoaded==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
+                                      <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+                                        <span >{{'Cancella'|translate}}.</span>
+                                      </span>
+                                    </div>
+
+                                  </div>
+
+                                </fieldset>
+
+
+
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="center-align">
+                          <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_company()" href="javascript:;">
+                            {{ 'Save' | translate}}
+                          </a>
+                          <a id="kyc_button2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="redirect('company_list.html')" href="javascript:;">
+                            {{ 'Cancel' | translate}}
+                          </a>
+                          <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
+                        </div>
+
+                      </div>
+                      <div class="clr"></div>
+
+                    </div>
+
+                  </div>
+                </main>
+              </div>
+
+
+              <script>
+              //gestione label
+
+
+
+              </script>
+
+            </body>
+            </html>
