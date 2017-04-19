@@ -367,8 +367,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         redirect('kyc_company.html')
         return;
         case '2':
-        localstorage('kyc_owner.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
-        redirect('kyc_owner.html')
+        localstorage('kyc_owners.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
+        redirect('kyc_owners.html')
         return;
       }
     }

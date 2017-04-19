@@ -148,7 +148,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     });
 
     $scope.action="saveKyc"
-    $scope.viewName="Informazioni personali"
+    $scope.viewName="Dati Soggetto Giuridico"
 
 
   }

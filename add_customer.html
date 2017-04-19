@@ -76,7 +76,7 @@
                   <fieldset>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                       <input class="mdl-textfield__input" type="text" id="Customer_name" name="Customer_name"  pattern="[A-Za-z\s]*"
-                      ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="page.other_data "
+                      ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="true "
                       />
                       <label class="mdl-textfield__label" for="Customer_name">{{'Name'|translate}} *</label>
                       <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_name" ng-show="form.Customer_name.$invalid && form.Customer_name.$touched">
@@ -88,17 +88,29 @@
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                       <input class="mdl-textfield__input" type="text" id="Customer_surname" name="Customer_surname"value=" "  pattern="[A-Za-z\s]*"
                       ng-model="Customer.surname"  ng-change="Customer.surname=(Customer.surname| capitalize)" minlength="3"
-                      ng-required="page.other_data " />
+                      ng-required="true " />
                       <label class="mdl-textfield__label" for=""Customer_surname"">{{'Surname'|translate}} *</label>
                       <span class="mdl-tooltip mdl-tooltip--validation" for="Custome_surname" ng-show="form.Customer_surname.$invalid && form.Customer_surname.$touched">
                         <span ng-show="form.Customer_surname.$error.required">{{'Richiesto'| translate}}</span>
                       </span>
                     </div>
                   </fieldset>
+                  <fieldset ng-show="page.owners">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="text" id="owner_percentuale" name="owner_percentuale"value=" "
+                      ng-model="Customer.percentuale"   minlength="3"
+                      ng-required="page.owner " />
+                      <label class="mdl-textfield__label" for=""Customer_surname"">{{'Percentuale di Partecipazione'|translate}} *</label>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="owner_percentuale" ng-show="form.owner_percentuale.$invalid && form.owner_percentuale.$touched">
+                        <span ng-show="form.owner_percentuale.$error.required">{{'Richiesto'| translate}}</span>
+                      </span>
+                    </div>
+                  </fieldset>
+
                   <fieldset>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                       <input class="mdl-textfield__input" type="email" id="Customer_email" name="Customer_email" value=" "
-                      ng-model="Customer.email" ng-change="Customer.email=(Customer.email| capitalize)" ng-required="page.other_data " />
+                      ng-model="Customer.email" ng-change="Customer.email=(Customer.email| capitalize)" ng-required="true " />
                       <label class="mdl-textfield__label" for="email">{{'EmailID' | translate}}*</label>
                       <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_email" ng-show="form.Customer_email.$invalid && form.Customer_email.$touched">
                         <span ng-show="form.Customer_email.$error.required">Required.</span>

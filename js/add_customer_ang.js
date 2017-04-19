@@ -202,10 +202,10 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 			}
 			break;
 			case'edit_customer_for_kyc_owner':
-				$scope.Owner=JSON.parse(localStorage.getItem('Owner'))
-				$scope.Owner.fullname=$scope.Customer.name +" "+$scope.Customer.surname
-				$scope.Owner.user_id= $scope.lastid
-				localstorage('Owner', JSON.stringify($scope.Owner));
+				localstorage('Owner', JSON.stringify($scope.Customer));
+				precPage=JSON.parse(localStorage.getItem($scope.page.location))
+				precPage.edit=true
+				localstorage($scope.page.location,JSON.stringify(precPage))
 			break;
 			case'add_customer_for_kyc_owner':
 			if ($scope.lastid!==undefined && $scope.lastid>0 ){
@@ -213,7 +213,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 				$scope.Owner.fullname=$scope.Customer.name +" "+$scope.Customer.surname
 				$scope.Owner.user_id= $scope.lastid
 				precPage=JSON.parse(localStorage.getItem($scope.page.location))
-				precPage.edit=true
+				precPage.add=true
 				localstorage($scope.page.location,JSON.stringify(precPage))
 				localstorage('Owner', JSON.stringify($scope.Owner));
 			}

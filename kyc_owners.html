@@ -82,14 +82,15 @@
               id="waterfall-exp" />
             </div>
           </div>
-          <span class="main-heading"> {{Kyc.contractor_data.other_name}}</span>
+          <span class="main-heading"> {{viewName |translate}}</span>
           <div class="clr"></div>
         </div>
       </div>
     </div>
 
     <div class="list-data-content">
-      <center>  <h4>{{'OwnersList' |translate  }} </h4></center>
+      <center>  <h4>{{'Adeguata Verifica' |translate  }} </h4></center>
+      <center>  <h5>{{'OwnersList' |translate  }} </h5></center>
       <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
       <center>  <img style="height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
       <div id="list_owner" ng-hide="Kyc.owner_data.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Owner in Kyc.owner_data " ng-init="ownerIndex=$index">
@@ -148,6 +149,19 @@
           </div>
         </div>
       </div>
+    </div>
+    <br/>
+    <div class="center-align">
+      <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="save_kyc(0)" href="javascript:;">
+        {{'SaveExit' |translate}}
+      </a>
+      <a id="kyc_button2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="save_kyc(-1)" href="javascript:;">
+        {{'SavePrev' |translate}}
+      </a>
+      <a id="kyc_button2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="save_kyc(6)" href="javascript:;">
+        {{'SaveNext' |translate}}
+      </a>
+      <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
     </div>
 
   </main>
