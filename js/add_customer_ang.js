@@ -1,58 +1,58 @@
-var app2 = angular.module('myApp',['pascalprecht.translate','fieldMatch']);
+var app2 = angular.module('myApp', ['pascalprecht.translate','ng-currency','fieldMatch']);
 //Field Match directive
 angular.module('fieldMatch', [])
 .directive('fieldMatch', ["$parse", function($parse) {
-	return {
-		require: 'ngModel',
-		link: function(scope, elem, attrs, ctrl) {
-			var me = $parse(attrs.ngModel);
-			var matchTo = $parse(attrs.fieldMatch);
-			scope.$watchGroup([me, matchTo], function(newValues, oldValues) {
-				ctrl.$setValidity('fieldmatch', me(scope) === matchTo(scope));
-			}, true);
-		}
-	}
+  return {
+    require: 'ngModel',
+    link: function(scope, elem, attrs, ctrl) {
+      var me = $parse(attrs.ngModel);
+      var matchTo = $parse(attrs.fieldMatch);
+      scope.$watchGroup([me, matchTo], function(newValues, oldValues) {
+        ctrl.$setValidity('fieldmatch', me(scope) === matchTo(scope));
+      }, true);
+    }
+  }
 }]);
 //Run material design lite
 app2.directive("ngModel",["$timeout", function($timeout){
-	return {
-		restrict: 'A',
-		priority: -1, // lower priority than built-in ng-model so it runs first
-		link: function(scope, element, attr) {
-			scope.$watch(attr.ngModel,function(value){
-				$timeout(function () {
-					if (value){
-						element.trigger("change");
-					} else if(element.attr('placeholder') === undefined) {
-						if(!element.is(":focus"))
-						element.trigger("blur");
-					}
-				});
-			});
-		}
-	};
+  return {
+    restrict: 'A',
+    priority: -1, // lower priority than built-in ng-model so it runs first
+    link: function(scope, element, attr) {
+      scope.$watch(attr.ngModel,function(value){
+        $timeout(function () {
+          if (value){
+            element.trigger("change");
+          } else if(element.attr('placeholder') === undefined) {
+            if(!element.is(":focus"))
+            element.trigger("blur");
+          }
+        });
+      });
+    }
+  };
 }]);
+
 app2.run(function($rootScope, $timeout) {
-	$rootScope.$on('$viewContentLoaded', function(event) {
-		$timeout(function() {
-			componentHandler.upgradeAllRegistered();
-		}, 0);
-	});
-	$rootScope.render = {
-		header: true,
-		aside: true
-	}
+  $rootScope.$on('$viewContentLoaded', function(event) {
+    $timeout(function() {
+      componentHandler.upgradeAllRegistered();
+    }, 0);
+  });
+  $rootScope.render = {
+    header: true,
+    aside: true
+  }
 });
-// create angular controller
 
 app2.filter('capitalize', function() {
-	return function(input, $scope) {
-		if ( input !==undefined && input.length>0)
-		return input.substring(0,1).toUpperCase()+input.substring(1);
-		else
-		return input
+  return function(input, $scope) {
+    if ( input !==undefined && input.length>0)
+    return input.substring(0,1).toUpperCase()+input.substring(1);
+    else
+    return input
 
-	}
+  }
 });
 
 app2.controller('personCtrl', function ($scope,$http,$translate) {
@@ -110,6 +110,22 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 		$scope.viewName="Inserisci Titolare Effettivo"
 		$scope.action="addcustomer"
 		break;
+
+		case 'add_customer_for_kyc_owners':
+		$scope.viewName="Inserisci Titolare Effettivo"
+		$scope.action="addcustomer"
+		break;
+
+		case 'edit_customer_for_kyc_owner':
+		$scope.countryList=JSON.parse(localStorage.getItem('countryList'))
+		Customer=JSON.parse(localStorage.getItem('Owner'))
+		convertDateStringsToDates(Customer)
+		$scope.Customer=Customer
+
+		$scope.viewName="Modifica Titolare Effettivo"
+		$scope.action="saveProfileCustomer"
+		break;
+
 		default:
 		$scope.viewName="Inserisci Cliente"
 
@@ -185,6 +201,24 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 				localstorage('Owner', JSON.stringify($scope.Owner));
 			}
 			break;
+			case'edit_customer_for_kyc_owner':
+				$scope.Owner=JSON.parse(localStorage.getItem('Owner'))
+				$scope.Owner.fullname=$scope.Customer.name +" "+$scope.Customer.surname
+				$scope.Owner.user_id= $scope.lastid
+				localstorage('Owner', JSON.stringify($scope.Owner));
+			break;
+			case'add_customer_for_kyc_owner':
+			if ($scope.lastid!==undefined && $scope.lastid>0 ){
+				$scope.Owner=JSON.parse(localStorage.getItem('Owner'))
+				$scope.Owner.fullname=$scope.Customer.name +" "+$scope.Customer.surname
+				$scope.Owner.user_id= $scope.lastid
+				precPage=JSON.parse(localStorage.getItem($scope.page.location))
+				precPage.edit=true
+				localstorage($scope.page.location,JSON.stringify(precPage))
+				localstorage('Owner', JSON.stringify($scope.Owner));
+			}
+			break;
+
 		}
 		redirect($scope.page.location)
 
@@ -253,5 +287,56 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 	{
 		$("#loader_img").hide()
 
+	}
+	$scope.showAC=function($search,$word){
+		var id=localStorage.getItem("userId");
+		var usertype = localStorage.getItem('userType');
+		res = $search.split(".")
+		$search=res[1]
+		if ($word===undefined){
+			$word=$scope[res[0]][res[1]]
+		}
+		else {
+			$word=$('#'+$word).val()
+		}
+		$table=res[0].toLowerCase()
+
+		if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
+
+			data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table}
+			$http.post( SERVICEURL2,  data )
+			.success(function(data) {
+				if(data.RESPONSECODE=='1') 			{
+					//$word=$($search.currentTarget).attr('id');
+					$scope.word[$search]=data.RESPONSE;
+				}
+			})
+			.error(function() {
+				console.log("error");
+			});
+		}
+		$scope.oldWord= $($search.currentTarget).val()
+	}
+	$scope.resetAC=function(){
+		$scope.word={}
+		$scope.list={}
+		$scope.listOther={}
+		$scope.listCompany={}
+
+
+	}
+	$scope.addWord=function($search,$word){
+		res = $search.split(".")
+		switch(res.length){
+			case 2:
+			$scope[res[0]][res[1]]=$word
+			$scope.word[res[1]]=[]
+			break;
+			case 3:
+			$scope[res[0]][res[1]][res[2]]=$word
+			$scope.word[res[2]]=[]
+			break;
+
+		}
 	}
 })

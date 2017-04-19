@@ -268,5 +268,11 @@ function IsJsonString(str) {
     } catch (e) {
         return false;
     }
-    return js;
+
+    try {
+      js2=JSON.parse(js) 
+    } catch (e) {
+        return js;
+    }
+    return js2;
 }

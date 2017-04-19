@@ -76,7 +76,7 @@
                   <fieldset>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                       <input class="mdl-textfield__input" type="text" id="Customer_name" name="Customer_name"  pattern="[A-Za-z\s]*"
-                      ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="true"
+                      ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="page.other_data "
                       />
                       <label class="mdl-textfield__label" for="Customer_name">{{'Name'|translate}} *</label>
                       <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_name" ng-show="form.Customer_name.$invalid && form.Customer_name.$touched">
@@ -88,7 +88,7 @@
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                       <input class="mdl-textfield__input" type="text" id="Customer_surname" name="Customer_surname"value=" "  pattern="[A-Za-z\s]*"
                       ng-model="Customer.surname"  ng-change="Customer.surname=(Customer.surname| capitalize)" minlength="3"
-                      ng-required="true" />
+                      ng-required="page.other_data " />
                       <label class="mdl-textfield__label" for=""Customer_surname"">{{'Surname'|translate}} *</label>
                       <span class="mdl-tooltip mdl-tooltip--validation" for="Custome_surname" ng-show="form.Customer_surname.$invalid && form.Customer_surname.$touched">
                         <span ng-show="form.Customer_surname.$error.required">{{'Richiesto'| translate}}</span>
@@ -98,7 +98,7 @@
                   <fieldset>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                       <input class="mdl-textfield__input" type="email" id="Customer_email" name="Customer_email" value=" "
-                      ng-model="Customer.email" ng-change="Customer.email=(Customer.email| capitalize)" ng-required="true" />
+                      ng-model="Customer.email" ng-change="Customer.email=(Customer.email| capitalize)" ng-required="page.other_data " />
                       <label class="mdl-textfield__label" for="email">{{'EmailID' | translate}}*</label>
                       <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_email" ng-show="form.Customer_email.$invalid && form.Customer_email.$touched">
                         <span ng-show="form.Customer_email.$error.required">Required.</span>
@@ -144,11 +144,11 @@
                     </div>
 
                   </fieldset>
-                  <div ng-show="Customer.other_field">
+                  <div ng-show="page.other_data">
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                         <input class="mdl-textfield__input" type="text" id="Kyc_tdi" name="Kyc_tdi"
-                        ng-model="Customer.id_type"  ng-change="Customer.id_type=(Customer.id_type| capitalize)" minlength="3" ng-required="Customer.other_field"
+                        ng-model="Customer.id_type"  ng-change="Customer.id_type=(Customer.id_type| capitalize)" minlength="3" ng-required="page.other_data "
                         ng-keyup="showAC('users.id_type','Kyc_tdi');"
                         ng-focus="resetAC()" />
                         <label class="mdl-textfield__label" for="Kyc_tdi">{{'Tipo documento identità'|translate}} *</label>
@@ -168,7 +168,7 @@
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                         <input class="mdl-textfield__input" type="text" id="Kyc_ard" name="Kyc_ard"
                         ng-model="Customer.id_authority_name"  ng-change="Customer.id_authority_name=(Customer.id_authority_name| capitalize)"
-                        minlength="3" ng-required="Customer.other_field" ng-focus="resetAC()"
+                        minlength="3" ng-required="page.other_data " ng-focus="resetAC()"
                         ng-keyup="showAC('users.id_authority_name','Kyc_ard');"  />
                         <label class="mdl-textfield__label" for="Kyc_ard">{{'AuthoritythatreleasedIdentityDocument'|translate}} *</label>
                         <table class="mdl-data-table mdl-js-data-table  border-none  ">
@@ -186,7 +186,7 @@
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                         <input class="mdl-textfield__input" type="text" id="Kyc_ndoc" name="Kyc_ndoc"
-                        ng-model="Customer.id_number"   ng-required="Customer.other_field"
+                        ng-model="Customer.id_number"   ng-required="page.other_data "
                         />
                         <label class="mdl-textfield__label" for="Kyc_doi">{{'Numero del documento di identità'|translate}} *</label>
                         <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_ndoc" ng-show="form.Kyc_ndoc.$invalid && form.Kyc_ndoc.$touched">
@@ -196,7 +196,7 @@
                     </fieldset>                  <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                         <input class="mdl-textfield__input" type="date" id="Kyc_ddoc" name="Kyc_ddoc"
-                        ng-model="Customer.date_of_identification"   ng-required="Customer.other_field"
+                        ng-model="Customer.id_release_date"   ng-required="page.other_data "
                         />
                         <label class="mdl-textfield__label" for="Kyc_doi">{{'ReleaseDateofIdentityDocument'|translate}} *</label>
                         <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_ddoc" ng-show="form.Kyc_ddoc.$invalid && form.Kyc_ddoc.$touched">
@@ -208,7 +208,7 @@
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                         <input class="mdl-textfield__input" type="date" id="Kyc_eovdoc" name="Kyc_eovdoc"
-                        ng-model="Customer.id_validity"   ng-required="Customer.other_field"
+                        ng-model="Customer.id_validity"   ng-required="page.other_data "
                         />
                         <label class="mdl-textfield__label" for="Kyc_doi">{{'Data Scandenza Documento'|translate}} *</label>
                         <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_eovdoc" ng-show="form.Kyc_eovdoc.$invalid && form.Kyc_eovdoc.$touched">
@@ -281,6 +281,248 @@
                           </div>
 
                         </div>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                      <select ng-model="Customer.resi_country" class="mdl-textfield__input" placeholder="{{'ResidenceCountry' | translate}}"
+                      ng-required="page.other_data "
+                      id="customer_resi_country" name="customer_resi_country">
+                      <option ng-repeat="option in countryList" value="{{option.country_id}}">{{option.country_name}}</option>
+                      </select>
+                      <label class="mdl-textfield__label" for="customer_resi_country">{{'ResidenceCountry'|translate}} *</label>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_name" ng-show="form.customer_resi_country.$invalid && form.customer_resi_country.$touched">
+                        <span ng-show="form.customer_resi_country.$error.required">{{'Richiesto'| translate}}</span>
+                      </span>
+                    </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="customer_address_resi" name="customer_address_resi"
+                        ng-model="Customer.address_resi"  ng-change="Customer.address_resi=(Customer.address_resi| capitalize)" minlength="3" ng-required="page.other_data "
+                        />
+                        <label class="mdl-textfield__label" for="customer_address_resi">{{'Addressofresidence'|translate}} *</label>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="customer_address_resi" ng-show="form.customer_address_resi.$invalid && form.customer_address_resi.$touched">
+                          <span ng-show="form.customer_address_resi.$error.required">{{'Richiesto'| translate}}</span>
+                        </span>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="customer_town_resi" name="customer_town_resi"
+                        ng-model="Customer.town_resi"  ng-change="Customer.town_resi=(Customer.town_resi| capitalize)"
+                        minlength="3" ng-required="page.other_data "
+                        ng-keyup="showAC('users.town_resi','customer_town_resi');"
+                        ng-focus="resetAC()"
+                        />
+                        <label class="mdl-textfield__label" for="customer_town_resi">{{'Città di residenza'|translate}} *</label>
+                        <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                          <tbody style="display:table">
+                            <tr ng-click="addWord('Customer.town_resi',item.word)" ng-repeat="item in word.town_resi">
+                              <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="customer_town_resi" ng-show="form.customer_town_resi.$invalid && form.customer_town_resi.$touched">
+                          <span ng-show="form.customer_town_resi.$error.required">{{'Richiesto'| translate}}</span>
+                        </span>
+                      </div>
+                    </fieldset>
+
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="check_residence">
+                          <input id="check_residence" name="check_residence" value="1"  type="checkbox" class="mdl-checkbox__input"
+                          ng-model="Customer.check_residence"
+                          />
+                          <span class="mdl-checkbox__label">{{'weatherdomiciledifferentfromresedence'|translate}}</span>
+                        </label>
+
+                      </div>
+                    </fieldset>
+                    <div ng-show="Customer.check_residence==1">
+                      <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                        <select ng-model="Customer.domi_country" class="mdl-textfield__input" placeholder="{{'ResidenceCountry' | translate}}"
+                        ng-required="{{Customer.check_residence==1}}"
+                        id="customer_domi_country" name="customer_domi_country">
+                        <option ng-repeat="option in countryList" value="{{option.country_id}}">{{option.country_name}}</option>
+
+                        </select>
+                        <label class="mdl-textfield__label" for="customer_domi_country">{{'Paese di Domicilio'|translate}} *</label>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_name" ng-show="form.customer_domi_country.$invalid && form.customer_domi_country.$touched">
+                          <span ng-show="form.customer_domi_country.$error.required">{{'Richiesto'| translate}}</span>
+                        </span>
+                      </div>
+                      </fieldset>
+                      <fieldset>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                          <input class="mdl-textfield__input" type="text" id="customer_address_domi" name="customer_address_domi"
+                          ng-model="Customer.address_domi"  ng-change="Customer.address_domi=(Customer.address_domi| capitalize)"
+                          minlength="3"      ng-required="{{Customer.check_residence==1}}"
+
+                          />
+                          <label class="mdl-textfield__label" for="customer_address_domi">{{'Indirizzo Domicilio'|translate}} *</label>
+                          <span class="mdl-tooltip mdl-tooltip--validation" for="customer_address_domi" ng-show="form.customer_address_domi.$invalid && form.customer_address_domi.$touched">
+                            <span ng-show="form.customer_address_domi.$error.required">{{'Richiesto'| translate}}</span>
+                          </span>
+                        </div>
+                      </fieldset>
+                      <fieldset>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                          <input class="mdl-textfield__input" type="text" id="customer_town_domi" name="customer_town_domi"
+                          ng-model="Customer.town_domi"  ng-change="Customer.town_domi=(Customer.town_domi| capitalize)"
+                          minlength="3"   ng-required="{{Customer.check_residence==1}}"
+                          ng-keyup="showAC('users.town_domi','customer_town_domi');"
+                          ng-focus="resetAC()"
+                          />
+                          <label class="mdl-textfield__label" for="customer_town_domi">{{'Città di Domicilio'|translate}} *</label>
+                          <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                            <tbody style="display:table">
+                              <tr ng-click="addWord('Customer.town_domi',item.word)" ng-repeat="item in word.town_domi">
+                                <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <span class="mdl-tooltip mdl-tooltip--validation" for="customer_town_domi" ng-show="form.customer_town_domi.$invalid && form.customer_town_domi.$touched">
+                            <span ng-show="form.customer_town_domi.$error.required">{{'Richiesto'| translate}}</span>
+                          </span>
+                        </div>
+                      </fieldset>
+
+
+                    </div>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="customer_main_nationality" name="customer_main_nationality"
+                        ng-model="Customer.main_nationality"  ng-change="Customer.main_nationality=(Customer.main_nationality| capitalize)"
+                        minlength="3"   ng-required="{{Customer.check_residence==1}}"
+                        ng-keyup="showAC('users.main_nationality','customer_main_nationality');"
+                        ng-focus="resetAC()"
+                        />
+                        <label class="mdl-textfield__label" for="customer_main_nationality">{{'MainNationality'|translate}} *</label>
+                        <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                          <tbody style="display:table">
+                            <tr ng-click="addWord('Customer.main_nationality',item.word)" ng-repeat="item in word.town_domi">
+                              <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="customer_main_nationality" ng-show="form.customer_main_nationality.$invalid && form.customer_main_nationality.$touched">
+                          <span ng-show="form.customer_main_nationality.$error.required">{{'Richiesto'| translate}}</span>
+                        </span>
+                      </div>
+                    </fieldset>
+
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+
+                        <div class="mdl-grid">
+                          <div class="mdl-cell ">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEP-1">
+                              <input type="radio" id="PEP-1" ng-model="Customer.check_pep" class="mdl-radio__button" name="PEP" value="1"  >
+                              <span class="mdl-radio__label" >{{'dichiara di essere PEP'| translate}}</span>
+                            </label>
+                          </div>
+
+                          <div class="mdl-cell">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEP-0">
+                              <input type="radio" id="PEP-0" ng-model="Customer.check_pep" class="mdl-radio__button" name="PEP" value="0"  checked>
+                              <span class="mdl-radio__label">{{'Dichiara di Non Essere PEP '| translate}}</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                    <fieldset ng-show="Customer.check_pep==1">
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="pep_charge" name="pep_charge"
+                        ng-model="Customer.pep_charge"
+                        minlength="3"   ng-required="Customer.check_pep==1"
+                        ng-keyup="showAC('users.pep_charge','pep_charge');"
+
+                        ng-focus="resetAC()"
+                        />
+                        <label class="mdl-textfield__label" for="pep_charge">{{'Tipo di carica ricoperta'|translate}} *</label>
+                        <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                          <tbody style="display:table">
+                            <tr ng-click="addWord('Customer.pep_charge',item.word)" ng-repeat="item in word.profession">
+                              <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="pep_charge" ng-show="form.pep_charge.$invalid && form.pep_charge.$touched">
+                          <span ng-show="form.pep_charge.$error.required">{{'Richiesto'| translate}}</span>
+                        </span>
+                      </div>
+                    </fieldset>
+
+                    <fieldset ng-show="Customer.check_pep==1">
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+
+                        <div class="mdl-grid">
+                          <div class="mdl-cell ">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEPDOM-1">
+                              <input type="radio" id="PEPDOM-1" ng-model="Customer.pep_domestic" class="mdl-radio__button" name="PEPDOM" value="1" >
+                              <span class="mdl-radio__label" >{{'PEP Domestico'| translate}}</span>
+                            </label>
+                          </div>
+
+                          <div class="mdl-cell">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEPDOM-0">
+                              <input type="radio" id="PEPDOM-0" ng-model="Customer.pep_domestic" class="mdl-radio__button" name="PEPDOM" value="0"  checked>
+                              <span class="mdl-radio__label">{{'PEP estero'| translate}}</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="customer_profession" name="customer_profession"
+                        ng-model="Customer.profession"
+                        minlength="3"   ng-required="page.other_data && ! page.owners"
+                        ng-keyup="showAC('users.profession','customer_profession');"
+
+                        ng-focus="resetAC()"
+                        />
+                        <label class="mdl-textfield__label" for="customer_profession">{{'Professione'|translate}} *</label>
+                        <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                          <tbody style="display:table">
+                            <tr ng-click="addWord('Customer.profession',item.word)" ng-repeat="item in word.profession">
+                              <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="customer_profession" ng-show="form.customer_profession.$invalid && form.customer_profession.$touched">
+                          <span ng-show="form.customer_profession.$error.required">{{'Richiesto'| translate}}</span>
+                        </span>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="customer_fiscal_number" name="customer_fiscal_number"
+                        ng-model="Customer.fiscal_number"
+                        minlength="3"   ng-required="page.other_data && ! page.owners"
+
+                        ng-focus="resetAC()"
+                        />
+                        <label class="mdl-textfield__label" for="customer_fiscal_number">{{'FiscalNumber'|translate}} *</label>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="customer_fiscal_number" ng-show="form.customer_fiscal_number.$invalid && form.customer_fiscal_number.$touched">
+                          <span ng-show="form.customer_fiscal_number.$error.required">{{'Richiesto'| translate}}</span>
+                        </span>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input ng-currency class="mdl-textfield__input" type="text" id="kyc_annual_income" name="kyc_annual_income" minlength="3"  value=" "
+                        ng-model="Customer.annual_income"   minlength="3"
+                        />
+                        <label class="mdl-textfield__label" for="kyc_annual_income">{{'Annualincome' | translate }}*</label>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="kyc_annual_income" ng-show="form.kyc_annual_income.$invalid && form.kyc_annual_income.$touched">
+                          <span ng-show="form.kyc_annual_income.$error.required">{{'Richiesto'|translate}}.</span>
+                        </span>
+
                       </div>
                     </fieldset>
 

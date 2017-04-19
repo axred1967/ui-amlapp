@@ -1,30 +1,30 @@
 var app = {
-    initialize: function(){
-        this.bind();
-    },
-    bind: function() {
-        document.addEventListener('deviceready', getChkLogin, false);
-    },
-    deviceready: function() {
-        // This is an event handler function, which means the scope is the event.
-        // So, we must explicitly called `app.report()` instead of `this.report()`.
-        app.report('deviceready');
-    },
-    report: function(id) {
-        // Report the event in the console
-        console.log("Report: " + id);
-    },
+  initialize: function(){
+    this.bind();
+  },
+  bind: function() {
+    document.addEventListener('deviceready', getChkLogin, false);
+  },
+  deviceready: function() {
+    // This is an event handler function, which means the scope is the event.
+    // So, we must explicitly called `app.report()` instead of `this.report()`.
+    app.report('deviceready');
+  },
+  report: function(id) {
+    // Report the event in the console
+    console.log("Report: " + id);
+  },
 };
 
 function getChkLogin()
 {
 
-        chkloggedin();
+  chkloggedin();
 
 }
 
 setTimeout(function(){
-        checkthesidebarinfouser();
+  checkthesidebarinfouser();
 }, 800);
 
 
@@ -117,7 +117,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         $scope.Kyc.contractor_data.Docs=IsJsonString($scope.Kyc.contractor_data.Docs)
         $scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data)
-        $scope.Kyc.owner_data=IsJsonString($scope.Kyc.company_data)
+        $scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
         convertDateStringsToDates($scope.Kyc)
         convertDateStringsToDates($scope.Kyc.contractor_data)
         convertDateStringsToDates($scope.Kyc.Docs)
@@ -257,49 +257,49 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   {
     Doc.index=index
     localstorage('Doc', JSON.stringify(Doc));
-     // alert('cxccx');
-     navigator.camera.getPicture($scope.uploadPhoto,
-          function(message) {
-              alert('get picture failed');
-          },
-          {
-              quality: 50,
-              destinationType: navigator.camera.DestinationType.FILE_URI,
-              sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-          }
-      );
+    // alert('cxccx');
+    navigator.camera.getPicture($scope.uploadPhoto,
+      function(message) {
+        alert('get picture failed');
+      },
+      {
+        quality: 50,
+        destinationType: navigator.camera.DestinationType.FILE_URI,
+        sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+      }
+    );
   }
   $scope.add_photo=function(Doc, index)
   {
     Doc.index=index
     localstorage('Doc', JSON.stringify(Doc));
-     // alert('cxccx');
-     navigator.camera.getPicture($scope.uploadPhoto,
-          function(message) {
-              alert('get picture failed');
-          },
-          {
-              quality: 50,
-              destinationType: navigator.camera.DestinationType.FILE_URI,
-              sourceType: navigator.camera.PictureSourceType.CAMERA
-          }
-      );
+    // alert('cxccx');
+    navigator.camera.getPicture($scope.uploadPhoto,
+      function(message) {
+        alert('get picture failed');
+      },
+      {
+        quality: 50,
+        destinationType: navigator.camera.DestinationType.FILE_URI,
+        sourceType: navigator.camera.PictureSourceType.CAMERA
+      }
+    );
   }
 
   $scope.uploadPhoto=function(imageURI){
     $("#loader_img").show()
     $scope.Doc=JSON.parse(localStorage.getItem('Doc'))
 
-     var options = new FileUploadOptions();
-     options.fileKey="file";
-     options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
-     options.mimeType="text/plain";
-     options.chunkedMode = false;
-     var params = new Object();
+    var options = new FileUploadOptions();
+    options.fileKey="file";
+    options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
+    options.mimeType="text/plain";
+    options.chunkedMode = false;
+    var params = new Object();
 
-     options.params = params;
-     var ft = new FileTransfer();
-     ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
+    options.params = params;
+    var ft = new FileTransfer();
+    ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
 
 
 
@@ -309,22 +309,22 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     Doc=JSON.parse(localStorage.getItem('Doc'))
     var review_info   =JSON.parse(r.response);
     var id = review_info.id;
-      $('#doc_image').val(review_info.response);
-     // var review_selected_image  =  review_info.review_id;
-      //$('#review_id_checkin').val(review_selected_image);
-      data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id}
-      $http.post( SERVICEURL2,  data )
-          .success(function(data) {
-                    if(data.RESPONSECODE=='1') 			{
-                      //$word=$($search.currentTarget).attr('id');
-                      $scope.Cotnract.Docs[Doc.index].doc_image=data.RESPONSE;
-                      $("#loader_img").hide()
-                    }
-           })
-          .error(function() {
-            $("#loader_img").hide()
-             console.log("error");
-           });
+    $('#doc_image').val(review_info.response);
+    // var review_selected_image  =  review_info.review_id;
+    //$('#review_id_checkin').val(review_selected_image);
+    data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id}
+    $http.post( SERVICEURL2,  data )
+    .success(function(data) {
+      if(data.RESPONSECODE=='1') 			{
+        //$word=$($search.currentTarget).attr('id');
+        $scope.Cotnract.Docs[Doc.index].doc_image=data.RESPONSE;
+        $("#loader_img").hide()
+      }
+    })
+    .error(function() {
+      $("#loader_img").hide()
+      console.log("error");
+    });
   }
   $scope.failFT =function (error)
   {
@@ -343,7 +343,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     Doc.agency_id=localStorage.getItem('agencyId')
     Doc.per='contract'
     if ($scope.Kyc.contract_id===undefined && $scope.Kyc.contract_id>0)
-      Doc.per_id=$scope.Kyc.contract_id;
+    Doc.per_id=$scope.Kyc.contract_id;
     Doc.id=null
     Doc.image_name=null
     Doc.showOnlyImage=true
@@ -352,18 +352,31 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     localstorage('Doc',JSON.stringify(Doc))
     //localstorage('Contract',JSON.stringify($scope.Contract))
     redirect('add_document.html')
-   }
-   $scope.back=function(passo){
-     if (passo>0){
-         localstorage('kycstep0'+passo+'.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
-         redirect('kycstep0'+passo+'.html')
-         return;
-     }
-     if (passo==-1){
-         redirect($scope.page.prev_page)
-         return;
-     }
-     redirect($scope.page.location)
-   }
+  }
+  $scope.back=function(passo){
+    $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
+
+    if (passo>0){
+      switch($scope.Kyc.contractor_data.act_for_other){
+        case '0':
+        localstorage('kyc_signature.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
+        redirect('kyc_signature.html')
+        return;
+        case '1':
+        localstorage('kyc_company.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
+        redirect('kyc_company.html')
+        return;
+        case '2':
+        localstorage('kyc_owner.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
+        redirect('kyc_owner.html')
+        return;
+      }
+    }
+    if (passo==-1){
+      redirect($scope.page.prev_page)
+      return;
+    }
+    redirect($scope.page.location)
+  }
 
 })

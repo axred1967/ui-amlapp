@@ -63,20 +63,22 @@
                 <!-- <button class="mdl-button mdl-js-button mdl-button--icon right">
                 <i class="material-icons">close</i>
               </button> -->
-              <span class="main-heading">{{viewName |translate}}</span>
+              <span class="main-heading">{{'Informazioni Società' |translate}}</span>
               <div class="clr"></div>
             </div>
           </div>
 
 
           <div class="account-data add-Company-data"> <!-- text fields -->
+            <center><h5 >{{'Adeguata Verifica' |translate }} {{'Dati Sogetto Giuiridico' |translate }}</h5></center>
+
             <div class="mdl-card mdl-shadow--2dp ">
               <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--12-col">
                   <form name="form" novalidate>
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                        <input class="mdl-textfield__input"  ng-model="Kyc.company_data.name "  ng-change="Kyc.company_data.name=(Kyc.company_data.name| capitalize)"
+                        <input class="mdl-textfield__input"  ng-model="Kyc.contractor_data.owner "
                         type="text" ng-required="true" id="company_name" name="company_name" />
                         <label for="company_name" class="mdl-textfield__label">{{ 'Companyname' | translate}}</label>
                         <span class="mdl-tooltip mdl-tooltip--validation" for="company_name" minlength="3" ng-show="form.company_name.$invalid && form.company_name.$touched">
@@ -85,12 +87,46 @@
                       </fieldset>
                       <fieldset>
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                          <input class="mdl-textfield__input"   ng-model="Kyc.company_data.address "   type="text" placeholder=" {{ 'Addresscompany' | translate}}"
+                          <input class="mdl-textfield__input"   ng-model="Kyc.company_data.address "   type="text"
                           id="company_address" name="company_address" ng-required="true" />
-                          <label for="company_address" class="mdl-textfield__label">{{ 'Companyname' | translate}}</label>
+                          <label for="company_address" class="mdl-textfield__label">{{ 'Indirizzo Società' | translate}}</label>
                           <span class="mdl-tooltip mdl-tooltip--validation" for="company_address" minlength="3" ng-show="form.company_address.$invalid && form.company_address.$touched">
                             <span ng-show="form.company_address.$error.required">{{'Richiesto'|translate}}.</span>
                           </div>
+                        </fieldset>
+                        <fieldset>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="company_town" name="company_town"
+                            ng-model="Kyc.company_data.town_resi"  ng-change="Kyc.company_data.town_resi=(Kyc.contractor_data.town_resi| capitalize)"
+                            minlength="3" ng-required="true"
+                            ng-keyup="showAC('company.town','company_town');"
+                            ng-focus="resetAC()"
+                            />
+                            <label class="mdl-textfield__label" for="company_town">{{'Città  Sede Principale'|translate}} *</label>
+                            <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                              <tbody style="display:table">
+                                <tr ng-click="addWord('Kyc.contractor_data.town_resi',item.word)" ng-repeat="item in word.town_resi">
+                                  <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <span class="mdl-tooltip mdl-tooltip--validation" for="company_town" ng-show="form.company_town.$invalid && form.company_town.$touched">
+                              <span ng-show="form.company_town.$error.required">{{'Richiesto'| translate}}</span>
+                            </span>
+                          </div>
+                        </fieldset>
+                        <fieldset>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                          <select ng-model="Kyc.company_data.country" class="mdl-textfield__input" placeholder="{{'Paese principale attività' | translate}}"
+                          ng-required="true"
+                          id="company_country" name="company_country">
+                          <option ng-repeat="option in countryList" value="{{option.country_id}}">{{option.country_name}}</option>
+                          </select>
+                          <label class="mdl-textfield__label" for="company_country">{{'ResidenceCountry'|translate}} *</label>
+                          <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_name" ng-show="form.company_country.$invalid && form.company_country.$touched">
+                            <span ng-show="form.company_country.$error.required">{{'Richiesto'| translate}}</span>
+                          </span>
+                        </div>
                         </fieldset>
                         <fieldset>
                           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
@@ -174,12 +210,16 @@
                             </div>
                           </div>
                         </div>
+                        <br/>
                         <div class="center-align">
-                          <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_company()" href="javascript:;">
-                            {{ 'Save' | translate}}
+                          <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="save_kyc(0)" href="javascript:;">
+                            {{'SaveExit' |translate}}
                           </a>
-                          <a id="kyc_button2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="redirect('company_list.html')" href="javascript:;">
-                            {{ 'Cancel' | translate}}
+                          <a id="kyc_button2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="save_kyc(-1)" href="javascript:;">
+                            {{'SavePrev' |translate}}
+                          </a>
+                          <a id="kyc_button2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="save_kyc(4)" href="javascript:;">
+                            {{'SaveNext' |translate}}
                           </a>
                           <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
                         </div>

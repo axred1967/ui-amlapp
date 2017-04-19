@@ -212,14 +212,14 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEP-1">
-                              <input type="radio" id="PEP-1" ng-model="Kyc.contract_data.check_pep" class="mdl-radio__button" name="PEP" value="1" >
+                              <input type="radio" id="PEP-1" ng-model="Kyc.contractor_data.check_pep" class="mdl-radio__button" name="PEP" value="1"  >
                               <span class="mdl-radio__label" >{{'dichiara di essere PEP'| translate}}</span>
                             </label>
                           </div>
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEP-0">
-                              <input type="radio" id="PEP-0" ng-model="Kyc.contract_data.check_pep" class="mdl-radio__button" name="PEP" value="0"  checked>
+                              <input type="radio" id="PEP-0" ng-model="Kyc.contractor_data.check_pep" class="mdl-radio__button" name="PEP" value="0"  checked>
                               <span class="mdl-radio__label">{{'Dichiara di Non Essere PEP '| translate}}</span>
                             </label>
                           </div>
@@ -255,14 +255,14 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEPDOM-1">
-                              <input type="radio" id="PEPDOM-1" ng-model="Contract.pep_domestic" class="mdl-radio__button" name="PEPDOM" value="1" >
+                              <input type="radio" id="PEPDOM-1" ng-model="Kyc.contractor_data.pep_domestic" class="mdl-radio__button" name="PEPDOM" value="1" >
                               <span class="mdl-radio__label" >{{'PEP Domestico'| translate}}</span>
                             </label>
                           </div>
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEPDOM-0">
-                              <input type="radio" id="PEPDOM-0" ng-model="Contract.pep_domestic" class="mdl-radio__button" name="PEPDOM" value="0"  checked>
+                              <input type="radio" id="PEPDOM-0" ng-model="Kyc.contractor_data.pep_domestic" class="mdl-radio__button" name="PEPDOM" value="0"  checked>
                               <span class="mdl-radio__label">{{'PEP estero'| translate}}</span>
                             </label>
                           </div>
@@ -289,18 +289,6 @@
                         <span class="mdl-tooltip mdl-tooltip--validation" for="customer_profession" ng-show="form.customer_profession.$invalid && form.customer_profession.$touched">
                           <span ng-show="form.customer_profession.$error.required">{{'Richiesto'| translate}}</span>
                         </span>
-                      </div>
-                    </fieldset>
-                    <fieldset>
-                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input ng-currency class="mdl-textfield__input" type="text" id="kyc_annual_income" name="kyc_annual_income" minlength="3"  value=" "
-                        ng-model="Kyc.contractor_data.annual_income"   minlength="3"
-                        />
-                        <label class="mdl-textfield__label" for="kyc_annual_income">{{'Annualincome' | translate }}*</label>
-                        <span class="mdl-tooltip mdl-tooltip--validation" for="kyc_annual_income" ng-show="form.kyc_annual_income.$invalid && form.kyc_annual_income.$touched">
-                          <span ng-show="form.kyc_annual_income.$error.required">{{'Richiesto'|translate}}.</span>
-                        </span>
-
                       </div>
                     </fieldset>
                     <fieldset>

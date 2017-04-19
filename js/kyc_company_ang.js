@@ -116,7 +116,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         $scope.Kyc.contractor_data.Docs=IsJsonString($scope.Kyc.contractor_data.Docs)
         $scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data)
-        $scope.Kyc.owner_data=IsJsonString($scope.Kyc.company_data)
+        $scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
         convertDateStringsToDates($scope.Kyc)
         convertDateStringsToDates($scope.Kyc.contractor_data)
         convertDateStringsToDates($scope.Kyc.Docs)
@@ -354,8 +354,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
    }
    $scope.back=function(passo){
      if (passo>0){
-         localstorage('kycstep0'+passo+'.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
-         redirect('kycstep0'+passo+'.html')
+         localstorage('kyc_owners.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
+         redirect('kyc_owners.html')
          return;
      }
      if (passo==-1){

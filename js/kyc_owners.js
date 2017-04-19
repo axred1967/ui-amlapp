@@ -86,7 +86,6 @@ app2.filter('capitalize', function() {
 
 app2.controller('personCtrl', function ($scope,$http,$translate) {
   $scope.page={}
-
   curr_page=base_name()
   page=localStorage.getItem(curr_page)
   if ( page!= null && page.length >0 ){
@@ -94,9 +93,12 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.action=$scope.page.action
 
   }
-
-
-
+  if ($scope.page.edit) {
+    $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
+    $scope.owner=JSON.parse(localStorage.getItem('Owner'))
+    $scope.Kyc.owner_data[$scope.owner.indice]=$scope.owner
+  }
+  else {
   switch ($scope.action){
     default:
     var id=localStorage.getItem("CustomerProfileId");
@@ -146,7 +148,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     .error(function() {
       console.log("error");
     });
-
+    }
     $scope.action="saveKyc"
     $scope.viewName="Informazioni personali"
 
@@ -352,17 +354,34 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     //localstorage('Contract',JSON.stringify($scope.Contract))
     redirect('add_document.html')
    }
-   $scope.back=function(passo){
-     if (passo>0){
-         localstorage('kycstep0'+passo+'.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
-         redirect('kycstep0'+passo+'.html')
-         return;
-     }
-     if (passo==-1){
-         redirect($scope.page.prev_page)
-         return;
-     }
-     redirect($scope.page.location)
-   }
 
-})
+  $scope.add_owner=function(Owner){
+    localstorage('add_customer.html',JSON.stringify({action:'add_customer_for_kyc_owner',location:'kyc_owners.html',other_data:true,owners:true}))
+    localstorage('Contract',JSON.stringify(Kyc.contractor_data))
+    redirect('add_customer.html')
+
+  }
+  $scope.edit_owner=function(Owner,indice){
+    localstorage('countryList',JSON.stringify($scope.countryList))
+    localstorage('Kyc',JSON.stringify($scope.Kyc))
+    localstorage('add_customer.html',JSON.stringify({action:'edit_customer_for_kyc_owner',location:'kyc_owners.html',other_data:true,owners:true}))
+    Owner.indice=indice
+    localstorage('Owner',JSON.stringify(Owner))
+    redirect('add_customer.html')
+
+  }
+
+  $scope.back=function(passo){
+    if (passo>0){
+        localstorage('kyc_owner.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
+        redirect('kyc_owner.html')
+        return;
+    }
+    if (passo==-1){
+        redirect($scope.page.prev_page)
+        return;
+    }
+    redirect($scope.page.location)
+  }
+
+});
