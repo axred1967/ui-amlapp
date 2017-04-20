@@ -94,7 +94,7 @@
 
               <div class="account-data add-customer-data"> <!-- text fields -->
                 <center><h4>{{'Adeguata Verifica'}}</h4>
-                <h5>{{'Sottoscrizione dichiarazioni'}}</h5>
+                <!--<h5>{{'Sottoscrizione dichiarazioni'}}</h5>-->
               </center>
                 <div class="mdl-card mdl-shadow--2dp ">
                   <form name="form" id= "form" action="javascript:;" novalidate>
@@ -109,7 +109,7 @@
                         <canvas id='blank' style='display:none'></canvas>
                         <center><a href="javascript:;" data-action="clear" style="color:#1C224B;font-size:18px;">{{'Pulisci'|translate}}</a></center>
 
-                        <input style="display:none" type="text"  name="sig" id="sig" />
+                        <input style="display:none" type="text" ng-model="Kyc.contractor_data.sign" name="sig" id="sig" />
                       </div>
                     </div>
                   </form>
