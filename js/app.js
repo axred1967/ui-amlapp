@@ -24,9 +24,9 @@ $(document).ready(function(){
     var image = new Image();
     image.src = $('#sig').val();
     canvas.getContext("2d").scale(ratio, ratio);
-    canvas.getContext("2d").translate(canvas.width/2,canvas.height/2);
-    canvas.getContext("2d").drawImage(image,-image.width/2,-image.height/2);
-    canvas.getContext("2d").translate(-canvas.width/2,-canvas.height/2)
+    //canvas.getContext("2d").translate(canvas.width/2,canvas.height/2);
+    canvas.getContext("2d").drawImage(image,0,0);
+    //canvas.getContext("2d").translate(-canvas.width/2,-canvas.height/2)
   }
 
   window.onresize = resizeCanvas;
