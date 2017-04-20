@@ -28,7 +28,7 @@ $(document).ready(function(){
   clearButton.addEventListener("click", function (event) {
     signaturePad.clear();
   });
-
+/*
   savePNGButton.addEventListener("click", function (event) {
     if (signaturePad.isEmpty()) {
       alert("Please provide signature first.");
@@ -36,6 +36,7 @@ $(document).ready(function(){
       $("#sig").val(signaturePad.toDataURL());
     }
   });
+  */
   /*
   saveSVGButton.addEventListener("click", function (event) {
   if (signaturePad.isEmpty()) {
