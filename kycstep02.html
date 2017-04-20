@@ -290,15 +290,21 @@
 
           </div>
           <div class="center-align">
-            <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="save_kyc(0)" href="javascript:;">
-              {{'SaveExit' |translate}}
-            </a>
-            <a id="kyc_button2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="save_kyc(-1)" href="javascript:;">
-              {{'SavePrev' |translate}}
-            </a>
-            <a id="kyc_button2" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="save_kyc(3)" href="javascript:;">
-              {{'SaveNext' |translate}}
-            </a>
+            <button  id="save_prev" ng-click="save_kyc(-1)" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
+              <i class="material-icons">arrow_left_thick</i>
+            </button>
+            <button  id="save_next" ng-click="save_kyc(3)" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
+              <i class="material-icons">arrow_right_thick</i>
+            </button>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="save_prev" >
+              <span >{{'SavePrev'|translate}}.</span>
+            </span>
+            <button  id="save_exit" ng-click="save_kyc(0)" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored ">
+              <i class="material-icons">exit_to_app</i>
+            </button>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="save_exit" >
+              <span >{{'SaveExit'|translate}}.</span>
+            </span>
             <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
           </div>
 

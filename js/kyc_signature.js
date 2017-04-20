@@ -131,6 +131,17 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
           $scope.Kyc.contractor_data.Docs.doc_date=new Date()
 
         }
+        if ($scope.Kyc.contractor_data.sign===undefined)
+          $scope.Kyc.contractor_data.sign=""
+        else {
+          var Canvas2 = $("#canvas2")[0];
+                  var Context2 = Canvas2.getContext("2d");
+                  var image = new Image();
+                  image.src = $scope.Kyc.contractor_data.sign;
+                  Context2.drawImage(image, 0, 0);
+
+        }
+
         $('input.mdl-textfield__input').each(
           function(index){
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -148,10 +159,21 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     });
 
     $scope.action="saveKyc"
-    $scope.viewName="Informazioni personali"
+    $scope.viewName="Sottoscrizione Dichiarazioni"
 
 
   }
+  $scope.saveimg=function(){
+      $('#sign').show();
+      vals=$('#sig').val();
+      if(vals != '')
+      {
+        $('#sign').attr('src',vals);
+      }
+
+
+  }
+
   $scope.save_kyc= function (passo){
     if ($scope.form.$invalid) {
       angular.forEach($scope.form.$error, function(field) {
@@ -167,6 +189,13 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       console.log("Form is valid.");
       console.log($scope.data);
     }
+    var Canvas2 = $("#canvas2")[0];
+    var blank = $("#blank")[0];
+    if (Canvas2.toDataURL()==blank.toDataURL())
+      $scope.Kyc.contractor_data.sign=""
+    else
+      $scope.Kyc.contractor_data.sign=Canvas2.toDataURL()
+
     var langfileloginchk = localStorage.getItem("language");
     dbData=$scope.Kyc
     dbData.contractor_data=JSON.stringify(dbData.contractor_data)

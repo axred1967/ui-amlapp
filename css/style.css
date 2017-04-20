@@ -59,9 +59,11 @@ Primary use: App & Mobile Website
 }
 .left {
 	float: left;
+	margin-left:16px;
 }
 .right {
 	float: right;
+	margin-right:16px;
 }
 .transparent-header {
 	background-color: transparent;

@@ -69,18 +69,6 @@
       <script src="js/ng-currency.js"></script></head>
       <script src="js/signature_pad.js"></script>
       <script src="js/app.js"></script>
-      <script>
-      function saveimg()
-      {
-        $('#sign').show();
-        vals=$('#sig').val();
-        if(vals != '')
-        {
-          $('#sign').attr('src',vals);
-        }
-
-      }
-      </script>
 
     </head>
     <body>
@@ -110,23 +98,24 @@
               </center>
                 <div class="mdl-card mdl-shadow--2dp ">
                   <form name="form" id= "form" action="javascript:;" novalidate>
-
+<!--
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" >
-                      <img src="" id="sign" style="display:none;" height="20%">
-
+                      <img id="sign" ng-src="{{Kyc.contractor_data.sign}}" ng-show="Kyc.contractor_data.sign.length>0" height="20%">
                     </div>
+                  -->
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                      <div id="signature-pad" class="m-signature-pad">
-                        <canvas class="mdl-textfield__input" height="300"> </canvas> <br>
-                        <a href="javascript:;" data-action="clear" style="color:#1C224B;font-size:18px;">Clear</a> || <a href="javascript:;" data-action="save-png" style="color:#1C224B;font-size:18px;" onClick="saveimg()">Save Signature</a>
+                      <div style="padding:16px;" id="signature-pad" class="m-signature-pad">
+                        <canvas id="canvas2" style="border:1px solid #cbcbcb" class="mdl-textfield__input" height="300"> </canvas> <br>
+                        <canvas id='blank' style='display:none'></canvas>
+                        <center><a href="javascript:;" data-action="clear" style="color:#1C224B;font-size:18px;">{{'Pulisci'|translate}}</a></center>
 
-                        <input type="hidden" name="sig" id="sig" value=""/>
+                        <input style="display:none" type="text" ng-model="Kyc.contractor_data.sign" name="sig" id="sig" />
                       </div>
                     </div>
                   </form>
                   <div class="center-align">
 
-                    <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="savekyc('1');" href="javascript:;">
+                    <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="save_kyc('0');" href="javascript:;">
                       {{'Save' |translate}}
                     </a>
                     <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >

@@ -1,14 +1,16 @@
-var wrapper = document.getElementById("signature-pad"),
-    clearButton = wrapper.querySelector("[data-action=clear]"),
-    savePNGButton = wrapper.querySelector("[data-action=save-png]"),
-    saveSVGButton = wrapper.querySelector("[data-action=save-svg]"),
-    canvas = wrapper.querySelector("canvas"),
-    signaturePad;
 
-// Adjust canvas coordinate space taking into account pixel ratio,
-// to make it look crisp on mobile devices.
-// This also causes canvas to be cleared.
-function resizeCanvas() {
+$(document).ready(function(){
+  var wrapper = document.getElementById("signature-pad"),
+  clearButton = wrapper.querySelector("[data-action=clear]"),
+  savePNGButton = wrapper.querySelector("[data-action=save-png]"),
+  saveSVGButton = wrapper.querySelector("[data-action=save-svg]"),
+  canvas = wrapper.querySelector("canvas"),
+  signaturePad;
+
+  // Adjust canvas coordinate space taking into account pixel ratio,
+  // to make it look crisp on mobile devices.
+  // This also causes canvas to be cleared.
+  function resizeCanvas() {
     // When zoomed out to less than 100%, for some very strange reason,
     // some browsers report devicePixelRatio as less than 1
     // and only part of the canvas is cleared then.
@@ -16,29 +18,31 @@ function resizeCanvas() {
     canvas.width = canvas.offsetWidth * ratio;
     canvas.height = canvas.offsetHeight * ratio;
     canvas.getContext("2d").scale(ratio, ratio);
-}
+  }
 
-window.onresize = resizeCanvas;
-resizeCanvas();
+  window.onresize = resizeCanvas;
+  resizeCanvas();
 
-signaturePad = new SignaturePad(canvas);
+  signaturePad = new SignaturePad(canvas);
 
-clearButton.addEventListener("click", function (event) {
+  clearButton.addEventListener("click", function (event) {
     signaturePad.clear();
-});
+  });
 
-savePNGButton.addEventListener("click", function (event) {
+  savePNGButton.addEventListener("click", function (event) {
     if (signaturePad.isEmpty()) {
-        alert("Please provide signature first.");
+      alert("Please provide signature first.");
     } else {
-		$("#sig").val(signaturePad.toDataURL());
+      $("#sig").val(signaturePad.toDataURL());
     }
+  });
+  /*
+  saveSVGButton.addEventListener("click", function (event) {
+  if (signaturePad.isEmpty()) {
+  alert("Please provide signature first.");
+} else {
+window.open(signaturePad.toDataURL('image/svg+xml'));
+}
 });
-
-saveSVGButton.addEventListener("click", function (event) {
-    if (signaturePad.isEmpty()) {
-        alert("Please provide signature first.");
-    } else {
-        window.open(signaturePad.toDataURL('image/svg+xml'));
-    }
+*/
 });
