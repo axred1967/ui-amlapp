@@ -372,7 +372,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     redirect('add_document.html')
     return;
   }
-  $scope.add_document=function(Doc,indice){
+  $scope.edit_doc=function(Doc,indice){
     if (Doc===undefined){
       Doc={}
     }
@@ -408,7 +408,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $http.post(SERVICEURL2,{action:'delete',table:'documents','primary':'id',id:Doc.id })
     //Doc.deleted=true;
     $scope.Kyc.contractor_data.Docs.splice(indice,indice);
-    
+
   }
 
   $scope.back=function(passo){

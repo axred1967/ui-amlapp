@@ -242,7 +242,7 @@
 
                             <button ng-hide="Contract.DocsLoaded==0 "id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="edit_doc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">add_a_photo</i></button>
                             <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
-                              <span >{{'Cambia la foto'|translate}}.</span>
+                              <span >{{'Cambia immagine'|translate}}.</span>
                             </span>
 
                             <button ng-hide="Contract.DocsLoaded==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">delete</i></button>
@@ -265,7 +265,7 @@
 
                         <div class="mdl-card__actions">
                           <div class="mdl-layout-spacer"></div>
-                          <button ng-hide="Contract.DocsLoaded>0 " id="addDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_document()" ><i class="material-icons">add</i></button>
+                          <button ng-hide="Contract.DocsLoaded>0 " id="addDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_document(Doc);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">add</i></button>
                           <span class="mdl-tooltip mdl-tooltip--validation" for="addDoc" >
                             <span >{{'Aggiungi Immagine'|translate}}.</span>
                           </span>
