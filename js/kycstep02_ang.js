@@ -96,6 +96,11 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   }
   if ($scope.page.editDoc) {
     $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
+    convertDateStringsToDates($scope.Kyc)
+    convertDateStringsToDates($scope.Kyc.contractor_data)
+    convertDateStringsToDates($scope.Kyc.Docs)
+    convertDateStringsToDates($scope.Kyc.company_data)
+    convertDateStringsToDates($scope.Kyc.owner_data)
     Doc=JSON.parse(localStorage.getItem('Doc'))
     convertDateStringsToDates(Doc)
     $scope.Kyc.contractor_data.Docs[Doc.indice]=Doc
@@ -103,6 +108,11 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   }
   else if ($scope.page.addDoc){
     $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
+    convertDateStringsToDates($scope.Kyc)
+    convertDateStringsToDates($scope.Kyc.contractor_data)
+    convertDateStringsToDates($scope.Kyc.Docs)
+    convertDateStringsToDates($scope.Kyc.company_data)
+    convertDateStringsToDates($scope.Kyc.owner_data)
     Doc=JSON.parse(localStorage.getItem('Doc'))
     convertDateStringsToDates(Doc)
     if ($scope.Kyc.contractor_data.Docs.length!==undefined|| $scope.Kyc.contractor_data.Docs.length>0 ){
@@ -270,84 +280,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       break;
 
     }
-  }
-  $scope.uploadfromgallery=function(Doc,index)
-  {
-    Doc.index=index
-    localstorage('Doc', JSON.stringify(Doc));
-    // alert('cxccx');
-    navigator.camera.getPicture($scope.uploadPhoto,
-      function(message) {
-        alert('get picture failed');
-      },
-      {
-        quality: 50,
-        destinationType: navigator.camera.DestinationType.FILE_URI,
-        sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-      }
-    );
-  }
-  $scope.add_photo=function(Doc, index)
-  {
-    Doc.index=index
-    localstorage('Doc', JSON.stringify(Doc));
-    // alert('cxccx');
-    navigator.camera.getPicture($scope.uploadPhoto,
-      function(message) {
-        alert('get picture failed');
-      },
-      {
-        quality: 50,
-        destinationType: navigator.camera.DestinationType.FILE_URI,
-        sourceType: navigator.camera.PictureSourceType.CAMERA
-      }
-    );
-  }
-
-  $scope.uploadPhoto=function(imageURI){
-    $("#loader_img").show()
-    $scope.Doc=JSON.parse(localStorage.getItem('Doc'))
-
-    var options = new FileUploadOptions();
-    options.fileKey="file";
-    options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
-    options.mimeType="text/plain";
-    options.chunkedMode = false;
-    var params = new Object();
-
-    options.params = params;
-    var ft = new FileTransfer();
-    ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
-
-
-
-  }
-  $scope.winFT=function (r)
-  {
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    var review_info   =JSON.parse(r.response);
-    var id = review_info.id;
-    $('#doc_image').val(review_info.response);
-    // var review_selected_image  =  review_info.review_id;
-    //$('#review_id_checkin').val(review_selected_image);
-    data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id}
-    $http.post( SERVICEURL2,  data )
-    .success(function(data) {
-      if(data.RESPONSECODE=='1') 			{
-        //$word=$($search.currentTarget).attr('id');
-        $scope.Cotnract.Docs[Doc.index].doc_image=data.RESPONSE;
-        $("#loader_img").hide()
-      }
-    })
-    .error(function() {
-      $("#loader_img").hide()
-      console.log("error");
-    });
-  }
-  $scope.failFT =function (error)
-  {
-    $("#loader_img").hide()
-
   }
 
 
