@@ -230,26 +230,22 @@
 
                         <div class="demo-card-image mdl-card mdl-shadow--2dp">
                           <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
-                          <img ng-click="edit_doc(Doc)" ng-show="Doc.doc_image.length>0" ng-src ="{{Doc.doc_image.length>0 ? Doc.IMAGEURI+ Doc.doc_image :'' }}" ></img>
+                          <img ng-click="edit_doc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ng-show="Doc.doc_image.length>0" ng-src ="{{Doc.doc_image.length>0 ? Doc.IMAGEURI+ Doc.doc_image :'' }}" ></img>
                           <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
 
                           <div class="mdl-card__actions">
                             <div class="mdl-layout-spacer"></div>
-                            <button ng-hide="Contract.DocsLoaded>0 " id="addDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_document(Doc)" ><i class="material-icons">add</i></button>
+                            <button ng-hide="Contract.DocsLoaded>0 " id="addDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_document(Doc);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">add</i></button>
                             <span class="mdl-tooltip mdl-tooltip--validation" for="addDoc" >
                               <span >{{'Aggiungi Immagine'|translate}}.</span>
                             </span>
 
-                            <button ng-hide="Contract.DocsLoaded==0 "id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo(Doc,DocIndex)" ><i class="material-icons">add_a_photo</i></button>
+                            <button ng-hide="Contract.DocsLoaded==0 "id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="edit_doc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">add_a_photo</i></button>
                             <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
-                              <span >{{'Scatta una foto'|translate}}.</span>
-                            </span>
-                            <button ng-hide="Contract.DocsLoaded==0 " id="addGallery" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery(Doc,DocIndex)" ><i class="material-icons">insert_photo</i></button>
-                            <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
-                              <span >{{'Scegli da Galleria'|translate}}.</span>
+                              <span >{{'Cambia la foto'|translate}}.</span>
                             </span>
 
-                            <button ng-hide="Contract.DocsLoaded==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc(Doc,DocIndex)" ><i class="material-icons">delete</i></button>
+                            <button ng-hide="Contract.DocsLoaded==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">delete</i></button>
                             <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
                               <span >{{'Cancella'|translate}}.</span>
                             </span>

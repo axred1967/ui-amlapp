@@ -95,7 +95,28 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.action=$scope.page.action
 
   }
+  if ($scope.page.editDoc) {
+    $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
+    Doc=JSON.parse(localStorage.getItem('Doc'))
+    convertDateStringsToDates(Doc)
+    $scope.Kyc.contractor_data.Docs[Doc.indice]=Doc
+    $('#loader_img').hide();
+  }
+  else if ($scope.page.addDoc){
+    $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
+    Doc=JSON.parse(localStorage.getItem('Doc'))
+    convertDateStringsToDates(Doc)
+    if ($scope.Kyc.contractor_data.Docs.length!==undefined|| $scope.Kyc.contractor_data.Docs.length>0 ){
+      $scope.Kyc.contractor_data.Docs[$scope.Kyc.contractor_data.Docs.length]=Doc
+    }
+   else {
+     $scope.Kyc.contractor_data.Docs=[]
+     $scope.Kyc.contractor_data.Docs[0]=Doc
+   }
+  $('#loader_img').hide();
 
+  }
+  else {
 
 
   switch ($scope.action){
@@ -105,6 +126,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     appData=$scope.Contract
     data= {"action":"kycAx",appData:appData,country:true}
+
     $http.post( SERVICEURL2,  data )
     .success(function(responceData) {
       $('#loader_img').hide();
@@ -347,10 +369,13 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     Doc.id=null
     Doc.image_name=null
     Doc.showOnlyImage=true
-    Doc.indice=$scope.Kyc.contractor_data.Docs.length
+    if ($scope.Kyc.contractor_data.Docs.length!==undefined|| $scope.Kyc.contractor_data.Docs.length>0 ){
+      Doc.indice=$scope.Kyc.contractor_data.Docs.length
+    else
+      Doc.indice=0
 
     localstorage('Doc',JSON.stringify(Doc))
-    //localstorage('Contract',JSON.stringify($scope.Contract))
+    localstorage('Contract',JSON.stringify($scope.Kyc.contractor_data))
     redirect('add_document.html')
   }
   $scope.back=function(passo){

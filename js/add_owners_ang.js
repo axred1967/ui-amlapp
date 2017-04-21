@@ -73,7 +73,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.viewName="Modifica TE"
     break;
     case 'add_customer_for_kyc_owner' :
-    $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
+    $scope.Owner={}
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     $scope.action='add_owners'
     $scope.viewName="Nuovo TE"
@@ -89,7 +89,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   }
 
   if($scope.page.load!==undefined && $scope.page.load)
-  $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
+    $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
 
 
   $scope.showContractorList=function(){
@@ -152,6 +152,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       {
         $scope.contract=[]
         swal("",data.RESPONSE);
+        $scope.Owner=data.owner
+        $scope.lastid=data.lastid
         $scope.back()
 
       }
@@ -162,12 +164,24 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     .error(function(){
       console.log('error');
     })
-    $scope.word[$e]=[]
   }
   $scope.back=function(){
-    switch($scope.pèace.action){
-      case 'add_customer_for_kyc_owner':
-
+    switch($scope.page.action){
+      case'edit_customer_for_kyc_owner':
+				localstorage('Owner', JSON.stringify($scope.Owner));
+				precPage=JSON.parse(localStorage.getItem($scope.page.location))
+				precPage.edit=true
+				localstorage($scope.page.location,JSON.stringify(precPage))
+			break;
+			case'add_customer_for_kyc_owner':
+			if ($scope.lastid!==undefined && $scope.lastid>0 ){
+				$scope.Owner.fullname=$scope.Owner.name +" "+$scope.Owner.surname
+				$scope.Owner.id= $scope.lastid
+        localstorage('Owner', JSON.stringify($scope.Owner));
+				precPage=JSON.parse(localStorage.getItem($scope.page.location))
+				precPage.add=true
+				localstorage($scope.page.location,JSON.stringify(precPage))
+			}
       break;
 
     }
@@ -177,7 +191,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
   $scope.add_customer=function(){
     localstorage('add_customer.html',JSON.stringify({action:'add_customer_for_owner',location:'add_owners.html'}))
-    localstorage('Owner',JSON.stringify($scope.Owner))
+    localstorage('Kyc',JSON.stringify($scope.Kyc))
     redirect('add_customer.html')
   }
 

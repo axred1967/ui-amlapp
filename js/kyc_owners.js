@@ -108,10 +108,15 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   else if ($scope.page.add){
     $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
     $scope.owner=JSON.parse(localStorage.getItem('Owner'))
-    if ($scope.Kyc.owner_data.length==0)
-      $scope.Kyc.owner_data=[]
-    $scope.Kyc.owner_data[$scope.owner.indice]=$scope.owner
-    $('#loader_img').hide();
+    convertDateStringsToDates($scope.owner)
+    if ($scope.Kyc.owner_data.length!==undefined|| $scope.Kyc.owner_data.length>0 ){
+      $scope.Kyc.owner_data[$scope.Kyc.owner_data.length]=$scope.owner
+    }
+   else {
+     $scope.Kyc.owner_data=[]
+     $scope.Kyc.owner_data[$scope.Kyc.owner_data.length]=$scope.owner
+   }
+  $('#loader_img').hide();
 
   }
   else {
@@ -166,6 +171,32 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
 
   }
+  $scope.deleteOwn= function (Own,index){
+    owner_id=Own.user_id
+    $('#loader_img').show();
+    data={ "action":"deleteOwner", appData:$scope.Kyc.contractor_data,user_id:owner_id}
+    $http.post( SERVICEURL2,  data )
+    .success(function(data) {
+      $('#loader_img').hide();
+      if(data.RESPONSECODE=='1') 			{
+        swal("",data.RESPONSE);
+        $scope.Kyc.owner_data.splice(index,index);
+
+      }
+      else
+      {
+        console.log('error');
+        swal("",data.RESPONSE);
+        $scope.Kyc.owner_data.splice(index,index);
+      }
+    })
+    .error(function() {
+      console.log("error");
+    });
+
+
+  }
+
   $scope.save_kyc= function (passo){
     var langfileloginchk = localStorage.getItem("language");
     dbData=$scope.Kyc
