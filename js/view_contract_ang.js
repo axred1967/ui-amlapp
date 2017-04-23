@@ -116,9 +116,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
    redirect('kyc.html')
 };
 $scope.edit_risk = function(){
-	localstorage('risk_profile1.html',JSON.stringify({action:'',location:'view_contract.html'}))
+	localstorage('risk_profile01.html',JSON.stringify({action:'',location:'view_contract.html'}))
 	localstorage('Contract',JSON.stringify($scope.Contract))
-	redirect('risk_profile1.html')
+	redirect('risk_profile01.html')
 };
 $scope.print_kyc = function(){
 	localstorage('contract_form.html',JSON.stringify({action:'',location:'view_contract.html'}))

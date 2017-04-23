@@ -103,37 +103,23 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     var email=localStorage.getItem("userEmail");
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     appData=$scope.Contract
-    data= {"action":"kycAx",appData:appData,country:true}
+    data= {"action":"riskAx",appData:appData,country:true}
     $http.post( SERVICEURL2,  data )
     .success(function(responceData) {
       $('#loader_img').hide();
       if(responceData.RESPONSECODE=='1') 			{
+        $scope.Kyc=responceData.kyc;
         data=responceData.RESPONSE;
-        $scope.Kyc=data;
-        $scope.countryList=responceData.countrylist
-        if ($scope.Kyc.date_of_identification===undefined || $scope.Kyc.date_of_identification)
-        $scope.Kyc.date_of_identification=new Date()
+        $scope.Risk=data;
+        $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
-        $scope.Kyc.contractor_data.Docs=IsJsonString($scope.Kyc.contractor_data.Docs)
-        $scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data)
-        $scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
-        convertDateStringsToDates($scope.Kyc)
-        convertDateStringsToDates($scope.Kyc.contractor_data)
-        convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
-        convertDateStringsToDates($scope.Kyc.company_data)
-        convertDateStringsToDates($scope.Kyc.owner_data)
-
-        if ($scope.Kyc.contractor_data.sign===undefined)
-          $scope.Kyc.contractor_data.sign=""
-        else {
-          var Canvas2 = $("#canvas2")[0];
-                  var Context2 = Canvas2.getContext("2d");
-                  var image = new Image();
-                  image.src = $scope.Kyc.contractor_data.sign;
-                  Context2.drawImage(image, 0, 0);
+        convertDateStringsToDates($scope.Risk)
+        convertDateStringsToDates($scope.Risk.risk_data)
+        if ($scope.Kyc.contractor_data.check_pep==1){
+          $scope.PEP="il Cliente si è dichiarato PEP"
+          $scope.Risk.risk_data.subjectiveProfile.pep=1
 
         }
-
         $('input.mdl-textfield__input').each(
           function(index){
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -151,22 +137,11 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     });
 
     $scope.action="saveKyc"
-    $scope.viewName="Sottoscrizione Dichiarazioni"
+    $scope.viewName="Profilo Soggettivo"
 
 
   }
-  $scope.saveimg=function(){
-      $('#sign').show();
-      vals=$('#sig').val();
-      if(vals != '')
-      {
-        $('#sign').attr('src',vals);
-      }
-
-
-  }
-
-  $scope.save_kyc= function (passo){
+  $scope.save_risk= function (passo){
     if ($scope.form.$invalid) {
       angular.forEach($scope.form.$error, function(field) {
         angular.forEach(field, function(errorField) {
@@ -181,21 +156,12 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       console.log("Form is valid.");
       console.log($scope.data);
     }
-    var Canvas2 = $("#canvas2")[0];
-    var blank = $("#blank")[0];
-    if (Canvas2.toDataURL()==blank.toDataURL())
-      $scope.Kyc.contractor_data.sign=""
-    else
-      $scope.Kyc.contractor_data.sign=Canvas2.toDataURL()
-
     var langfileloginchk = localStorage.getItem("language");
-    dbData=$scope.Kyc
-    dbData.contractor_data=JSON.stringify(dbData.contractor_data)
-    dbData.company_data=JSON.stringify(dbData.company_data)
-    dbData.owner_data=JSON.stringify(dbData.owner_data)
+    dbData=$scope.Risk
+    dbData.risk_data=JSON.stringify(dbData.risk_data)
 
     $('#loader_img').show();
-    data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData}
+    data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       $('#loader_img').hide();
@@ -271,91 +237,14 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
     }
   }
-  $scope.uploadfromgallery=function(Doc,index)
-  {
-    Doc.index=index
-    localstorage('Doc', JSON.stringify(Doc));
-     // alert('cxccx');
-     navigator.camera.getPicture($scope.uploadPhoto,
-          function(message) {
-              alert('get picture failed');
-          },
-          {
-              quality: 50,
-              destinationType: navigator.camera.DestinationType.FILE_URI,
-              sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-          }
-      );
-  }
-  $scope.add_photo=function(Doc, index)
-  {
-    Doc.index=index
-    localstorage('Doc', JSON.stringify(Doc));
-     // alert('cxccx');
-     navigator.camera.getPicture($scope.uploadPhoto,
-          function(message) {
-              alert('get picture failed');
-          },
-          {
-              quality: 50,
-              destinationType: navigator.camera.DestinationType.FILE_URI,
-              sourceType: navigator.camera.PictureSourceType.CAMERA
-          }
-      );
-  }
 
-  $scope.uploadPhoto=function(imageURI){
-    $("#loader_img").show()
-    $scope.Doc=JSON.parse(localStorage.getItem('Doc'))
-
-     var options = new FileUploadOptions();
-     options.fileKey="file";
-     options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
-     options.mimeType="text/plain";
-     options.chunkedMode = false;
-     var params = new Object();
-
-     options.params = params;
-     var ft = new FileTransfer();
-     ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
-
-
-
-  }
-  $scope.winFT=function (r)
-  {
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    var review_info   =JSON.parse(r.response);
-    var id = review_info.id;
-      $('#doc_image').val(review_info.response);
-     // var review_selected_image  =  review_info.review_id;
-      //$('#review_id_checkin').val(review_selected_image);
-      data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id}
-      $http.post( SERVICEURL2,  data )
-          .success(function(data) {
-                    if(data.RESPONSECODE=='1') 			{
-                      //$word=$($search.currentTarget).attr('id');
-                      $scope.Cotnract.Docs[Doc.index].doc_image=data.RESPONSE;
-                      $("#loader_img").hide()
-                    }
-           })
-          .error(function() {
-            $("#loader_img").hide()
-             console.log("error");
-           });
-  }
-  $scope.failFT =function (error)
-  {
-    $("#loader_img").hide()
-
-  }
 
 
   $scope.add_document=function(Doc){
     if (Doc===undefined){
       Doc={}
     }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_kyc_id",location:curr_page}))
+    localstorage('add_document.html',JSON.stringify({action:"add_document_for_risk_id",location:curr_page}))
     Doc.doc_name="Documento di Identità"
     Doc.doc_type="Documento di Identità"
     Doc.agency_id=localStorage.getItem('agencyId')

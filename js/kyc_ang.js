@@ -82,8 +82,14 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                            data=responceData.RESPONSE;
                            $scope.Kyc=data;
                            $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
-                           $scope.Kyc.Docs=IsJsonString($scope.Kyc.Docs)
+                           $scope.Kyc.contractor_data.Docs=IsJsonString($scope.Kyc.contractor_data.Docs)
                            $scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data)
+                           $scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
+                           convertDateStringsToDates($scope.Kyc)
+                           convertDateStringsToDates($scope.Kyc.contractor_data)
+                           convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
+                           convertDateStringsToDates($scope.Kyc.company_data)
+                           convertDateStringsToDates($scope.Kyc.owner_data)
                          }
                          else
                          {
@@ -117,7 +123,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       var langfileloginchk = localStorage.getItem("language");
       dbData=$scope.Kyc
       dbData.contractor_data=JSON.stringify(dbData.contractor_data)
-      dbData.Docs=JSON.stringify(dbData.Docs)
       dbData.company_data=JSON.stringify(dbData.company_data)
       dbData.owner_data=JSON.stringify(dbData.owner_data)
       $('#loader_img').show();

@@ -109,71 +109,64 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     if ($scope.Kyc.contractor_data.Docs.length!==undefined|| $scope.Kyc.contractor_data.Docs.length>0 ){
       $scope.Kyc.contractor_data.Docs[$scope.Kyc.contractor_data.Docs.length]=Doc
     }
-   else {
-     $scope.Kyc.contractor_data.Docs=[]
-     $scope.Kyc.contractor_data.Docs[0]=Doc
-   }
-  $('#loader_img').hide();
+    else {
+      $scope.Kyc.contractor_data.Docs=[]
+      $scope.Kyc.contractor_data.Docs[0]=Doc
+    }
+    $('#loader_img').hide();
 
   }
   else {
 
 
-  switch ($scope.action){
-    default:
-    var id=localStorage.getItem("CustomerProfileId");
-    var email=localStorage.getItem("userEmail");
-    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-    appData=$scope.Contract
-    data= {"action":"kycAx",appData:appData,country:true}
+    switch ($scope.action){
+      default:
+      var id=localStorage.getItem("CustomerProfileId");
+      var email=localStorage.getItem("userEmail");
+      $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+      appData=$scope.Contract
+      data= {"action":"kycAx",appData:appData,country:true}
 
-    $http.post( SERVICEURL2,  data )
-    .success(function(responceData) {
-      $('#loader_img').hide();
-      if(responceData.RESPONSECODE=='1') 			{
-        data=responceData.RESPONSE;
-        $scope.Kyc=data;
-        $scope.countryList=responceData.countrylist
-        if ($scope.Kyc.date_of_identification===undefined || $scope.Kyc.date_of_identification)
-        $scope.Kyc.date_of_identification=new Date()
-        $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
-        $scope.Kyc.contractor_data.Docs=IsJsonString($scope.Kyc.contractor_data.Docs)
-        $scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data)
-        $scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
-        convertDateStringsToDates($scope.Kyc)
-        convertDateStringsToDates($scope.Kyc.contractor_data)
-        convertDateStringsToDates($scope.Kyc.Docs)
-        convertDateStringsToDates($scope.Kyc.company_data)
-        convertDateStringsToDates($scope.Kyc.owner_data)
-        if ($scope.Kyc.contractor_data.Docs == false || $scope.Kyc.contractor_data.Docs===undefined ||  $scope.Contract.Docs.length===undefined ||  $scope.Contract.Docs.length==0){
-          $scope.Kyc.contractor_data.Docs=[]
-          $scope.Kyc.contractor_data.Docs[0]={}
-          $scope.Contract.DocsLoaded=0;
-          $scope.Kyc.contractor_data.Docs[0].doc_name="Immagine Doc identità"
-          $scope.Kyc.contractor_data.Docs[0].doc_type="Documento itentià"
-          $scope.Kyc.contractor_data.Docs.doc_date=new Date()
+      $http.post( SERVICEURL2,  data )
+      .success(function(responceData) {
+        $('#loader_img').hide();
+        if(responceData.RESPONSECODE=='1') 			{
+          data=responceData.RESPONSE;
+          $scope.Kyc=data;
+          $scope.countryList=responceData.countrylist
+          if ($scope.Kyc.date_of_identification===undefined || $scope.Kyc.date_of_identification)
+          $scope.Kyc.date_of_identification=new Date()
+          $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
+          $scope.Kyc.contractor_data.Docs=IsJsonString($scope.Kyc.contractor_data.Docs)
+          $scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data)
+          $scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
+          convertDateStringsToDates($scope.Kyc)
+          convertDateStringsToDates($scope.Kyc.contractor_data)
+          convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
+          convertDateStringsToDates($scope.Kyc.company_data)
+          convertDateStringsToDates($scope.Kyc.owner_data)
 
+          $('input.mdl-textfield__input').each(
+            function(index){
+              $(this).parent('div.mdl-textfield').addClass('is-dirty');
+              $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+            }
+          );
         }
-        $('input.mdl-textfield__input').each(
-          function(index){
-            $(this).parent('div.mdl-textfield').addClass('is-dirty');
-            $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-          }
-        );
-      }
-      else
-      {
-        console.log('error');
-      }
-    })
-    .error(function() {
-      console.log("error");
-    });
+        else
+        {
+          console.log('error');
+        }
+      })
+      .error(function() {
+        console.log("error");
+      });
 
+
+
+    }
     $scope.action="saveKyc"
     $scope.viewName="Informazioni personali"
-
-
   }
   $scope.save_kyc= function (passo){
     if ($scope.form.$invalid) {
@@ -193,10 +186,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     var langfileloginchk = localStorage.getItem("language");
     dbData=$scope.Kyc
     dbData.contractor_data=JSON.stringify(dbData.contractor_data)
-    dbData.Docs=JSON.stringify(dbData.Docs)
     dbData.company_data=JSON.stringify(dbData.company_data)
     dbData.owner_data=JSON.stringify(dbData.owner_data)
-
 
     $('#loader_img').show();
     data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData}
@@ -275,84 +266,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
     }
   }
-  $scope.uploadfromgallery=function(Doc,index)
-  {
-    Doc.index=index
-    localstorage('Doc', JSON.stringify(Doc));
-    // alert('cxccx');
-    navigator.camera.getPicture($scope.uploadPhoto,
-      function(message) {
-        alert('get picture failed');
-      },
-      {
-        quality: 50,
-        destinationType: navigator.camera.DestinationType.FILE_URI,
-        sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-      }
-    );
-  }
-  $scope.add_photo=function(Doc, index)
-  {
-    Doc.index=index
-    localstorage('Doc', JSON.stringify(Doc));
-    // alert('cxccx');
-    navigator.camera.getPicture($scope.uploadPhoto,
-      function(message) {
-        alert('get picture failed');
-      },
-      {
-        quality: 50,
-        destinationType: navigator.camera.DestinationType.FILE_URI,
-        sourceType: navigator.camera.PictureSourceType.CAMERA
-      }
-    );
-  }
 
-  $scope.uploadPhoto=function(imageURI){
-    $("#loader_img").show()
-    $scope.Doc=JSON.parse(localStorage.getItem('Doc'))
-
-    var options = new FileUploadOptions();
-    options.fileKey="file";
-    options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
-    options.mimeType="text/plain";
-    options.chunkedMode = false;
-    var params = new Object();
-
-    options.params = params;
-    var ft = new FileTransfer();
-    ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
-
-
-
-  }
-  $scope.winFT=function (r)
-  {
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    var review_info   =JSON.parse(r.response);
-    var id = review_info.id;
-    $('#doc_image').val(review_info.response);
-    // var review_selected_image  =  review_info.review_id;
-    //$('#review_id_checkin').val(review_selected_image);
-    data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id}
-    $http.post( SERVICEURL2,  data )
-    .success(function(data) {
-      if(data.RESPONSECODE=='1') 			{
-        //$word=$($search.currentTarget).attr('id');
-        $scope.Cotnract.Docs[Doc.index].doc_image=data.RESPONSE;
-        $("#loader_img").hide()
-      }
-    })
-    .error(function() {
-      $("#loader_img").hide()
-      console.log("error");
-    });
-  }
-  $scope.failFT =function (error)
-  {
-    $("#loader_img").hide()
-
-  }
 
 
   $scope.add_document=function(Doc){
@@ -371,13 +285,16 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     Doc.showOnlyImage=true
     if ($scope.Kyc.contractor_data.Docs.length!==undefined|| $scope.Kyc.contractor_data.Docs.length>0 ){
       Doc.indice=$scope.Kyc.contractor_data.Docs.length
-    else
+    }
+    else {
       Doc.indice=0
+    }
 
     localstorage('Doc',JSON.stringify(Doc))
     localstorage('Contract',JSON.stringify($scope.Kyc.contractor_data))
     redirect('add_document.html')
   }
+
   $scope.back=function(passo){
     $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
 
@@ -387,10 +304,12 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         localstorage('kyc_signature.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
         redirect('kyc_signature.html')
         return;
+        break;
         case '1':
         localstorage('kyc_company.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
         redirect('kyc_company.html')
         return;
+        break;
         case '2':
         localstorage('kyc_owners.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
         redirect('kyc_owners.html')

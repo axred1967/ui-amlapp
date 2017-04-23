@@ -101,12 +101,22 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   }
   if ($scope.page.edit) {
     $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
+    convertDateStringsToDates($scope.Kyc)
+    convertDateStringsToDates($scope.Kyc.contractor_data)
+    convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
+    convertDateStringsToDates($scope.Kyc.company_data)
+    convertDateStringsToDates($scope.Kyc.owner_data)
     $scope.owner=JSON.parse(localStorage.getItem('Owner'))
     $scope.Kyc.owner_data[$scope.owner.indice]=$scope.owner
     $('#loader_img').hide();
   }
   else if ($scope.page.add){
     $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
+    convertDateStringsToDates($scope.Kyc)
+    convertDateStringsToDates($scope.Kyc.contractor_data)
+    convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
+    convertDateStringsToDates($scope.Kyc.company_data)
+    convertDateStringsToDates($scope.Kyc.owner_data)
     $scope.owner=JSON.parse(localStorage.getItem('Owner'))
     convertDateStringsToDates($scope.owner)
     if ($scope.Kyc.owner_data.length!==undefined|| $scope.Kyc.owner_data.length>0 ){
@@ -140,18 +150,11 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         $scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
         convertDateStringsToDates($scope.Kyc)
         convertDateStringsToDates($scope.Kyc.contractor_data)
-        convertDateStringsToDates($scope.Kyc.Docs)
+        convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
         convertDateStringsToDates($scope.Kyc.company_data)
         convertDateStringsToDates($scope.Kyc.owner_data)
-        if ($scope.Kyc.contractor_data.Docs == false || $scope.Kyc.contractor_data.Docs===undefined ||  $scope.Contract.Docs.length===undefined ||  $scope.Contract.Docs.length==0){
-          $scope.Kyc.contractor_data.Docs=[]
-          $scope.Kyc.contractor_data.Docs[0]={}
-          $scope.Contract.DocsLoaded=0;
-          $scope.Kyc.contractor_data.Docs[0].doc_name="Immagine Doc identità"
-          $scope.Kyc.contractor_data.Docs[0].doc_type="Documento itentià"
-          $scope.Kyc.contractor_data.Docs.doc_date=new Date()
 
-        }
+
         $('input.mdl-textfield__input').each(
           function(index){
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -201,10 +204,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     var langfileloginchk = localStorage.getItem("language");
     dbData=$scope.Kyc
     dbData.contractor_data=JSON.stringify(dbData.contractor_data)
-    dbData.Docs=JSON.stringify(dbData.Docs)
     dbData.company_data=JSON.stringify(dbData.company_data)
     dbData.owner_data=JSON.stringify(dbData.owner_data)
-
 
     $('#loader_img').show();
     data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData}

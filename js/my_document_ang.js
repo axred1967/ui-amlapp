@@ -109,7 +109,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       case 'list_from_view_contract' :
       $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
       convertDateStringsToDates($scope.Contract)
-      DocFor=Contract.CPU
+      $scope.DocFor="CPU Contratto: " + $scope.Contract.CPU
       $scope.Doc.per_id=$scope.Contract.contract_id
       $scope.Doc.per='contract'
       $scope.viewName="Documenti Contratto"
@@ -121,7 +121,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       break;
       case 'list_from_my_company' :
       companyId=localStorage.getItem("CompanyID");
-      DocFor=localStorage.getItem("Company_name");
+      $scope.DocFor=localStorage.getItem("Company_name");
 
       $scope.Doc.per_id=companyId
       $scope.Doc.per='company'
@@ -134,7 +134,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       break;
       case 'list_from_my_customer' :
       customerId=localStorage.getItem("customerId");
-      DocFor=localStorage.getItem("customerName");
+      $scope.DocFor=localStorage.getItem("customerName");
 
       $scope.Doc.per_id=customerId
       $scope.Doc.per='customer'
