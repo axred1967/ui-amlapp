@@ -115,6 +115,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         convertDateStringsToDates($scope.Risk)
         convertDateStringsToDates($scope.Risk.risk_data)
+        if ($scope.Risk.risk_data.subjectiveProfile===undefined || ! isObject($scope.Risk.risk_data.subjectiveProfile))
+          $scope.Risk.risk_data.subjectiveProfile={}
         if ($scope.Kyc.contractor_data.check_pep==1){
           $scope.PEP="il Cliente si è dichiarato PEP"
           $scope.Risk.risk_data.subjectiveProfile.pep=1
@@ -158,6 +160,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     }
     var langfileloginchk = localStorage.getItem("language");
     dbData=$scope.Risk
+
     dbData.risk_data=JSON.stringify(dbData.risk_data)
 
     $('#loader_img').show();
@@ -239,7 +242,22 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   }
 
 
+  $scope.check_risk=function (partial){
+  if   ($scope.Risk.risk_data.partial===undefined ||$scope.Risk.risk_data.partial=='false' )
+     $scope.Risk.risk_data.partial={}
+    $scope.Risk.risk_data.partial[partial]="Basso"
 
+    angular.forEach($scope.Risk.risk_data[partial], function(value, key) {
+      if (value==1 || value.length>5){
+         $scope.Risk.risk_data.partial[partial]="Alto"
+         return
+
+      }
+
+    });
+
+
+  }
    $scope.back=function(passo){
      if (passo>0){
          localstorage('risk_profile0'+ passo +'.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))

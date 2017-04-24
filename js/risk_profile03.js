@@ -113,6 +113,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         convertDateStringsToDates($scope.Risk)
         convertDateStringsToDates($scope.Risk.risk_data)
+
         $('input.mdl-textfield__input').each(
           function(index){
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -254,6 +255,24 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     localstorage('Doc',JSON.stringify(Doc))
     //localstorage('Contract',JSON.stringify($scope.Contract))
     redirect('add_document.html')
+   }
+   $scope.check_risk=function (partial){
+   if   ($scope.Risk.risk_data.partial===undefined ){
+     $scope.Risk.risk_data.partial={}
+
+   }
+   $scope.Risk.risk_data.partial[partial]="Basso"
+
+     angular.forEach($scope.Risk.risk_data[partial], function(value, key) {
+       if (value==1 || value.length>5){
+          $scope.Risk.risk_data.partial[partial]="Alto"
+          return
+
+       }
+
+     });
+
+
    }
    $scope.back=function(passo){
      if (passo>0){

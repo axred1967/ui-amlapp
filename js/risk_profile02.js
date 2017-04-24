@@ -114,6 +114,12 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         convertDateStringsToDates($scope.Risk)
         convertDateStringsToDates($scope.Risk.risk_data)
+        if ($scope.Risk.risk_data.mainActivity===undefined || ! isObject($scope.Risk.risk_data.mainActivity))
+          $scope.Risk.risk_data.mainActivity={}
+          if ($scope.Risk.risk_data.Residence===undefined || ! isObject($scope.Risk.risk_data.Residence))
+            $scope.Risk.risk_data.Residence={}
+
+//        $scope.Risk.risk_data.partial=IsJsonString($scope.Risk.risk_data.partial)
         $('input.mdl-textfield__input').each(
           function(index){
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -256,6 +262,24 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     //localstorage('Contract',JSON.stringify($scope.Contract))
     redirect('add_document.html')
    }
+
+   $scope.check_risk=function (partial){
+   if   ($scope.Risk.risk_data.partial===undefined|| $scope.Risk.risk_data.partial==false)
+      $scope.Risk.risk_data.partial={}
+   $scope.Risk.risk_data.partial[partial]="Basso"
+
+     angular.forEach($scope.Risk.risk_data[partial], function(value, key) {
+       if (value==1 || value.length>5){
+          $scope.Risk.risk_data.partial[partial]="Alto"
+          return
+
+       }
+
+     });
+
+
+   }
+
    $scope.back=function(passo){
      if (passo>0){
          localstorage('risk_profile0'+ passo +'.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))

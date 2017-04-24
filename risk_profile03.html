@@ -81,7 +81,7 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="collaborative-1">
-                              <input type="radio" id="collaborative-1" name="collaborative"
+                              <input ng-change="check_risk('behavior')"   type="radio" id="collaborative-1" name="collaborative"
                               ng-model="Risk.risk_data.behavior.collaborative" class="mdl-radio__button"  value="1"  >
                               <span class="mdl-radio__label" >{{'HighRisk'| translate}}</span>
                             </label>
@@ -89,7 +89,7 @@
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="collaborative-0">
-                              <input type="radio" id="collaborative-0"  name="collaborative"
+                              <input ng-change="check_risk('behavior')"   type="radio" id="collaborative-0"  name="collaborative"
                               ng-model="Risk.risk_data.behavior.collaborative" class="mdl-radio__button" value="0"  checked>
                               <span class="mdl-radio__label">{{'LowRisk'| translate}}</span>
                             </label>
@@ -105,7 +105,7 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="tooMuchCollaborative-1">
-                              <input type="radio" id="tooMuchCollaborative-1" name="tooMuchCollaborative"
+                              <input ng-change="check_risk('behavior')"   type="radio" id="tooMuchCollaborative-1" name="tooMuchCollaborative"
                               ng-model="Risk.risk_data.behavior.tooMuchCollaborative" class="mdl-radio__button"  value="1"  >
                               <span class="mdl-radio__label" >{{'HighRisk'| translate}}</span>
                             </label>
@@ -113,8 +113,8 @@
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="tooMuchCollaborative-0">
-                              <input type="radio" id="tooMuchCollaborative-0"  name="tooMuchCollaborative"
-                              ng-model="Risk.risk_data.tooMuchCollaborative.skills" class="mdl-radio__button" value="0"  checked>
+                              <input ng-change="check_risk('behavior')"   type="radio" id="tooMuchCollaborative-0"  name="tooMuchCollaborative"
+                              ng-model="Risk.risk_data.behavior.tooMuchCollaborative" class="mdl-radio__button" value="0"  checked>
                               <span class="mdl-radio__label">{{'LowRisk'| translate}}</span>
                             </label>
                           </div>
@@ -129,7 +129,7 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="atAllCollaborative-1">
-                              <input type="radio" id="atAllCollaborative-1" name="atAllCollaborative"
+                              <input ng-change="check_risk('behavior')"   type="radio" id="atAllCollaborative-1" name="atAllCollaborative"
                               ng-model="Risk.risk_data.behavior.atAllCollaborative" class="mdl-radio__button"  value="1"  >
                               <span class="mdl-radio__label" >{{'HighRisk'| translate}}</span>
                             </label>
@@ -137,8 +137,8 @@
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="atAllCollaborative-0">
-                              <input type="radio" id="atAllCollaborative-0"  name="atAllCollaborative"
-                              ng-model="Risk.risk_data.atAllCollaborative.skills" class="mdl-radio__button" value="0"  checked>
+                              <input ng-change="check_risk('behavior')"   type="radio" id="atAllCollaborative-0"  name="atAllCollaborative"
+                              ng-model="Risk.risk_data.behavior.atAllCollaborative" class="mdl-radio__button" value="0"  checked>
                               <span class="mdl-radio__label">{{'LowRisk'| translate}}</span>
                             </label>
                           </div>
@@ -149,7 +149,7 @@
 
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                        <textarea ng-required="false" ng-model="Risk.risk_data.behavior.other"
+                        <textarea ng-change="check_risk('behavior')"   ng-required="false" ng-model="Risk.risk_data.behavior.other"
                         class="mdl-textfield__input" type="text" rows= "3"
                         id="beahavior_other" name="beahavior_other" >
                       </textarea>
@@ -158,6 +158,8 @@
                         <span ng-show="form.beahavior_other.$error.required">{{'Richiesto'|translate}}.</span>
                       </div>
                     </fieldset>
+                    <span style="color:#3f51b5">{{'Rischio Parziale Comportamenteo del Cliente'|translate}}:</span><span ng-class="Risk.risk_data.partial.behavior"> {{Risk.risk_data.partial.behavior}}</span>
+                    <div style="background-color:#3f51b5"; class="drawer-separator"></div>
 
 
                   </form>

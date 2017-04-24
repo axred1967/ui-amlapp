@@ -318,3 +318,6 @@ function exit( status ) {
 
     throw '';
 }
+function isObject (item) {
+  return (typeof item === "object" && !Array.isArray(item) && item !== null);
+}

@@ -60,7 +60,7 @@
               <a class="mdl-button mdl-js-button mdl-button--icon left" ng-click="back()" href="javascript:;">
                 <img src="img/back-button.png">
               </a>
-              <span class="main-heading">{{'Attività Principale' | translate}}</span>
+              <span class="main-heading">{{'Attività e Residenza' | translate}}</span>
               <div class="clr"></div>
             </div>
           </div>
@@ -73,7 +73,69 @@
               <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--12-col">
                   <form name="form" novalidate>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+                        <h5 class="kyc01-head">{{'Il Cliente risiede in Paesi a Rischio'|translate}} </h5>
 
+                        <div class="mdl-grid">
+                          <div class="mdl-cell ">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="riskCountry-1">
+                              <input ng-change="check_risk('Residence')"  type="radio" id="riskCountry-1" name="riskCountry"
+                              ng-model="Risk.risk_data.Residence.riskCountry" class="mdl-radio__button"  value="1"  >
+                              <span class="mdl-radio__label" >{{'HighRisk'| translate}}</span>
+                            </label>
+                          </div>
+
+                          <div class="mdl-cell">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="riskCountry-0">
+                              <input ng-change="check_risk('Residence')" type="radio" id="riskCountry-0"  name="riskCountry"
+                              ng-model="Risk.risk_data.Residence.riskCountry" class="mdl-radio__button" value="0"  checked>
+                              <span class="mdl-radio__label">{{'LowRisk'| translate}}</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                    <div class="drawer-separator"></div>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+                        <h5 class="kyc01-head">{{'Il Cliente effettua attività economiche in Paesi a Rischio'|translate}} </h5>
+
+                        <div class="mdl-grid">
+                          <div class="mdl-cell ">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="activityInRiskCountry-1">
+                              <input ng-change="check_risk('Residence')"  type="radio" id="activityInRiskCountry-1" name="activityInRiskCountry"
+                              ng-model="Risk.risk_data.Residence.activityInRiskCountry" class="mdl-radio__button"  value="1"  >
+                              <span class="mdl-radio__label" >{{'HighRisk'| translate}}</span>
+                            </label>
+                          </div>
+
+                          <div class="mdl-cell">
+                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="activityInRiskCountry-0">
+                              <input ng-change="check_risk('Residence')" type="radio" id="activityInRiskCountry-0"  name="activityInRiskCountry"
+                              ng-model="Risk.risk_data.Residence.activityInRiskCountry" class="mdl-radio__button" value="0"  checked>
+                              <span class="mdl-radio__label">{{'LowRisk'| translate}}</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                    <div class="drawer-separator"></div>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                        <textarea ng-change="check_risk('Residence')" ng-required="false" ng-model="Risk.risk_data.Residence.other"
+                        class="mdl-textfield__input" type="text" rows= "3"
+                        id="Residence_other" name="Residence_other" >
+                      </textarea>
+                      <label for="Residence_other" class="mdl-textfield__label">{{ 'Altre Osservazioni' | translate}}</label>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="subjective_profile_other" minlength="3" ng-show="form.Residence_other.$invalid && form.Residence_other.$touched">
+                        <span ng-show="form.Residence_other.$error.required">{{'Richiesto'|translate}}.</span>
+                      </div>
+                    </fieldset>
+                    <span style="color:#3f51b5">{{'Rischio Parziale Residenza'|translate}}:</span><span ng-class="Risk.risk_data.partial.Residence"> {{Risk.risk_data.partial.Residence}}</span>
+                    <div style="background-color:#3f51b5"; class="drawer-separator"></div>
+                    <br/>
+                    <br/>
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
                         <h5 class="kyc01-head">{{'Il Cliente possiede le competenze per svolgere l\'attività principale'|translate}} </h5>
@@ -81,7 +143,7 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="skills-1">
-                              <input type="radio" id="skills-1" name="skills"
+                              <input ng-change="check_risk('mainActivity')" type="radio" id="skills-1" name="skills"
                               ng-model="Risk.risk_data.mainActivity.skills" class="mdl-radio__button"  value="1"  >
                               <span class="mdl-radio__label" >{{'HighRisk'| translate}}</span>
                             </label>
@@ -89,7 +151,7 @@
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="skills-0">
-                              <input type="radio" id="skills-0"  name="skills"
+                              <input ng-change="check_risk('mainActivity')" type="radio" id="skills-0"  name="skills"
                               ng-model="Risk.risk_data.mainActivity.skills" class="mdl-radio__button" value="0"  checked>
                               <span class="mdl-radio__label">{{'LowRisk'| translate}}</span>
                             </label>
@@ -105,7 +167,7 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="highFinancialMovment-1">
-                              <input type="radio" id="highFinancialMovment-1" ng-model="Risk.risk_data.mainActivity.highFinancialMovment" class="mdl-radio__button"
+                              <input ng-change="check_risk('mainActivity')" type="radio" id="highFinancialMovment-1" ng-model="Risk.risk_data.mainActivity.highFinancialMovment" class="mdl-radio__button"
                               name="highFinancialMovment" value="1"  >
                               <span class="mdl-radio__label" >{{'HighRisk'| translate}}</span>
                             </label>
@@ -113,7 +175,7 @@
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="highFinancialMovment-0">
-                              <input type="radio" id="highFinancialMovment-0" ng-model="Risk.risk_data.mainActivity.highFinancialMovment" class="mdl-radio__button" name="highFinancialMovment" value="0"  checked>
+                              <input ng-change="check_risk('mainActivity')" type="radio" id="highFinancialMovment-0" ng-model="Risk.risk_data.mainActivity.highFinancialMovment" class="mdl-radio__button" name="highFinancialMovment" value="0"  checked>
                               <span class="mdl-radio__label">{{'LowRisk'| translate}}</span>
                             </label>
                           </div>
@@ -128,14 +190,14 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="pubblicSectorFinancing-1">
-                              <input type="radio" id="pubblicSectorFinancing-1" ng-model="Risk.risk_data.mainActivity.pubblicSectorFinancing" class="mdl-radio__button" name="pubblicSectorFinancing" value="1"  >
+                              <input ng-change="check_risk('mainActivity')" type="radio" id="pubblicSectorFinancing-1" ng-model="Risk.risk_data.mainActivity.pubblicSectorFinancing" class="mdl-radio__button" name="pubblicSectorFinancing" value="1"  >
                               <span class="mdl-radio__label" >{{'HighRisk'| translate}}</span>
                             </label>
                           </div>
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="pubblicSectorFinancing-0">
-                              <input type="radio" id="pubblicSectorFinancing-0" ng-model="Risk.risk_data.mainActivity.pubblicSectorFinancing" class="mdl-radio__button" name="pubblicSectorFinancing" value="0"  checked>
+                              <input ng-change="check_risk('mainActivity')" type="radio" id="pubblicSectorFinancing-0" ng-model="Risk.risk_data.mainActivity.pubblicSectorFinancing" class="mdl-radio__button" name="pubblicSectorFinancing" value="0"  checked>
                               <span class="mdl-radio__label">{{'LowRisk'| translate}}</span>
                             </label>
                           </div>
@@ -149,14 +211,14 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="EUFinancing-1">
-                              <input type="radio" id="EUFinancing-1" ng-model="Risk.risk_data.mainActivity.EUFinancing" class="mdl-radio__button" name="EUFinancing" value="1"  >
+                              <input ng-change="check_risk('mainActivity')" type="radio" id="EUFinancing-1" ng-model="Risk.risk_data.mainActivity.EUFinancing" class="mdl-radio__button" name="EUFinancing" value="1"  >
                               <span class="mdl-radio__label" >{{'HighRisk'| translate}}</span>
                             </label>
                           </div>
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="EUFinancing-0">
-                              <input type="radio" id="EUFinancing-0" ng-model="Risk.risk_data.mainActivity.EUFinancing" class="mdl-radio__button" name="EUFinancing" value="0"  checked>
+                              <input ng-change="check_risk('mainActivity')" type="radio" id="EUFinancing-0" ng-model="Risk.risk_data.mainActivity.EUFinancing" class="mdl-radio__button" name="EUFinancing" value="0"  checked>
                               <span class="mdl-radio__label">{{'LowRisk'| translate}}</span>
                             </label>
                           </div>
@@ -170,14 +232,14 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="cash-1">
-                              <input type="radio" id="cash-1" ng-model="Risk.risk_data.mainActivity.cash" class="mdl-radio__button" name="cash" value="1"  >
+                              <input ng-change="check_risk('mainActivity')" type="radio" id="cash-1" ng-model="Risk.risk_data.mainActivity.cash" class="mdl-radio__button" name="cash" value="1"  >
                               <span class="mdl-radio__label" >{{'HighRisk'| translate}}</span>
                             </label>
                           </div>
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="cash-0">
-                              <input type="radio" id="cash-0" ng-model="Risk.risk_data.mainActivity.cash" class="mdl-radio__button" name="cash" value="0"  checked>
+                              <input ng-change="check_risk('mainActivity')" type="radio" id="cash-0" ng-model="Risk.risk_data.mainActivity.cash" class="mdl-radio__button" name="cash" value="0"  checked>
                               <span class="mdl-radio__label">{{'LowRisk'| translate}}</span>
                             </label>
                           </div>
@@ -187,7 +249,7 @@
                     <div class="drawer-separator"></div>
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                        <textarea ng-required="false" ng-model="Risk.risk_data.mainActivity.other"
+                        <textarea ng-change="check_risk('mainActivity')" ng-required="false" ng-model="Risk.risk_data.mainActivity.other"
                         class="mdl-textfield__input" type="text" rows= "3"
                         id="main_activity_other" name="main_activity_other" >
                       </textarea>
@@ -196,6 +258,8 @@
                         <span ng-show="form.main_activity_other.$error.required">{{'Richiesto'|translate}}.</span>
                       </div>
                     </fieldset>
+                    <span style="color:#3f51b5">{{'Rischio Parziale Residenza'|translate}}:</span><span ng-class="Risk.risk_data.partial.mainActivity"> {{Risk.risk_data.partial.mainActivity}}</span>
+                    <div style="background-color:#3f51b5"; class="drawer-separator"></div>
 
 
                   </form>

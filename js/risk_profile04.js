@@ -94,6 +94,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.action=$scope.page.action
 
   }
+  $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
 
 
 
@@ -256,10 +257,34 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     //localstorage('Contract',JSON.stringify($scope.Contract))
     redirect('add_document.html')
    }
+   $scope.check_risk=function (partial){
+    if   ($scope.Risk.risk_data.partial===undefined )
+      $scope.Risk.risk_data.partial={}
+   $scope.Risk.risk_data.partial[partial]="Basso"
+
+     angular.forEach($scope.Risk.risk_data[partial], function(value, key) {
+       if (value==1 || value.length>5){
+          $scope.Risk.risk_data.partial[partial]="Alto"
+          return
+
+       }
+
+     });
+
+
+   }
    $scope.back=function(passo){
      if (passo>0){
-         localstorage('kyc_owners.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
-         redirect('kyc_owners.html')
+         if ($scope.Contract.act_for_other==1){
+           localstorage('risk_profile05.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
+           redirect('risk_profile05.html')
+
+         }
+         else {
+           localstorage('risk_final.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
+           redirect('kyc_final.html')
+
+         }
          return;
      }
      if (passo==-1){

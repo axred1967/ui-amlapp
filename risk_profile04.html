@@ -72,7 +72,6 @@
             <div class="mdl-card mdl-shadow--2dp ">
               <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--12-col">
-                  <span ng-class="{{Risk.risk_data.partial.frequecy}}">Rischio Parziale Frequenza= {{Risk.risk_data.partial.frequecy}}</span>
                   <form name="form" novalidate>
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
@@ -81,7 +80,7 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="highFrequency-1">
-                              <input type="radio" id="highFrequency-1" name="highFrequency"
+                              <input ng-change="check_risk('frequency')" type="radio" id="highFrequency-1" name="highFrequency"
                               ng-model="Risk.risk_data.frequency.highFrequency" class="mdl-radio__button"  value="1"  >
                               <span class="mdl-radio__label" >{{'HighRisk'| translate}}</span>
                             </label>
@@ -89,7 +88,7 @@
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="highFrequency-0">
-                              <input type="radio" id="highFrequency-0"  name="highFrequency"
+                              <input  ng-change="check_risk('frequency')" type="radio" id="highFrequency-0"  name="highFrequency"
                               ng-model="Risk.risk_data.frequency.highFrequency" class="mdl-radio__button" value="0"  checked>
                               <span class="mdl-radio__label">{{'LowRisk'| translate}}</span>
                             </label>
@@ -105,7 +104,7 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="consistent-1">
-                              <input type="radio" id="consistent-1" name="consistent"
+                              <input  ng-change="check_risk('frequency')" type="radio" id="consistent-1" name="consistent"
                               ng-model="Risk.risk_data.frequency.consistent" class="mdl-radio__button"  value="1"  >
                               <span class="mdl-radio__label" >{{'HighRisk'| translate}}</span>
                             </label>
@@ -113,7 +112,7 @@
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="consistent-0">
-                              <input type="radio" id="consistent-0"  name="consistent"
+                              <input  ng-change="check_risk('frequency')" type="radio" id="consistent-0"  name="consistent"
                               ng-model="Risk.risk_data.frequency.consistent" class="mdl-radio__button" value="0"  checked>
                               <span class="mdl-radio__label">{{'LowRisk'| translate}}</span>
                             </label>
@@ -124,7 +123,7 @@
                     <div class="drawer-separator"></div>
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                        <textarea ng-required="false" ng-model="Risk.risk_data.frequency.other"
+                        <textarea  ng-change="check_risk('frequency')" ng-required="false" ng-model="Risk.risk_data.frequency.other"
                         class="mdl-textfield__input" type="text" rows= "3"
                         id="frequency_other" name="frequency_other" >
                       </textarea>
@@ -133,8 +132,12 @@
                         <span ng-show="form.frequency_other.$error.required">{{'Richiesto'|translate}}.</span>
                       </div>
                     </fieldset>
+                    <span style="color:#3f51b5">{{'Rischio Parziale Frequenza'|translate}}:</span><span ng-class="Risk.risk_data.partial.frequency"> {{Risk.risk_data.partial.frequency}}</span>
+                    <div style="background-color:#3f51b5"; class="drawer-separator"></div>
+
                     <br/>
                     <br/>
+
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
                         <h5 class="kyc01-head">{{'Continuità di relazione consistente con il profilo economico del cliente'|translate}} </h5>
@@ -142,7 +145,7 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="relation-1">
-                              <input type="radio" id="relation-1" name="relation"
+                              <input  ng-change="check_risk('Consistency')" type="radio" id="relation-1" name="relation"
                               ng-model="Risk.risk_data.Consistency.relation" class="mdl-radio__button"  value="1"  >
                               <span class="mdl-radio__label" >{{'HighRisk'| translate}}</span>
                             </label>
@@ -150,7 +153,7 @@
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="relation-0">
-                              <input type="radio" id="relation-0"  name="relation"
+                              <input ng-change="check_risk('Consistency')"  type="radio" id="relation-0"  name="relation"
                               ng-model="Risk.risk_data.Consistency.relation" class="mdl-radio__button" value="0"  checked>
                               <span class="mdl-radio__label">{{'LowRisk'| translate}}</span>
                             </label>
@@ -166,7 +169,7 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="dimension-1">
-                              <input type="radio" id="dimension-1" name="dimension"
+                              <input ng-change="check_risk('Consistency')"  type="radio" id="dimension-1" name="dimension"
                               ng-model="Risk.risk_data.Consistency.dimension" class="mdl-radio__button"  value="1"  >
                               <span class="mdl-radio__label" >{{'HighRisk'| translate}}</span>
                             </label>
@@ -174,7 +177,7 @@
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="dimension-0">
-                              <input type="radio" id="dimension-0"  name="dimension"
+                              <input ng-change="check_risk('Consistency')"  type="radio" id="dimension-0"  name="dimension"
                               ng-model="Risk.risk_data.Consistency.dimension" class="mdl-radio__button" value="0"  checked>
                               <span class="mdl-radio__label">{{'LowRisk'| translate}}</span>
                             </label>
@@ -185,7 +188,7 @@
                     <div class="drawer-separator"></div>
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                        <textarea ng-required="false" ng-model="Risk.risk_data.Consistency.other"
+                        <textarea ng-change="check_risk('Consistency')"  ng-required="false" ng-model="Risk.risk_data.Consistency.other"
                         class="mdl-textfield__input" type="text" rows= "3"
                         id="Consistency_other" name="Consistency_other" >
                       </textarea>
@@ -194,7 +197,8 @@
                         <span ng-show="form.Consistency_other.$error.required">{{'Richiesto'|translate}}.</span>
                       </div>
                     </fieldset>
-
+                    <span style="color:#3f51b5">{{'Rischio Parziale Consistenza'|translate}}:</span><span ng-class="Risk.risk_data.partial.Consistency"> {{Risk.risk_data.partial.Consistency}}</span>
+                    <div style="background-color:#3f51b5"; class="drawer-separator"></div>
 
 
                   </form>
