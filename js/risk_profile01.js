@@ -115,11 +115,12 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         convertDateStringsToDates($scope.Risk)
         convertDateStringsToDates($scope.Risk.risk_data)
-        if ($scope.Risk.risk_data.subjectiveProfile===undefined || ! isObject($scope.Risk.risk_data.subjectiveProfile))
+        if ($scope.Risk.risk_data.subjectiveProfile===undefined || ! isObject($scope.Risk.risk_data.subjectiveProfile)){
           $scope.Risk.risk_data.subjectiveProfile={}
-        if ($scope.Kyc.contractor_data.check_pep==1){
+
+        }
+        if ($scope.Kyc.contractor_data.check_pep!==undefined && $scope.Kyc.contractor_data.check_pep==1  ){
           $scope.PEP="il Cliente si è dichiarato PEP"
-          $scope.Risk.risk_data.subjectiveProfile.pep=1
 
         }
         $('input.mdl-textfield__input').each(

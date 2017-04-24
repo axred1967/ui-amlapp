@@ -68,7 +68,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   	}
 
 
-    $scope.Companies= [];
+    $scope.Companies= {};
     var id=localStorage.getItem("userId");
   	var email=localStorage.getItem("userEmail");
     $('#loader_img').hide();

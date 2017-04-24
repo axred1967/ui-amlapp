@@ -100,7 +100,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     Doc=JSON.parse(localStorage.getItem('Doc'))
     convertDateStringsToDates(Doc)
     $scope.Kyc.contractor_data.Docs[Doc.indice]=Doc
-    $('#loader_img').hide();
   }
   else if ($scope.page.addDoc){
     $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
@@ -113,7 +112,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       $scope.Kyc.contractor_data.Docs=[]
       $scope.Kyc.contractor_data.Docs[0]=Doc
     }
-    $('#loader_img').hide();
 
   }
   else {
@@ -126,10 +124,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
       appData=$scope.Contract
       data= {"action":"kycAx",appData:appData,country:true}
-
+      $scope.loader=true
       $http.post( SERVICEURL2,  data )
       .success(function(responceData) {
-        $('#loader_img').hide();
         if(responceData.RESPONSECODE=='1') 			{
           data=responceData.RESPONSE;
           $scope.Kyc=data;
@@ -145,6 +142,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
           convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
           convertDateStringsToDates($scope.Kyc.company_data)
           convertDateStringsToDates($scope.Kyc.owner_data)
+          $scope.loader=false
 
           $('input.mdl-textfield__input').each(
             function(index){
@@ -188,12 +186,10 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     dbData.contractor_data=JSON.stringify(dbData.contractor_data)
     dbData.company_data=JSON.stringify(dbData.company_data)
     dbData.owner_data=JSON.stringify(dbData.owner_data)
-
-    $('#loader_img').show();
+    $scope.loader=true
     data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
-      $('#loader_img').hide();
       if(data.RESPONSECODE=='1') 			{
         swal("",data.RESPONSE);
         $scope.lastid=data.lastid

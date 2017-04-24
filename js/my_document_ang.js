@@ -58,7 +58,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $('#loader_img').hide()
     $scope.page={}
     $scope.action="";
-    $scope.Docs=[]
+    $scope.Docs={}
     $scope.Doc={}
     $scope.word=[];
     page=localStorage.getItem('my_document.html')

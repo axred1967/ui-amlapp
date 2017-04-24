@@ -86,6 +86,7 @@ app2.filter('capitalize', function() {
 
 app2.controller('personCtrl', function ($scope,$http,$translate) {
   $scope.page={}
+  $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
 
   curr_page=base_name()
   page=localStorage.getItem(curr_page)
@@ -101,13 +102,14 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     default:
     var id=localStorage.getItem("CustomerProfileId");
     var email=localStorage.getItem("userEmail");
-    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     appData=$scope.Contract
-    data= {"action":"kycAx",appData:appData,country:true}
+    data= {"action":"kycAx",appData:appData}
+//    $scope.loader=true
     $http.post( SERVICEURL2,  data )
     .success(function(responceData) {
-      $('#loader_img').hide();
+
       if(responceData.RESPONSECODE=='1') 			{
+//        $scope.loader=false
         data=responceData.RESPONSE;
         $scope.Kyc=data;
         $scope.countryList=responceData.countrylist
@@ -194,11 +196,10 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     dbData.company_data=JSON.stringify(dbData.company_data)
     dbData.owner_data=JSON.stringify(dbData.owner_data)
 
-    $('#loader_img').show();
-    data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData}
+    data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,final:true}
+    $scope.loader=true
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
-      $('#loader_img').hide();
       if(data.RESPONSECODE=='1') 			{
         swal("",data.RESPONSE);
         $scope.lastid=data.lastid
@@ -271,106 +272,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
     }
   }
-  $scope.uploadfromgallery=function(Doc,index)
-  {
-    Doc.index=index
-    localstorage('Doc', JSON.stringify(Doc));
-     // alert('cxccx');
-     navigator.camera.getPicture($scope.uploadPhoto,
-          function(message) {
-              alert('get picture failed');
-          },
-          {
-              quality: 50,
-              destinationType: navigator.camera.DestinationType.FILE_URI,
-              sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-          }
-      );
-  }
-  $scope.add_photo=function(Doc, index)
-  {
-    Doc.index=index
-    localstorage('Doc', JSON.stringify(Doc));
-     // alert('cxccx');
-     navigator.camera.getPicture($scope.uploadPhoto,
-          function(message) {
-              alert('get picture failed');
-          },
-          {
-              quality: 50,
-              destinationType: navigator.camera.DestinationType.FILE_URI,
-              sourceType: navigator.camera.PictureSourceType.CAMERA
-          }
-      );
-  }
 
-  $scope.uploadPhoto=function(imageURI){
-    $("#loader_img").show()
-    $scope.Doc=JSON.parse(localStorage.getItem('Doc'))
-
-     var options = new FileUploadOptions();
-     options.fileKey="file";
-     options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
-     options.mimeType="text/plain";
-     options.chunkedMode = false;
-     var params = new Object();
-
-     options.params = params;
-     var ft = new FileTransfer();
-     ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
-
-
-
-  }
-  $scope.winFT=function (r)
-  {
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    var review_info   =JSON.parse(r.response);
-    var id = review_info.id;
-      $('#doc_image').val(review_info.response);
-     // var review_selected_image  =  review_info.review_id;
-      //$('#review_id_checkin').val(review_selected_image);
-      data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id}
-      $http.post( SERVICEURL2,  data )
-          .success(function(data) {
-                    if(data.RESPONSECODE=='1') 			{
-                      //$word=$($search.currentTarget).attr('id');
-                      $scope.Cotnract.Docs[Doc.index].doc_image=data.RESPONSE;
-                      $("#loader_img").hide()
-                    }
-           })
-          .error(function() {
-            $("#loader_img").hide()
-             console.log("error");
-           });
-  }
-  $scope.failFT =function (error)
-  {
-    $("#loader_img").hide()
-
-  }
-
-
-  $scope.add_document=function(Doc){
-    if (Doc===undefined){
-      Doc={}
-    }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_kyc_id",location:curr_page}))
-    Doc.doc_name="Documento di Identità"
-    Doc.doc_type="Documento di Identità"
-    Doc.agency_id=localStorage.getItem('agencyId')
-    Doc.per='contract'
-    if ($scope.Kyc.contract_id===undefined && $scope.Kyc.contract_id>0)
-      Doc.per_id=$scope.Kyc.contract_id;
-    Doc.id=null
-    Doc.image_name=null
-    Doc.showOnlyImage=true
-    Doc.indice=$scope.Kyc.contractor_data.Docs.length
-
-    localstorage('Doc',JSON.stringify(Doc))
-    //localstorage('Contract',JSON.stringify($scope.Contract))
-    redirect('add_document.html')
-   }
    $scope.back=function(passo){
      if (passo>0){
          localstorage('kyc_owners.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
@@ -381,6 +283,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
          redirect($scope.page.prev_page)
          return;
      }
+     //$scope.loader=false
      redirect($scope.page.location)
    }
 

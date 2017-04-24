@@ -3,7 +3,7 @@ var app2 = angular.module('myApp', []);
 
 app2.controller('personCtrl', function ($scope,$http) {
     $scope.datalang = DATALANG;
-    $scope.Companies= [];
+    $scope.Companies= {};
     var CompanyID=localStorage.getItem("CompanyID");
   	var email=localStorage.getItem("userEmail");
     $('#loader_img').hide();

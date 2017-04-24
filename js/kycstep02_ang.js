@@ -104,7 +104,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     Doc=JSON.parse(localStorage.getItem('Doc'))
     convertDateStringsToDates(Doc)
     $scope.Kyc.contractor_data.Docs[Doc.indice]=Doc
-    $('#loader_img').hide();
+
   }
   else if ($scope.page.addDoc){
     $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
@@ -119,10 +119,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       $scope.Kyc.contractor_data.Docs[$scope.Kyc.contractor_data.Docs.length]=Doc
     }
     else {
-      $scope.Kyc.contractor_data.Docs=[]
+      $scope.Kyc.contractor_data.Docs={}
       $scope.Kyc.contractor_data.Docs[0]=Doc
     }
-    $('#loader_img').hide();
 
   }
   else {
@@ -133,9 +132,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
       appData=$scope.Contract
       data= {"action":"kycAx",appData:appData,country:true}
+      $scope.loader=true;
       $http.post( SERVICEURL2,  data )
       .success(function(responceData) {
-        $('#loader_img').hide();
         if(responceData.RESPONSECODE=='1') 			{
           data=responceData.RESPONSE;
           $scope.Kyc=data;
@@ -153,6 +152,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
           convertDateStringsToDates($scope.Kyc.owner_data)
           console.log($scope.Kyc.contractor_data.Docs)
 
+          $scope.loader=false;
 
           $('input.mdl-textfield__input').each(
             function(index){
@@ -196,11 +196,10 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     dbData.owner_data=JSON.stringify(dbData.owner_data)
 
 
-    $('#loader_img').show();
+    $scope.loader=true
     data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
-      $('#loader_img').hide();
       if(data.RESPONSECODE=='1') 			{
         swal("",data.RESPONSE);
         $scope.lastid=data.lastid
@@ -215,6 +214,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       }
     })
     .error(function() {
+      $scope.loader=false
       console.log("error");
     });
 

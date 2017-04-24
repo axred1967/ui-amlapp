@@ -67,9 +67,14 @@
               <div class="clr"></div>
             </div>
           </div>
+          <div class="center2" ng-show="loader" id="loader_img" >&nbsp;
+            <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
+           </div>
 
-          <div class="account-data add-customer-data"> <!-- text fields -->
-            <center><h5 >{{'Adeguata Verifica' |translate }} {{'terzo' |translate }}</h5></center>
+
+          <div ng-hide="loader==true" class="account-data add-customer-data"> <!-- text fields -->
+            <center><h5 class="orange" id="name_agent">{{Contract.CPU}} - {{Contract.owner}}</h5>
+            <h4>{{'Adeguata Verifica'|translate}}</h4></center>
             <div class="mdl-card mdl-shadow--2dp ">
               <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--12-col">
@@ -341,7 +346,7 @@
               </button>
               <span class="mdl-tooltip mdl-tooltip--validation" for="save_exit" >
                 <span >{{'SaveExit'|translate}}.</span>
-              </span>              <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
+              </span>              
             </div>
 
 

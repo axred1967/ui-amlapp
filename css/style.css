@@ -395,9 +395,10 @@ header .mdl-layout__header-row button {
 	bottom: -28px;
 }
 */
-.mdl-card__actions .mdl-button {
+/*.mdl-card__actions .mdl-button {
 	float: right;
 }
+*/
 .mdl-card__supporting-text {
 	border-top: 1px solid rgba(0,0,0,.1);
 }
@@ -1409,5 +1410,15 @@ td.wordwrap{
 }
 .Basso{
  color:green;
+
+}
+.center2{
+	height: 50px;
+	 width: 50px;
+	 position: absolute;
+	 margin: -50px 0 0 -50px;
+	 left: 50%;
+	 top: 50%;
+
 
 }

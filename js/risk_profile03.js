@@ -108,12 +108,18 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     .success(function(responceData) {
       $('#loader_img').hide();
       if(responceData.RESPONSECODE=='1') 			{
+        $scope.Kyc=responceData.kyc;
         data=responceData.RESPONSE;
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         convertDateStringsToDates($scope.Risk)
         convertDateStringsToDates($scope.Risk.risk_data)
+        if ($scope.Risk.risk_data.mainActivity===undefined || ! isObject($scope.Risk.risk_data.mainActivity))
+          $scope.Risk.risk_data.mainActivity={}
+          if ($scope.Risk.risk_data.Residence===undefined || ! isObject($scope.Risk.risk_data.Residence))
+            $scope.Risk.risk_data.Residence={}
 
+//        $scope.Risk.risk_data.partial=IsJsonString($scope.Risk.risk_data.partial)
         $('input.mdl-textfield__input').each(
           function(index){
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -169,8 +175,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       else
       {
         console.log('error');
-        swal("",data.RESPONSE);
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
+        swal("",data.RESPONSE);
       }
     })
     .error(function() {
@@ -236,31 +242,11 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
 
 
-  $scope.add_document=function(Doc){
-    if (Doc===undefined){
-      Doc={}
-    }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_risk_id",location:curr_page}))
-    Doc.doc_name="Documento di Identità"
-    Doc.doc_type="Documento di Identità"
-    Doc.agency_id=localStorage.getItem('agencyId')
-    Doc.per='contract'
-    if ($scope.Kyc.contract_id===undefined && $scope.Kyc.contract_id>0)
-      Doc.per_id=$scope.Kyc.contract_id;
-    Doc.id=null
-    Doc.image_name=null
-    Doc.showOnlyImage=true
-    Doc.indice=$scope.Kyc.contractor_data.Docs.length
 
-    localstorage('Doc',JSON.stringify(Doc))
-    //localstorage('Contract',JSON.stringify($scope.Contract))
-    redirect('add_document.html')
-   }
+
    $scope.check_risk=function (partial){
-   if   ($scope.Risk.risk_data.partial===undefined ){
-     $scope.Risk.risk_data.partial={}
-
-   }
+   if   ($scope.Risk.risk_data.partial===undefined|| $scope.Risk.risk_data.partial==false)
+      $scope.Risk.risk_data.partial={}
    $scope.Risk.risk_data.partial[partial]="Basso"
 
      angular.forEach($scope.Risk.risk_data[partial], function(value, key) {
@@ -274,6 +260,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
 
    }
+
    $scope.back=function(passo){
      if (passo>0){
          localstorage('risk_profile0'+ passo +'.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))

@@ -66,13 +66,14 @@
           </div>
 
 
-          <div class="account-data"> <!-- text fields -->
-            <center><h4>{{'Analisi del Rischio'|translate}}</h4></center>
+          <div class="account-data add-customer-data"> <!-- text fields -->
+            <center><h5 class="orange" id="name_agent">{{Contract.CPU}} - {{Contract.owner}}</h5>
+            <h4>{{'Analisi del Rischio'|translate}}</h4></center>
 
             <div class="mdl-card mdl-shadow--2dp ">
               <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--12-col">
-                  <form name="form" novalidate>
+                  <form id="form" name="form" novalidate>
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
                         <h5 class="kyc01-head">{{'Attività ad Alta frequenza'|translate}} </h5>
@@ -197,7 +198,7 @@
                         <span ng-show="form.Consistency_other.$error.required">{{'Richiesto'|translate}}.</span>
                       </div>
                     </fieldset>
-                    <span style="color:#3f51b5">{{'Rischio Parziale Consistenza'|translate}}:</span><span ng-class="Risk.risk_data.partial.Consistency"> {{Risk.risk_data.partial.Consistency}}</span>
+                    <span style="color:blue">{{'Rischio Parziale Consistenza'|translate}}:</span><span ng-class="Risk.risk_data.partial.Consistency"> {{Risk.risk_data.partial.Consistency}}</span>
                     <div style="background-color:#3f51b5"; class="drawer-separator"></div>
 
 

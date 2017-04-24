@@ -282,7 +282,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
          }
          else {
            localstorage('risk_final.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
-           redirect('kyc_final.html')
+           redirect('risk_final.html')
 
          }
          return;

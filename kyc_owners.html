@@ -88,11 +88,15 @@
       </div>
     </div>
 
-    <div class="list-data-content">
+    <div class="center2" ng-show="loader" id="loader_img" >&nbsp;
+      <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
+     </div>
+
+
+    <div ng-hide="loader==true" class="account-data add-customer-data"> <!-- text fields -->
       <center>  <h4>{{'Adeguata Verifica' |translate  }} </h4></center>
       <center>  <h5>{{'OwnersList' |translate  }} </h5></center>
       <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
-      <center>  <img style="height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
       <div id="list_owner" ng-hide="Kyc.owner_data.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Owner in Kyc.owner_data " ng-init="ownerIndex=$index">
         <div class="mdl-cell mdl-cell--12-col">
           <div class="mdl-card amazing mdl-shadow--2dp">
@@ -167,7 +171,6 @@
       <span class="mdl-tooltip mdl-tooltip--validation" for="save_exit" >
         <span >{{'SaveExit'|translate}}.</span>
       </span>
-      <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
     </div>
 
   </main>

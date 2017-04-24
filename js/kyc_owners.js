@@ -108,7 +108,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     convertDateStringsToDates($scope.Kyc.owner_data)
     $scope.owner=JSON.parse(localStorage.getItem('Owner'))
     $scope.Kyc.owner_data[$scope.owner.indice]=$scope.owner
-    $('#loader_img').hide();
   }
   else if ($scope.page.add){
     $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
@@ -123,10 +122,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       $scope.Kyc.owner_data[$scope.Kyc.owner_data.length]=$scope.owner
     }
    else {
-     $scope.Kyc.owner_data=[]
+     $scope.Kyc.owner_data={}
      $scope.Kyc.owner_data[$scope.Kyc.owner_data.length]=$scope.owner
    }
-  $('#loader_img').hide();
 
   }
   else {
@@ -136,7 +134,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     data= {"action":"kycAx",appData:appData,country:true}
     $http.post( SERVICEURL2,  data )
     .success(function(responceData) {
-      $('#loader_img').hide();
+      $scope.loader=true;
       if(responceData.RESPONSECODE=='1') 			{
         data=responceData.RESPONSE;
         $scope.Kyc=data;
@@ -153,6 +151,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
         convertDateStringsToDates($scope.Kyc.company_data)
         convertDateStringsToDates($scope.Kyc.owner_data)
+        $scope.loader=false
 
 
         $('input.mdl-textfield__input').each(
@@ -176,14 +175,15 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   }
   $scope.deleteOwn= function (Own,index){
     owner_id=Own.user_id
-    $('#loader_img').show();
+    $scope.loader=true;
+
     data={ "action":"deleteOwner", appData:$scope.Kyc.contractor_data,user_id:owner_id}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
-      $('#loader_img').hide();
       if(data.RESPONSECODE=='1') 			{
         swal("",data.RESPONSE);
         $scope.Kyc.owner_data.splice(index,index);
+        $scope.loader=false;
 
       }
       else
@@ -207,11 +207,11 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     dbData.company_data=JSON.stringify(dbData.company_data)
     dbData.owner_data=JSON.stringify(dbData.owner_data)
 
-    $('#loader_img').show();
+    $scope.loader=true;
+
     data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
-      $('#loader_img').hide();
       if(data.RESPONSECODE=='1') 			{
         swal("",data.RESPONSE);
         $scope.lastid=data.lastid
@@ -284,106 +284,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
     }
   }
-  $scope.uploadfromgallery=function(Doc,index)
-  {
-    Doc.index=index
-    localstorage('Doc', JSON.stringify(Doc));
-     // alert('cxccx');
-     navigator.camera.getPicture($scope.uploadPhoto,
-          function(message) {
-              alert('get picture failed');
-          },
-          {
-              quality: 50,
-              destinationType: navigator.camera.DestinationType.FILE_URI,
-              sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-          }
-      );
-  }
-  $scope.add_photo=function(Doc, index)
-  {
-    Doc.index=index
-    localstorage('Doc', JSON.stringify(Doc));
-     // alert('cxccx');
-     navigator.camera.getPicture($scope.uploadPhoto,
-          function(message) {
-              alert('get picture failed');
-          },
-          {
-              quality: 50,
-              destinationType: navigator.camera.DestinationType.FILE_URI,
-              sourceType: navigator.camera.PictureSourceType.CAMERA
-          }
-      );
-  }
-
-  $scope.uploadPhoto=function(imageURI){
-    $("#loader_img").show()
-    $scope.Doc=JSON.parse(localStorage.getItem('Doc'))
-
-     var options = new FileUploadOptions();
-     options.fileKey="file";
-     options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
-     options.mimeType="text/plain";
-     options.chunkedMode = false;
-     var params = new Object();
-
-     options.params = params;
-     var ft = new FileTransfer();
-     ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
 
 
-
-  }
-  $scope.winFT=function (r)
-  {
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    var review_info   =JSON.parse(r.response);
-    var id = review_info.id;
-      $('#doc_image').val(review_info.response);
-     // var review_selected_image  =  review_info.review_id;
-      //$('#review_id_checkin').val(review_selected_image);
-      data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id}
-      $http.post( SERVICEURL2,  data )
-          .success(function(data) {
-                    if(data.RESPONSECODE=='1') 			{
-                      //$word=$($search.currentTarget).attr('id');
-                      $scope.Cotnract.Docs[Doc.index].doc_image=data.RESPONSE;
-                      $("#loader_img").hide()
-                    }
-           })
-          .error(function() {
-            $("#loader_img").hide()
-             console.log("error");
-           });
-  }
-  $scope.failFT =function (error)
-  {
-    $("#loader_img").hide()
-
-  }
-
-
-  $scope.add_document=function(Doc){
-    if (Doc===undefined){
-      Doc={}
-    }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_kyc_id",location:curr_page}))
-    Doc.doc_name="Documento di Identità"
-    Doc.doc_type="Documento di Identità"
-    Doc.agency_id=localStorage.getItem('agencyId')
-    Doc.per='contract'
-    if ($scope.Kyc.contract_id===undefined && $scope.Kyc.contract_id>0)
-      Doc.per_id=$scope.Kyc.contract_id;
-    Doc.id=null
-    Doc.image_name=null
-    Doc.showOnlyImage=true
-    Doc.indice=$scope.Kyc.contractor_data.Docs.length
-
-    localstorage('Doc',JSON.stringify(Doc))
-    //localstorage('Contract',JSON.stringify($scope.Contract))
-    redirect('add_document.html')
-   }
 
   $scope.add_owner=function(Owner){
     localstorage('add_owners.html',JSON.stringify({action:'add_customer_for_kyc_owner',location:'kyc_owners.html',other_data:true,owners:true}))

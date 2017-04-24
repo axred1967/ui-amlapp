@@ -94,6 +94,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.action=$scope.page.action
 
   }
+  $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
 
 
 
@@ -103,23 +104,43 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     var email=localStorage.getItem("userEmail");
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     appData=$scope.Contract
-    data= {"action":"riskAx",appData:appData,country:true}
+    data= {"action":"riskAx",appData:appData,kyc:true}
     $http.post( SERVICEURL2,  data )
     .success(function(responceData) {
       $('#loader_img').hide();
       if(responceData.RESPONSECODE=='1') 			{
-        $scope.Kyc=responceData.kyc;
         data=responceData.RESPONSE;
+        $scope.Kyc=responceData.kyc;
+        $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
-        $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         convertDateStringsToDates($scope.Risk)
         convertDateStringsToDates($scope.Risk.risk_data)
-        if ($scope.Kyc.contractor_data.check_pep==1){
-          $scope.PEP="il Cliente si è dichiarato PEP"
-          $scope.Risk.risk_data.subjectiveProfile.pep=1
+        var $risk=0
+        angular.forEach($scope.Risk.risk_data.partial, function(value, key) {
+          if (value=="Alto")
+            $risk++
+        })
+        $scope.Risk.risk_data.riskCalculated="Limitato";
+        if ($risk>=3){
+          $scope.Risk.risk_data.riskCalculated="Alto";
 
         }
+        if ($risk==2){
+          $scope.Risk.risk_data.riskCalculated="Medio";
+
+        }
+        if ($risk==1){
+          $scope.Risk.risk_data.riskCalculated="Basso";
+        }
+        if ($scope.Kyc.contractor_data.check_pep==1){
+          $scope.Risk.risk_data.riskCalculated="Alto";
+        }
+        if ($scope.Risk.risk_data.Residence.riskCountry==1)
+          $scope.Risk.risk_data.riskCalculated="Alto";
+
+        //$scope.Risk.risk_data.riskAssigned=$scope.Risk.risk_data.riskCalculated
+
         $('input.mdl-textfield__input').each(
           function(index){
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -161,24 +182,27 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     dbData.risk_data=JSON.stringify(dbData.risk_data)
 
     $('#loader_img').show();
-    data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData}
+    data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,final:true}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       $('#loader_img').hide();
       if(data.RESPONSECODE=='1') 			{
         swal("",data.RESPONSE);
         $scope.lastid=data.lastid
+        $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
 
         $scope.back(passo)
 
       }
       else
       {
+        $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         console.log('error');
         swal("",data.RESPONSE);
       }
     })
     .error(function() {
+      $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
       console.log("error");
     });
 
@@ -240,36 +264,25 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
 
 
-  $scope.add_document=function(Doc){
-    if (Doc===undefined){
-      Doc={}
-    }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_risk_id",location:curr_page}))
-    Doc.doc_name="Documento di Identità"
-    Doc.doc_type="Documento di Identità"
-    Doc.agency_id=localStorage.getItem('agencyId')
-    Doc.per='contract'
-    if ($scope.Kyc.contract_id===undefined && $scope.Kyc.contract_id>0)
-      Doc.per_id=$scope.Kyc.contract_id;
-    Doc.id=null
-    Doc.image_name=null
-    Doc.showOnlyImage=true
-    Doc.indice=$scope.Kyc.contractor_data.Docs.length
 
-    localstorage('Doc',JSON.stringify(Doc))
-    //localstorage('Contract',JSON.stringify($scope.Contract))
-    redirect('add_document.html')
+   $scope.check_risk=function (partial){
+    if   ($scope.Risk.risk_data.partial===undefined )
+      $scope.Risk.risk_data.partial={}
+   $scope.Risk.risk_data.partial[partial]="Basso"
+
+     angular.forEach($scope.Risk.risk_data[partial], function(value, key) {
+       if (value==1 || value.length>5){
+          $scope.Risk.risk_data.partial[partial]="Alto"
+          return
+
+       }
+
+     });
+
+
    }
    $scope.back=function(passo){
-     if (passo>0){
-         localstorage('kyc_owners.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
-         redirect('kyc_owners.html')
-         return;
-     }
-     if (passo==-1){
-         redirect($scope.page.prev_page)
-         return;
-     }
+
      redirect($scope.page.location)
    }
 

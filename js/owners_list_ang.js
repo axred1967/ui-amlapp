@@ -64,8 +64,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.action=$scope.page.action
 
   }
-  $scope.Company=[];
-  $scope.Owner=[];
+  $scope.Company={};
+  $scope.Owner={};
   $scope.Company.name=localStorage.getItem("Company_name");
   var id=localStorage.getItem("userId");
   var CompanyID=localStorage.getItem("CompanyID");
@@ -99,7 +99,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     else
     {
       //swal("", 'no customer')
-      $scope.Owners=[];
+      $scope.Owners={};
 
     }
 

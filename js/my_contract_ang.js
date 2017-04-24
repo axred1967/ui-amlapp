@@ -25,10 +25,12 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
       }
       $('#loader_img').show()
+      $('.account-data').hide()
       data= {"action":"ContractList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last}
       $http.post(SERVICEURL2,  data )
           .success(function(responceData)  {
                     $('#loader_img').hide();
+                    $('.account-data').show()
                     if(responceData.RESPONSECODE=='1') 			{
                       data=responceData.RESPONSE;
                       $scope.loaded=data.length

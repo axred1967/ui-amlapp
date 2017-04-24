@@ -66,13 +66,14 @@
           </div>
 
 
-          <div class="account-data add-Company-data"> <!-- text fields -->
-            <center><h4>{{'Analisi del Rischio'|translate}}</h4></center>
+          <div class="account-data add-customer-data"> <!-- text fields -->
+            <center><h5 class="orange" id="name_agent">{{Contract.CPU}} - {{Contract.owner}}</h5>
+            <h4>{{'Analisi del Rischio'|translate}}</h4></center>
 
             <div class="mdl-card mdl-shadow--2dp ">
               <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--12-col">
-                  <form name="form" novalidate>
+                  <form id="form" name="form" novalidate>
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
                         <h5 class="kyc01-head">{{'Il Cliente risiede in Paesi a Rischio'|translate}} </h5>

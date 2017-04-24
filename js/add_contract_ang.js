@@ -112,7 +112,7 @@
             $scope.Contract.Docs[Contract.Docs.length]=Doc
           }
          else {
-           $scope.Contract.Docs=[]
+           $scope.Contract.Docs={}
            $scope.Contract.Docs[0]=Doc
          }
           $scope.Contract.DocsLoaded=Contract.Docs.length+1
@@ -120,7 +120,7 @@
         }
 
       if ($scope.Contract.Docs===undefined ||  $scope.Contract.Docs.length===undefined ||  $scope.Contract.Docs.length==0){
-        $scope.Contract.Docs=[]
+        $scope.Contract.Docs={}
         $scope.Contract.Docs[0]={}
         $scope.Contract.DocsLoaded=0;
         $scope.Contract.Docs[0].doc_name="Immagine Contratto"

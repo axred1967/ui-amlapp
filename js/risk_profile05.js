@@ -108,18 +108,11 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     .success(function(responceData) {
       $('#loader_img').hide();
       if(responceData.RESPONSECODE=='1') 			{
-        $scope.Kyc=responceData.kyc;
         data=responceData.RESPONSE;
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
-        $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         convertDateStringsToDates($scope.Risk)
         convertDateStringsToDates($scope.Risk.risk_data)
-        if ($scope.Kyc.contractor_data.check_pep==1){
-          $scope.PEP="il Cliente si è dichiarato PEP"
-          $scope.Risk.risk_data.subjectiveProfile.pep=1
-
-        }
         $('input.mdl-textfield__input').each(
           function(index){
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -186,84 +179,26 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   }
 
 
-  $scope.showAC=function($search,$word){
-    var id=localStorage.getItem("userId");
-    var usertype = localStorage.getItem('userType');
-    res = $search.split(".")
-    $search=res[1]
-    if ($word===undefined){
-      $word=$scope[res[0]][res[1]]
-    }
-    else {
-      $word=$('#'+$word).val()
-    }
-    $table=res[0].toLowerCase()
+   $scope.check_risk=function (partial){
+    if   ($scope.Risk.risk_data.partial===undefined )
+      $scope.Risk.risk_data.partial={}
+   $scope.Risk.risk_data.partial[partial]="Basso"
 
-    if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
+     angular.forEach($scope.Risk.risk_data[partial], function(value, key) {
+       if (value==1 || value.length>5){
+          $scope.Risk.risk_data.partial[partial]="Alto"
+          return
 
-      data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table}
-      $http.post( SERVICEURL2,  data )
-      .success(function(data) {
-        if(data.RESPONSECODE=='1') 			{
-          //$word=$($search.currentTarget).attr('id');
-          $scope.word[$search]=data.RESPONSE;
-        }
-      })
-      .error(function() {
-        console.log("error");
-      });
-    }
-    $scope.oldWord= $($search.currentTarget).val()
-  }
-  $scope.resetAC=function(){
-    $scope.word={}
-    $scope.list={}
-    $scope.listOther={}
-    $scope.listCompany={}
+       }
+
+     });
 
 
-  }
-  $scope.addWord=function($search,$word){
-    res = $search.split(".")
-    switch(res.length){
-      case 2:
-      $scope[res[0]][res[1]]=$word
-      $scope.word[res[1]]=[]
-      break;
-      case 3:
-      $scope[res[0]][res[1]][res[2]]=$word
-      $scope.word[res[2]]=[]
-      break;
-
-    }
-  }
-
-
-
-  $scope.add_document=function(Doc){
-    if (Doc===undefined){
-      Doc={}
-    }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_risk_id",location:curr_page}))
-    Doc.doc_name="Documento di Identità"
-    Doc.doc_type="Documento di Identità"
-    Doc.agency_id=localStorage.getItem('agencyId')
-    Doc.per='contract'
-    if ($scope.Kyc.contract_id===undefined && $scope.Kyc.contract_id>0)
-      Doc.per_id=$scope.Kyc.contract_id;
-    Doc.id=null
-    Doc.image_name=null
-    Doc.showOnlyImage=true
-    Doc.indice=$scope.Kyc.contractor_data.Docs.length
-
-    localstorage('Doc',JSON.stringify(Doc))
-    //localstorage('Contract',JSON.stringify($scope.Contract))
-    redirect('add_document.html')
    }
    $scope.back=function(passo){
      if (passo>0){
-         localstorage('kyc_owners.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
-         redirect('kyc_owners.html')
+         localstorage('risk_final.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
+         redirect('risk_final.html')
          return;
      }
      if (passo==-1){
