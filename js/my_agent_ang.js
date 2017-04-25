@@ -1,3 +1,36 @@
+var app = {
+    initialize: function() {
+        this.bind();
+    },
+    bind: function() {
+        document.addEventListener('deviceready', getChkLogin, false);
+    },
+    deviceready: function() {
+        // This is an event handler function, which means the scope is the event.
+        // So, we must explicitly called `app.report()` instead of `this.report()`.
+        app.report('deviceready');
+    },
+    report: function(id) {
+        // Report the event in the console
+        console.log("Report: " + id);
+    },
+};
+function getChkLogin()
+{
+
+    chkloggedin();
+     var usertype = localStorage.getItem('userType');
+    if(usertype ==  2 )
+     {
+        redirect("my_customer.html");
+     }
+
+
+
+}
+
+
+
 var app2 = angular.module('myApp', ['pascalprecht.translate','ng-currency','fieldMatch']);
 //Field Match directive
 angular.module('fieldMatch', [])
@@ -94,8 +127,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       lastkey= Object.keys($scope.Customers).pop() ;
       last=$scope.Customers[lastkey].user_id;
     }
-
-    data= {"action":"CustomerList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last}
+    var agencyId = localStorage.getItem('agencyId');
+    data= {"action":"AgentList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,agency_id:agencyId}
     $http.post(SERVICEURL2,  data )
     .success(function(responceData)  {
       $('#loader_img').hide();
@@ -122,14 +155,14 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   $scope.addMoreItems()
 
   $scope.tocustomer = function(d){
-    localstorage('add_customer.html',JSON.stringify({action:'update_customer',location:'my_customer.html'}))
+    localstorage('add_customer.html',JSON.stringify({action:'update_customer',location:curr_page,agent:true}))
     localstorage("CustomerProfileId",d.user_id);
     localstorage("Customertype",1);
     redirect('add_customer.html')
   };
 
   $scope.add_customer = function(){
-    localstorage('add_customer.html',JSON.stringify({action:'add_customer',location:'my_customer.html'}))
+    localstorage('add_customer.html',JSON.stringify({action:'add_customer',location:curr_page ,agent:true}))
     redirect('add_customer.html')
   };
   $scope.toDocs = function(d){
@@ -153,7 +186,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
   }
   $scope.deleteCustomer=function(Customer,index){
-    $http.post(SERVICEURL2,{action:'delete',table:'users','primary':'id',id:Customer.user_id })
+    $http.post(SERVICEURL2,{action:'delete',table:'users','primary':'id',id:Customer.user_id, agent:true })
     $scope.Customer.splice(index,1);
   }
   console.log($scope.Contracts);

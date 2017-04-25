@@ -55,7 +55,7 @@
      }
  });
  app2.controller('personCtrl', function ($scope,$http,$translate) {
-   $scope.init=function(){
+    $scope.init=function(){
      $scope.page={}
 
      curr_page=base_name()
@@ -83,9 +83,7 @@
               $scope.Contract.user_id= $scope.Contract.other_id
               break;
             }
-            if (! ($scope.Contract.Docs instanceof Array) && $scope.Contract.Docs.length>0){
-              $scope.Contract.Docs=JSON.parse($scope.Contract.Docs)
-            }
+            convertDateStringsToDates($scope.Contract.Docs)
 
             $scope.action='edit'
             $scope.viewName="Modifica Contratto"
@@ -94,7 +92,8 @@
         case 'add_contract' :
           $scope.action='add'
           $scope.viewName="Nuovo Contratto"
-          break;
+          $scope.Contract={}
+                break;
         default :
           $scope.viewName="Nuovo Contratto"
           $scope.action='add'

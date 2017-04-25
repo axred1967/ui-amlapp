@@ -100,19 +100,20 @@
                             <div class="clr"></div>
                         </div>
                     </div>
-                    <div class="center2" id="loader_img">&nbsp;  ciao <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  /> </div>
-
-
-                    <div class="account-data add-customer-data" style="display:none">
+                    <div class="center2" ng-show="loader" id="loader_img" >&nbsp;
+                      <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
+                     </div>
+                    <div ng-hide="loader==true" class="account-data add-customer-data"> <!-- text fields -->
                         <!-- cards grid -->
                         <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
-                        <div id="list_contract" class="mdl-grid"  ng-hide="Contracts.length == 0 " class="ng-hide" ng-repeat="Contract in Contracts |filter:searchText ">
+                        <div id="list_contract" class="mdl-grid"  ng-hide="Contracts.length == 0 " class="ng-hide" ng-repeat="Contract in Contracts |filter:searchText "
+                        ng-init="ContractIndex=$index">
 
-                          <div ng-click="tocontract(Contract)" class="mdl-cell mdl-cell--12-col">
+                          <div  class="mdl-cell mdl-cell--12-col">
                           <div class="mdl-card amazing mdl-shadow--2dp">
                           <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
                           	<div style="cursor:pointer;"  class="minilogo customer-listing1"></div>
-                          	<div class="card-author">
+                          	<div ng-click="tocontract(Contract)" class="card-author">
 
 
                           	</div>
@@ -145,7 +146,15 @@
                                 <span ng-show="Contract.status ==1" ng-class="Contract.risk_defined">{{Contract.risk_defined}}</span>
 
                           		</div>
+                              <div class="mdl-cell">
+                              <button  name="deleteOwn" class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteContract(Contract,ContractIndex)" >
+                                <i class="material-icons">delete</i>
+                              </button>
+                              <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+                                <span >{{'Cancella'|translate}}.</span>
+                              </span>
                           	</div>
+                          </div>
                           </div>
                           </div>
                         </div>

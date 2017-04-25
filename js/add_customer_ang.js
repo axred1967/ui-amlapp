@@ -74,20 +74,33 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 		case 'add_customer':
 		$scope.viewName="Inserisci Cliente"
 		$scope.action="addcustomer"
+    if ($scope.page.agent){
+      $scope.viewName="Inserisci Agente"
+    }
 		break;
 		case 'update_customer':
+
 		var id=localStorage.getItem("CustomerProfileId");
 		var email=localStorage.getItem("userEmail");
-		data= {"action":"view_Customer_Profile_info",customer_id:id,email:email}
+    var agencyId = localStorage.getItem('agencyId');
 
+		data= {"action":"view_Customer_Profile_info",customer_id:id,email:email,agency_id:agencyId}
 
+    $scope.loader=true
 		$http.post( SERVICEURL2,  data )
 		.success(function(responceData) {
-			$('#loader_img').hide();
 			if(responceData.RESPONSECODE=='1') 			{
 				data=responceData.RESPONSE;
+        $.each(data, function(key, value){
+          if (value === null){
+              delete data[key];
+          }
+        });
+
+
 				$scope.Customer =  data;
-				$scope.Customer.IMAGEURI=BASEURL+"uploads/user/small/"
+        $scope.Customer.IMAGEURI=BASEURL+"uploads/user/small/"
+        $scope.loader=false
 				$('input.mdl-textfield__input').each(
 					function(index){
 						$(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -103,7 +116,11 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 		})
 		.error(function() {
 			console.log("error");
-		});            $scope.viewName="Modifica Cliente"
+		});
+    $scope.viewName="Modifica Cliente"
+    if ($scope.page.agent){
+      $scope.viewName="Modifica Agente"
+    }
 		$scope.action="saveProfileCustomer"
 		break;
 		case 'add_customer_for_owners':
@@ -149,12 +166,16 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 			console.log($scope.data);
 		}
 		lang=localStorage.getItem('language');
-		var usertype = localStorage.getItem('userType');
-		$('#loader_img').show();
-		data={ "action":$scope.action, id:id,email:email,usertype:usertype,lang:lang, dbData: $scope.Customer}
-		$http.post( SERVICEURL2,  data )
+
+    var userId = localStorage.getItem('userId');
+  	var usertype = localStorage.getItem('userType');
+    var agencyId = localStorage.getItem('agencyId');
+    dbData=$scope.Customer
+    dbData['user_type']=usertype
+		data={ "action":$scope.action, id:userId,email:email,usertype:usertype,lang:lang, dbData: dbData,agent:$scope.page.agent,agency_id:agencyId}
+    $scope.loader=true
+    $http.post( SERVICEURL2,  data )
 		.success(function(data) {
-			$('#loader_img').hide();
 			if(data.RESPONSECODE=='1') 			{
 				swal("",data.RESPONSE);
 				$scope.lastid=data.lastid

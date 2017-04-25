@@ -24,14 +24,11 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
          last=$scope.Contracts[lastkey].contract_id;
 
       }
-      $('#loader_img').show()
-      $('.account-data').hide()
+      $scope.loader=true
       data= {"action":"ContractList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last}
       $http.post(SERVICEURL2,  data )
           .success(function(responceData)  {
-                    $('#loader_img').hide();
-                    $('.account-data').show()
-                    if(responceData.RESPONSECODE=='1') 			{
+                      if(responceData.RESPONSECODE=='1') 			{
                       data=responceData.RESPONSE;
                       $scope.loaded=data.length
                       $http.post( LOG,  {r:"dopo caricamento",data:data})
@@ -46,6 +43,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                       else
                         $scope.Contracts=$scope.Contracts.concat(data);
                       //$scope.Customers=data;
+                      $scope.loader=false
                      }
                      else   {
                         console.log('no customer')
@@ -70,6 +68,25 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       localstorage('add_contract.html',JSON.stringify({action:'add_contract',location:curr_page}))
       redirect('add_contract.html')
      };
+     $scope.deleteContract=function(Contract,index )
+     {
+       navigator.notification.confirm(
+           'Vuoi cancellare il Contratto!', // message
+           function(button) {
+            if ( button == 1 ) {
+                $scope.deleteContract2(Contract,index);
+            }
+           },            // callback to invoke with index of button pressed
+           'Sei sicuro?',           // title
+           ['Si','No']     // buttonLabels
+           );
+
+     }
+     $scope.deleteContract2=function(contract,index){
+       $http.post(SERVICEURL2,{action:'delete',table:'contract','primary':'id',id:contract.contract_id })
+       $scope.Contracts.splice(index,1);
+     }
+
     $scope.back = function(d){
        redirect($scope.page.location)
      }

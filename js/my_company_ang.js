@@ -71,7 +71,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.Companies= {};
     var id=localStorage.getItem("userId");
   	var email=localStorage.getItem("userEmail");
-    $('#loader_img').hide();
     var usertype = localStorage.getItem('userType');
      var image = localStorage.getItem("Profileimageagencyuser");
      var priviledge = localStorage.getItem("priviligetype");
@@ -94,9 +93,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       }
 
       data= {"action":"CompanyList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last}
+      $scope.loader=true;
       $http.post(SERVICEURL2,  data )
           .success(function(responceData)  {
-                    $('#loader_img').hide();
                     if(responceData.RESPONSECODE=='1') 			{
                       data=responceData.RESPONSE;
                       $scope.loaded=data.length
@@ -105,6 +104,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                       else
                       $scope.Companies=$scope.Companies.concat(data);
                       //$scope.Customers=data;
+                      $scope.loader=false;
+
                      }
                      else   {
                         console.log('no customer')
