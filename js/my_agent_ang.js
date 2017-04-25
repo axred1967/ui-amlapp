@@ -46,6 +46,17 @@ angular.module('fieldMatch', [])
     }
   }
 }]);
+app2.directive('backImg', function(){
+    return function(scope, element, attrs){
+        attrs.$observe('backImg', function(value) {
+            element.css({
+                'background-image': 'url(' + value +')'
+
+            });
+        });
+    };
+});
+
 //Run material design lite
 app2.directive("ngModel",["$timeout", function($timeout){
   return {
@@ -153,6 +164,17 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
   }
   $scope.addMoreItems()
+
+  $scope.imageurl=function(Customer){
+    Customer.IMAGEURI=BASEURL+"uploads/user/small/"
+    if (Customer.image===undefined || Customer.image.length==0)
+      Customer.imageurl= '../img/customer-listing1.png'
+    else
+      Customer.imageurl= Customer.IMAGEURI +Customer.image
+    return   Customer.imageurl
+
+  }
+
 
   $scope.tocustomer = function(d){
     localstorage('add_customer.html',JSON.stringify({action:'update_customer',location:curr_page,agent:true}))

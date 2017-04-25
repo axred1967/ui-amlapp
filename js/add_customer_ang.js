@@ -100,6 +100,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
 				$scope.Customer =  data;
         $scope.Customer.IMAGEURI=BASEURL+"uploads/user/small/"
+
         $scope.loader=false
 				$('input.mdl-textfield__input').each(
 					function(index){
@@ -171,7 +172,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   	var usertype = localStorage.getItem('userType');
     var agencyId = localStorage.getItem('agencyId');
     dbData=$scope.Customer
-    dbData['user_type']=usertype
+    if ($scope.page.agent)
+      dbData['user_type']=2
 		data={ "action":$scope.action, id:userId,email:email,usertype:usertype,lang:lang, dbData: dbData,agent:$scope.page.agent,agency_id:agencyId}
     $scope.loader=true
     $http.post( SERVICEURL2,  data )
@@ -192,6 +194,15 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 		});
 	}
 
+  $scope.imageurl=function(Customer){
+    Customer.IMAGEURI=BASEURL+"uploads/user/small/"
+    if (Customer.image===undefined || Customer.image.length==0)
+      Customer.imageurl= null
+    else
+      Customer.imageurl= Customer.IMAGEURI +Customer.image
+    return   Customer.imageurl
+
+  }
 
 	$scope.back=function(){
 

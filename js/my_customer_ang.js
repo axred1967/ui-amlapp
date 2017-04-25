@@ -32,6 +32,16 @@ app2.directive("ngModel",["$timeout", function($timeout){
     }
   };
 }]);
+app2.directive('backImg', function(){
+    return function(scope, element, attrs){
+        attrs.$observe('backImg', function(value) {
+            element.css({
+                'background-image': 'url(' + value +')'
+
+            });
+        });
+    };
+});
 
 app2.run(function($rootScope, $timeout) {
   $rootScope.$on('$viewContentLoaded', function(event) {
@@ -86,6 +96,15 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   $('#Profileimageagencyuseremail').html(email);
   data= {"action":"CustomerList",id:id,email:email,usertype:usertype,priviledge:priviledge}
 
+  $scope.imageurl=function(Customer){
+    Customer.IMAGEURI=BASEURL+"uploads/user/small/"
+    if (Customer.image===undefined || Customer.image.length==0)
+      Customer.imageurl= '../img/customer-listing1.png'
+    else
+      Customer.imageurl= Customer.IMAGEURI +Customer.image
+    return   Customer.imageurl
+
+  }
 
   $scope.addMoreItems =function(){
     $scope.loader=true
