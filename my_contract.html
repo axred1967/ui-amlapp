@@ -106,18 +106,18 @@
                     <div ng-hide="loader==true" class="account-data add-customer-data"> <!-- text fields -->
                         <!-- cards grid -->
                         <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
-                        <div id="list_contract" class="mdl-grid"  ng-hide="Contracts.length == 0 " class="ng-hide" ng-repeat="Contract in Contracts |filter:searchText "
+                        <div id="list_contract"  ng-hide="Contracts.length == 0 " class="ng-hide" ng-repeat="Contract in Contracts |filter:searchText "
                         ng-init="ContractIndex=$index">
 
                           <div  class="mdl-cell mdl-cell--12-col">
                           <div class="mdl-card amazing mdl-shadow--2dp">
                           <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
                           	<div style="cursor:pointer;"  class="minilogo customer-listing1"></div>
-                          	<div ng-click="tocontract(Contract)" class="card-author">
+                          	<div   ng-click="tocontract(Contract)" class="card-author">
 
 
                           	</div>
-                            <div class="mdl-grid">
+                            <div  ng-click="tocontract(Contract)" class="mdl-grid">
                               <div class="mdl-cell">
                               <span style="cursor:pointer;" >
                                 <strong class="blue first_letter_cap">{{Contract.fullname}}</strong>
