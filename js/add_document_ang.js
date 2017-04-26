@@ -101,6 +101,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     break;
 
     case 'add_document_for_contract' :
+    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     Doc=JSON.parse(localStorage.getItem('Doc'))
     convertDateStringsToDates(Doc)
     $scope.Doc=Doc
@@ -110,7 +111,49 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.loaded=false
 
     break;
+    case 'edit_document_for_contract' :
+    Doc=JSON.parse(localStorage.getItem('Doc'))
+    convertDateStringsToDates(Doc)
+    $scope.loaded=true
+    $scope.Doc=Doc
+    $scope.action='edit'
+    $scope.viewName="Modifica Documento"
+    break;
+
+    case 'add_document_for_customer' :
+    $scope.Customer=JSON.parse(localStorage.getItem('Customer'))
+    Doc=JSON.parse(localStorage.getItem('Doc'))
+    convertDateStringsToDates(Doc)
+    $scope.Doc=Doc
+    $scope.Doc.doc_date=new Date()
+    $scope.action='add'
+    $scope.viewName="Aggiungi Documento"
+    $scope.loaded=false
+
+    break;
+    case 'edit_document_for_customer' :
+    Doc=JSON.parse(localStorage.getItem('Doc'))
+    convertDateStringsToDates(Doc)
+    $scope.loaded=true
+    $scope.Doc=Doc
+    $scope.action='edit'
+    $scope.viewName="Modifica Documento"
+    break;
+
+    case 'add_document_for_company' :
+    $scope.Company=JSON.parse(localStorage.getItem('Coompany'))
+    Doc=JSON.parse(localStorage.getItem('Doc'))
+    convertDateStringsToDates(Doc)
+    $scope.Doc=Doc
+    $scope.Doc.doc_date=new Date()
+    $scope.action='add'
+    $scope.viewName="Aggiungi Documento"
+    $scope.loaded=false
+
+    break;
+
     case 'add_document_for_kyc_id' :
+    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     Doc=JSON.parse(localStorage.getItem('Doc'))
     convertDateStringsToDates(Doc)
     $scope.Doc=Doc
@@ -305,6 +348,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       case 'add_document_for_contract':
       if ($scope.lastid!== undefined && $scope.lastid>0){
         $scope.Doc.id=$scope.lastid
+        $scope.Doc.per="contract"
+        $scope.Doc.per_id=$scope.Contract.contract_id
+
         localstorage('Doc',JSON.stringify($scope.Doc))
         precPage=JSON.parse(localStorage.getItem($scope.page.location))
         precPage.addDoc=true
@@ -315,6 +361,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       case 'add_document_for_kyc_id':
       if ($scope.lastid!== undefined && $scope.lastid>0){
         $scope.Doc.id=$scope.lastid
+        $scope.Doc.per="contract"
+        $scope.Doc.per_id=$scope.Contract.contract_id
         localstorage('Doc',JSON.stringify($scope.Doc))
         precPage=JSON.parse(localStorage.getItem($scope.page.location))
         precPage.addDoc=true
@@ -322,6 +370,31 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         break;
 
       }
+      case 'add_document_for_customer':
+      if ($scope.lastid!== undefined && $scope.lastid>0){
+        $scope.Doc.id=$scope.lastid
+        $scope.Doc.per="customer"
+        $scope.Doc.per_id=$scope.Customer.user_id
+        localstorage('Doc',JSON.stringify($scope.Doc))
+        precPage=JSON.parse(localStorage.getItem($scope.page.location))
+        precPage.addDoc=true
+        localstorage($scope.page.location,JSON.stringify(precPage))
+
+      }
+      break;
+      case 'add_document_for_company':
+      if ($scope.lastid!== undefined && $scope.lastid>0){
+        $scope.Doc.id=$scope.lastid
+        $scope.Doc.per="company"
+        $scope.Doc.per_id=$scope.Company.company_id
+        localstorage('Doc',JSON.stringify($scope.Doc))
+        precPage=JSON.parse(localStorage.getItem($scope.page.location))
+        precPage.addDoc=true
+        localstorage($scope.page.location,JSON.stringify(precPage))
+        break;
+
+      }
+
       case 'edit_document_for_kyc_id':
       if ($scope.lastid!== undefined && $scope.lastid>0){
         localstorage('Doc',JSON.stringify($scope.Doc))
@@ -338,6 +411,23 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         localstorage($scope.page.location,JSON.stringify(precPage))
         break;
       }
+      case 'edit_document_for_company':
+      if ($scope.lastid!== undefined && $scope.lastid>0){
+        localstorage('Doc',JSON.stringify($scope.Doc))
+        precPage=JSON.parse(localStorage.getItem($scope.page.location))
+        precPage.editDoc=true
+        localstorage($scope.page.location,JSON.stringify(precPage))
+        break;
+      }
+      case 'edit_document_for_contract':
+      if ($scope.lastid!== undefined && $scope.lastid>0){
+        localstorage('Doc',JSON.stringify($scope.Doc))
+        precPage=JSON.parse(localStorage.getItem($scope.page.location))
+        precPage.editDoc=true
+        localstorage($scope.page.location,JSON.stringify(precPage))
+        break;
+      }
+
     }
     redirect($scope.page.location)
   }
