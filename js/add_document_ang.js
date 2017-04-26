@@ -55,6 +55,7 @@ app2.filter('capitalize', function() {
   }
 });
 app2.controller('personCtrl', function ($scope,$http,$translate) {
+  $scope.loader=true
   $scope.action="";
   $scope.Doc={}
   $scope.word={};
@@ -215,7 +216,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
   $scope.uploadfromgallery=function()
   {
-    $("#loader_img").show()
+    $("#loader_img_int").show()
     navigator.camera.getPicture($scope.uploadPhoto,
       function(message) {
         alert('get picture failed');
@@ -357,7 +358,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       if ($scope.lastid!== undefined && $scope.lastid>0){
         $scope.Doc.id=$scope.lastid
         $scope.Doc.per="contract"
-        if ($scope.page.per_id!=== undefined && $scope.page.per_id>0)
+        if ($scope.page.per_id!== undefined && $scope.page.per_id>0)
           $scope.Doc.per_id=$scope.page.per_id
         else
           $scope.Doc.per_id=$scope.Contract.contract_id
@@ -430,5 +431,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     redirect($scope.page.location)
   }
   $('#loader_img').hide();
+  $scope.loader=false
 
 })

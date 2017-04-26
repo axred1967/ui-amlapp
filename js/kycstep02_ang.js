@@ -147,7 +147,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
           $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
           $scope.Kyc.contractor_data.Docs=IsJsonString($scope.Kyc.contractor_data.Docs)
           if (!isObject($scope.Kyc.contractor_data.Docs)){
-              $scope.Kyc.contractor_data.Docs={}
+              $scope.Kyc.contractor_data.Docs=[{}]
               $scope.newDocs=true;
 
           }

@@ -20,12 +20,10 @@ function getChkLogin()
 {
 
   chkloggedin();
+  checkthesidebarinfouser();
 
 }
 
-setTimeout(function(){
-  checkthesidebarinfouser();
-}, 800);
 
 var app2 = angular.module('myApp', ['pascalprecht.translate','ng-currency','fieldMatch']);
 //Field Match directive
