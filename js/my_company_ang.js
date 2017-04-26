@@ -32,6 +32,31 @@ app2.directive("ngModel",["$timeout", function($timeout){
     }
   };
 }]);
+app2.directive('showOnLoad', function() {
+  return {
+    restrict: 'A',
+    link: function($scope,elem,attrs) {
+      elem.css({
+          'display': 'none'
+
+      });
+      $scope.$on('show', function() {
+        elem.show()
+      });
+
+    }
+  }
+});
+app2.directive('backImg', function(){
+    return function(scope, element, attrs){
+        attrs.$observe('backImg', function(value) {
+            element.css({
+                'background-image': 'url(' + value +')'
+
+            });
+        });
+    };
+});
 
 app2.run(function($rootScope, $timeout) {
   $rootScope.$on('$viewContentLoaded', function(event) {
@@ -56,7 +81,7 @@ app2.filter('capitalize', function() {
 });
 
 
-app2.controller('personCtrl', function ($scope,$http,$translate) {
+app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
   //$scope.datalang = DATALANG;
   $scope.page={}
   curr_page=base_name()
@@ -104,6 +129,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         else
         $scope.Companies=$scope.Companies.concat(data);
         //$scope.Customers=data;
+        $rootScope.$broadcast('show')
         $scope.loader=false;
 
       }
@@ -119,6 +145,15 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   }
   $scope.addMoreItems()
 
+  $scope.imageurl=function(Company){
+    Company.IMAGEURI=BASEURL+"uploads/company/small/"
+    if (Company.image===undefined || Company.image.length==0)
+      Company.imageurl= '../img/customer-listing1.png'
+    else
+      Company.imageurl= Company.IMAGEURI +Company.image
+    return   Company.imageurl
+
+  }
 
   $scope.tocompany = function(d){
     localstorage("CompanyID",d.company_id);

@@ -68,8 +68,9 @@
 
         <div class="center2" ng-show="loader" id="loader_img" >&nbsp;
           <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
-         </div>
-        <div ng-hide="loader==true" class="account-data add-customer-data"> <!-- text fields -->
+        </div>
+        <div ng-hide="loader==true" class="account-data add-customer-data " ng-cloack> <!-- text fields -->
+<!-- text fields -->
           <center><h5 class="orange" id="name_agent">{{Contract.CPU}} - {{Contract.owner}}</h5>
           <h4>{{'Adeguata Verifica'|translate}}</h4></center>
           <div class="mdl-card mdl-shadow--2dp ">
@@ -151,6 +152,7 @@
           </div>
 
         </div>
+        <br/>
         <div class="center-align">
           <button  id="save_next" ng-click="save_kyc(2)" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
             <i class="material-icons">arrow_right_thick</i>

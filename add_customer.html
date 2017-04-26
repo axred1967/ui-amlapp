@@ -71,7 +71,7 @@
     <div class="center2" ng-show="loader" id="loader_img" >&nbsp;
       <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
      </div>
-    <div ng-hide="loader==true" class="account-data add-customer-data"> <!-- text fields -->
+    <div ng-hide="loader==true" class="account-data add-customer-data" ng-cloak> <!-- text fields -->
       <div class="mdl-card mdl-shadow--2dp">
           <div class="mdl-grid">
             <div class="mdl-cell mdl-cell--12-col">
@@ -176,6 +176,7 @@
                   </div>
 
                 </fieldset>
+
                 <div ng-show="page.other_data">
                   <fieldset>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -557,11 +558,28 @@
               </fieldset>
 
 
-
             </div>
 
           </div>
         </div>
+        <br/>
+        <center ng-hide="page.other_data">
+        <button  id="otherdown" ng-click="other()" class=" mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
+          <i class="material-icons" >arrow_drop_down</i>
+        </button>
+        <span class="mdl-tooltip mdl-tooltip--validation" for="otherdown" >
+          <span >{{'Tutti i Dati'|translate}}.</span>
+        </span>
+        </center>
+        <center ng-show="page.other_data">
+        <button  id="otherup" ng-click="other()" class=" mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
+          <i class="material-icons" >arrow_drop_up</i>
+        </button>
+        <span class="mdl-tooltip mdl-tooltip--validation" for="otherup" >
+          <span >{{'Tutti i Dati'|translate}}.</span>
+        </span>
+        </center>
+        <br/>
 
 
       </form>

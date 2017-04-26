@@ -69,7 +69,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   	var email=localStorage.getItem("userEmail");
     var contract_id = localStorage.getItem("contract_id");
     data= {"action":"view_Contract_info",id:id,email:email,contract_id:contract_id}
-
+		$scope.loader=true;
     $http.post( SERVICEURL2,  data )
         .success(function(responceData) {
                   $('#loader_img').hide();
@@ -82,6 +82,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                       data.owner=data.other_name
                       //data=convertDateStringsToDates(data)
                      $scope.Contract=data;
+										 $scope.loader=false;
 
                    }
                    else

@@ -103,7 +103,7 @@
         <div class="center2" ng-show="loader" id="loader_img" >&nbsp;
           <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
         </div>
-        <div ng-hide="loader==true" class="account-data add-customer-data"> <!-- text fields -->
+        <div ng-hide="loader==true" class="account-data add-customer-data" show-on-load> <!-- text fields -->
 
           <center style="maginn-top:16px;">
             <h5 class="orange" >{{DocFor}}</h5>
@@ -141,7 +141,7 @@
               </div>
             </div>
 
-
+            <br/>
             <center ng-hide="loaded < 5">
               <a  ng-click="addMoreItems()"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
                 Altri>>

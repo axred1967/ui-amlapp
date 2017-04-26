@@ -103,7 +103,7 @@
       <div class="center2" ng-show="loader" id="loader_img" >&nbsp;
         <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
       </div>
-      <div ng-hide="loader==true" class="account-data add-customer-data"> <!-- text fields -->
+      <div ng-hide="loader==true" class="account-data add-customer-data " ng-cloack> <!-- text fields -->
         <!-- cards grid -->
         <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
         <div id="list_contract"  ng-hide="Contracts.length == 0 " class="ng-hide" ng-repeat="Contract in Contracts |filter:searchText "
@@ -112,7 +112,7 @@
         <div  class="mdl-cell mdl-cell--12-col">
           <div class="mdl-card amazing mdl-shadow--2dp">
             <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
-              <div style="cursor:pointer;"  class="minilogo customer-listing1"></div>
+              <div style="cursor:pointer;"  class="minilogo customer-listing1" back-img="{{imageurl(Contract)}}"></div>
               <div   ng-click="tocontract(Contract)" class="card-author">
 
 
@@ -153,17 +153,25 @@
                   <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
                     <span >{{'Cancella'|translate}}.</span>
                   </span>
+                  <button  name="document" class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="toDocs(Contract)" >
+                    <i class="material-icons">attachment</i>
+                  </button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="document" >
+                    <span >{{'Documenti Contratto'|translate}}.</span>
+                  </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <center ng-hide="loaded < 5  && loaded>0">
+      <br/>
+      <center ng-Show="loaded >= 5 ">
         <a  ng-click="addMoreItems()"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
           {{'Altri' | translate }}
         </a>
       </center>
+      <br/>
       <div id="no_contract" ng-hide="Contracts.length != 0 " class="ng-hide"  >
         <div  class="mdl-cell mdl-cell--12-col">
           <div class="mdl-card amazing mdl-shadow--2dp">

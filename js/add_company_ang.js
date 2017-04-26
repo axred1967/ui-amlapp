@@ -50,52 +50,88 @@ app2.filter('capitalize', function() {
 
     }
 });
-app2.controller('personCtrl', function ($scope,$http,$translate) {
+app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     $scope.word={};
     $scope.page={}
-
     page=localStorage.getItem('add_company.html')
   	if ( page!= null && page.length >0 ){
   		$scope.page=JSON.parse(page)
   		$scope.action=$scope.page.action
 
   	}
+    $scope.loadItem=function(){
+      var CompanyID=localStorage.getItem("CompanyID");
+      var email=localStorage.getItem("userEmail");
+      data= {"action":"show_edit_company",company_id:CompanyID}
+      $scope.loader=true
+        $http.post( SERVICEURL2,  data)
+            .success(function(responceData)
+                     {
+                      $('#loader_img').hide();
+                      if(responceData.RESPONSECODE=='1') 			{
+                        data=responceData.RESPONSE;
+                        $scope.Company=data;
+                        convertDateStringsToDates($scope.Company)
+                        if (!isObject($scope.Company.Docs)){
+                          $scope.Company.Docs={}
+                          $scope.showAddDocs=true
+                        }
+                        $scope.loader=false
+                        $('input.mdl-textfield__input').each(
+                              function(index){
+                                  $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                                  $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                              }
+                          );
+                       }
+                       else
+                       {
+                          console.log('no customer')
+                       }
+
+        })
+
+    }
     switch ($scope.action){
         case 'add_company_for_contract':
             $scope.viewName="Inserisci Società"
             $scope.action="add_company"
             break;
         case 'edit_company':
-          var CompanyID=localStorage.getItem("CompanyID");
-        	var email=localStorage.getItem("userEmail");
-          data= {"action":"show_edit_company",company_id:CompanyID}
-
-            $http.post( SERVICEURL2,  data)
-                .success(function(responceData)
-                         {
-                          $('#loader_img').hide();
-                          if(responceData.RESPONSECODE=='1') 			{
-                            data=responceData.RESPONSE;
-                            $scope.Company=data;
-                            $('input.mdl-textfield__input').each(
-                                  function(index){
-                                      $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                                      $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                                  }
-                              );
-                           }
-                           else
-                           {
-                              console.log('no customer')
-                           }
-
-            })
             $scope.viewName="Modifica Società"
             $scope.action="edit_company"
             break;
         default:
             $scope.action="add_company"
             $scope.viewName="Inserisci Società"
+    }
+
+
+    if ($scope.page.editDoc) {
+      $scope.Company=JSON.parse(localStorage.getItem('Company'))
+      convertDateStringsToDates($scope.Company)
+      Doc=JSON.parse(localStorage.getItem('Doc'))
+      convertDateStringsToDates(Doc)
+      $scope.Company.Docs[Doc.indice]=Doc
+
+    }
+    else if ($scope.page.addDoc){
+      $scope.Company=JSON.parse(localStorage.getItem('Company'))
+      convertDateStringsToDates($scope.Company)
+      Doc=JSON.parse(localStorage.getItem('Doc'))
+      convertDateStringsToDates(Doc)
+      if ($scope.Company.Docs.length!==undefined|| $scope.Company.Docs.length>0 ){
+        $scope.Company.Docs[$scope.Company.Docs.length]=Doc
+      }
+      else {
+        $scope.Company.Docs={}
+        $scope.Company.Docs[0]=Doc
+      }
+
+    }
+    else {
+      if ($scope.action="edit_company")
+          $scope.loadItem()
     }
 // autocomplete parole
     $scope.showAC=function($search,$table){
@@ -143,8 +179,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       var id=localStorage.getItem("userId");
       var email=localStorage.getItem("userEmail");
       var usertype = localStorage.getItem('userType');
-      $('#loader_img').show();
-      data={ "action":$scope.action, id:id,email:email,usertype:usertype,lang:langfileloginchk, dbData: $scope.Company}
+      $scope.loader=true
+      dbData= $scope.Company
+      data={ "action":$scope.action, id:id,email:email,usertype:usertype,lang:langfileloginchk, dbData:dbData}
       $http.post( SERVICEURL2,  data )
           .success(function(data) {
                     $('#loader_img').hide();
@@ -156,14 +193,80 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                      else
                      {
                        console.log('error');
+                       $scope.loader=false
                        swal("",data.RESPONSE);
                      }
            })
           .error(function() {
-                   console.log("error");
+            $scope.loader=false
+            console.log("error");
            });
 
     }
+    $scope.uploadfromgallery=function()
+  	{
+      scope.loader=true
+  		 navigator.camera.getPicture($scope.uploadPhoto,
+  					function(message) {
+  							alert('get picture failed');
+  					},
+  					{
+  							quality: 50,
+  							destinationType: navigator.camera.DestinationType.FILE_URI,
+  							sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+  					}
+  			);
+  	}
+  	$scope.add_photo=function()
+  	{
+      scope.loader=true
+  		 // alert('cxccx');
+  		 navigator.camera.getPicture($scope.uploadPhoto,
+  					function(message) {
+  							alert('get picture failed');
+  					},
+  					{
+  							quality: 50,
+  							destinationType: navigator.camera.DestinationType.FILE_URI,
+  							sourceType: navigator.camera.PictureSourceType.CAMERA
+  					}
+  			);
+  	}
+
+  	$scope.uploadPhoto=function(imageURI){
+  		 company_id=$scope.Compnay.company_id
+  		 var options = new FileUploadOptions();
+  		 options.fileKey="file";
+  		 options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
+  		 options.mimeType="text/plain";
+  		 options.chunkedMode = false;
+  		 var params = new Object();
+
+  		 options.params = params;
+  		 var ft = new FileTransfer();
+       $scope.loader=true
+  		 //$http.post( LOG,  {data:BASEURL+"service.php?action=upload_user_image&userid="+userid})
+  		 ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_company_image&company_id="+company_id), $scope.winFT, $scope.failFT, options);
+
+  //          ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
+
+
+
+  	}
+  	$scope.winFT=function (r)
+  	{
+  		var review_info   =JSON.parse(r.response);
+  		$scope.Customer.image=review_info.response
+      $scope.loader=false
+      $scope.$apply()
+
+  	}
+  	$scope.failFT =function (error)
+  	{
+  		$("#loader_img").hide()
+      $scope.loader=false
+
+  	}
   $scope.back=function(){
     switch ($scope.page.action){
        case'add_company_for_contract':

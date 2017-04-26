@@ -32,6 +32,23 @@ app2.directive("ngModel",["$timeout", function($timeout){
     }
   };
 }]);
+app2.directive('showOnLoad', function() {
+  return {
+    restrict: 'A',
+    link: function($scope,elem,attrs) {
+      element.css({
+          'display': 'none'
+
+      });
+      $scope.$on('show', function() {
+        element.css({
+
+        });
+      });
+
+    }
+  }
+});
 
 app2.run(function($rootScope, $timeout) {
   $rootScope.$on('$viewContentLoaded', function(event) {
@@ -56,7 +73,7 @@ app2.filter('capitalize', function() {
 });
 app2.controller('personCtrl', function ($scope,$http,$translate) {
   $scope.page={}
-
+  $scope.loader=true
   curr_page=base_name()
   page=localStorage.getItem(curr_page)
   if ( page!= null && page.length >0 ){
@@ -74,7 +91,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     }
     dbData=$scope.Docload
     data={ "action":"documentList", dbData:dbData}
-    $('#loader_img').show();
     $http.post(SERVICEURL2,  data )
     .success(function(responceData)  {
       $('#loader_img').hide();
@@ -89,6 +105,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         $scope.Docs=data;
         else
         $scope.Docs=$scope.Docs.concat(data);
+        $scope.loader=false
+
         //$scope.Customers=data;
 
       }

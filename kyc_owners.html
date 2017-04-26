@@ -90,10 +90,8 @@
 
     <div class="center2" ng-show="loader" id="loader_img" >&nbsp;
       <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
-     </div>
-
-
-    <div ng-hide="loader==true" class="account-data add-customer-data"> <!-- text fields -->
+    </div>
+    <div ng-hide="loader==true" class="account-data add-customer-data " ng-cloack> <!-- text fields -->
       <center>  <h4>{{'Adeguata Verifica' |translate  }} </h4></center>
       <center>  <h5>{{'OwnersList' |translate  }} </h5></center>
       <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>

@@ -13,6 +13,22 @@ angular.module('fieldMatch', [])
     }
   }
 }]);
+app2.directive('showOnLoad', function() {
+  return {
+    restrict: 'A',
+    link: function($scope,elem,attrs) {
+      elem.css({
+          'display': 'none'
+
+      });
+      $scope.$on('show', function() {
+        elem.show()
+      });
+
+    }
+  }
+});
+
 //Run material design lite
 app2.directive("ngModel",["$timeout", function($timeout){
   return {
@@ -66,7 +82,7 @@ app2.filter('capitalize', function() {
 });
 
 
-app2.controller('personCtrl', function ($scope,$http,$translate) {
+app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
   $scope.loader=false;
   $scope.page={}
   curr_page=base_name()
@@ -98,7 +114,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
   $scope.imageurl=function(Customer){
     Customer.IMAGEURI=BASEURL+"uploads/user/small/"
-    if (Customer.image===undefined || Customer.image.length==0)
+    if (Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
       Customer.imageurl= '../img/customer-listing1.png'
     else
       Customer.imageurl= Customer.IMAGEURI +Customer.image
@@ -126,6 +142,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         else
         $scope.Customers=$scope.Customers.concat(data);
         //$scope.Customers=data;
+        $rootScope.$broadcast('show')
         $scope.loader=false
       }
       else   {

@@ -1415,10 +1415,12 @@ td.wordwrap{
 .center2{
 	height: 50px;
 	 width: 50px;
-	 position: absolute;
 	 margin: -50px 0 0 -50px;
 	 left: 50%;
 	 top: 50%;
 
-
+	 position:fixed;
+}
+.hide{
+	display:none;
 }

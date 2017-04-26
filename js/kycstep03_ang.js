@@ -318,5 +318,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     }
     redirect($scope.page.location)
   }
+$scope.console=function(){
+  console.log("xxx". $scope.Kyc.contractor_data.check_pep);
+
+}
 
 })

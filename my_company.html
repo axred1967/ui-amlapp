@@ -96,7 +96,7 @@
       <div class="center2" ng-show="loader" id="loader_img" >&nbsp;
         <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
        </div>
-      <div ng-hide="loader==true" class="account-data add-customer-data"> <!-- text fields -->
+      <div ng-hide="loader==true" class="account-data add-customer-data" show-on-load> <!-- text fields -->
         <div id="no_company" ng-hide="Companies.length != 0 "   >
           <div  class="mdl-cell mdl-cell--12-col">
             <div class="mdl-card amazing mdl-shadow--2dp">
@@ -117,7 +117,7 @@
           <div class="mdl-cell mdl-cell--12-col">
             <div class="mdl-card amazing mdl-shadow--2dp">
               <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
-                <div style="cursor:pointer;"  class="minilogo customer-listing1"></div>
+                <div style="cursor:pointer;"  class="minilogo customer-listing1" back-img="{{imageurl(Company)}}"></div>
                 <div class="card-author">
 
 

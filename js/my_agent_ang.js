@@ -47,6 +47,24 @@ angular.module('fieldMatch', [])
     }
   }
 }]);
+app2.directive('showOnLoad', function() {
+  return {
+    restrict: 'A',
+    link: function($scope,elem,attrs) {
+      element.css({
+          'display': 'none'
+
+      });
+      $scope.$on('show', function() {
+        element.css({
+
+        });
+      });
+
+    }
+  }
+});
+
 app2.directive('backImg', function(){
     return function(scope, element, attrs){
         attrs.$observe('backImg', function(value) {

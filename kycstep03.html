@@ -69,10 +69,8 @@
           </div>
           <div class="center2" ng-show="loader" id="loader_img" >&nbsp;
             <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
-           </div>
-
-
-          <div ng-hide="loader==true" class="account-data add-customer-data"> <!-- text fields -->
+          </div>
+          <div ng-hide="loader==true" class="account-data add-customer-data " ng-cloack> <!-- text fields -->
             <center><h5 class="orange" id="name_agent">{{Contract.CPU}} - {{Contract.owner}}</h5>
             <h4>{{'Adeguata Verifica'|translate}}</h4></center>
             <div class="mdl-card mdl-shadow--2dp ">
@@ -217,14 +215,14 @@
                         <div class="mdl-grid">
                           <div class="mdl-cell ">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEP-1">
-                              <input type="radio" id="PEP-1" ng-model="Kyc.contractor_data.check_pep" class="mdl-radio__button" name="PEP" value="1"  >
+                              <input type="radio" id="PEP-1" ng-model="Kyc.contractor_data.check_pep" class="mdl-radio__button" ng-click="console()" name="PEP" value="1"  >
                               <span class="mdl-radio__label" >{{'dichiara di essere PEP'| translate}}</span>
                             </label>
                           </div>
 
                           <div class="mdl-cell">
                             <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEP-0">
-                              <input type="radio" id="PEP-0" ng-model="Kyc.contractor_data.check_pep" class="mdl-radio__button" name="PEP" value="0"  checked>
+                              <input type="radio" id="PEP-0" ng-model="Kyc.contractor_data.check_pep" class="mdl-radio__button" name="PEP" value="0" ng-click="console()"  checked>
                               <span class="mdl-radio__label">{{'Dichiara di Non Essere PEP '| translate}}</span>
                             </label>
                           </div>
@@ -243,7 +241,7 @@
                         <label class="mdl-textfield__label" for="pep_charge">{{'Tipo di carica ricoperta'|translate}} *</label>
                         <table class="mdl-data-table mdl-js-data-table  border-none  ">
                           <tbody style="display:table">
-                            <tr ng-click="addWord(Kyc.contractor_data.pep_charge',item.word)" ng-repeat="item in word.profession">
+                            <tr ng-click="addWord(Kyc.contractor_data.pep_charge,item.word)" ng-repeat="item in word.profession">
                               <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
                             </tr>
                           </tbody>
@@ -346,7 +344,7 @@
               </button>
               <span class="mdl-tooltip mdl-tooltip--validation" for="save_exit" >
                 <span >{{'SaveExit'|translate}}.</span>
-              </span>              
+              </span>
             </div>
 
 
