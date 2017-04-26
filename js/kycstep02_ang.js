@@ -95,7 +95,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
   }
   if ($scope.page.editDoc) {
-    $scope.countryList=localStorage.getItem('countryList')
+    $scope.countryList=JSON.parse(localStorage.getItem('countryList'))
     $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
     convertDateStringsToDates($scope.Kyc)
     convertDateStringsToDates($scope.Kyc.contractor_data)
@@ -108,7 +108,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
   }
   else if ($scope.page.addDoc){
-    $scope.countryList=localStorage.getItem('countryList')
+    $scope.countryList=JSON.parse(localStorage.getItem('countryList'))
     $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
     convertDateStringsToDates($scope.Kyc)
     convertDateStringsToDates($scope.Kyc.contractor_data)
@@ -284,12 +284,12 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   }
 
 
-  $scope.add_document=function(Doc){
+  $scope.add_document=function(Doc,per_id){
     if (Doc===undefined){
       Doc={}
     }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_kyc_id",location:curr_page}))
-    Doc.doc_name="Documento di Identità"
+    localstorage('add_document.html',JSON.stringify({action:"add_document_for_kyc_id",per_id:$scope.Kyc.contractor_data.contractor_id,location:curr_page}))
+    Doc.doc_name=""
     Doc.doc_type="Documento di Identità"
     Doc.agency_id=localStorage.getItem('agencyId')
     Doc.per='contract'
@@ -297,7 +297,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     Doc.per_id=$scope.Kyc.contract_id;
     Doc.id=null
     Doc.image_name=null
-    Doc.showOnlyImage=true
+    Doc.showOnlyImage=false
     Doc.indice=$scope.Kyc.contractor_data.Docs.length
     localstorage('Doc',JSON.stringify(Doc))
     localstorage('Contract',JSON.stringify($scope.Kyc.contractor_data))

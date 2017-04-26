@@ -175,33 +175,56 @@
                                 </div>
                               </fieldset>
                               <fieldset>
-                                <div class="demo-card-image mdl-card mdl-shadow--2dp">
-                                  <div class="mdl-card__title mdl-card--expand">{{'Immagine Società'|translate}}</div>
-                                  <img  ng-show="Kyc.company_data.image.length>0" ng-src ="{{Kyc.company_data.image.length>0 ? Kyc.company_data.IMAGEURI+ Kyc.company_data.image :'' }}" ></img>
-                                  <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
+                                <div id="list_doc" ng-show="Kyc.company_data.Docs.length>0"  ng-repeat="Doc in Kyc.company_data.Docs  | filter: {doc_id: Kyc.company_data.company_id } as identityDocs" ng-init="DocIndex=$index">
+                                  <div ng-hide="Doc.deleted" >
 
-                                  <div class="mdl-card__actions">
-                                    <div class="mdl-layout-spacer"></div>
+                                    <div class="demo-card-image mdl-card mdl-shadow--2dp">
+                                      <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
+                                      <img ng-click="edit_doc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ng-show="Doc.doc_image.length>0" ng-src ="{{Doc.doc_image.length>0 ? Doc.IMAGEURI+ Doc.doc_image :'' }}" ></img>
+                                      <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
 
-                                    <button id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
-                                    <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
-                                      <span >{{'Scatta una foto'|translate}}.</span>
-                                    </span>
-                                    <button id="addGallery" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
-                                    <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
-                                      <span >{{'Scegli da Galleria'|translate}}.</span>
-                                    </span>
+                                      <div class="mdl-card__actions">
+                                        <div class="mdl-layout-spacer"></div>
+                                        <button ng-hide="Contract.DocsLoaded>0 " id="addDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_document(Doc);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">add</i></button>
+                                        <span class="mdl-tooltip mdl-tooltip--validation" for="addDoc" >
+                                          <span >{{'Aggiungi Immagine'|translate}}.</span>
+                                        </span>
 
-                                    <button ng-hide="DocLoaded==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
-                                    <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
-                                      <span >{{'Cancella'|translate}}.</span>
-                                    </span>
+                                        <button ng-hide="Contract.DocsLoaded==0 "id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="edit_doc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">add_a_photo</i></button>
+                                        <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
+                                          <span >{{'Cambia immagine'|translate}}.</span>
+                                        </span>
+
+                                        <button ng-hide="Contract.DocsLoaded==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">delete</i></button>
+                                        <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+                                          <span >{{'Cancella'|translate}}.</span>
+                                        </span>
+                                      </div>
+
+                                    </div>
                                   </div>
+
 
                                 </div>
 
-                              </fieldset>
+                                <div ng-show="newDocs || identityDocs.length==0"  >
 
+                                  <div class="demo-card-image mdl-card mdl-shadow--2dp">
+                                    <div class="mdl-card__title mdl-card--expand">{{'Documento identità'|translate}}</div>
+                                    <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
+
+                                    <div class="mdl-card__actions">
+                                      <div class="mdl-layout-spacer"></div>
+                                      <button ng-hide="Contract.DocsLoaded>0 " id="addDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_document(Doc);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">add</i></button>
+                                      <span class="mdl-tooltip mdl-tooltip--validation" for="addDoc" >
+                                        <span >{{'Aggiungi Immagine'|translate}}.</span>
+                                      </span>
+
+                                    </div>
+
+                                  </div>
+                                </div>
+                              </fieldset>
 
 
                             </form>

@@ -357,7 +357,10 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       if ($scope.lastid!== undefined && $scope.lastid>0){
         $scope.Doc.id=$scope.lastid
         $scope.Doc.per="contract"
-        $scope.Doc.per_id=$scope.Contract.contract_id
+        if ($scope.page.per_id!=== undefined && $scope.page.per_id>0)
+          $scope.Doc.per_id=$scope.page.per_id
+        else
+          $scope.Doc.per_id=$scope.Contract.contract_id
         localstorage('Doc',JSON.stringify($scope.Doc))
         precPage=JSON.parse(localStorage.getItem($scope.page.location))
         precPage.addDoc=true
