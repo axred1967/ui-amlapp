@@ -90,6 +90,12 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                            convertDateStringsToDates($scope.Kyc.company_data)
                            convertDateStringsToDates($scope.Kyc.owner_data)
                            $scope.loader=false
+                           $('input.mdl-textfield__input').each(
+                             function(index){
+                               $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                               $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                             }
+                           );                           
                          }
                          else
                          {

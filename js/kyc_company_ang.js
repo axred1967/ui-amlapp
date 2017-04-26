@@ -94,11 +94,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.action=$scope.page.action
 
   }
-
-
-
-  switch ($scope.action){
-    default:
+  $scope.loadItem=function(){
     var id=localStorage.getItem("CustomerProfileId");
     var email=localStorage.getItem("userEmail");
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
@@ -139,11 +135,48 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       console.log("error");
     });
 
+  }
+  switch ($scope.action){
+    default:
     $scope.action="saveKyc"
     $scope.viewName="Dati Soggetto Giuridico"
+  }
 
+  if ($scope.page.editDoc) {
+    $scope.countryList=localStorage.getItem('countryList')
+    $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
+    convertDateStringsToDates($scope.Kyc)
+    convertDateStringsToDates($scope.Kyc.contractor_data)
+    convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
+    convertDateStringsToDates($scope.Kyc.company_data)
+    convertDateStringsToDates($scope.Kyc.owner_data)
+    Doc=JSON.parse(localStorage.getItem('Doc'))
+    convertDateStringsToDates(Doc)
+    $scope.Kyc.contractor_data.Docs[Doc.indice]=Doc
 
   }
+  else if ($scope.page.addDoc){
+    $scope.countryList=localStorage.getItem('countryList')
+    $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
+    convertDateStringsToDates($scope.Kyc)
+    convertDateStringsToDates($scope.Kyc.contractor_data)
+    convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
+    convertDateStringsToDates($scope.Kyc.company_data)
+    convertDateStringsToDates($scope.Kyc.owner_data)
+    Doc=JSON.parse(localStorage.getItem('Doc'))
+    convertDateStringsToDates(Doc)
+    if ($scope.Kyc.contractor_data.Docs.length!==undefined|| $scope.Kyc.contractor_data.Docs.length>0 ){
+      $scope.Kyc.contractor_data.Docs[$scope.Kyc.contractor_data.Docs.length]=Doc
+    }
+    else {
+      $scope.Kyc.contractor_data.Docs={}
+      $scope.Kyc.contractor_data.Docs[0]=Doc
+    }
+
+  }
+  else {
+    $scope.loadItem()
+}
   $scope.save_kyc= function (passo){
     if ($scope.form.$invalid) {
       angular.forEach($scope.form.$error, function(field) {
