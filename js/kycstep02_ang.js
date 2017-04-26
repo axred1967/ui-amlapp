@@ -141,7 +141,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
           data=responceData.RESPONSE;
           $scope.Kyc=data;
           $scope.countryList=responceData.countrylist
-          localstorage('countrylist',JSON.stringify($scope.countryList)
+          localstorage('countrylist',JSON.stringify($scope.countryList))
           if ($scope.Kyc.date_of_identification===undefined || $scope.Kyc.date_of_identification)
           $scope.Kyc.date_of_identification=new Date()
           $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
