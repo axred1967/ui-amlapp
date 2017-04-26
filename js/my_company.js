@@ -20,14 +20,12 @@ function getChkLogin()
 
 
     chkloggedin();
+    checkthesidebarinfouser();
 
 
 }
 
 
-setTimeout(function(){
-        checkthesidebarinfouser();
-}, 800);
 
 function tocompany(d)
 {

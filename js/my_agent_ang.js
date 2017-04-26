@@ -24,6 +24,7 @@ function getChkLogin()
      {
         redirect("my_customer.html");
      }
+     checkthesidebarinfouser();
 
 
 

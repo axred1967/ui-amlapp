@@ -56,8 +56,9 @@ app2.filter('capitalize', function() {
 });
 app2.controller('personCtrl', function ($scope,$http,$translate) {
   var id=localStorage.getItem("userId");
+  var agency_id=localStorage.getItem("agencyId");
   var email=localStorage.getItem("userEmail");
-  data= {"action":"view_Customer_Profile_info",customer_id:id,email:email}
+  data= {"action":"view_Customer_Profile_info",customer_id:id,email:email,agency_id:agency_id}
 
   $http.post( SERVICEURL2,  data )
       .success(function(responceData) {
@@ -142,6 +143,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
        {
          var review_info   =JSON.parse(r.response);
          $scope.Customer.image=review_info.response
+         $scope.$apply()
 
        }
        $scope.failFT =function (error)

@@ -152,7 +152,7 @@
                 <fieldset>
                   <div class="demo-card-image mdl-card mdl-shadow--2dp">
                     <div class="mdl-card__title mdl-card--expand">{{'Immagine Profilo'|translate}}</div>
-                    <img  ng-show="Customer.image" ng-src ="{{Customer.IMAGEURI +Customer.image}}" ></img>
+                    <img  ng-hide="loader" ng-show="Customer.image.length>0" ng-src ="{{Customer.IMAGEURI +Customer.image}}" ></img>
 
 
                     <div class="mdl-card__actions">

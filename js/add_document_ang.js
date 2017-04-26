@@ -330,6 +330,14 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         localstorage($scope.page.location,JSON.stringify(precPage))
         break;
       }
+      case 'edit_document_for_customer':
+      if ($scope.lastid!== undefined && $scope.lastid>0){
+        localstorage('Doc',JSON.stringify($scope.Doc))
+        precPage=JSON.parse(localStorage.getItem($scope.page.location))
+        precPage.editDoc=true
+        localstorage($scope.page.location,JSON.stringify(precPage))
+        break;
+      }
     }
     redirect($scope.page.location)
   }

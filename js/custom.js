@@ -138,6 +138,7 @@ function checkthesidebarinfouser()
 
                                 $('#Profileimageagencyuser').attr("src",BASEURL+"uploads/user/small/"+image);
                                 $('#view_profile_image').attr("src",BASEURL+"uploads/user/small/"+image);
+                                $('#Profileimageagencyuseremail').html(email);
                             }
                         }
                         $('#Profileimageagencyusername').html(data.NAME);
@@ -151,7 +152,6 @@ function checkthesidebarinfouser()
 
 
 
-    $('#Profileimageagencyuseremail').html(email);
 }
 
 

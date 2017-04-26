@@ -257,12 +257,12 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 	}
 	$scope.deleteDoc=function()
 	{
-		$scope.Doc.doc_image=""
+		$scope.Customer.image=""
 	}
 
 	$scope.uploadfromgallery=function()
 	{
-		$("#loader_img").show()
+    scope.loader=true
 		 navigator.camera.getPicture($scope.uploadPhoto,
 					function(message) {
 							alert('get picture failed');
@@ -276,7 +276,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 	}
 	$scope.add_photo=function()
 	{
-		$("#loader_img").show()
+    scope.loader=true
 		 // alert('cxccx');
 		 navigator.camera.getPicture($scope.uploadPhoto,
 					function(message) {
@@ -291,7 +291,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 	}
 
 	$scope.uploadPhoto=function(imageURI){
-		 userid=localStorage.getItem("userId")
+		 userid=$scope.Customer.user_id
 		 var options = new FileUploadOptions();
 		 options.fileKey="file";
 		 options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
@@ -301,7 +301,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
 		 options.params = params;
 		 var ft = new FileTransfer();
-		 $http.post( LOG,  {data:BASEURL+"service.php?action=upload_user_image&userid="+userid})
+     $scope.loader=true
+		 //$http.post( LOG,  {data:BASEURL+"service.php?action=upload_user_image&userid="+userid})
 		 ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_user_image&userid="+userid), $scope.winFT, $scope.failFT, options);
 
 //          ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
@@ -313,11 +314,14 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 	{
 		var review_info   =JSON.parse(r.response);
 		$scope.Customer.image=review_info.response
+    $scope.loader=false
+    $scope.$apply()
 
 	}
 	$scope.failFT =function (error)
 	{
 		$("#loader_img").hide()
+    $scope.loader=false
 
 	}
 	$scope.showAC=function($search,$word){

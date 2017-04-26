@@ -153,8 +153,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   };
   $scope.toDocs = function(d){
     localstorage('my_document.html',JSON.stringify({action:'list_from_my_customer',location:curr_page}))
-    localstorage("customerId",d.user_id);
-    localstorage("customer_name",d.fullname);
+    localstorage('Customer',JSON.stringify(d))
     redirect('my_document.html')
   };
   $scope.deleteCustomer=function(Customer,index )
@@ -163,7 +162,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         'Vuoi cancellare il Contratto!', // message
         function(button) {
          if ( button == 1 ) {
-             $scope.deleteCustomer(Customer,index);
+             $scope.deleteCustomer2(Customer,index);
          }
         },            // callback to invoke with index of button pressed
         'Sei sicuro?',           // title
@@ -171,7 +170,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         );
 
   }
-  $scope.deleteCustomer=function(Customer,index){
+  $scope.deleteCustomer2=function(Customer,index){
     $http.post(SERVICEURL2,{action:'delete',table:'users','primary':'id',id:Customer.user_id })
     $scope.Customer.splice(index,1);
   }

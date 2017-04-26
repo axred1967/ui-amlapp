@@ -20,11 +20,7 @@ function getChkLogin()
 
 
     chkloggedin();
-    
+    checkthesidebarinfouser();
+
 
 }
-
-
-setTimeout(function(){
-        checkthesidebarinfouser();
-}, 800);
