@@ -72,24 +72,24 @@
           </div>
           <div ng-hide="loader==true" class="account-data add-customer-data " ng-cloack> <!-- text fields -->
             <center><h5 class="orange" id="name_agent">{{Contract.CPU}} - {{Contract.owner}}</h5>
-            <h4>{{'Adeguata Verifica'|translate}}</h4></center>
-            <div class="mdl-card mdl-shadow--2dp ">
-              <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--12-col">
-                  <h5 style"text-color:red" ng-if="formStatus">{{formStatus}}</h5>
-                  <form id="form" name="form" action="#" novalidate="">
-                    <fieldset>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                      <select ng-model="Kyc.contractor_data.resi_country" class="mdl-textfield__input" placeholder="{{'ResidenceCountry' | translate}}"
-                      ng-required="true"
-                      id="customer_resi_country" name="customer_resi_country">
-                      <option ng-repeat="option in countryList" value="{{option.country_id}}">{{option.country_name}}</option>
-                      </select>
-                      <label class="mdl-textfield__label" for="customer_resi_country">{{'ResidenceCountry'|translate}} *</label>
-                      <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_name" ng-show="form.customer_resi_country.$invalid && form.customer_resi_country.$touched">
-                        <span ng-show="form.customer_resi_country.$error.required">{{'Richiesto'| translate}}</span>
-                      </span>
-                    </div>
+              <h4>{{'Adeguata Verifica'|translate}}</h4></center>
+              <div class="mdl-card mdl-shadow--2dp ">
+                <div class="mdl-grid">
+                  <div class="mdl-cell mdl-cell--12-col">
+                    <h5 style"text-color:red" ng-if="formStatus">{{formStatus}}</h5>
+                    <form id="form" name="form" action="#" novalidate="">
+                      <fieldset>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                          <select ng-model="Kyc.contractor_data.resi_country" class="mdl-textfield__input" placeholder="{{'ResidenceCountry' | translate}}"
+                          ng-required="true"
+                          id="customer_resi_country" name="customer_resi_country">
+                          <option ng-repeat="option in countryList" value="{{option.country_id}}">{{option.country_name}}</option>
+                        </select>
+                        <label class="mdl-textfield__label" for="customer_resi_country">{{'ResidenceCountry'|translate}} *</label>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_name" ng-show="form.customer_resi_country.$invalid && form.customer_resi_country.$touched">
+                          <span ng-show="form.customer_resi_country.$error.required">{{'Richiesto'| translate}}</span>
+                        </span>
+                      </div>
                     </fieldset>
                     <fieldset>
                       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -137,11 +137,11 @@
                     </fieldset>
                     <div ng-show="Kyc.contractor_data.check_residence==1">
                       <fieldset>
-                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                        <select ng-model="Kyc.contractor_data.domi_country" class="mdl-textfield__input" placeholder="{{'ResidenceCountry' | translate}}"
-                        ng-required="{{Kyc.contractor_data.check_residence==1}}"
-                        id="customer_domi_country" name="customer_domi_country">
-                        <option ng-repeat="option in countryList" value="{{option.country_id}}">{{option.country_name}}</option>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                          <select ng-model="Kyc.contractor_data.domi_country" class="mdl-textfield__input" placeholder="{{'ResidenceCountry' | translate}}"
+                          ng-required="{{Kyc.contractor_data.check_residence==1}}"
+                          id="customer_domi_country" name="customer_domi_country">
+                          <option ng-repeat="option in countryList" value="{{option.country_id}}">{{option.country_name}}</option>
 
                         </select>
                         <label class="mdl-textfield__label" for="customer_domi_country">{{'Paese di Domicilio'|translate}} *</label>
@@ -149,183 +149,182 @@
                           <span ng-show="form.customer_domi_country.$error.required">{{'Richiesto'| translate}}</span>
                         </span>
                       </div>
-                      </fieldset>
-                      <fieldset>
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                          <input class="mdl-textfield__input" type="text" id="customer_address_domi" name="customer_address_domi"
-                          ng-model="Kyc.contractor_data.address_domi"  ng-change="Kyc.contractor_data.address_domi=(Kyc.contractor_data.address_domi| capitalize)"
-                          minlength="3"      ng-required="{{Kyc.contractor_data.check_residence==1}}"
+                    </fieldset>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="customer_address_domi" name="customer_address_domi"
+                        ng-model="Kyc.contractor_data.address_domi"  ng-change="Kyc.contractor_data.address_domi=(Kyc.contractor_data.address_domi| capitalize)"
+                        minlength="3"      ng-required="{{Kyc.contractor_data.check_residence==1}}"
 
-                          />
-                          <label class="mdl-textfield__label" for="customer_address_domi">{{'Indirizzo Domicilio'|translate}} *</label>
-                          <span class="mdl-tooltip mdl-tooltip--validation" for="customer_address_domi" ng-show="form.customer_address_domi.$invalid && form.customer_address_domi.$touched">
-                            <span ng-show="form.customer_address_domi.$error.required">{{'Richiesto'| translate}}</span>
-                          </span>
-                        </div>
-                      </fieldset>
-                      <fieldset>
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                          <input class="mdl-textfield__input" type="text" id="customer_town_domi" name="customer_town_domi"
-                          ng-model="Kyc.contractor_data.town_domi"  ng-change="Kyc.contractor_data.town_domi=(Kyc.contractor_data.town_domi| capitalize)"
-                          minlength="3"   ng-required="{{Kyc.contractor_data.check_residence==1}}"
-                          ng-keyup="showAC('users.town_domi','customer_town_domi');"
-                          ng-focus="resetAC()"
-                          />
-                          <label class="mdl-textfield__label" for="customer_town_domi">{{'Città di Domicilio'|translate}} *</label>
-                          <table class="mdl-data-table mdl-js-data-table  border-none  ">
-                            <tbody style="display:table">
-                              <tr ng-click="addWord('Kyc.contractor_data.town_domi',item.word)" ng-repeat="item in word.town_domi">
-                                <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                          <span class="mdl-tooltip mdl-tooltip--validation" for="customer_town_domi" ng-show="form.customer_town_domi.$invalid && form.customer_town_domi.$touched">
-                            <span ng-show="form.customer_town_domi.$error.required">{{'Richiesto'| translate}}</span>
-                          </span>
-                        </div>
-                      </fieldset>
+                        />
+                        <label class="mdl-textfield__label" for="customer_address_domi">{{'Indirizzo Domicilio'|translate}} *</label>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="customer_address_domi" ng-show="form.customer_address_domi.$invalid && form.customer_address_domi.$touched">
+                          <span ng-show="form.customer_address_domi.$error.required">{{'Richiesto'| translate}}</span>
+                        </span>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="customer_town_domi" name="customer_town_domi"
+                        ng-model="Kyc.contractor_data.town_domi"  ng-change="Kyc.contractor_data.town_domi=(Kyc.contractor_data.town_domi| capitalize)"
+                        minlength="3"   ng-required="{{Kyc.contractor_data.check_residence==1}}"
+                        ng-keyup="showAC('users.town_domi','customer_town_domi');"
+                        ng-focus="resetAC()"
+                        />
+                        <label class="mdl-textfield__label" for="customer_town_domi">{{'Città di Domicilio'|translate}} *</label>
+                        <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                          <tbody style="display:table">
+                            <tr ng-click="addWord('Kyc.contractor_data.town_domi',item.word)" ng-repeat="item in word.town_domi">
+                              <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <span class="mdl-tooltip mdl-tooltip--validation" for="customer_town_domi" ng-show="form.customer_town_domi.$invalid && form.customer_town_domi.$touched">
+                          <span ng-show="form.customer_town_domi.$error.required">{{'Richiesto'| translate}}</span>
+                        </span>
+                      </div>
+                    </fieldset>
 
+
+                  </div>
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="text" id="customer_main_nationality" name="customer_main_nationality"
+                      ng-model="Kyc.contractor_data.main_nationality"  ng-change="Kyc.contractor_data.main_nationality=(Kyc.contractor_data.main_nationality| capitalize)"
+                      minlength="3"   ng-required="{{Kyc.contractor_data.check_residence==1}}"
+                      ng-keyup="showAC('users.main_nationality','customer_main_nationality');"
+                      ng-focus="resetAC()"
+                      />
+                      <label class="mdl-textfield__label" for="customer_main_nationality">{{'MainNationality'|translate}} *</label>
+                      <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                        <tbody style="display:table">
+                          <tr ng-click="addWord('Kyc.contractor_data.main_nationality',item.word)" ng-repeat="item in word.town_domi">
+                            <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="customer_main_nationality" ng-show="form.customer_main_nationality.$invalid && form.customer_main_nationality.$touched">
+                        <span ng-show="form.customer_main_nationality.$error.required">{{'Richiesto'| translate}}</span>
+                      </span>
+                    </div>
+                  </fieldset>
+
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+
+                      <div class="mdl-grid">
+                        <div class="mdl-cell ">
+                          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEP-1">
+                            <input type="radio" id="PEP-1" ng-model="Kyc.contractor_data.check_pep" class="mdl-radio__button" ng-click="console()" name="PEP" value="1"  >
+                            <span class="mdl-radio__label" >{{'dichiara di essere PEP'| translate}}</span>
+                          </label>
+                        </div>
+
+                        <div class="mdl-cell">
+                          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEP-0">
+                            <input type="radio" id="PEP-0" ng-model="Kyc.contractor_data.check_pep" class="mdl-radio__button" name="PEP" value="0" ng-click="console()"  checked>
+                            <span class="mdl-radio__label">{{'Dichiara di Non Essere PEP '| translate}}</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset ng-show="Kyc.contractor_data.check_pep==1">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="text" id="pep_charge" name="pep_charge"
+                      ng-model="Kyc.contractor_data.pep_charge"
+                      minlength="3"   ng-required="Kyc.contract_data.check_pep==1"
+                      ng-keyup="showAC('users.pep_charge','pep_charge');"
+
+                      ng-focus="resetAC()"
+                      />
+                      <label class="mdl-textfield__label" for="pep_charge">{{'Tipo di carica ricoperta'|translate}} *</label>
+                      <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                        <tbody style="display:table">
+                          <tr ng-click="addWord(Kyc.contractor_data.pep_charge,item.word)" ng-repeat="item in word.profession">
+                            <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="pep_charge" ng-show="form.pep_charge.$invalid && form.pep_charge.$touched">
+                        <span ng-show="form.pep_charge.$error.required">{{'Richiesto'| translate}}</span>
+                      </span>
+                    </div>
+                  </fieldset>
+
+                  <fieldset ng-show="Kyc.contractor_data.check_pep==1">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+
+                      <div class="mdl-grid">
+                        <div class="mdl-cell ">
+                          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEPDOM-1">
+                            <input type="radio" id="PEPDOM-1" ng-model="Kyc.contractor_data.pep_domestic" class="mdl-radio__button" name="PEPDOM" value="1" >
+                            <span class="mdl-radio__label" >{{'PEP Domestico'| translate}}</span>
+                          </label>
+                        </div>
+
+                        <div class="mdl-cell">
+                          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEPDOM-0">
+                            <input type="radio" id="PEPDOM-0" ng-model="Kyc.contractor_data.pep_domestic" class="mdl-radio__button" name="PEPDOM" value="0"  checked>
+                            <span class="mdl-radio__label">{{'PEP estero'| translate}}</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="text" id="customer_profession" name="customer_profession"
+                      ng-model="Kyc.contractor_data.profession"
+                      minlength="3"   ng-required="true"
+                      ng-keyup="showAC('users.profession','customer_profession');"
+
+                      ng-focus="resetAC()"
+                      />
+                      <label class="mdl-textfield__label" for="customer_profession">{{'Professione'|translate}} *</label>
+                      <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                        <tbody style="display:table">
+                          <tr ng-click="addWord('Kyc.contractor_data.profession',item.word)" ng-repeat="item in word.profession">
+                            <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="customer_profession" ng-show="form.customer_profession.$invalid && form.customer_profession.$touched">
+                        <span ng-show="form.customer_profession.$error.required">{{'Richiesto'| translate}}</span>
+                      </span>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="text" id="customer_fiscal_number" name="customer_fiscal_number"
+                      ng-model="Kyc.contractor_data.fiscal_number"
+                      minlength="3"   ng-required="true"
+
+                      ng-focus="resetAC()"
+                      />
+                      <label class="mdl-textfield__label" for="customer_fiscal_number">{{'FiscalNumber'|translate}} *</label>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="customer_fiscal_number" ng-show="form.customer_fiscal_number.$invalid && form.customer_fiscal_number.$touched">
+                        <span ng-show="form.customer_fiscal_number.$error.required">{{'Richiesto'| translate}}</span>
+                      </span>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input ng-currency class="mdl-textfield__input" type="text" id="kyc_annual_income" name="kyc_annual_income" minlength="3"  value=" "
+                      ng-model="Kyc.contractor_data.annual_income"   minlength="3"
+                      />
+                      <label class="mdl-textfield__label" for="kyc_annual_income">{{'Annualincome' | translate }}*</label>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="kyc_annual_income" ng-show="form.kyc_annual_income.$invalid && form.kyc_annual_income.$touched">
+                        <span ng-show="form.kyc_annual_income.$error.required">{{'Richiesto'|translate}}.</span>
+                      </span>
 
                     </div>
-                    <fieldset>
-                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" id="customer_main_nationality" name="customer_main_nationality"
-                        ng-model="Kyc.contractor_data.main_nationality"  ng-change="Kyc.contractor_data.main_nationality=(Kyc.contractor_data.main_nationality| capitalize)"
-                        minlength="3"   ng-required="{{Kyc.contractor_data.check_residence==1}}"
-                        ng-keyup="showAC('users.main_nationality','customer_main_nationality');"
-                        ng-focus="resetAC()"
-                        />
-                        <label class="mdl-textfield__label" for="customer_main_nationality">{{'MainNationality'|translate}} *</label>
-                        <table class="mdl-data-table mdl-js-data-table  border-none  ">
-                          <tbody style="display:table">
-                            <tr ng-click="addWord('Kyc.contractor_data.main_nationality',item.word)" ng-repeat="item in word.town_domi">
-                              <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <span class="mdl-tooltip mdl-tooltip--validation" for="customer_main_nationality" ng-show="form.customer_main_nationality.$invalid && form.customer_main_nationality.$touched">
-                          <span ng-show="form.customer_main_nationality.$error.required">{{'Richiesto'| translate}}</span>
-                        </span>
-                      </div>
-                    </fieldset>
-
-                    <fieldset>
-                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
-
-                        <div class="mdl-grid">
-                          <div class="mdl-cell ">
-                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEP-1">
-                              <input type="radio" id="PEP-1" ng-model="Kyc.contractor_data.check_pep" class="mdl-radio__button" ng-click="console()" name="PEP" value="1"  >
-                              <span class="mdl-radio__label" >{{'dichiara di essere PEP'| translate}}</span>
-                            </label>
-                          </div>
-
-                          <div class="mdl-cell">
-                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEP-0">
-                              <input type="radio" id="PEP-0" ng-model="Kyc.contractor_data.check_pep" class="mdl-radio__button" name="PEP" value="0" ng-click="console()"  checked>
-                              <span class="mdl-radio__label">{{'Dichiara di Non Essere PEP '| translate}}</span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </fieldset>
-                    <fieldset ng-show="Kyc.contract_data.check_pep==1">
-                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" id="pep_charge" name="pep_charge"
-                        ng-model="Kyc.contractor_data.pep_charge"
-                        minlength="3"   ng-required="Kyc.contract_data.check_pep==1"
-                        ng-keyup="showAC('users.pep_charge','pep_charge');"
-
-                        ng-focus="resetAC()"
-                        />
-                        <label class="mdl-textfield__label" for="pep_charge">{{'Tipo di carica ricoperta'|translate}} *</label>
-                        <table class="mdl-data-table mdl-js-data-table  border-none  ">
-                          <tbody style="display:table">
-                            <tr ng-click="addWord(Kyc.contractor_data.pep_charge,item.word)" ng-repeat="item in word.profession">
-                              <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <span class="mdl-tooltip mdl-tooltip--validation" for="pep_charge" ng-show="form.pep_charge.$invalid && form.pep_charge.$touched">
-                          <span ng-show="form.pep_charge.$error.required">{{'Richiesto'| translate}}</span>
-                        </span>
-                      </div>
-                    </fieldset>
-
-                    <fieldset ng-show="Kyc.contract_data.check_pep==1">
-                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
-
-                        <div class="mdl-grid">
-                          <div class="mdl-cell ">
-                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEPDOM-1">
-                              <input type="radio" id="PEPDOM-1" ng-model="Kyc.contractor_data.pep_domestic" class="mdl-radio__button" name="PEPDOM" value="1" >
-                              <span class="mdl-radio__label" >{{'PEP Domestico'| translate}}</span>
-                            </label>
-                          </div>
-
-                          <div class="mdl-cell">
-                            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEPDOM-0">
-                              <input type="radio" id="PEPDOM-0" ng-model="Kyc.contractor_data.pep_domestic" class="mdl-radio__button" name="PEPDOM" value="0"  checked>
-                              <span class="mdl-radio__label">{{'PEP estero'| translate}}</span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </fieldset>
-                    <fieldset>
-                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" id="customer_profession" name="customer_profession"
-                        ng-model="Kyc.contractor_data.profession"
-                        minlength="3"   ng-required="true"
-                        ng-keyup="showAC('users.profession','customer_profession');"
-
-                        ng-focus="resetAC()"
-                        />
-                        <label class="mdl-textfield__label" for="customer_profession">{{'Professione'|translate}} *</label>
-                        <table class="mdl-data-table mdl-js-data-table  border-none  ">
-                          <tbody style="display:table">
-                            <tr ng-click="addWord('Kyc.contractor_data.profession',item.word)" ng-repeat="item in word.profession">
-                              <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <span class="mdl-tooltip mdl-tooltip--validation" for="customer_profession" ng-show="form.customer_profession.$invalid && form.customer_profession.$touched">
-                          <span ng-show="form.customer_profession.$error.required">{{'Richiesto'| translate}}</span>
-                        </span>
-                      </div>
-                    </fieldset>
-                    <fieldset>
-                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input class="mdl-textfield__input" type="text" id="customer_fiscal_number" name="customer_fiscal_number"
-                        ng-model="Kyc.contractor_data.fiscal_number"
-                        minlength="3"   ng-required="true"
-
-                        ng-focus="resetAC()"
-                        />
-                        <label class="mdl-textfield__label" for="customer_fiscal_number">{{'FiscalNumber'|translate}} *</label>
-                        <span class="mdl-tooltip mdl-tooltip--validation" for="customer_fiscal_number" ng-show="form.customer_fiscal_number.$invalid && form.customer_fiscal_number.$touched">
-                          <span ng-show="form.customer_fiscal_number.$error.required">{{'Richiesto'| translate}}</span>
-                        </span>
-                      </div>
-                    </fieldset>
-                    <fieldset>
-                      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input ng-currency class="mdl-textfield__input" type="text" id="kyc_annual_income" name="kyc_annual_income" minlength="3"  value=" "
-                        ng-model="Kyc.contractor_data.annual_income"   minlength="3"
-                        />
-                        <label class="mdl-textfield__label" for="kyc_annual_income">{{'Annualincome' | translate }}*</label>
-                        <span class="mdl-tooltip mdl-tooltip--validation" for="kyc_annual_income" ng-show="form.kyc_annual_income.$invalid && form.kyc_annual_income.$touched">
-                          <span ng-show="form.kyc_annual_income.$error.required">{{'Richiesto'|translate}}.</span>
-                        </span>
-
-                      </div>
-                    </fieldset>
+                  </fieldset>
 
 
 
 
-                  </form>
-                </div>
+                </form>
               </div>
             </div>
             <br/>
@@ -346,13 +345,15 @@
                 <span >{{'SaveExit'|translate}}.</span>
               </span>
             </div>
-
-
           </div>
 
 
-    </main>
+
+        </div>
+
+
+      </main>
+    </div>
   </div>
-</div>
 </body>
 </html>

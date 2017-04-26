@@ -124,6 +124,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
         convertDateStringsToDates($scope.Kyc.company_data)
         convertDateStringsToDates($scope.Kyc.owner_data)
+        $scope.oldSign  = $scope.Kyc.contractor_data.sign
 
         if ($scope.Kyc.contractor_data.sign===undefined)
           $scope.Kyc.contractor_data.sign=""
@@ -135,7 +136,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
                   Context2.drawImage(image, 0, 0);
 
         }
-
         $('input.mdl-textfield__input').each(
           function(index){
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -186,9 +186,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     var Canvas2 = $("#canvas2")[0];
     var blank = $("#blank")[0];
     if (Canvas2.toDataURL()==blank.toDataURL())
-      $scope.Kyc.contractor_data.sign=""
-    else
-      $scope.Kyc.contractor_data.sign=Canvas2.toDataURL()
+        $scope.Kyc.contractor_data.sign=""
+    else if ($scope.oldSign!= null && $scope.oldSign.length<10)
+        $scope.Kyc.contractor_data.sign=Canvas2.toDataURL()
 
     var langfileloginchk = localStorage.getItem("language");
     dbData=$scope.Kyc
@@ -221,35 +221,11 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   }
 
 
-  $scope.showAC=function($search,$word){
-    var id=localStorage.getItem("userId");
-    var usertype = localStorage.getItem('userType');
-    res = $search.split(".")
-    $search=res[1]
-    if ($word===undefined){
-      $word=$scope[res[0]][res[1]]
-    }
-    else {
-      $word=$('#'+$word).val()
-    }
-    $table=res[0].toLowerCase()
-
-    if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
-
-      data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table}
-      $http.post( SERVICEURL2,  data )
-      .success(function(data) {
-        if(data.RESPONSECODE=='1') 			{
-          //$word=$($search.currentTarget).attr('id');
-          $scope.word[$search]=data.RESPONSE;
-        }
-      })
-      .error(function() {
-        console.log("error");
-      });
-    }
-    $scope.oldWord= $($search.currentTarget).val()
+  $scope.showCanvas=function(){
+    $scope.oldSign="change"
+    $('#canvas2').attr('height','300px')
   }
+
   $scope.resetAC=function(){
     $scope.word={}
     $scope.list={}

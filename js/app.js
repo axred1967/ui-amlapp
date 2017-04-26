@@ -1,9 +1,9 @@
 
 $(document).ready(function(){
+  clearButton = document.querySelector("#clearCanvas")
+
   var wrapper = document.getElementById("signature-pad"),
-  clearButton = wrapper.querySelector("[data-action=clear]"),
   savePNGButton = wrapper.querySelector("[data-action=save-png]"),
-  saveSVGButton = wrapper.querySelector("[data-action=save-svg]"),
   canvas = wrapper.querySelector("canvas"),
   signaturePad;
 

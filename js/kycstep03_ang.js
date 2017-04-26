@@ -23,9 +23,6 @@ function getChkLogin()
 
 }
 
-setTimeout(function(){
-  checkthesidebarinfouser();
-}, 800);
 
 
 var app2 = angular.module('myApp', ['pascalprecht.translate','ng-currency','fieldMatch']);
@@ -142,6 +139,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
           convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
           convertDateStringsToDates($scope.Kyc.company_data)
           convertDateStringsToDates($scope.Kyc.owner_data)
+          if($scope.Kyc.contractor_data.check_pep===undefined || $scope.Kyc.contractor_data.check_pep==null)
+            $scope.Kyc.contractor_data.check_pep=0
           $scope.loader=false
 
           $('input.mdl-textfield__input').each(

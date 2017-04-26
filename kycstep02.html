@@ -261,7 +261,7 @@
 
                     </div>
 
-                    <div ng-show="identityDocs.length==0"  >
+                    <div ng-show="newDocs || identityDocs.length==0"  >
 
                       <div class="demo-card-image mdl-card mdl-shadow--2dp">
                         <div class="mdl-card__title mdl-card--expand">{{'Documento identità'|translate}}</div>
@@ -306,7 +306,7 @@
           <span class="mdl-tooltip mdl-tooltip--validation" for="save_exit" >
             <span >{{'SaveExit'|translate}}.</span>
           </span>
-        </div>      
+        </div>
         </div>
 
 
