@@ -92,48 +92,56 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       $scope.action='add'
       $scope.viewName="Nuovo Contratto"
       $scope.Contract={}
+      $scope.Contract.contract_date=new Date()
+      $scope.Contract.contract_eov=new Date()
+      $scope.Contract.contract_eov.setFullYear($scope.Contract.contract_eov.getFullYear() + 5)      
       break;
       default :
       $scope.viewName="Nuovo Contratto"
       $scope.action='add'
       break;
     }
-
-    if ($scope.page.addDoc){
+    //gestisco aggiunta Doc
+    if ($scope.page.editDoc) {
+      $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+      convertDateStringsToDates($scope.Contract)
       Doc=JSON.parse(localStorage.getItem('Doc'))
       convertDateStringsToDates(Doc)
-      Contract=JSON.parse(localStorage.getItem('Contract'))
-      convertDateStringsToDates(Contract)
-      $scope.Contract=Contract
+      $scope.Customer.Docs[Doc.indice]=Doc
 
+    }
+    else if ($scope.page.addDoc){
+      $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+      convertDateStringsToDates($scope.Contract)
+      Doc=JSON.parse(localStorage.getItem('Doc'))
+      convertDateStringsToDates(Doc)
       if ($scope.Contract.Docs.length!==undefined|| $scope.Contract.Docs.length>0 ){
-        $scope.Contract.Docs[Contract.Docs.length]=Doc
+        $scope.Contract.Docs[$scope.Contract.Docs.length]=Doc
       }
       else {
         $scope.Contract.Docs={}
         $scope.Contract.Docs[0]=Doc
       }
-      $scope.Contract.DocsLoaded=Contract.Docs.length+1
-      $scope.page.addDoc=false;
-    }
-
-    if ($scope.Contract.Docs===undefined ||  $scope.Contract.Docs.length===undefined ||  $scope.Contract.Docs.length==0){
-      $scope.Contract.Docs={}
-      $scope.Contract.Docs[0]={}
-      $scope.Contract.DocsLoaded=0;
-      $scope.Contract.Docs[0].doc_name="Immagine Contratto"
-      $scope.Contract.Docs[0].doc_type="Contratto di Servizio"
-      $scope.Contract.contract_date=new Date()
-      $scope.Contract.contract_eov=new Date()
 
     }
-    //GESTISCO INSERIMENTO DI UN NUOVO CLIENTE
+
+    //GESTISCO INSERIMENTO DI UN NUOVO o delegante
     if ($scope.page.add){
       $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
       convertDateStringsToDates($scope.Contract)
     }
+    if ($scope.Contract.Docs===undefined || !isObject($scope.Contract.Docs)){
+        $scope.Contract.Docs=[{}]
+        $scope.newDocs=true;
 
+    }
 
+    $('input.mdl-textfield__input').each(
+      function(index){
+        $(this).parent('div.mdl-textfield').addClass('is-dirty');
+        $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+      }
+    );
 
 
 
@@ -276,7 +284,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     }
 
 
-    $('#loader_img').show();
+    $scope.loader=true
     data= {"action":"addcontract",appData:appData,dbData:dbData,edit:$scope.action}
     $http.post(SERVICEURL2,data)
     .success(function(data){
@@ -437,8 +445,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     redirect('add_document.html')
   }
 
-  $scope.edit_doc=function(Doc){
+  $scope.edit_doc=function(Doc,indice){
     localstorage('add_document.html',JSON.stringify({action:"edit_document_for_contract",location:curr_page}))
+    Doc.indice=indice
     localstorage('Doc',JSON.stringify(Doc))
     redirect('add_document.html')    }
 

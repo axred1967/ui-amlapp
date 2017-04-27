@@ -84,6 +84,13 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
         $scope.Customer.IMAGEURI=BASEURL+"uploads/user/small/"
         //$rootScope.$broadcast('show')
         $scope.loader=false
+        $scope.Customer.Docs=IsJsonString($scope.Customer.Docs)
+        if (!isObject($scope.Customer.Docs)){
+            $scope.Customer.Docs=[{}]
+            $scope.newDocs=true;
+
+        }
+
         $('input.mdl-textfield__input').each(
           function(index){
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -369,6 +376,37 @@ $scope.other=function(){
   $scope.page.other_data=true
   $scope.arrow=(page.other_data!== undefined || page.other_data) ? 'arrow_drop_up' : 'arrow_drop_down';
 
+}
+$scope.add_document=function(Doc,per_id){
+  if (Doc===undefined){
+    Doc={}
+  }
+  localstorage('add_document.html',JSON.stringify({action:"add_document_for_customer",per_id:$scope.Kyc.contractor_data.contractor_id,location:curr_page}))
+  Doc.doc_name=""
+  Doc.doc_type="Documento di Identità"
+  Doc.agency_id=localStorage.getItem('agencyId')
+  Doc.per='customer'
+  if ($scope.Customer.user_id===undefined && $scope.Customer.user_id>0)
+  Doc.per_id=$scope.Customer.user_id;
+  Doc.id=null
+  Doc.image_name=null
+  Doc.indice=$scope.Customer.Docs.length
+  localstorage('Doc',JSON.stringify(Doc))
+  localstorage('Customer',JSON.stringify($scope.Customer))
+  redirect('add_document.html')
+  return;
+}
+$scope.edit_doc=function(Doc,indice){
+  localstorage('add_document.html',JSON.stringify({action:"edit_document_customer",location:curr_page}))
+  Doc.agency_id=localStorage.getItem('agencyId')
+  Doc.per='customer'
+  if ($scope.Customer.user_id===undefined && $scope.Customer.user_id>0)
+  Doc.per_id=$scope.Customer.user_id;
+  Doc.indice=indice
+  localstorage('Doc',JSON.stringify(Doc))
+  localstorage('Customer',JSON.stringify($scope.Customer))
+  redirect('add_document.html')
+  return;
 }
 $scope.back=function(){
 

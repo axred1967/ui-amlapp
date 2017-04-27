@@ -173,7 +173,7 @@
                               </fieldset>
                               <br/>
                               <fieldset>
-                                <div  ng-show="Company.Docs.length>0"  ng-repeat="Doc in Company.Docs  | filter: {doc_id: Company.company_id } as identityDocs" ng-init="DocIndex=$index">
+                                <div  ng-show="! newDocs &&   Company.Docs.length>0"  ng-repeat="Doc in Company.Docs  | filter: {doc_id: Company.company_id } as identityDocs" ng-init="DocIndex=$index">
                                   <div ng-hide="Doc.deleted" >
 
                                     <div class="demo-card-image mdl-card mdl-shadow--2dp">
@@ -204,15 +204,14 @@
 
                                 </div>
 
-                                <div ng-show="showAddDocs || identityDocs.length==0 "  >
+                                <div ng-show="newDocs || identityDocs.length==0 "  >
 
                                   <div class="demo-card-image mdl-card mdl-shadow--2dp">
                                     <div class="mdl-card__title mdl-card--expand">{{'Documenti Società'|translate}}</div>
-                                    <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
 
                                     <div class="mdl-card__actions">
                                       <div class="mdl-layout-spacer"></div>
-                                      <button ng-hide="Compnay.DocsLoaded>0 " id="addDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_document();$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">add</i></button>
+                                      <button  id="addDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_document();$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">add</i></button>
                                       <span class="mdl-tooltip mdl-tooltip--validation" for="addDoc" >
                                         <span >{{'Aggiungi Immagine'|translate}}.</span>
                                       </span>
