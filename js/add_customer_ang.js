@@ -256,7 +256,7 @@ $scope.deleteDoc=function()
 
 $scope.uploadfromgallery=function()
 {
-  scope.loader=true
+  $scope.loader=true
   navigator.camera.getPicture($scope.uploadPhoto,
     function(message) {
       alert('get picture failed');
@@ -270,7 +270,7 @@ $scope.uploadfromgallery=function()
 }
 $scope.add_photo=function()
 {
-  scope.loader=true
+  $scope.loader=true
   // alert('cxccx');
   navigator.camera.getPicture($scope.uploadPhoto,
     function(message) {

@@ -278,7 +278,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     if (Doc===undefined){
       Doc={}
     }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_company",per_id:$scope.Kyc.contractor_data.contractor_id,location:curr_page}))
+    localstorage('add_document.html',JSON.stringify({action:"add_document_for_company",per_id:$scope.Company.company_id,location:curr_page}))
     Doc.doc_name=""
     Doc.doc_type="Documento Società"
     Doc.agency_id=localStorage.getItem('agencyId')
