@@ -77,6 +77,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
           $scope.newDocs=true
         }
         $scope.loader=false
+        $scope.Company.IMAGEURI=BASEURL+"uploads/company/small/"
         $('input.mdl-textfield__input').each(
           function(index){
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -98,6 +99,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     $scope.action="add_company"
     $scope.Company={}
     $scope.Company.Docs=[{}]
+    $scope.Company.IMAGEURI=BASEURL+"uploads/company/small/"
     $scope.newDocs=true;
     break;
     case 'edit_company':
@@ -107,6 +109,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     default:
     $scope.Company={}
     $scope.Company.Docs=[{}]
+    $scope.Company.IMAGEURI=BASEURL+"uploads/company/small/"
     $scope.newDocs=true;
     $scope.action="add_company"
     $scope.viewName="Inserisci Società"
