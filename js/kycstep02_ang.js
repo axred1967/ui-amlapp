@@ -300,7 +300,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     Doc.showOnlyImage=false
     Doc.indice=$scope.Kyc.contractor_data.Docs.length
     localstorage('Doc',JSON.stringify(Doc))
-    localstorage('Contract',JSON.stringify($scope.Kyc.contractor_data))
+    localstorage('Kyc',JSON.stringify($scope.Kyc))
 
     redirect('add_document.html')
     return;
@@ -318,7 +318,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     Doc.per_id=$scope.Kyc.contract_id;
     Doc.indice=indice
     localstorage('Doc',JSON.stringify(Doc))
-    localstorage('Contract',JSON.stringify($scope.Kyc.contractor_data))
+    localstorage('Kyc',JSON.stringify($scope.Kyc))
 
     redirect('add_document.html')
     return;

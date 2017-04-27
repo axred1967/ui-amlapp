@@ -70,9 +70,6 @@
         <div ng-hide="loader==true" class="account-data add-customer-data " ng-cloack> <!-- text fields -->
           <div style="text-align:center" class="mdl-card mdl-shadow--2dp about">
             <h5 class="orange" id="name_agent">{{Contract.CPU}} - {{Contract.owner}}</h5>
-            <button  class="mdl-button mdl-js-button mdl-button--accent" ng-click="edit_contract(Contract.contractor_id)"  >
-              {{'EditContract' | translate }}
-            </button>
             <div class="mdl-card amazing mdl-shadow--2dp">
               <br/>
               <table align="center" class="viewContract mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
@@ -83,7 +80,7 @@
                     <td class="blue">{{Contract.fullname}}</td>
 
                   </tr>
-                  <tr>
+                  <tr ng-show="Contract.act_for_other>0">
                     <td  >{{'Delega' | translate}} :</td>
                     <td class="blue">{{Contract.role_for_other}}</td>
 
@@ -106,21 +103,30 @@
                   <tr>
                     <td colspan="2" class="wordwrap">{{Contract.email}}</td>
                   </tr>
-                  <tr>
+                  <tr ng-show="Contract.mobile_number.length>0">
                     <td colspan="2" class="wordwrap">{{Contract.mobile_number}}</td>
                   </tr>
                 </tbody>
               </table>
               <br/>
               <div class="mdl-card__actions mdl-card--border " style="font-size:12px" >
-                <div class="mdl-cell--6-col">
+                <div class="mdl-cell--4-col">
                   <div class="left">
                     <span class="orange">Adeguata Verifica </span><br/>
                     <span ng-show="Contract.kyc_status==1">Approved<span class="green-checkbox"><img src="img/green-check.png"></span></span>
                     <span ng-show="Contract.kyc_status==0">In Process</span>
                   </div>
                 </div>
-                <div class="mdl-cell--6-col">
+                <div class="mdl-cell--4-col">
+                  <button  id="Risk" ng-click="edit_contract(Contract.contractor_id)" class="center mdl-button mdl-js-button mdl-button--fab mdl-button--colored ">
+                    <i class="material-icons">reorder</i>
+                </button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="Risk" >
+                    <span >{{'Modifica Contratto '|translate}}.</span>
+                  </span>
+
+                </div>
+                <div class="mdl-cell--4-col">
                   <div class="right">
                     <span class="blue">Risk Analysis </span><br/>
                     <span ng-show="Contract.status ==1">Approved<span class="green-checkbox"><img src="img/green-check.png"></span></span>
@@ -131,47 +137,75 @@
               </div>
               <div class="mdl-card__actions mdl-card--border">
                 <div class="mdl-cell--6-col">
-                  <button class="left mdl-button mdl-js-button mdl-button--accent" ng-click="edit_kyc()" >
-                    {{'KYC ' | translate }}
+                  <button  id="Kyc" ng-click="edit_kyc()" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
+                    KYC
                   </button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc" >
+                    <span >{{'Adeguata Verifica'|translate}}.</span>
+                  </span>
+
                 </div>
                 <div class="mdl-cell--6-col">
-                  <button class="right mdl-button mdl-js-button mdl-button--primary"  ng-click="edit_risk()" >
-                    {{'Rischio' | translate }}
+                  <button  id="Risk0" ng-click="edit_risk()" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
+                    Risk
                   </button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="Risk0" >
+                    <span >{{'Analisi del Rischio'|translate}}.</span>
+                  </span>
+
                 </div>
               </div>
               <div class="mdl-card__actions mdl-card--border" >
                 <div class="mdl-cell--6-col">
-                  <button class="left mdl-button mdl-js-button mdl-button--accent" ng-click="edit_profile(Contract)"  >
-                    {{'Profilo' | translate }}
+                  <button  id="profile" ng-click="edit_profile(Contract)" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
+                    <i class="material-icons">create</i>
                   </button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="profile" >
+                    <span >{{'Dati Firmatario'|translate}}.</span>
+                  </span>
+
                 </div>
                 <div class="mdl-cell--6-col">
-                  <button class="right mdl-button mdl-js-button mdl-button--primary" ng-click="edit_docu(Contract)" >
-                    {{'Documenti' | translate }}
+                  <button  id="doc" ng-click="edit_docu(Contract)" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
+                    <i class="material-icons">attachment</i>
                   </button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="doc" >
+                    <span >{{'Documenti Contratto'|translate}}.</span>
+                  </span>
+
 
                 </div>
               </div>
 
               <div ng-show="Contract.act_for_other==1" class=" mdl-card__actions mdl-card--border">
                 <div class="mdl-cell--6-col">
-                  <button class="left mdl-button mdl-js-button mdl-button--accent" ng-click="edit_company()" >
-                    {{'Società'| translate}}
+                  <button  id="company" ng-click="edit_company()" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
+                    <i class="material-icons">business</i>
                   </button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="company" >
+                    <span >{{'Dati Società'|translate}}.</span>
+                  </span>
+
+
                 </div>
                 <div class="mdl-cell--6-col">
-                  <button class="right blue mdl-button mdl-js-button mdl-button--primary" ng-click="owners()">
-                    {{'Owners' | translate }}
+                  <button  id="owner" ng-click="owners()" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
+                    <i class="material-icons">accessibility</i>
                   </button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="owner" >
+                    <span >{{'Dati Contraente'|translate}}.</span>
+                  </span>
                 </div>
               </div>
               <div ng-show="Contract.act_for_other==2"  class=" mdl-card__actions mdl-card--border">
                 <div class="mdl-cell--6-col">
-                  <button class="left mdl-button mdl-js-button mdl-button--accent" ng-click="edit_profile()" >
-                    {{'Delegante' | translate }}
+                  <button  id="delegante" ng-click="edit_profile()" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
+                    <i class="material-icons">create</i>
                   </button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="delegante" >
+                    <span >{{'Dati Delegante'|translate}}.</span>
+                  </span>
+
                 </div>
                 <div class="mdl-cell--6-col">
                   &nbsp;
@@ -179,13 +213,16 @@
               </div>
 
               <div class="mdl-card__actions mdl-card--border">
-                <div class="left mdl-cell--6-col">
+                <div class="mdl-cell--6-col">
                   &nbsp;
                 </div>
                 <div class=" mdl-cell--6-col">
-                  <button class="right mdl-button mdl-js-button mdl-button--accent" onclick="edit_info()" >
-                    {{'ContractForm' | translate }}
+                  <button  id="print" ng-click="owners()" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
+                    <i class="material-icons">printer</i>
                   </button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="print" >
+                    <span >{{'Stampa AML-Risk'|translate}}.</span>
+                  </span>
 
                 </div>
               </div>

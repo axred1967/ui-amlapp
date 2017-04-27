@@ -275,19 +275,19 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
         $scope.Doc.doc_image=data.RESPONSE;
         $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
         $scope.loaded=true
-        $("#loader_img").hide()
+        $("#loader_img_int").hide()
         //  $http.post( LOG,  {dt:data.RESPONSE ,doc:$scope.Doc})
 
       }
     })
     .error(function() {
-      $("#loader_img").hide()
+      $("#loader_img_int").hide()
       console.log("error");
     });
   }
   $scope.failFT =function (error)
   {
-    $("#loader_img").hide()
+    $("#loader_img_int").hide()
 
   }
 

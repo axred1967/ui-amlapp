@@ -130,7 +130,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
 
     }
     else {
-      if ($scope.action="edit_company")
+      if ($scope.action=="edit_company")
           $scope.loadItem()
     }
 // autocomplete parole

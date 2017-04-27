@@ -109,6 +109,8 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     $scope.action=$scope.page.action
 
   }
+  $scope.countryList=IsJsonString(localStorage.getItem('countryList'))
+
   switch ($scope.action){
     case 'add_customer':
     $scope.viewName="Inserisci Cliente"
@@ -128,6 +130,10 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     $scope.viewName="Inserisci Titolare Effettivo"
     $scope.action="addcustomer"
     break;
+    case 'add_customer_for_contract':
+    $scope.viewName="Inserisci Firmatario contratto"
+    $scope.action="addcustomer"
+    break;
 
     case 'add_customer_for_kyc_owners':
     $scope.viewName="Inserisci Titolare Effettivo"
@@ -135,7 +141,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     break;
 
     case 'edit_customer_for_kyc_owner':
-    $scope.countryList=JSON.parse(localStorage.getItem('countryList'))
     Customer=JSON.parse(localStorage.getItem('Owner'))
     convertDateStringsToDates(Customer)
     $scope.Customer=Customer
@@ -217,10 +222,12 @@ $scope.add_customer= function (){
     {
       console.log('error');
       swal("",data.RESPONSE);
+      $scope.loader=false
     }
   })
   .error(function() {
     console.log("error");
+    $scope.loader=false
   });
 }
 
@@ -371,6 +378,9 @@ $scope.back=function(){
       $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
       $scope.Contract.fullname=$scope.Customer.name +" "+$scope.Customer.surname
       $scope.Contract.contractor_id= $scope.lastid
+      precPage=JSON.parse(localStorage.getItem($scope.page.location))
+      precPage.add=true
+      localstorage($scope.page.location,JSON.stringify(precPage))
       localstorage('Contract', JSON.stringify($scope.Contract));
     }
     break;
@@ -379,6 +389,9 @@ $scope.back=function(){
       $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
       $scope.Contract.other_name=$scope.Customer.name +" "+$scope.Customer.surname
       $scope.Contract.user_id= $scope.lastid
+      precPage=JSON.parse(localStorage.getItem($scope.page.location))
+      precPage.add=true
+      localstorage($scope.page.location,JSON.stringify(precPage))
       localstorage('Contract', JSON.stringify($scope.Contract));
     }
     break;
@@ -387,8 +400,9 @@ $scope.back=function(){
       $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
       $scope.Owner.fullname=$scope.Customer.name +" "+$scope.Customer.surname
       $scope.Owner.user_id= $scope.lastid
-      key= Object.keys($scope.stack).pop() ;
-      $scope.stack[key].load=true;
+      precPage=JSON.parse(localStorage.getItem($scope.page.location))
+      precPage.load=true
+      localstorage($scope.page.location,JSON.stringify(precPage))
       localstorage('Owner', JSON.stringify($scope.Owner));
     }
     break;
