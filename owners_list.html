@@ -83,27 +83,28 @@
               id="waterfall-exp" />
             </div>
           </div>
-          <span class="main-heading"> {{Company.name}}</span>
+          <span class="main-heading"> {{Company_name}}</span>
           <div class="clr"></div>
         </div>
       </div>
     </div>
-
-    <div class="list-data-content">
-      <center>  <h4>{{'OwnersList' |translate  }} </h4></center>
-      <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
-      <center>  <img style="height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
-      <div id="list_owner" ng-hide="Owners.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Owner in Owners ">
+    <div class="center2" ng-show="loader" id="loader_img" >&nbsp;
+      <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
+    </div>
+    <div ng-hide="loader==true" class="account-data add-customer-data " ng-cloack> <!-- text fields -->
+      <center class="orange">  <h4>{{'OwnersList' |translate  }} </h4></center>
+      <div id="list_owner" ng-hide="Owners.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Owner in Owners "
+      ng-init="ownerIndex=$index">
         <div class="mdl-cell mdl-cell--12-col">
           <div class="mdl-card amazing mdl-shadow--2dp">
-            <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
-              <div style="cursor:pointer;"  class="minilogo customer-listing1"></div>
+            <div  ng-click="edit_owner(Owner,ownerIndex)" style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
+              <div style="cursor:pointer;"  class="minilogo customer-listing1" back-img="{{imageurl(Owner)}}"></div>
               <div class="card-author">
 
 
               </div>
-              <div class="mdl-grid">
-                <div class="mdl-cell--12-col"  ng-click="edit_owner(Owner)">
+              <div ng-click="edit_owner(Owner)" class="mdl-grid">
+                <div class="mdl-cell--12-col"  ng-click="edit_owner(Owner,ownerIndex)">
                   <span style="cursor:pointer;" >
                     <strong class="blue first_letter_cap">{{Owner.fullname}}</strong>
                   </span><br/>
@@ -150,6 +151,12 @@
         </div>
       </div>
     </div>
+    <br/>
+    <center ng-Show="loaded >= 5 ">
+      <a  ng-click="addMoreItems()"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
+        {{'Altri' | translate }}
+      </a>
+    </center>
 
   </main>
 </div>

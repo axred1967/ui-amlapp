@@ -127,7 +127,7 @@ $scope.print_kyc = function(){
 	redirect('contract_form.html')
 };
 $scope.owners = function(){
-	localstorage('owners_list.html',JSON.stringify({action:'',location:'view_contract.html'}))
+	localstorage('owners_list.html',JSON.stringify({action:'owner_from_contract',location:'view_contract.html'}))
 	localstorage('Contract',JSON.stringify($scope.Contract))
 	redirect('owners_list.html')
 };

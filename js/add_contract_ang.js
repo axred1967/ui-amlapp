@@ -94,7 +94,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
       $scope.Contract={}
       $scope.Contract.contract_date=new Date()
       $scope.Contract.contract_eov=new Date()
-      $scope.Contract.contract_eov.setFullYear($scope.Contract.contract_eov.getFullYear() + 5)      
+      $scope.Contract.contract_eov.setFullYear($scope.Contract.contract_eov.getFullYear() + 5)
       break;
       default :
       $scope.viewName="Nuovo Contratto"
@@ -299,6 +299,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
       }
       else      {
+        
         swal("",data.RESPONSE);
       }
     })
@@ -428,6 +429,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
 
   $scope.add_document=function(Doc){
+    if (Doc===undefined){
+      Doc={}
+    }
     localstorage('add_document.html',JSON.stringify({action:"add_document_for_contract",location:curr_page}))
     Doc.doc_name="Immagine Contratto"
     Doc.doc_type="Contratto di Servizio"

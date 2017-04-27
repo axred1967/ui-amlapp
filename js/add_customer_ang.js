@@ -66,10 +66,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
   */
   $scope.page={}
   $scope.loadItem=function(){
-    var id=localStorage.getItem("CustomerProfileId");
-    var email=localStorage.getItem("userEmail");
-    var agencyId = localStorage.getItem('agencyId');
-    data= {"action":"view_Customer_Profile_info",customer_id:id,email:email,agency_id:agencyId}
+    data= {"action":"view_Customer_Profile_info",customer_id:$scope.id,email:$scope.email,agency_id:$scope.agencyId}
     $scope.loader=true
     $http.post( SERVICEURL2,  data )
     .success(function(responceData) {
@@ -127,6 +124,10 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     }
     break;
     case 'update_customer':
+    $scope.id=localStorage.getItem("CustomerProfileId");
+    $scope.email=localStorage.getItem("userEmail");
+    $scope.agencyId = localStorage.getItem('agencyId');
+
     $scope.viewName="Modifica Cliente"
     if ($scope.page.agent){
       $scope.viewName="Modifica Agente"
@@ -151,6 +152,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     Customer=JSON.parse(localStorage.getItem('Owner'))
     convertDateStringsToDates(Customer)
     $scope.Customer=Customer
+    $scope.id=Customer.user_id
+    $scope.email=Customer.email;
+    $scope.agencyId = localStorage.getItem('agencyId');
 
     $scope.viewName="Modifica Titolare Effettivo"
     $scope.action="saveProfileCustomer"

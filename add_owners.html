@@ -67,7 +67,10 @@
       </div>
 
 
-      <div class="account-data add-customer-data"> <!-- text fields -->
+      <div class="center2" ng-show="loader" id="loader_img" >&nbsp;
+        <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
+      </div>
+      <div ng-hide="loader==true" class="account-data add-customer-data " ng-cloack> <!-- text fields -->
         <div class="mdl-card mdl-shadow--2dp ">
           <div class="mdl-grid">
             <div class="mdl-cell mdl-cell--12-col">
@@ -94,32 +97,37 @@
                       <a style="float:right" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" ng-click="add_customer()" >{{'Aggiungi' |translate}}</a>
                     </div>
                   </fieldset>
-                  <fieldset>
+                  <fieldset id="perc" ng-hide="page.type=='owners'  ">
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
 
                       <input ng-currency currency-symbol="%" min=0 max=100 class="mdl-textfield__input"  ng-model="Owner.percentuale"  type="text"
                       id="Percentuale" name="Percentuale" />
                       <label  for="Percentuale" class="mdl-textfield__label">{{'Percentuale' | translate}} </label>
-                      <span class="mdl-tooltip mdl-tooltip--validation" for="Percentuale" minlength="3" ng-show="form.Percentuale.$invalid && form.Percentuale.$touched">
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="Percentuale"  ng-show="form.Percentuale.$invalid && form.Percentuale.$touched">
                         <span ng-show="form.Percentuale.$error.required">{{'Richiesto'| translate}}.</span>
 
                       </tbody>
                     </table>
                   </div>
                 </fieldset>
+                <fieldset>
+                  <div ng-show="page.type=='owners' " class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+
+                    <input  class="mdl-textfield__input"  ng-model="Owner.percentuale"  type="text"
+                    id="tipote" name="tipote" />
+                    <label  for="tipote" class="mdl-textfield__label">{{'Tipo TE' | translate}} </label>
+                    <span class="mdl-tooltip mdl-tooltip--validation" for="tipote"  ng-show="form.Percentuale.$invalid && form.Percentuale.$touched">
+                      <span ng-show="form.Percentuale.$error.required">{{'Richiesto'| translate}}.</span>
+
+                    </tbody>
+                  </table>
+                </div>
+              </fieldset>
 
 
 
               </form>
-              <div class="center-align">
-                <a id="save_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_owner()" href="javascript:;">
-                  {{'Save' | translate}}
-                </a>
-                <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="back()" href="javascript:;">
-                  {{'Cancel' | translate}}
-                </a>
-                <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
-              </div>
+
 
             </div>
             <div class="clr"></div>
@@ -127,7 +135,17 @@
           </div>
 
         </div>
-      </main>
+      </div>
+      <br/>
+      <div class="center-align">
+        <a id="save_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_owner()" href="javascript:;">
+          {{'Save' | translate}}
+        </a>
+        <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="back()" href="javascript:;">
+          {{'Cancel' | translate}}
+        </a>
+      </div>
+
     </div>
 
   </body>

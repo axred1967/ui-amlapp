@@ -13,6 +13,17 @@ angular.module('fieldMatch', [])
     }
   }
 }]);
+app2.directive('backImg', function(){
+    return function(scope, element, attrs){
+        attrs.$observe('backImg', function(value) {
+            element.css({
+                'background-image': 'url(' + value +')'
+
+            });
+        });
+    };
+});
+
 //Run material design lite
 app2.directive("ngModel",["$timeout", function($timeout){
   return {
@@ -64,61 +75,94 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.action=$scope.page.action
 
   }
+  switch ($scope.action){
+    case "owner_from_contract":
+      $scope.Contract=IsJsonString(localStorage.getItem('Contract'))
+      if ($scope.Contract.act_for_other==2){
+        $scope.company_id=$scope.Contract.company_id;
+        $scope.Company_name="CPU:" + $scope.Contract.CPU + " Deleganti"
+      }
+      else{
+        $scope.company_id=$scope.Contract.company_id;
+        $scope.Company_name=$scope.Contract.name
+
+      }
+    break;
+    case "ownwe_from_compnay":
+      $scope.company_id=localStorage.getItem("CompanyID")
+      $scope.Company_name=localStorage.getItem("Company_name")
+    break;
+    default:
+      $scope.company_id=localStorage.getItem("CompanyID")
+      $scope.Company_name=localStorage.getItem("Company_name")
+
+  }
   $scope.Company={};
   $scope.Owner={};
-  $scope.Company.name=localStorage.getItem("Company_name");
-  var id=localStorage.getItem("userId");
-  var CompanyID=localStorage.getItem("CompanyID");
-  var email=localStorage.getItem("userEmail");
-  $('#loader_img').hide();
-  var usertype = localStorage.getItem('userType');
-  var image = localStorage.getItem("Profileimageagencyuser");
-  var priviledge = localStorage.getItem("priviligetype");
-  if(priviledge == 0 && usertype  == '2'  )
-  {
-    redirect("my_profile_agent_noprve.html");
-  }
-  if(image != null)
-  {
-    $('#Profileimageagencyuser').attr("src",BASEURL+"uploads/user/small/"+image);
+  //$scope.Company.name=localStorage.getItem("Company_name");
 
-  }
-  $('#Profileimageagencyusername').html(name);
-  $('#Profileimageagencyuseremail').html(email);
-  data= {"action":"OwnersList",company_id:CompanyID, id:id,email:email,usertype:usertype,priviledge:priviledge}
-  $http.post(
-    SERVICEURL2,  data
-  )
-  .success(function(responceData)
-  {
-    $('#loader_img').hide();
-    if(responceData.RESPONSECODE=='1') 			{
-      data=responceData.RESPONSE;
-      $scope.Owners=data;
-    }
+  $scope.addMoreItems =function(){
+    if (isObject($scope.Contract))
+      appData=$scope.Contract
     else
-    {
-      //swal("", 'no customer')
-      $scope.Owners={};
+      appData=[]
 
-    }
+    last=99999999999
 
-  })
-  .error(function() {
-    swal("", 'Errore')
-    console.log("error");
-  });
+    data= {"action":"OwnersList",company_id:$scope.company_id,last:last,appData:appData}
+    $scope.loader=true
+    $http.post( SERVICEURL2,  data  )
+    .success(function(responceData){
+      if(responceData.RESPONSECODE=='1') 			{
+        data=responceData.RESPONSE;
+        if (last==99999999999)
+          $scope.Owners=data;
+        else
+          $scope.Owners=$scope.Contracts.concat(data);
+        //$scope.Customers=data;
+        $scope.loaded=data.length
+        $scope.loader=false
+       }
+      else
+      {
+        //swal("", 'no customer')
+        $scope.Owners={};
+        $scope.loader=false
+      }
+    })
+    .error(function() {
+      swal("", 'Errore')
+      console.log("error");
+    });
+  }
+  $scope.addMoreItems()
 
   $scope.add_owner=function(Owner){
-    localstorage('add_owners.html',JSON.stringify({action:'',location:'owners_list.html'}))
+    if ($scope.page.action=='owner_from_contract'){
+      localstorage('Contract',JSON.stringify($scope.Contract))
+      localstorage('add_owners.html',JSON.stringify({action:'add_owner_from_contract',location:'owners_list.html'}))
+
+    }else {
+      localstorage('add_owners.html',JSON.stringify({action:'',location:'owners_list.html'}))
+
+    }
+
     redirect('add_owners.html')
 
   }
-  $scope.edit_owner=function(Owner){
-    localstorage('add_owners.html',JSON.stringify({action:'edit_owners',load:true,location:'owners_list.html'}))
+  $scope.edit_owner=function(Owner,indice){
+    if ($scope.page.action=='owner_from_contract'){
+      localstorage('Contract',JSON.stringify($scope.Contract))
+      localstorage('add_customer.html',JSON.stringify({action:'edit_customer_for_kyc_owner',location:curr_page,owners:true}))
+      localstorage('Owner',JSON.stringify(Owner))
 
+    }else {
+      localstorage('add_customer.html',JSON.stringify({action:'edit_customer_for_kyc_owner',location:curr_page}))
+      localstorage('Owner',JSON.stringify(Owner))
+    }
+    Owner.indice=indice
     localstorage('Owner',JSON.stringify(Owner))
-    redirect('add_owners.html')
+    redirect('add_customer.html')
 
   }
   $scope.deleteOwn= function (Own,index){
@@ -145,7 +189,15 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
 
 
   }
+  $scope.imageurl=function(Customer){
+    Customer.IMAGEURI=BASEURL+"uploads/user/small/"
+    if (Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
+      Customer.imageurl= '../img/customer-listing1.png'
+    else
+      Customer.imageurl= Customer.IMAGEURI +Customer.image
+    return   Customer.imageurl
 
+  }
 
   $scope.back=function(){
     switch ($scope.page.action){

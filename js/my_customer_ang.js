@@ -13,21 +13,6 @@ angular.module('fieldMatch', [])
     }
   }
 }]);
-app2.directive('showOnLoad', function() {
-  return {
-    restrict: 'A',
-    link: function($scope,elem,attrs) {
-      elem.css({
-          'display': 'none'
-
-      });
-      $scope.$on('show', function() {
-        elem.show()
-      });
-
-    }
-  }
-});
 
 //Run material design lite
 app2.directive("ngModel",["$timeout", function($timeout){

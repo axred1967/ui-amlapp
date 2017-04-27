@@ -72,7 +72,27 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     $scope.action='edit_owners'
     $scope.viewName="Modifica TE"
     break;
+    case 'edit_owner_from_contract' :
+    $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
+    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+    $scope.action='edit_owners'
+    $scope.viewName="Modifica TE"
+    $scope.page.type="owners"
+    break;
+    case 'edit_customer_for_kyc_owner' :
+    $scope.Owner={}
+    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+    $scope.action='edit_owners'
+    $scope.viewName="Modifica TE"
+    $scope.page.type="owners"
+    break;
     case 'add_customer_for_kyc_owner' :
+    $scope.Owner={}
+    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+    $scope.action='add_owners'
+    $scope.viewName="Nuovo TE"
+    break;
+    case 'add_owner_from_contract' :
     $scope.Owner={}
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     $scope.action='add_owners'
@@ -115,21 +135,13 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
   $scope.add_owner=function(){
     //       add_contract($scope.action);
     var langfileloginchk = localStorage.getItem("language");
-    if ($scope.form.$invalid) {
-      angular.forEach($scope.form.$error, function(field) {
-        angular.forEach(field, function(errorField) {
-          errorField.$setTouched();
-        })
-      });
-      swal("riempire form corretamente");
-      console.log("Form is invalid.");
-      return
-    } else {
-      //$scope.formStatus = "Form is valid.";
-      console.log("Form is valid.");
-      console.log($scope.data);
-    }
-    if ($scope.page.action=='add_customer_for_kyc_owner'){
+
+
+      if ($scope.Owner.user_id===undefined || !($scope.Owner.user_id>0)){
+        swal("","riempire form corretamente- selezionare TE");
+        return
+    }    
+    if ($scope.page.type=='owners' ){
       appData=$scope.Contract
     }
     else {
@@ -143,7 +155,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     dbData.agent_id=appData.id
 
 
-    $('#loader_img').show();
+    $scope.loader=true
     data= {"action":$scope.action,appData:appData,dbData: dbData}
     $http.post(SERVICEURL2,data)
     .success(function(data){
