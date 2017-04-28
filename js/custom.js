@@ -322,6 +322,7 @@ function isObject (item) {
   return (typeof item === "object" && !Array.isArray(item) && item !== null);
 }
 function getCountryList(){
+
   countryList=IsJsonString(localStorage.getItem('countryList'))
   if (isObject(countryList))
   return countryList
@@ -335,7 +336,7 @@ function getCountryList(){
     success:function(responceData){
       //  alert(data);
       data=JSON.parse(responceData);
-      locastorage('countryList',JSON.stringify(data))
+      localstorage('countryList',JSON.stringify(data.countryList))
     }
   });
   countryList=IsJsonString(localStorage.getItem('countryList'))
