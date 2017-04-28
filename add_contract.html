@@ -233,12 +233,12 @@
                   </div>
 
                 </fieldset>
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+                <div ng-focus="resetAC()" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
 
                   <div class="mdl-grid">
                     <div class="mdl-cell ">
                       <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="option-1">
-                        <input type="radio" id="option-1" ng-model="Contract.act_for_other" class="mdl-radio__button" name="act_for" value="0" checked>
+                        <input  type="radio" id="option-1" ng-model="Contract.act_for_other" class="mdl-radio__button" name="act_for" value="0" checked>
                         <span class="mdl-radio__label" >{{'Agisce per se stesso'| translate}}</span>
                       </label>
                     </div>
