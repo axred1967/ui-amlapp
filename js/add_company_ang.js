@@ -53,6 +53,8 @@ app2.filter('capitalize', function() {
 app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
   $scope.word={};
   $scope.page={}
+  $scope.loader=true
+
   page=localStorage.getItem('add_company.html')
   if ( page!= null && page.length >0 ){
     $scope.page=JSON.parse(page)
@@ -67,7 +69,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     $http.post( SERVICEURL2,  data)
     .success(function(responceData)
     {
-      $('#loader_img').hide();
       if(responceData.RESPONSECODE=='1') 			{
         data=responceData.RESPONSE;
         $scope.Company=data;
@@ -142,6 +143,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     if ($scope.action=="edit_company")
     $scope.loadItem()
   }
+  $scope.countryList=getCountryList()
 
   // autocomplete parole
   $scope.showAC=function($search,$table){
@@ -194,7 +196,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     data={ "action":$scope.action, id:id,email:email,usertype:usertype,lang:langfileloginchk, dbData:dbData}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
-      $('#loader_img').hide();
       if(data.RESPONSECODE=='1') 			{
         swal("",data.RESPONSE);
         $scope.lastid=data.lastid
@@ -215,7 +216,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
   }
   $scope.uploadfromgallery=function()
   {
-    scope.loader=true
+    $scope.loader=true
     navigator.camera.getPicture($scope.uploadPhoto,
       function(message) {
         alert('get picture failed');
@@ -310,7 +311,14 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     redirect('add_document.html')
     return;
   }
+  $scope.other=function(){
+    if($scope.page.other_data)
+    $scope.page.other_data=false
+    else
+    $scope.page.other_data=true
+    $scope.arrow=(page.other_data!== undefined || page.other_data) ? 'arrow_drop_up' : 'arrow_drop_down';
 
+  }
   $scope.back=function(){
     switch ($scope.page.action){
       case'add_company_for_contract':
@@ -324,4 +332,6 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     }
     redirect($scope.page.location)
   }
+  $scope.loader=false
+
 })

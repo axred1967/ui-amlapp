@@ -113,7 +113,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     $scope.action=$scope.page.action
 
   }
-  $scope.countryList=IsJsonString(localStorage.getItem('countryList'))
+  $scope.countryList=getCountryList()
 
   switch ($scope.action){
     case 'add_customer':
@@ -385,7 +385,7 @@ $scope.add_document=function(Doc,per_id){
   if (Doc===undefined){
     Doc={}
   }
-  localstorage('add_document.html',JSON.stringify({action:"add_document_for_customer",per_id:$scope.Kyc.contractor_data.contractor_id,location:curr_page}))
+  localstorage('add_document.html',JSON.stringify({action:"add_document_for_customer",per_id:$scope.Customer.user_id,location:curr_page}))
   Doc.doc_name=""
   Doc.doc_type="Documento di Identità"
   Doc.agency_id=localStorage.getItem('agencyId')

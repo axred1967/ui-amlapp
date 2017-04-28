@@ -91,7 +91,7 @@
     <div class="center2" ng-show="loader" id="loader_img" >&nbsp;
       <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
     </div>
-    <div ng-hide="loader==true" class="account-data add-customer-data " ng-cloack> <!-- text fields -->
+    <div ng-hide="loader==true" class="account-data add-customer-data " ng-cloak> <!-- text fields -->
       <center class="orange">  <h4>{{'OwnersList' |translate  }} </h4></center>
       <div id="list_owner" ng-hide="Owners.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Owner in Owners "
       ng-init="ownerIndex=$index">

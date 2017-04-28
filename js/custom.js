@@ -321,3 +321,24 @@ function exit( status ) {
 function isObject (item) {
   return (typeof item === "object" && !Array.isArray(item) && item !== null);
 }
+function getCountryList(){
+  countryList=IsJsonString(localStorage.getItem('countryList'))
+  if (isObject(countryList))
+  return countryList
+  else
+  $.ajax ({
+    type: "POST",
+    async:false,
+    url: SERVICEURL,
+    data: {"action":"countryList"},
+    crossDomain: true,
+    success:function(responceData){
+      //  alert(data);
+      data=JSON.parse(responceData);
+      locastorage('countryList',JSON.stringify(data))
+    }
+  });
+  countryList=IsJsonString(localStorage.getItem('countryList'))
+  return countryList
+
+}
