@@ -55,12 +55,14 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
   $scope.page={}
   $scope.loader=true
 
-  page=localStorage.getItem('add_company.html')
-  if ( page!= null && page.length >0 ){
-    $scope.page=JSON.parse(page)
-    $scope.action=$scope.page.action
+ $scope.curr_page=base_name()
+ page=localStorage.getItem($scope.curr_page)
+ if ( page!= null && page.length >0 ){
+   $scope.page=JSON.parse(page)
+   $scope.action=$scope.page.action
 
-  }
+ }
+
   $scope.loadItem=function(){
     var CompanyID=localStorage.getItem("CompanyID");
     var email=localStorage.getItem("userEmail");
@@ -282,7 +284,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     if (Doc===undefined){
       Doc={}
     }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_company",per_id:$scope.Company.company_id,location:curr_page}))
+    localstorage('add_document.html',JSON.stringify({action:"add_document_for_company",per_id:$scope.Company.company_id,location:$scope.curr_page}))
     Doc.doc_name=""
     Doc.doc_type="Documento Società"
     Doc.agency_id=localStorage.getItem('agencyId')
@@ -299,8 +301,9 @@ app2.controller('personCtrl', function ($scope,$http,$translate,$rootScope) {
     return;
   }
   $scope.edit_doc=function(Doc,indice){
-    localstorage('add_document.html',JSON.stringify({action:"edit_document_for_company",location:curr_page}))
+    localstorage('add_document.html',JSON.stringify({action:"edit_document_for_company",location:$scope.curr_page}))
     Doc.agency_id=localStorage.getItem('agencyId')
+    Doc.doc_type="Documento Società"
     Doc.per='customer'
     if ($scope.Company.company_id===undefined && Company.company_id>0)
     Doc.per_id=Company.company_id;

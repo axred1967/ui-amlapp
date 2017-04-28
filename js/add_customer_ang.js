@@ -385,7 +385,7 @@ $scope.add_document=function(Doc,per_id){
   if (Doc===undefined){
     Doc={}
   }
-  localstorage('add_document.html',JSON.stringify({action:"add_document_for_customer",per_id:$scope.Customer.user_id,location:curr_page}))
+  localstorage('add_document.html',JSON.stringify({action:"add_document_for_customer",per_id:$scope.Customer.user_id,location:"add_customer.html"}))
   Doc.doc_name=""
   Doc.doc_type="Documento di Identità"
   Doc.agency_id=localStorage.getItem('agencyId')
@@ -401,7 +401,7 @@ $scope.add_document=function(Doc,per_id){
   return;
 }
 $scope.edit_doc=function(Doc,indice){
-  localstorage('add_document.html',JSON.stringify({action:"edit_document_customer",location:curr_page}))
+  localstorage('add_document.html',JSON.stringify({action:"edit_document_customer",location:"add_customer.html"}))
   Doc.agency_id=localStorage.getItem('agencyId')
   Doc.per='customer'
   if ($scope.Customer.user_id===undefined && $scope.Customer.user_id>0)

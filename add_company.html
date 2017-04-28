@@ -245,7 +245,7 @@
                               </div>
                             </fieldset>
                             <fieldset>
-                              <div  ng-show="! newDocs &&   Company.Docs.length>0"  ng-repeat="Doc in Company.Docs  | filter: {doc_id: Company.company_id } as identityDocs" ng-init="DocIndex=$index">
+                              <div  ng-show="! newDocs &&   Company.Docs.length>0"  ng-repeat="Doc in Company.Docs  | filter: {per_id: Company.company_id } as identityDocs" ng-init="DocIndex=$index">
                                 <div ng-hide="Doc.deleted" >
 
                                   <div class="demo-card-image mdl-card mdl-shadow--2dp">

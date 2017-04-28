@@ -175,7 +175,7 @@
                                 </div>
                               </fieldset>
                               <fieldset>
-                                <div id="list_doc" ng-show="Kyc.company_data.Docs.length>0"  ng-repeat="Doc in Kyc.company_data.Docs  | filter: {doc_id: Kyc.company_data.company_id } as identityDocs" ng-init="DocIndex=$index">
+                                <div id="list_doc" ng-show="Kyc.company_data.Docs.length>0"  ng-repeat="Doc in Kyc.company_data.Docs  | filter: {per_id: Kyc.company_data.company_id } as identityDocs" ng-init="DocIndex=$index">
                                   <div ng-hide="Doc.deleted" >
 
                                     <div class="demo-card-image mdl-card mdl-shadow--2dp">

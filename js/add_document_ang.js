@@ -142,7 +142,7 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     break;
 
     case 'add_document_for_company' :
-    $scope.Company=JSON.parse(localStorage.getItem('Coompany'))
+    $scope.Company=JSON.parse(localStorage.getItem('Company'))
     Doc=JSON.parse(localStorage.getItem('Doc'))
     convertDateStringsToDates(Doc)
     $scope.Doc=Doc
@@ -168,6 +168,15 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
     convertDateStringsToDates(Doc)
     $scope.loaded=true
     $scope.Doc=Doc
+    $scope.action='edit'
+    $scope.viewName="Modifica Documento"
+    break;
+    case 'edit_document_for_company' :
+    $scope.Company=JSON.parse(localStorage.getItem('Company'))
+    Doc=JSON.parse(localStorage.getItem('Doc'))
+    convertDateStringsToDates(Doc)
+    $scope.Doc=Doc
+    $scope.loaded=true
     $scope.action='edit'
     $scope.viewName="Modifica Documento"
     break;
