@@ -1358,11 +1358,13 @@ svg {
 		padding-left: 0;
 		list-style: none;
 }
+
 body{
 height: 100%;
-overflow-y: auto;
+overflow-y: hidden;
 overflow-x: hidden;
 }
+
 .demo-card-image.mdl-card {
 	background: url('../img/logo.png') center
 	background-size: 80px 60px;
@@ -1423,4 +1425,8 @@ td.wordwrap{
 }
 .hide{
 	display:none;
+}
+.content-data-ax{
+ position:fixed; top:0px;   bottom:10px;   width:100%; overflow-y: auto;overflow-x: hidden;
+
 }

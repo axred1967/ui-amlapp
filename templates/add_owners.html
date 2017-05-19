@@ -1,0 +1,74 @@
+<div class="mdl-card mdl-shadow--2dp ">
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+      <form name="form" novalidate>
+        <fieldset>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+            <input class="mdl-textfield__input" ng-keyup="showContractorList();" ng-model="Owner.fullname"
+            type="text"  id="searchContractor" id="searchContractor" />
+            <input type="text" ng-model="Owner.user_id" style="display:none" id="Owner_id" />
+            <label  for="searchContractor" class="mdl-textfield__label">{{'Cerca un Titolare effetivo'|translate }}</label>
+            <table class="mdl-data-table mdl-js-data-table  border-none  ">
+              <tbody>
+                <tr ng-click="addContractorItem(item.user_id,item.fullname)" ng-repeat="item in list">
+                  <td style="display:none" >{{item.user_id}}</td>
+                  <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.fullname}}</td>
+                  <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.email}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="searchContractor" minlength="3" ng-show="form.searchContractor.$invalid && form.searchContractor.$touched">
+              <span ng-show="form.searchContractor.$error.required">{{'Richiesto'|translate}}.</span>
+            </div>
+            <div style="width:100%">
+              <a style="float:right" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" ng-click="add_customer()" >{{'Aggiungi' |translate}}</a>
+            </div>
+          </fieldset>
+          <fieldset id="perc" ng-hide="page.type=='owners'  ">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+
+              <input ng-currency currency-symbol="%" min=0 max=100 class="mdl-textfield__input"  ng-model="Owner.percentuale"  type="text"
+              id="Percentuale" name="Percentuale" />
+              <label  for="Percentuale" class="mdl-textfield__label">{{'Percentuale' | translate}} </label>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="Percentuale"  ng-show="form.Percentuale.$invalid && form.Percentuale.$touched">
+                <span ng-show="form.Percentuale.$error.required">{{'Richiesto'| translate}}.</span>
+
+              </tbody>
+            </table>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div ng-show="page.type=='owners' " class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+
+            <input  class="mdl-textfield__input"  ng-model="Owner.percentuale"  type="text"
+            id="tipote" name="tipote" />
+            <label  for="tipote" class="mdl-textfield__label">{{'Tipo TE' | translate}} </label>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="tipote"  ng-show="form.Percentuale.$invalid && form.Percentuale.$touched">
+              <span ng-show="form.Percentuale.$error.required">{{'Richiesto'| translate}}.</span>
+
+            </tbody>
+          </table>
+        </div>
+      </fieldset>
+
+
+      
+    </form>
+
+
+  </div>
+  <div class="clr"></div>
+
+</div>
+
+</div>
+</div>
+<br/>
+<div class="center-align">
+  <a id="save_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_owner()" href="javascript:;">
+    {{'Save' | translate}}
+  </a>
+  <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="back()" href="javascript:;">
+    {{'Cancel' | translate}}
+  </a>
+</div>

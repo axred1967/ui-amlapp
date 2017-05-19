@@ -1,5 +1,24 @@
 app2.controller('my_agent', function ($scope,$http,$translate,Customers_inf) {
+  $scope.loader=true;
+  $scope.main.Back=false
+  $scope.main.Add=true
+  $scope.main.Search=true
+  $scope.main.AddPage="add_customer"
+  $scope.main.action="add_customer"
+  $scope.main.viewName="i miei Agenti"
+  $scope.main.Sidebar=true
+  $('.mdl-layout__drawer-button').show()
+  $scope.page={}
 
+   curr_page=base_name()
+   page=localStorage.getItem(curr_page)
+   if ( page!= null && page.length >0 ){
+     $scope.page=JSON.parse(page)
+     $scope.action=$scope.page.action
+
+   }
+
+  $scope.Customers_inf=new Customers_inf
 
   $scope.imageurl=function(Customer){
     Customer.IMAGEURI=BASEURL+"uploads/user/small/"
@@ -16,18 +35,18 @@ app2.controller('my_agent', function ($scope,$http,$translate,Customers_inf) {
     localstorage('add_customer.html',JSON.stringify({action:'update_customer',location:curr_page,agent:true}))
     localstorage("CustomerProfileId",d.user_id);
     localstorage("Customertype",1);
-    redirect('add_customer.html')
+    $state.go('add_customer')
   };
 
   $scope.add_customer = function(){
     localstorage('add_customer.html',JSON.stringify({action:'add_customer',location:curr_page ,agent:true}))
-    redirect('add_customer.html')
+    $state.go('add_customer')
   };
   $scope.toDocs = function(d){
     localstorage('my_document.html',JSON.stringify({action:'list_from_my_customer',location:curr_page}))
     localstorage("customerId",d.user_id);
     localstorage("customer_name",d.fullname);
-    redirect('my_document.html')
+    $state.go('my_document')
   };
   $scope.deleteCustomer=function(Customer,index )
   {

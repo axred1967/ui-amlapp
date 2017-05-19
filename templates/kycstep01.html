@@ -1,0 +1,98 @@
+text fields -->
+<center><h5 class="orange" id="name_agent">{{Contract.CPU}} - {{Contract.owner}}</h5>
+  <h4>{{'Adeguata Verifica'|translate}}</h4></center>
+  <div class="mdl-card mdl-shadow--2dp ">
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <h5 style"text-color:red" ng-if="formStatus">{{formStatus}}</h5>
+        <form id="form" name="form" action="#" novalidate="">
+          <fieldset>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="Kyc_name" name="Kyc_name"  pattern="[A-Za-z\s]*"
+              ng-model="Kyc.contractor_data.name"  ng-change="Kyc.name=(Kyc.name| capitalize)" minlength="3" ng-required="true"
+              />
+              <label class="mdl-textfield__label" for="Kyc_name">{{'Name'|translate}} *</label>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_name" ng-show="form.Kyc_name.$invalid && form.Kyc_name.$touched">
+                <span ng-show="form.Kyc_name.$error.required">{{'Richiesto'| translate}}</span>
+              </span>
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="Kyc_surname" name="Kyc_surname"value=" "  pattern="[A-Za-z\s]*"
+              ng-model="Kyc.contractor_data.surname"  ng-change="Kyc.surname=(Kyc.surname| capitalize)" minlength="3"
+              ng-required="true" />
+              <label class="mdl-textfield__label" for="Kyc_surname">{{'Surname'|translate}} *</label>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="Custome_surname" ng-show="form.Kyc_surname.$invalid && form.Kyc_surname.$touched">
+                <span ng-show="form.Kyc_surname.$error.required">{{'Richiesto'| translate}}</span>
+              </span>
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="email" id="Kyc_customer_email" name="Kyc_customer_email" value=" "
+              ng-model="Kyc.contractor_data.email" ng-change="Kyc.email=(Kyc.email| capitalize)" ng-required="true" />
+              <label class="mdl-textfield__label" for="email">{{'EmailID' | translate}}*</label>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_customer_email" ng-show="form.Kyc_customer_email.$invalid && form.Kyc_customer_email.$touched">
+                <span ng-show="form.Kyc_customer_email.$error.required">Required.</span>
+                <span ng-show="form.Kyc_customer_email.$error.pattern">{{'mail non valida.'| translate}}</span>
+              </span>
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="Kyc_mobile"  name="Kyc_mobile" value=" "
+              ng-model="Kyc.contractor_data.mobile"   />
+              <label class="mdl-textfield__label" for="Kyc_mobile">{{'Mobile' | translate}}*</label>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_mobile" ng-show="form.Kyc_mobile.$invalid && form.Kyc_mobile.$touched">
+                <span ng-show="form.Kyc_mobile.$error.required">Required.</span>
+                <span ng-show="form.Kyc_mobile.$error.pattern">{{' numero telefono non valida.'| translate}}</span>
+              </span>
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="Kyc_customer_tel"  name="Kyc_customer_tel" value=" "
+              ng-model="Kyc.contractor_data.tel"   />
+              <label class="mdl-textfield__label" for="Kyc_customer_tel">{{'Telefono' | translate}}*</label>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_customer_tel" ng-show="form.Kyc_customer_tel.$invalid && form.Kyc_customer_tel.$touched">
+                <span ng-show="form.Kyc_customer_tel.$error.required">Required.</span>
+                <span ng-show="form.Kyc_customer_tel.$error.pattern">{{' numero telefono non valida.'| translate}}</span>
+              </span>
+            </div>
+          </fieldset>
+          <fieldset>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="Kyc_customer_fax"  name="Kyc_customer_fax" value=" "
+              ng-model="Kyc.contractor_data.fax"   />
+              <label class="mdl-textfield__label" for="Kyc_customer_fax">{{'Fax' | translate}}*</label>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_customer_fax" ng-show="form.Kyc_customer_fax.$invalid && form.Kyc_customer_fax.$touched">
+                <span ng-show="form.Kyc_customer_fax.$error.required">Required.</span>
+                <span ng-show="form.Kyc_customer_fax.$error.pattern">{{' numero fax non valida.'| translate}}</span>
+              </span>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+    <div class="clr"></div>
+
+  </div>
+
+  <br/>
+  <div class="center-align">
+    <button  id="save_next" ng-click="save_kyc(2)" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
+      <i class="material-icons">arrow_right_thick</i>
+    </button>
+    <span class="mdl-tooltip mdl-tooltip--validation" for="save_next" >
+      <span >{{'SaveNext'|translate}}.</span>
+    </span>
+    <button  id="save_exit" ng-click="save_kyc(-2)" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored ">
+      <i class="material-icons">exit_to_app</i>
+    </button>
+    <span class="mdl-tooltip mdl-tooltip--validation" for="save_exit" >
+      <span >{{'SaveExit'|translate}}.</span>
+    </span>
+    <img style="height:50px;width:50px;display:none;" id="loader_img" src="img/loader2.gif"  >
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<!-- cards grid -->
+<div infinite-scroll='Contracts_inf.nextPage()' infinite-scroll-disabled='Contracts_inf.busy' infinite-scroll-distance='0'
+infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-scroll-container="'.add-customer-data'">
+<div id="list_contract"   ng-repeat="Contract in Contracts_inf.Contracts |filter:searchText " ng-show="Contracts_inf.Contracts.length>0"
+  ng-init="ContractIndex=$index">
+
+  <div  class="mdl-cell mdl-cell--12-col">
+    <div class="mdl-card amazing mdl-shadow--2dp">
+      <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
+        <div style="cursor:pointer;"  class="minilogo customer-listing1" back-img="{{imageurl(Contract)}}"></div>
+        <div   ui-sref="view_contract(Contract)" class="card-author">
+
+
+        </div>
+        <div  ui-sref="view_contract(Contract)" class="mdl-grid">
+          <div class="mdl-cell">
+            <span style="cursor:pointer;" >
+              <strong class="blue first_letter_cap">{{Contract.fullname}}</strong>
+            </span><br/>
+            <span style="cursor:pointer;" >
+              {{Contract.CPU}}
+            </span><br/>
+            <span style="cursor:pointer;" class="orange first_letter_cap" >
+              <strong>{{Contract.nature_contract}}</strong>
+            </span><br>
+            <span class="green" style=" cursor:pointer;"  class="long-email">
+              {{Contract.email}}
+            </span>
+          </div>
+        </div>
+        <div class="mdl-card__actions mdl-card--border " style="font-size:12px">
+          <div class="mdl-cell">
+            <span class="orange">Adeguata Verifica </span><br/>
+            <span ng-show="Contract.kyc_status==1">Approved<span class="green-checkbox"><img src="img/green-check.png"></span></span>
+            <span ng-show="Contract.kyc_status==0">In Process</span>
+          </div>
+          <div class="mdl-cell">
+            <span class="blue">Risk Analysis </span><br/>
+            <span ng-show="Contract.status ==1">Approved<span class="green-checkbox"><img src="img/green-check.png"></span></span>
+            <span ng-show="Contract.status ==0">In Process</span>
+            <span ng-show="Contract.status ==1" ng-class="Contract.risk_defined">{{Contract.risk_defined}}</span>
+
+          </div>
+          <div class="mdl-cell">
+            <button  name="deleteOwn" class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteContract(Contract,ContractIndex)" >
+              <i class="material-icons">delete</i>
+            </button>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+              <span >{{'Cancella'|translate}}.</span>
+            </span>
+            <button  name="document" class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="toDocs(Contract)" >
+              <i class="material-icons">attachment</i>
+            </button>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="document" >
+              <span >{{'Documenti Contratto'|translate}}.</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<br/>
+<center ng-Show="Contracts_inf.loaded >= 5 ">
+  <a  ng-click="Contracts_inf.nextPage()"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
+    {{'Altri' | translate }}
+  </a>
+</center>
+<br/>
+</div>
+<div id="no_contract" ng-hide="true" ng-show="Contracts_inf.Contracts.length==0" >
+  <div  class="mdl-cell mdl-cell--12-col">
+    <div class="mdl-card amazing mdl-shadow--2dp">
+      <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
+        <div class="mdl-grid">
+          <div class="mdl-cell">
+            <span style="cursor:pointer;" >
+              <strong class="blue first_letter_cap">{{'Nessun cliente inserito ancora'| translate}}</strong>
+            </span><br/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

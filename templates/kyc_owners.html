@@ -1,0 +1,80 @@
+
+<div ng-hide="loader==true" class="account-data add-customer-data " ng-cloak> <!-- text fields -->
+  <center>  <h4>{{'Adeguata Verifica' |translate  }} </h4></center>
+  <center>  <h5>{{'OwnersList' |translate  }} </h5></center>
+  <style>.customer-listing'+i+' { background-image: url("./img/customer-listing2.png"); margin-right: 8px; } </style>
+  <div id="list_owner" ng-hide="Kyc.owner_data.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Owner in Kyc.owner_data " ng-init="ownerIndex=$index">
+    <div class="mdl-cell mdl-cell--12-col">
+      <div class="mdl-card amazing mdl-shadow--2dp">
+        <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
+          <div style="cursor:pointer;"  class="minilogo customer-listing1"></div>
+          <div class="card-author">
+
+
+          </div>
+          <div class="mdl-grid">
+            <div class="mdl-cell--12-col"  ng-click="edit_owner(Owner,ownerIndex)">
+              <span style="cursor:pointer;" >
+                <strong class="blue first_letter_cap">{{Owner.name}} {{Owner.surname}}</strong>
+              </span><br/>
+              <span class="green" style=" cursor:pointer;"  >
+                {{ Owner.percentuale | currency : '%' }}
+              </span><br/>
+              <span class="green" style=" cursor:pointer;"  >
+                {{Owner.email}}
+              </span><br/>
+              <span class="green" style=" cursor:pointer;"  class="long-email">
+                {{Owner.fiscal_id}}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="mdl-card__actions mdl-card--border " style="font-size:12px">
+          <div class="mdl-layout-spacer"></div>
+
+          <button  name="deleteOwn" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteOwn(Owner,ownerIndex)" >
+            <i class="material-icons">delete</i>
+          </button>
+          <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+            <span >{{'Cancella'|translate}}.</span>
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="no_Owner" ng-hide="Kyc.owner_data.length != 0 " class="ng-hide"  >
+    <div  class="mdl-cell mdl-cell--12-col">
+      <div class="mdl-card amazing mdl-shadow--2dp">
+        <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
+          <div class="mdl-grid">
+            <div class="mdl-cell-12-col">
+              <span style="cursor:pointer;" >
+                <strong class="blue first_letter_cap">Nessun Titolare Effettivo per {{Company.name}} ancora inserito</strong>
+              </span><br/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br/>
+<div class="center-align">
+  <button  id="save_prev" ng-click="save_kyc(-1)" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
+    <i class="material-icons">arrow_left_thick</i>
+  </button>
+  <button  id="save_next" ng-click="save_kyc(4)" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
+    <i class="material-icons">arrow_right_thick</i>
+  </button>
+  <span class="mdl-tooltip mdl-tooltip--validation" for="save_prev" >
+    <span >{{'SavePrev'|translate}}.</span>
+  </span>
+  <button  id="save_exit" ng-click="save_kyc(0)" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored ">
+    <i class="material-icons">exit_to_app</i>
+  </button>
+  <span class="mdl-tooltip mdl-tooltip--validation" for="save_exit" >
+    <span >{{'SaveExit'|translate}}.</span>
+  </span>
+</div>
