@@ -27,7 +27,7 @@ function getChkLogin()
   var id=localStorage.getItem("userId");
   if(id != null)
   {
-    redirect("my_contract.html");
+    redirect("index.html");
   }
 
 
@@ -98,12 +98,12 @@ function login()
             }
             else
             {
-              redirect("my_contract.html");
+              redirect("index.html");
             }
           }
           else
           {
-            redirect("my_contract.html");
+            redirect("index.html");
           }
 
         }
