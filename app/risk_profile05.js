@@ -1,94 +1,16 @@
-var app = {
-  initialize: function() {
-    this.bind();
-  },
-  bind: function() {
-    document.addEventListener('deviceready', getChkLogin, false);
-  },
-  deviceready: function() {
-    // This is an event handler function, which means the scope is the event.
-    // So, we must explicitly called `app.report()` instead of `this.report()`.
-    app.report('deviceready');
-  },
-  report: function(id) {
-    // Report the event in the console
-    console.log("Report: " + id);
-  },
-};
+app2.controller('risk_profile05', function ($scope,$http,$state,$translate) {
+  $scope.main.Back=true
+  $scope.main.Add=false
+//		$scope.main.AddPage="add_contract"
+  $scope.main.Search=false
+  $scope.main.Sidebar=false
+  $('.mdl-layout__drawer-button').hide()
+  $scope.main.viewName="Profilo della società"
+  $scope.main.loader=true
+    $scope.page={}
 
-function getChkLogin()
-{
-
-  chkloggedin();
-
-}
-
-setTimeout(function(){
-  checkthesidebarinfouser();
-}, 800);
-
-var app2 = angular.module('myApp', ['pascalprecht.translate','ng-currency','fieldMatch']);
-//Field Match directive
-angular.module('fieldMatch', [])
-.directive('fieldMatch', ["$parse", function($parse) {
-  return {
-    require: 'ngModel',
-    link: function(scope, elem, attrs, ctrl) {
-      var me = $parse(attrs.ngModel);
-      var matchTo = $parse(attrs.fieldMatch);
-      scope.$watchGroup([me, matchTo], function(newValues, oldValues) {
-        ctrl.$setValidity('fieldmatch', me(scope) === matchTo(scope));
-      }, true);
-    }
-  }
-}]);
-//Run material design lite
-app2.directive("ngModel",["$timeout", function($timeout){
-  return {
-    restrict: 'A',
-    priority: -1, // lower priority than built-in ng-model so it runs first
-    link: function(scope, element, attr) {
-      scope.$watch(attr.ngModel,function(value){
-        $timeout(function () {
-          if (value){
-            element.trigger("change");
-          } else if(element.attr('placeholder') === undefined) {
-            if(!element.is(":focus"))
-            element.trigger("blur");
-          }
-        });
-      });
-    }
-  };
-}]);
-
-app2.run(function($rootScope, $timeout) {
-  $rootScope.$on('$viewContentLoaded', function(event) {
-    $timeout(function() {
-      componentHandler.upgradeAllRegistered();
-    }, 0);
-  });
-  $rootScope.render = {
-    header: true,
-    aside: true
-  }
-});
-
-app2.filter('capitalize', function() {
-  return function(input, $scope) {
-    if ( input !==undefined && input.length>0)
-    return input.substring(0,1).toUpperCase()+input.substring(1);
-    else
-    return input
-
-  }
-});
-
-app2.controller('personCtrl', function ($scope,$http,$translate) {
-  $scope.page={}
-
-  curr_page=base_name()
-  page=localStorage.getItem(curr_page)
+  $scope.curr_page='risk_profile05'
+  page=localStorage.getItem($scope.curr_page)
   if ( page!= null && page.length >0 ){
     $scope.page=JSON.parse(page)
     $scope.action=$scope.page.action
@@ -197,15 +119,15 @@ app2.controller('personCtrl', function ($scope,$http,$translate) {
    }
    $scope.back=function(passo){
      if (passo>0){
-         localstorage('risk_final.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:curr_page}))
-         redirect('risk_final.html')
+         localstorage('risk_final.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
+         $state.go('risk_final')
          return;
      }
      if (passo==-1){
-         redirect($scope.page.prev_page)
+         history.back()
          return;
      }
-     redirect($scope.page.location)
+     $state.go($scope.page.location)
    }
 
 })

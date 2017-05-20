@@ -1,16 +1,16 @@
 
-app2.controller('risk_profile03', function ($scope,$http,$state,$translate) {
+app2.controller('risk_profile04', function ($scope,$http,$state,$translate) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
   $scope.main.Search=false
   $scope.main.Sidebar=false
   $('.mdl-layout__drawer-button').hide()
-  $scope.main.viewName="Comportamento del Cliente"
+  $scope.main.viewName="Frequenza e Consistenza"
   $scope.main.loader=true
     $scope.page={}
 
-  $scope.curr_page='risk_profile03'
+  $scope.curr_page='risk_profile04'
   page=localStorage.getItem($scope.curr_page)
   if ( page!= null && page.length >0 ){
     $scope.page=JSON.parse(page)
@@ -54,7 +54,7 @@ app2.controller('risk_profile03', function ($scope,$http,$state,$translate) {
     });
 
     $scope.action="saveKyc"
-    $scope.viewName="Profilo Soggettivo"
+    
 
 
   }
