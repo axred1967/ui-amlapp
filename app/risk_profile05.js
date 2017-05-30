@@ -16,6 +16,7 @@ app2.controller('risk_profile05', function ($scope,$http,$state,$translate) {
     $scope.action=$scope.page.action
 
   }
+  $scope.main.location=$scope.page.location
 
 
 
@@ -81,7 +82,7 @@ app2.controller('risk_profile05', function ($scope,$http,$state,$translate) {
     .success(function(data) {
       $('#loader_img').hide();
       if(data.RESPONSECODE=='1') 			{
-        swal("",data.RESPONSE);
+        //swal("",data.RESPONSE);
         $scope.lastid=data.lastid
 
         $scope.back(passo)
@@ -119,7 +120,7 @@ app2.controller('risk_profile05', function ($scope,$http,$state,$translate) {
    }
    $scope.back=function(passo){
      if (passo>0){
-         localstorage('risk_final.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
+         localstorage('risk_final',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
          $state.go('risk_final')
          return;
      }
@@ -129,5 +130,11 @@ app2.controller('risk_profile05', function ($scope,$http,$state,$translate) {
      }
      $state.go($scope.page.location)
    }
+   $scope.$on('backButton', function(e) {
+       $scope.back()
+   });
+
+   $scope.$on('addButton', function(e) {
+   })
 
 })

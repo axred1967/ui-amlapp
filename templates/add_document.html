@@ -49,19 +49,30 @@
             </div>
           </fieldset>
         </div>
+        <div ng-class="{'mdl-grid': main.web }">
+        <div ng-class="{'mdl-cell--4-col': main.web }">
+
         <fieldset>
           <div class="demo-card-image mdl-card mdl-shadow--2dp">
             <div class="mdl-card__title mdl-card--expand">Immagine</div>
 
-            <img class="toload" ng-show="Doc.doc_image.length>0" ng-src ="{{Doc.doc_image.length>0 ? Doc.IMAGEURI+ Doc.doc_image :'' }}" ></img>
+
+            <img class="toload" ng-show="Doc.isImage && Doc.doc_image.length>0" ng-src ="{{Doc.doc_image.length>0 ? Doc.IMAGEURI+ Doc.doc_image :'' }}" ></img>
             <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img_int" src="img/loader2.gif"  /> </center>
+            <img class="toload" ng-show="! Doc.isImage && Doc.doc_image.length>0" ng-src ="{{'/img/'+ Doc.file_type.substr(1)+'.png' }}" ></img>
+
             <div class="mdl-card__actions">
               <div class="mdl-layout-spacer"></div>
-              <button id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
+              <input ng-show="main.web"  type="file" id="msds"  name="msds" ng-model="fileweb"/>
+              <button ng-show="main.web" id="addfileweb"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfileweb()" ><i class="material-icons">file_upload</i></button>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
+                <span >{{'Carica da WEB'|translate}}.</span>
+              </span>
+              <button ng-hide="main.web"  id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
               <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
                 <span >{{'Scatta una foto'|translate}}.</span>
               </span>
-              <button id="addGallery" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
+              <button ng-hide="main.web" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
               <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
                 <span >{{'Scegli da Galleria'|translate}}.</span>
               </span>
@@ -72,6 +83,8 @@
             </div>
           </div>
         </fieldset>
+      </div>
+    </div>
         <fieldset>
           <div class="center-align" style="margin-top:20px">
             <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_document()" href="javascript:;">

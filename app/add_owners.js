@@ -9,15 +9,17 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate) {
   $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Nuovo TE"
   $scope.page={}
-  page=localStorage.getItem('add_owners.html')
+  page=localStorage.getItem('add_owners')
   if ( page!= null && page.length >0 ){
     $scope.page=JSON.parse(page)
     $scope.action=$scope.page.action
 
   }
+  $scope.main.location=$scope.page.location
+
   $scope.word={};
   $scope.Owner={}
-  //localstorage("back","view_contract.html");
+  //localstorage("back","view_contract");
   switch ($scope.action){
     case 'edit_owners' :
     $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
@@ -116,7 +118,7 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate) {
       if(data.RESPONSECODE=='1')
       {
         $scope.contract=[]
-        swal("",data.RESPONSE);
+        //swal("",data.RESPONSE);
         $scope.Owner=data.owner
         $scope.lastid=data.lastid
         $scope.back()
@@ -155,9 +157,16 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate) {
   }
 
   $scope.add_customer=function(){
-    localstorage('add_customer.html',JSON.stringify({action:'add_customer_for_owner',location:'add_owners.html'}))
+    localstorage('add_customer',JSON.stringify({action:'add_customer_for_owner',location:'add_owners'}))
     localstorage('Kyc',JSON.stringify($scope.Kyc))
     state.go('add_customer')
   }
+  $scope.$on('backButton', function(e) {
+      $scope.back()
+  });
+
+  $scope.$on('addButton', function(e) {
+
+  })
 
 })

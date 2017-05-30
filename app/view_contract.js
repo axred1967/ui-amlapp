@@ -15,6 +15,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$rootScope) {
 	    $scope.action=$scope.main.action
 
 	  }
+		$scope.main.location=$scope.page.location
 
 
 		console.log('action'+$scope.action);
@@ -51,41 +52,54 @@ app2.controller('view_contract', function ($scope,$http,$translate,$rootScope) {
       edit_risk_account(id)
   };
   $scope.edit_contract = function(){
-		localstorage('add_contract.html',JSON.stringify({action:'edit',location:'view_contract.html'}))
+		localstorage('add_contract',JSON.stringify({action:'edit',location:'view_contract'}))
     localstorage('Contract', JSON.stringify($scope.Contract));
     $state.go('add_contract')
  };
   $scope.edit_profile = function(){
-		localstorage('add_customer.html',JSON.stringify({action:'update_customer',location:'view_contract.html'}))
+		localstorage('add_customer',JSON.stringify({action:'update_customer',location:'view_contract'}))
     localstorage("CustomerProfileId",$scope.Contract.contractor_id);
     $state.go('add_customer')
  };
  $scope.edit_docu = function(){
-	 localstorage('my_document.html',JSON.stringify({action:'list_from_view_contract',location:'view_contract.html'}))
+	 localstorage('my_document',JSON.stringify({action:'list_from_view_contract',location:'view_contract'}))
 	 localstorage('Contract', JSON.stringify($scope.Contract));
 	 $state.go('my_document')
 };
  $scope.edit_kyc = function(){
-	 localstorage('kyc.html',JSON.stringify({action:'edit_kyc',location:'view_contract.html'}))
+	 localstorage('kyc',JSON.stringify({action:'edit_kyc',location:'view_contract'}))
    localstorage('Contract',JSON.stringify($scope.Contract))
    $state.go('kyc')
 };
 $scope.edit_risk = function(){
-	localstorage('risk_profile01.html',JSON.stringify({action:'',location:'view_contract.html'}))
+	localstorage('risk_profile01',JSON.stringify({action:'',location:'view_contract'}))
 	localstorage('Contract',JSON.stringify($scope.Contract))
 	$state.go('risk_profile01')
 };
 $scope.print_kyc = function(){
-	localstorage('contract_form.html',JSON.stringify({action:'',location:'view_contract.html'}))
+	localstorage('contract_form',JSON.stringify({action:'',location:'view_contract'}))
 	localstorage('Contract',JSON.stringify($scope.Contract))
 	$state.go('contract_form')
 };
 $scope.owners = function(){
-	localstorage('owners_list.html',JSON.stringify({action:'owner_from_contract',location:'view_contract.html'}))
+	localstorage('owners_list',JSON.stringify({action:'owner_from_contract',location:'view_contract'}))
 	localstorage('Contract',JSON.stringify($scope.Contract))
 	$state.go('owners_list')
 };
+$scope.add_contract = function(){
+	localstorage('add_contract',JSON.stringify({action:'add_contract',location:$scope.curr_page}))
+	$state.go('add_contract')
+};
+
  $scope.back = function(d){
-       history.back()
+       $state.go($scope.page.location)
  }
+ $scope.$on('backButton', function(e) {
+		 $scope.back()
+ });
+
+ $scope.$on('addButton', function(e) {
+	 $scope.add_contract()
+ })
+
 })

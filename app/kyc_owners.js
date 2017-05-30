@@ -21,6 +21,8 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate) {
     $scope.action=$scope.page.action
 
   }
+  $scope.main.location=$scope.page.location
+
   if ($scope.page.edit) {
     $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
     convertDateStringsToDates($scope.Kyc)
@@ -103,7 +105,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate) {
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       if(data.RESPONSECODE=='1') 			{
-        swal("",data.RESPONSE);
+        //swal("",data.RESPONSE);
         $scope.Kyc.owner_data.splice(index,index);
         $scope.loader=false;
 
@@ -210,14 +212,14 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate) {
 
 
   $scope.add_owner=function(Owner){
-    localstorage('add_owners.html',JSON.stringify({action:'add_customer_for_kyc_owner',location:'kyc_owners.html',other_data:true,owners:true}))
+    localstorage('add_owners',JSON.stringify({action:'add_customer_for_kyc_owner',location:'kyc_owners',other_data:true,owners:true}))
     localstorage('Contract',JSON.stringify($scope.Kyc.contractor_data))
     $state.go('add_owners')
 
   }
   $scope.edit_owner=function(Owner,indice){
     localstorage('Kyc',JSON.stringify($scope.Kyc))
-    localstorage('add_customer.html',JSON.stringify({action:'edit_customer_for_kyc_owner',location:'kyc_owners.html',other_data:true,owners:true}))
+    localstorage('add_customer',JSON.stringify({action:'edit_customer_for_kyc_owner',location:'kyc_owners',other_data:true,owners:true}))
     Owner.indice=indice
     localstorage('Owner',JSON.stringify(Owner))
     $state.go('add_customer')
@@ -226,7 +228,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate) {
 
   $scope.back=function(passo){
     if (passo>0){
-        localstorage('kyc_signature.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
+        localstorage('kyc_signature',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
         $state.go('kyc_signature')
         return;
     }
@@ -236,5 +238,11 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate) {
     }
     $state.go('view_contract')
   }
+  $scope.$on('backButton', function(e) {
+      $scope.back()
+  });
+
+  $scope.$on('addButton', function(e) {
+  })
 
 });

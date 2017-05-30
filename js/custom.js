@@ -136,9 +136,9 @@ function checkthesidebarinfouser()
                             if(image !='null')
                             {
 
-                                $('#Profileimageagencyuser').attr("src",BASEURL+"uploads/user/small/"+image);
-                                $('#view_profile_image').attr("src",BASEURL+"uploads/user/small/"+image);
-                                $('#Profileimageagencyuseremail').html(email);
+                                //$('#Profileimageagencyuser').attr("src",BASEURL+"uploads/user/small/"+image);
+                                //$('#view_profile_image').attr("src",BASEURL+"uploads/user/small/"+image);
+                                //$('#Profileimageagencyuseremail').html(email);
                             }
                         }
                         $('#Profileimageagencyusername').html(data.NAME);

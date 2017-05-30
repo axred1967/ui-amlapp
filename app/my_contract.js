@@ -74,13 +74,14 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
   $scope.page={}
 
-   $scope.curr_page=base_name()
+   $scope.curr_page='home'
    page=localStorage.getItem($scope.curr_page)
    if ( page!= null && page.length >0 ){
      $scope.page=JSON.parse(page)
      $scope.action=$scope.page.action
 
    }
+   $scope.main.location=$scope.page.location
 
 
   $scope.Contracts_inf=new Contracts_inf
@@ -94,13 +95,16 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   $scope.imageurl=function(Contract){
     if (Contract.act_for_other==1 && Contract.company_image!==undefined && Contract.company_image !=null && Contract.company_image.length>0){
       Contract.IMAGEURI=BASEURL+"uploads/company/small/"
-      Contract.imageurl= Contract.IMAGEURI +Contract.company_image
+      //Contract.imageurl= Contract.IMAGEURI +Contract.company_image
+      Contract.imageurl= BASEURL + "file_down.php?file=" + Contract.company_image +"&profile=1"
+
       return   Contract.imageurl
 
     }
     if (Contract.act_for_other==2 && Contract.owner_image!==undefined && Contract.owner_image  !=null && Contract.owner_image.length>0){
       Contract.IMAGEURI=BASEURL+"uploads/company/small/"
-      Contract.imageurl= Contract.IMAGEURI +Contract.owner_image
+//      Contract.imageurl= Contract.IMAGEURI +Contract.owner_image
+      Contract.imageurl= BASEURL + "file_down.php?file=" + Contract.owner_image +"&profile=1"
       return   Contract.imageurl
 
     }
@@ -108,19 +112,20 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     if (Contract.image===undefined || Contract.image==null || Contract.image.length==0)
     Contract.imageurl= '../img/customer-listing1.png'
     else
-    Contract.imageurl= Contract.IMAGEURI +Contract.image
+    Contract.imageurl= BASEURL+ "file_down.php?file=" + Contract.image +"&profile=1"
+//    Contract.imageurl= Contract.IMAGEURI +Contract.image
     return   Contract.imageurl
 
   }
   $scope.toDocs = function(Contract){
-    localstorage('my_document.html',JSON.stringify({action:'list_from_view_contract',location:$scope.curr_page}))
+    localstorage('my_document',JSON.stringify({action:'list_from_view_contract',location:$scope.curr_page}))
     localstorage('Contract', JSON.stringify(Contract));
     $state.go('my_document')
   };
 
 
   $scope.tocontract = function(d){
-    localstorage('view_contract.html',JSON.stringify({action:'view',location:$scope.curr_page}))
+    localstorage('view_contract',JSON.stringify({action:'view',location:$scope.curr_page}))
     localstorage("contract_id",d.contract_id);
     localstorage("customer_id",d.contractor_id);
     localstorage("Customertype",1);
@@ -128,7 +133,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     $state.go('view_contract')
   };
   $scope.add_contract = function(){
-    localstorage('add_contract.html',JSON.stringify({action:'add_contract',location:$scope.curr_page}))
+    localstorage('add_contract',JSON.stringify({action:'add_contract',location:$scope.curr_page}))
     $state.go('add_contract')
   };
   $scope.deleteContract=function(Contract,index )
@@ -150,7 +155,14 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     $scope.Contracts.splice(index,1);
   }
   $scope.back = function(d){
-    history.back()
+    $state.go($scope.page.locatio)
   }
+  $scope.$on('backButton', function(e) {
+      $scope.back()
+  });
+
+  $scope.$on('addButton', function(e) {
+    $scope.add_contract()
+  })
 
 });

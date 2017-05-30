@@ -1,118 +1,38 @@
-<!DOCTYPE html>
-<html class="no-js">
-<head>
-  <meta charset="utf-8">
-  <title>Tax</title>
-  <meta name="description" content="">
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-  <!-- <link rel="stylesheet" href="css/animsition.css"> -->
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/css/animsition.css"> -->
-
-  <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
-  <link rel="stylesheet" href="css/material.css">
-  <link rel="stylesheet" href="css/swipebox.min.css">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/stylesheet.css">
-  <link rel="stylesheet" href="css/jquery.fancybox.css">
-  <script src="js/jquery-2.1.4.min.js"></script>
-  <script type="text/javascript" src="js/custom.js"></script>
-  <script src="js/myprofile.js"></script>
-  <script type="text/javascript" src="cordova.js"> </script>
-  <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
-  <script src="js/animsition.js"></script>
-  <script src="js/sweetalert.min.js"></script>
-  <script src="js/material.min.js"></script>
-  <script src="js/jquery.swipebox.min.js"></script>
-  <script src="js/function.js"></script>
-  <script src="js/angular.min.js"></script>
-  <script src="js/angular-route.min.js"></script>
-  <script src="js/angular-translate.min.js"></script>
-  <script src="js/myprofile_ang.js"></script>
-  <script src="js/jquery.fancybox.pack.js"></script>
-  <script>
-  langfile = localStorage.getItem("language");
-  if (langfile == 'en')
-  document.write('<scri' + 'pt src="js/enlang_ang.js"></' + 'script>');
-  else
-  document.write('<scri' + 'pt src="js/itlang_ang.js"></' + 'script>');
-  if(langfile ==  "en"){
-    //             $.getScript("js/i18n/angular-locale_en.js");
-    document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
-  }
-  else{
-    //             $.getScript("js/i18n/angular-locale_it.js");
-    document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
-  }
-  </script>
-  <script src="js/ng-currency.js"></script>
-
-
-</head>
-<style>
-.popupclientissue
-{
-  background-color: #fff !important;
-  border-radius: 5px !important;
-  overflow: hidden !important;
-  padding: 16px !important;
-  width: 320px !important;
-  height: 100%;
-}
-.cameraSpan, .gallery_Icon
-{
-  background-color: #0097A7;
-  border-radius: 50%;
-  display: inline-block;
-  height: 40px;
-  margin-right: 10px;
-  vertical-align: middle;
-  width: 39px;
-}
-.camera_Icon, .gallery_Icon
-{
-  color: #fff;
-  font-size: 18px;
-  line-height: 40px !important;
-  text-shadow: 0 1px 1px #000;
-}
-.profile-img > img
-{
-  border-radius: 100%;
-  width: 100px;
-}
-</style>
-
-<body ng-app="myApp" ng-controller="personCtrl">
-  <div class="animsition">
-    <!-- Page Content -->
-    <main class="mdl-layout__content">
-      <div class=""> <!-- card -->
-        <div class="account-info dark-blue-bg">
-          <div class="account-navigation"> <!-- top icons -->
-            <a class="mdl-button mdl-js-button mdl-button--icon left" onclick="redirect('my_customer.html')" href="javascript:;">
-              <img src="img/back-button.png">
-            </a>
-            <!-- <button class="mdl-button mdl-js-button mdl-button--icon right">
-            <i class="material-icons">close</i>
-          </button> -->
-          <span class="main-heading">{{'Profile'|translate}}</span>
-          <div class="clr"></div>
-        </div>
-      </div>
-
-      <div class="account-data add-customer-data"> <!-- text fields -->
-
         <div class="mdl-card mdl-shadow--2dp ">
           <div class="right">
-            <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" href="javascript:;" onclick="changepasswordpopup()">
+            <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" href="javascript:;" ng-click="changepasswordpopup()">
               {{'ChangePassword'|translate}}
             </a>
+          </div>
+          <div ng-show="chpassword==true" class="mdl-card mdl-shadow--2dp "  >
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--12-col">
+                <form action="#">
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                      <input class="mdl-textfield__input" type="password" placeholder="  {{'CurrentPassword'|translate}}" id="current_password" />
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                      <input class="mdl-textfield__input" type="password" placeholder=" {{'NewPassword'|translate}}" id="new_password" />
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                      <input class="mdl-textfield__input" type="password" placeholder=" {{'ConfirmPassword'|translate}}" id="re_new_password" />
+                    </div>
+                  </fieldset>
+                </form>
+
+                <br><br>
+                <div class="center-align">
+                  <a style="" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="change_password()" href="javascript:;">
+                    {{'Submit'|translate}}
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="clr"></div>
           <div class="mdl-grid">
@@ -120,9 +40,12 @@
 
               <form action="#"name="form" novalidate="">
                 <fieldset>
+                  <div class="mdl-grid">
+                    <div ng-class="{'mdl-cell--3-col-desktop mdl-cell-12-col-phone mdl-cell-6-col-tablet': main.web }">
+
                   <div class="demo-card-image mdl-card mdl-shadow--2dp">
                     <div class="mdl-card__title mdl-card--expand">{{'Immagine Profilo'|translate}}</div>
-                    <img  ng-show="Customer.image.length>0" ng-src ="{{Customer.image.length>0 ? Customer.IMAGEURI+ Customer.image :'' }}" ></img>
+                    <img  ng-show="Customer.image.length>0" ng-src ="{{imageurl(Customer)}}" ></img>
                     <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
 
                     <div class="mdl-card__actions">
@@ -144,7 +67,8 @@
                     </div>
 
                   </div>
-
+</div>
+</div>
                 </fieldset>
                 <fieldset>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -158,7 +82,7 @@
                   </div>
                 </fieldset>
                 <fieldset>
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <div ng-hide="Customer.user_type==1" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="text" id="Customer_surname" name="Customer_surname"value=" "  pattern="[A-Za-z\s]*"
                     ng-model="Customer.surname"  ng-change="Customer.surname=(Customer.surname| capitalize)" minlength="3"
                     ng-required="true" />
@@ -204,47 +128,3 @@
           {{'Cancel'|translate}}
         </a>
       </div>
-
-    </div>
-    <div class="clr"></div>
-
-  </div>
-
-</div>
-</main>
-</div>
-<a id="popup3"  href="#pop-up3" class="no-accent-color fancybox" style="display:none">Pop</a>
-<div class="mdl-card mdl-shadow--2dp " id="pop-up3" style="display:none">
-  <div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--12-col">
-      <form action="#">
-        <fieldset>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-            <input class="mdl-textfield__input" type="text" placeholder="  {{'CurrentPassword'|translate}}" id="current_password" />
-          </div>
-        </fieldset>
-        <fieldset>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-            <input class="mdl-textfield__input" type="text" placeholder=" {{'NewPassword'|translate}}" id="new_password" />
-          </div>
-        </fieldset>
-        <fieldset>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-            <input class="mdl-textfield__input" type="text" placeholder=" {{'ConfirmPassword'|translate}}" id="re_new_password" />
-          </div>
-        </fieldset>
-      </form>
-
-      <br><br>
-      <div class="center-align">
-        <a style="" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" onclick="change_password()" href="javascript:;">
-          {{'Submit'|translate}}
-        </a>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-</body>
-</html>

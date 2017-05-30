@@ -9,13 +9,15 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
   $scope.main.loader=true
   $scope.page={}
 
-  $scope.curr_page='kycstep01.html'
+  $scope.curr_page='kycstep01'
  page=localStorage.getItem($scope.curr_page)
  if ( page!= null && page.length >0 ){
    $scope.page=JSON.parse(page)
    $scope.action=$scope.page.action
 
  }
+ $scope.main.location=$scope.page.location
+
 
 
 
@@ -88,7 +90,7 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
       .success(function(data) {
         //$scope.loader=false
         if(data.RESPONSECODE=='1') 			{
-          swal("",data.RESPONSE);
+          //swal("",data.RESPONSE);
           $scope.lastid=data.lastid
 
           $scope.back(passo)
@@ -112,14 +114,23 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
 
   $scope.back=function(passo){
     if (passo>0){
-        localstorage('kycstep0'+passo+'.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
-        $state.go('kycstep0'+passo+'.html')
+        localstorage('kycstep0'+passo+'',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
+        $state.go('kycstep0'+passo+'')
         return;
     }
     if (passo==-1){
         history.back()
         return;
     }
-    history.back()
+    $state.go(state.page.location)
+
   }
+  $scope.$on('backButton', function(e) {
+      $scope.back()
+  });
+
+  $scope.$on('addButton', function(e) {
+    $scope.add_contract()
+  })
+
 })

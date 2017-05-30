@@ -10,13 +10,14 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate) {
   $scope.page={}
   $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
 
-  $scope.curr_page='kyc_signature.html'
+  $scope.curr_page='kyc_signature'
   page=localStorage.getItem($scope.curr_page)
   if ( page!= null && page.length >0 ){
     $scope.page=JSON.parse(page)
     $scope.action=$scope.page.action
 
   }
+  $scope.main.location=$scope.page.location
 
 
 
@@ -78,6 +79,47 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate) {
 
 
   }
+  $scope.signature_ready=function(){
+    clearButton = document.querySelector("#clearCanvas")
+
+    var wrapper = document.getElementById("signature-pad"),
+    savePNGButton = wrapper.querySelector("[data-action=save-png]"),
+    canvas = wrapper.querySelector("canvas"),
+    signaturePad;
+
+    // Adjust canvas coordinate space taking into account pixel ratio,
+    // to make it look crisp on mobile devices.
+    // This also causes canvas to be cleared.
+    function resizeCanvas() {
+      // When zoomed out to less than 100%, for some very strange reason,
+      // some browsers report devicePixelRatio as less than 1
+      // and only part of the canvas is cleared then.
+      var Canvas2 = $("#canvas2")[0];
+      $('#sig').val(Canvas2.toDataURL())
+      var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+      canvas.width = canvas.offsetWidth * ratio;
+      ratiox=canvas.offsetWidth/canvas.width
+      canvas.height = canvas.offsetHeight * ratio;
+      ratioy=canvas.offsetHeight/canvas.height
+      var image = new Image();
+      image.src = $('#sig').val();
+      canvas.getContext("2d").scale(ratio, ratio);
+      //canvas.getContext("2d").translate(canvas.width/2,canvas.height/2);
+      canvas.getContext("2d").drawImage(image,0,0);
+      //canvas.getContext("2d").translate(-canvas.width/2,-canvas.height/2)
+    }
+
+    window.onresize = resizeCanvas;
+    resizeCanvas();
+
+    signaturePad = new SignaturePad(canvas);
+
+    clearButton.addEventListener("click", function (event) {
+      signaturePad.clear();
+    });
+  };
+  $scope.signature_ready();
+
   $scope.saveimg=function(){
       $('#sign').show();
       vals=$('#sig').val();
@@ -122,7 +164,7 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate) {
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       if(data.RESPONSECODE=='1') 			{
-        swal("",data.RESPONSE);
+        //swal("",data.RESPONSE);
         $scope.lastid=data.lastid
 
         $scope.back(passo)
@@ -178,5 +220,11 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate) {
      //$scope.loader=false
      $state.go('view_contract')
    }
+   $scope.$on('backButton', function(e) {
+       $scope.back()
+   });
+
+   $scope.$on('addButton', function(e) {
+   })
 
 })

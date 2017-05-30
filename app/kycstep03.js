@@ -9,13 +9,15 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate) {
   $scope.main.loader=true
    $scope.page={}
 
-  $scope.curr_page='kycstep03.html'
+  $scope.curr_page='kycstep03'
   page=localStorage.getItem($scope.curr_page)
   if ( page!= null && page.length >0 ){
     $scope.page=JSON.parse(page)
     $scope.action=$scope.page.action
 
   }
+  $scope.main.location=$scope.page.location
+
   if ($scope.page.editDoc) {
     $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
     Doc=JSON.parse(localStorage.getItem('Doc'))
@@ -114,7 +116,7 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate) {
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       if(data.RESPONSECODE=='1') 			{
-        swal("",data.RESPONSE);
+        //swal("",data.RESPONSE);
         $scope.lastid=data.lastid
 
         $scope.back(passo)
@@ -192,7 +194,7 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate) {
     if (Doc===undefined){
       Doc={}
     }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_kyc_id",location:$scope.curr_page}))
+    localstorage('add_document',JSON.stringify({action:"add_document_for_kyc_id",location:$scope.curr_page}))
     Doc.doc_name="Documento di Identità"
     Doc.doc_type="Documento di Identità"
     Doc.agency_id=localStorage.getItem('agencyId')
@@ -220,17 +222,17 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate) {
     if (passo>0){
       switch($scope.Kyc.contractor_data.act_for_other){
         case '0':
-        localstorage('kyc_signature.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
+        localstorage('kyc_signature',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
         $state.go('kyc_signature')
         return;
         break;
         case '1':
-        localstorage('kyc_company.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
+        localstorage('kyc_company',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
         $state.go('kyc_company')
         return;
         break;
         case '2':
-        localstorage('kyc_owners.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
+        localstorage('kyc_owners',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
         $state.go('kyc_owners')
         return;
       }
@@ -239,8 +241,15 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate) {
       history.back()
       return;
     }
-    $state.go('view_contract')
+    $state.go($sceop.page.location)
   }
+  $scope.$on('backButton', function(e) {
+      $scope.back()
+  });
+
+  $scope.$on('addButton', function(e) {
+  })
+
 $scope.console=function(){
   console.log("xxx". $scope.Kyc.contractor_data.check_pep);
 

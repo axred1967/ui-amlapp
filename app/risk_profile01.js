@@ -9,13 +9,14 @@ app2.controller('risk_profile01', function ($scope,$http,$state,$translate) {
   $scope.main.loader=true
   $scope.page={}
 
-  $scope.curr_page='risk_profile01.html'
+  $scope.curr_page='risk_profile01'
   page=localStorage.getItem($scope.curr_page)
   if ( page!= null && page.length >0 ){
     $scope.page=JSON.parse(page)
     $scope.action=$scope.page.action
 
   }
+  $scope.main.location=$scope.page.location
 
 
 
@@ -183,7 +184,7 @@ app2.controller('risk_profile01', function ($scope,$http,$state,$translate) {
   }
    $scope.back=function(passo){
      if (passo>0){
-         localstorage('risk_profile0'+ passo +'.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
+         localstorage('risk_profile0'+ passo +'',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
          $stste.go('risk_profile0'+ passo )
          return;
      }
@@ -191,7 +192,13 @@ app2.controller('risk_profile01', function ($scope,$http,$state,$translate) {
          history.back()
          return;
      }
-     $state.go('view_contract')
+     $state.go($scope.page.location)
    }
+   $scope.$on('backButton', function(e) {
+       $scope.back()
+   });
+
+   $scope.$on('addButton', function(e) {
+   })
 
 })

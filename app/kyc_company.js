@@ -9,13 +9,15 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate) {
   $scope.main.loader=true
   $scope.page={}
 
-  $scope.curr_page='kyc_company.html'
+  $scope.curr_page='kyc_company'
   page=localStorage.getItem($scope.curr_page)
   if ( page!= null && page.length >0 ){
     $scope.page=JSON.parse(page)
     $scope.action=$scope.page.action
 
   }
+  $scope.main.location=$scope.page.location
+
   $scope.loadItem=function(){
     var id=localStorage.getItem("CustomerProfileId");
     var email=localStorage.getItem("userEmail");
@@ -126,7 +128,7 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate) {
     .success(function(data) {
       $('#loader_img').hide();
       if(data.RESPONSECODE=='1') 			{
-        swal("",data.RESPONSE);
+        //swal("",data.RESPONSE);
         $scope.lastid=data.lastid
 
         $scope.back(passo)
@@ -281,7 +283,7 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate) {
     if (Doc===undefined){
       Doc={}
     }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_kyc_id",location:$scope.curr_page,per_id:$scope.Kyc.company_data.company_id}))
+    localstorage('add_document',JSON.stringify({action:"add_document_for_kyc_id",location:$scope.curr_page,per_id:$scope.Kyc.company_data.company_id}))
     Doc.doc_name="Documenti Società"
     Doc.agency_id=localStorage.getItem('agencyId')
     Doc.per='contract'
@@ -298,7 +300,7 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate) {
    }
    $scope.back=function(passo){
      if (passo>0){
-         localstorage('kyc_owners.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
+         localstorage('kyc_owners',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
          $state.go('kyc_owners')
          return;
      }
@@ -308,5 +310,11 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate) {
      }
      $state.go('view_contract')
    }
+   $scope.$on('backButton', function(e) {
+       $scope.back()
+   });
+
+   $scope.$on('addButton', function(e) {
+   })
 
 })

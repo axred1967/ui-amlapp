@@ -17,6 +17,8 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate) {
     $scope.action=$scope.page.action
 
   }
+  $scope.main.location=$scope.page.location
+
   $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
 
 
@@ -54,7 +56,7 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate) {
     });
 
     $scope.action="saveKyc"
-    
+
 
 
   }
@@ -83,7 +85,7 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate) {
     .success(function(data) {
       $('#loader_img').hide();
       if(data.RESPONSECODE=='1') 			{
-        swal("",data.RESPONSE);
+        //swal("",data.RESPONSE);
         $scope.lastid=data.lastid
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
 
@@ -164,7 +166,7 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate) {
     if (Doc===undefined){
       Doc={}
     }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_risk_id",location:$scope.curr_page}))
+    localstorage('add_document',JSON.stringify({action:"add_document_for_risk_id",location:$scope.curr_page}))
     Doc.doc_name="Documento di Identità"
     Doc.doc_type="Documento di Identità"
     Doc.agency_id=localStorage.getItem('agencyId')
@@ -178,7 +180,7 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate) {
 
     localstorage('Doc',JSON.stringify(Doc))
     //localstorage('Contract',JSON.stringify($scope.Contract))
-    redirect('add_document.html')
+    $state.go('add_document')
    }
    $scope.check_risk=function (partial){
     if   ($scope.Risk.risk_data.partial===undefined )
@@ -199,12 +201,12 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate) {
    $scope.back=function(passo){
      if (passo>0){
          if ($scope.Contract.act_for_other==1){
-           localstorage('risk_profile05.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
+           localstorage('risk_profile05',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
           $state.go('risk_profile05')
 
          }
          else {
-           localstorage('risk_final.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
+           localstorage('risk_final',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
            $state.go('risk_final')
 
          }
@@ -216,5 +218,11 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate) {
      }
      $state.go($scope.page.location)
    }
+   $scope.$on('backButton', function(e) {
+       $scope.back()
+   });
+
+   $scope.$on('addButton', function(e) {
+   })
 
 })

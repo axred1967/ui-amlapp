@@ -24,6 +24,9 @@ function getChkLogin()
 
 
 var app2 = angular.module('myApp', ['ui.router','pascalprecht.translate','ng-currency','fieldMatch','infinite-scroll']);
+
+
+
 app2.config(function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home');
@@ -151,7 +154,16 @@ app2.config(function($stateProvider, $urlRouterProvider) {
             url: '/risk_final',
             templateUrl: 'templates/risk_final.html',
             controller: 'risk_final'
-        })        
+        })
+        .state('my_profile', {
+            url: '/my_profile',
+            templateUrl: 'templates/my_profile.html',
+            controller: 'my_profile'
+        })
+        .state('logout', {
+            url: '/logout',
+            controller: 'logout'
+        })
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
         .state('about', {
           url: '/view_contract',
@@ -159,7 +171,16 @@ app2.config(function($stateProvider, $urlRouterProvider) {
         });
 
 });
+app2.directive('backImg', function(){
+    return function(scope, element, attrs){
+        attrs.$observe('backImg', function(value) {
+            element.css({
+                'background-image': 'url(' + value +')'
 
+            });
+        });
+    };
+});
 //Field Match directive
 angular.module('fieldMatch', [])
 .directive('fieldMatch', ["$parse", function($parse) {
@@ -229,16 +250,14 @@ app2.controller('personCtrl', function ($scope, $state) {
   $scope.main.Search=false
   $scope.main.viewName=""
   $scope.main.other_data=false
-
+  $scope.main.web=true
   $scope.back=function(){
-
-    history.back()
+    $scope.$broadcast('backButton')
 
 
   }
   $scope.add=function(){
-    localstorage($scope.main.AddPage+'.html',JSON.stringify({action:$scope.main.action,location:$scope.main.AddPage}))
-    $state.go($scope.main.AddPage)
+    $scope.$broadcast('addButton')
 
 
   }
@@ -254,8 +273,18 @@ app2.controller('personCtrl', function ($scope, $state) {
   {
     window.location = "login.html";
   }
-    checkthesidebarinfouser();
-
+    //checkthesidebarinfouser();
+    $scope.agent={}
+    $scope.agent.name=localStorage.getItem('Name');
+    $scope.agent.email=localStorage.getItem('userEmail');
+    $scope.agent.id=localStorage.getItem('userId');
+    $scope.agent.agency_id=localStorage.getItem('agencyId');
+    $scope.agent.user_type=localStorage.getItem('userType');
+    $scope.agent.image=localStorage.getItem('Profileimageagencyuser');
+    if ($scope.agent.image===undefined ||  $scope.agent.image== null || $scope.agent.image.length==0)
+      $scope.agent.imageurl= ''
+    else
+      $scope.agent.imageurl= BASEURL+ "file_down.php?file=" + $scope.agent.image +"&profile=1"
 
 
 })
@@ -301,4 +330,13 @@ $(document).ready(function() {
     });
   }
   resize_img();
+});
+app2.controller('logout', function ($scope, $state) {
+  localStorage.removeItem('userId');
+  localStorage.removeItem('userType');
+  localStorage.removeItem('userEmail');
+  localStorage.removeItem('agencyId');
+  localStorage.removeItem('agencyId');
+  localStorage.removeItem('Profileimageagencyuser');
+  redirect('login.html')
 });

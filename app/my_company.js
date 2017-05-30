@@ -62,13 +62,14 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
 
   $scope.page={}
 
-   $scope.curr_page=base_name()
+   $scope.curr_page='my_company'
    page=localStorage.getItem($scope.curr_page)
    if ( page!= null && page.length >0 ){
      $scope.page=JSON.parse(page)
      $scope.action=$scope.page.action
 
    }
+   $scope.main.location=$scope.page.location
 
   $scope.Companies_inf=new Companies_inf
 
@@ -85,21 +86,21 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
 
   $scope.tocompany = function(d){
     localstorage("CompanyID",d.company_id);
-    localstorage('add_company.html',JSON.stringify({action:'edit_company'}))
+    localstorage('add_company',JSON.stringify({action:'edit_company',location:$scope.curr_page}))
     $state.go('add_company')
   };
   $scope.add_company = function(){
-    localstorage('add_company.html',JSON.stringify({action:'add_company'}))
+    localstorage('add_company',JSON.stringify({action:'add_company',location:$scope.curr_page}))
     $state.go('add_company')
   };
   $scope.toowners = function(d){
-    localstorage('owners_list.html',JSON.stringify({action:'owners_list'}))
+    localstorage('owners_list',JSON.stringify({action:'owners_list',location:$scope.curr_page}))
     localstorage("Company_name",d.name);
     localstorage("CompanyID",d.company_id);
     $state.go('owners_list')
   };
   $scope.toDocs = function(d){
-    localstorage('my_document.html',JSON.stringify({action:'list_from_my_company',location:$scope.curr_page}))
+    localstorage('my_document',JSON.stringify({action:'list_from_my_company',location:$scope.curr_page}))
     localstorage("Company",JSON.stringify(d));
     $state.go('my_document')
   };
@@ -121,5 +122,11 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
     $http.post(SERVICEURL2,{action:'delete',table:'comapny','primary':'id',id:Company.company_id })
     $scope.Companies_inf.Companies.splice(index,1);
   }
+  $scope.$on('backButton', function(e) {
+  });
+
+  $scope.$on('addButton', function(e) {
+    $scope.add_company()
+  })
 
 });

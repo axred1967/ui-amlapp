@@ -1,4 +1,4 @@
-app2.controller('my_agent', function ($scope,$http,$translate,Customers_inf) {
+app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_inf) {
   $scope.loader=true;
   $scope.main.Back=false
   $scope.main.Add=true
@@ -10,40 +10,45 @@ app2.controller('my_agent', function ($scope,$http,$translate,Customers_inf) {
   $('.mdl-layout__drawer-button').show()
   $scope.page={}
 
-   curr_page=base_name()
-   page=localStorage.getItem(curr_page)
+   $scope.curr_page="my_agent"
+   page=localStorage.getItem($scope.curr_page)
    if ( page!= null && page.length >0 ){
      $scope.page=JSON.parse(page)
      $scope.action=$scope.page.action
 
    }
+   $scope.main.location=$scope.page.location
 
   $scope.Customers_inf=new Customers_inf
 
   $scope.imageurl=function(Customer){
+
     Customer.IMAGEURI=BASEURL+"uploads/user/small/"
-    if (Customer.image===undefined || Customer.image.length==0)
+    if (Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
       Customer.imageurl= '../img/customer-listing1.png'
     else
-      Customer.imageurl= Customer.IMAGEURI +Customer.image
+   Customer.imageurl= BASEURL+ "file_down.php?file=" + Customer.image +"&profile=1"
+//
+    //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   Customer.imageurl
 
   }
 
 
   $scope.tocustomer = function(d){
-    localstorage('add_customer.html',JSON.stringify({action:'update_customer',location:curr_page,agent:true}))
+    localstorage('add_customer',JSON.stringify({action:'update_customer',location:$scope.curr_page,agent:true}))
     localstorage("CustomerProfileId",d.user_id);
     localstorage("Customertype",1);
     $state.go('add_customer')
   };
 
   $scope.add_customer = function(){
-    localstorage('add_customer.html',JSON.stringify({action:'add_customer',location:curr_page ,agent:true}))
+    localstorage('add_customer',JSON.stringify({action:'add_customer',location:$scope.curr_page ,agent:true}))
     $state.go('add_customer')
   };
   $scope.toDocs = function(d){
-    localstorage('my_document.html',JSON.stringify({action:'list_from_my_customer',location:curr_page}))
+    localstorage('Customer',JSON.stringify(d))
+    localstorage('my_document',JSON.stringify({action:'list_from_my_customer',location:$scope.curr_page}))
     localstorage("customerId",d.user_id);
     localstorage("customer_name",d.fullname);
     $state.go('my_document')
@@ -66,7 +71,18 @@ app2.controller('my_agent', function ($scope,$http,$translate,Customers_inf) {
     $http.post(SERVICEURL2,{action:'delete',table:'users','primary':'id',id:Customer.user_id, agent:true })
     $scope.Customer.splice(index,1);
   }
-  console.log($scope.Contracts);
+  $scope.back=function(){
+    $state.go($scope.page.location)
+  }
+
+  $scope.$on('backButton', function(e) {
+      $scope.back()
+  });
+
+  $scope.$on('addButton', function(e) {
+    $scope.add_contract()
+  })
+
 });
 function onConfirm(buttonIndex,$scope,doc) {
     if (buttonIndex=1)

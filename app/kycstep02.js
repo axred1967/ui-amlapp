@@ -9,13 +9,15 @@ app2.controller('kycstep02', function ($scope,$http,$translate) {
   $scope.main.loader=true
    $scope.page={}
 
-  $scope.curr_page='kycstep02.html'
+  $scope.curr_page='kycstep02'
   page=localStorage.getItem($scope.curr_page)
   if ( page!= null && page.length >0 ){
     $scope.page=JSON.parse(page)
     $scope.action=$scope.page.action
 
   }
+  $scope.main.location=$scope.page.location
+
   if ($scope.page.editDoc) {
     $scope.countryList=JSON.parse(localStorage.getItem('countryList'))
     $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
@@ -131,7 +133,7 @@ app2.controller('kycstep02', function ($scope,$http,$translate) {
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       if(data.RESPONSECODE=='1') 			{
-        swal("",data.RESPONSE);
+        //swal("",data.RESPONSE);
         $scope.lastid=data.lastid
 
         $scope.back(passo)
@@ -209,7 +211,7 @@ app2.controller('kycstep02', function ($scope,$http,$translate) {
     if (Doc===undefined){
       Doc={}
     }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_kyc_id",per_id:$scope.Kyc.contractor_data.contractor_id,location:$scope.curr_page}))
+    localstorage('add_document',JSON.stringify({action:"add_document_for_kyc_id",per_id:$scope.Kyc.contractor_data.contractor_id,location:$scope.curr_page}))
     Doc.doc_name=""
     Doc.doc_type="Documento di Identità"
     Doc.agency_id=localStorage.getItem('agencyId')
@@ -223,14 +225,14 @@ app2.controller('kycstep02', function ($scope,$http,$translate) {
     localstorage('Doc',JSON.stringify(Doc))
     localstorage('Kyc',JSON.stringify($scope.Kyc))
 
-    redirect('add_document.html')
+    $state.go('add_document')
     return;
   }
   $scope.edit_doc=function(Doc,indice){
     if (Doc===undefined){
       Doc={}
     }
-    localstorage('add_document.html',JSON.stringify({action:"edit_document_for_kyc_id",location:$scope.curr_page}))
+    localstorage('add_document',JSON.stringify({action:"edit_document_for_kyc_id",location:$scope.curr_page}))
     Doc.doc_name="Documento di Identità"
     Doc.doc_type="Documento di Identità"
     Doc.agency_id=localStorage.getItem('agencyId')
@@ -241,7 +243,7 @@ app2.controller('kycstep02', function ($scope,$http,$translate) {
     localstorage('Doc',JSON.stringify(Doc))
     localstorage('Kyc',JSON.stringify($scope.Kyc))
 
-    redirect('add_document.html')
+    $state.go('add_document')
     return;
   }
   $scope.deleteDoc=function(Doc )
@@ -267,7 +269,7 @@ app2.controller('kycstep02', function ($scope,$http,$translate) {
 
   $scope.back=function(passo){
     if (passo>0){
-      localstorage('kycstep0'+passo+'.html',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
+      localstorage('kycstep0'+passo+'',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
       $state.go('kycstep0'+passo)
       return;
     }
@@ -275,8 +277,16 @@ app2.controller('kycstep02', function ($scope,$http,$translate) {
       history.back()
       return;
     }
-    $state.go('view_contract')
+    $state.go($scope.page.location)
   }
+  $scope.$on('backButton', function(e) {
+      $scope.back()
+  });
+
+  $scope.$on('addButton', function(e) {
+    $scope.add_contract()
+  })
+
   $scope.main.loader=false
 })
 function onConfirm(buttonIndex,$scope,doc) {

@@ -1,4 +1,4 @@
-app2.controller('add_company', function ($scope,$http,$translate,$rootScope) {
+app2.controller('add_company', function ($scope,$http,$state,$translate,$rootScope) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -12,13 +12,14 @@ app2.controller('add_company', function ($scope,$http,$translate,$rootScope) {
   $scope.page={}
   $scope.loader=true
 
- $scope.curr_page=base_name()
+ $scope.curr_page='add_company'
  page=localStorage.getItem($scope.curr_page)
  if ( page!= null && page.length >0 ){
    $scope.page=JSON.parse(page)
    $scope.action=$scope.page.action
 
  }
+ $scope.main.location=$scope.page.location
 
   $scope.loadItem=function(){
     var CompanyID=localStorage.getItem("CompanyID");
@@ -156,7 +157,7 @@ app2.controller('add_company', function ($scope,$http,$translate,$rootScope) {
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       if(data.RESPONSECODE=='1') 			{
-        swal("",data.RESPONSE);
+        //swal("",data.RESPONSE);
         $scope.lastid=data.lastid
         $scope.back()
       }
@@ -241,7 +242,7 @@ app2.controller('add_company', function ($scope,$http,$translate,$rootScope) {
     if (Doc===undefined){
       Doc={}
     }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_company",per_id:$scope.Company.company_id,location:$scope.curr_page}))
+    localstorage('add_document',JSON.stringify({action:"add_document_for_company",per_id:$scope.Company.company_id,location:$scope.curr_page}))
     Doc.doc_name=""
     Doc.doc_type="Documento Società"
     Doc.agency_id=localStorage.getItem('agencyId')
@@ -254,11 +255,11 @@ app2.controller('add_company', function ($scope,$http,$translate,$rootScope) {
     localstorage('Doc',JSON.stringify(Doc))
     localstorage('Company',JSON.stringify($scope.Company))
 
-    redirect('add_document.html')
+    $state.go('add_document')
     return;
   }
   $scope.edit_doc=function(Doc,indice){
-    localstorage('add_document.html',JSON.stringify({action:"edit_document_for_company",location:$scope.curr_page}))
+    localstorage('add_document',JSON.stringify({action:"edit_document_for_company",location:$scope.curr_page}))
     Doc.agency_id=localStorage.getItem('agencyId')
     Doc.doc_type="Documento Società"
     Doc.per='customer'
@@ -268,7 +269,7 @@ app2.controller('add_company', function ($scope,$http,$translate,$rootScope) {
     localstorage('Doc',JSON.stringify(Doc))
     localstorage('Company',JSON.stringify($scope.Company))
 
-    redirect('add_document.html')
+    $state.go('add_document')
     return;
   }
   $scope.other=function(){
@@ -290,8 +291,14 @@ app2.controller('add_company', function ($scope,$http,$translate,$rootScope) {
       }
       break;
     }
-    history.back()
+    $state.go($scope.page.location)
   }
-  $scope.loader=false
+  $scope.$on('backButton', function(e) {
+      $scope.back()
+  });
+
+  $scope.$on('addButton', function(e) {
+  })
+  $scope.main.loader=false
 
 })

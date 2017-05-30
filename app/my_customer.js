@@ -82,49 +82,53 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
   $('.mdl-layout__drawer-button').show()
   $scope.page={}
 
-   $scope.curr_page="my_customer.html"
+   $scope.curr_page="my_customer"
    page=localStorage.getItem($scope.curr_page)
    if ( page!= null && page.length >0 ){
      $scope.page=JSON.parse(page)
      $scope.action=$scope.page.action
 
    }
+   $scope.main.location=$scope.page.location
+
 
 
   $scope.Customers_inf=new Customers_inf  //    $scope.datalang = DATALANG;
 
 
   $scope.imageurl=function(Customer){
-    Customer.IMAGEURI=BASEURL+"uploads/user/small/"
-    if (Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
-      Customer.imageurl= '../img/customer-listing1.png'
+
+    if (Customer===undefined || Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
+      imageurl= '../img/customer-listing1.png'
     else
-      Customer.imageurl= Customer.IMAGEURI +Customer.image
-    return   Customer.imageurl
+    imageurl= BASEURL+ "file_down.php?file=" + Customer.image +"&profile=1"
+//
+    //  Customer.imageurl= Customer.IMAGEURI +Customer.image
+    return   imageurl
 
   }
 
 
   $scope.tocustomer = function(d){
-    localstorage('add_customer.html',JSON.stringify({action:'edit_customer',location:$scope.curr_page}))
+    localstorage('add_customer',JSON.stringify({action:'update_customer',location:$scope.curr_page}))
     localstorage("CustomerProfileId",d.user_id);
     localstorage("Customertype",1);
     $state.go('add_customer')
   };
 
   $scope.add_customer = function(){
-    localstorage('add_customer.html',JSON.stringify({action:'add_customer',location:'my_customer.html'}))
+    localstorage('add_customer',JSON.stringify({action:'add_customer',location:'my_customer'}))
     $state.go('add_customer')
   };
   $scope.toDocs = function(d){
-    localstorage('my_document.html',JSON.stringify({action:'list_from_my_customer',location:$scope.curr_page}))
+    localstorage('my_document',JSON.stringify({action:'list_from_my_customer',location:$scope.curr_page}))
     localstorage('Customer',JSON.stringify(d))
     $state.go('my_document')
   };
   $scope.deleteCustomer=function(Customer,index )
   {
     navigator.notification.confirm(
-        'Vuoi cancellare il Contratto!', // message
+        'Vuoi cancellare la persona!', // message
         function(button) {
          if ( button == 1 ) {
              $scope.deleteCustomer2(Customer,index);
@@ -136,9 +140,16 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
 
   }
   $scope.deleteCustomer2=function(Customer,index){
-    $http.post(SERVICEURL2,{action:'delete',table:'users','primary':'id',id:Customer.user_id })
-    $scope.Customer.splice(index,1);
+    $http.post(SERVICEURL2,{action:'delete',table:'users','primary':'user_id',id:Customer.user_id })
+    $scope.Customers_inf.Customers.splice(index,1);
   }
+  $scope.$on('backButton', function(e) {
+  });
+
+  $scope.$on('addButton', function(e) {
+    $scope.add_customer()
+  })
+
   $scope.loader=false
 });
 function onConfirm(buttonIndex,$scope,doc) {

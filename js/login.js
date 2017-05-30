@@ -27,7 +27,7 @@ function getChkLogin()
   var id=localStorage.getItem("userId");
   if(id != null)
   {
-    redirect("index.html");
+    //redirect("index.html");
   }
 
 

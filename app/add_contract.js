@@ -10,17 +10,18 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope, $s
 
 		$scope.page={}
 
-     $scope.curr_page='add_contract.html'
+     $scope.curr_page='add_contract'
      page=localStorage.getItem($scope.curr_page)
      if ( page!= null && page.length >0 ){
        $scope.page=JSON.parse(page)
        $scope.action=$scope.page.action
 
      }
-
+		 $scope.main.location=$scope.page.location
 
 		 $scope.word={};
-     //localstorage("back","view_contract.html");
+
+     //localstorage("back","view_contract");
      switch ($scope.action){
        case 'edit' :
        Contract=JSON.parse(localStorage.getItem('Contract'))
@@ -37,25 +38,26 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope, $s
        convertDateStringsToDates($scope.Contract.Docs)
 
        $scope.action='edit'
-       $scope.viewName="Modifica Contratto"
+       $scope.main.viewName="Modifica Contratto"
        break;
 
        case 'add_contract' :
        $scope.action='add'
-       $scope.viewName="Nuovo Contratto"
+       $scope.main.viewName="Nuovo Contratto"
        $scope.Contract={}
        $scope.Contract.contract_date=new Date()
        $scope.Contract.contract_eov=new Date()
        $scope.Contract.contract_eov.setFullYear($scope.Contract.contract_eov.getFullYear() + 5)
        break;
        default :
-       $scope.viewName="Nuovo Contratto"
+       $scope.main.viewName="Nuovo Contratto"
        $scope.action='add'
        break;
      }
-     if ($scope.page.back){
+     if ($scope.main.reload){
        $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
        convertDateStringsToDates($scope.Contract)
+			 $scope.main.reload=false
      }
      //gestisco aggiunta Doc
      if ($scope.page.editDoc) {
@@ -248,7 +250,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope, $s
       if(data.RESPONSECODE=='1')
       {
         $scope.contract=[]
-        swal("",data.RESPONSE);
+        //swal("",data.RESPONSE);
         $lastid=data.lastid
 
         $scope.back()
@@ -264,24 +266,22 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope, $s
     })
   }
   $scope.add_customer=function(){
-		$scope.page.AddAction='add_customer_for_contract'
+		localstorage('Contract',JSON.stringify($scope.Contract))
+		localstorage('add_customer',JSON.stringify({action:"add_customer_for_contract",location:$scope.curr_page}))
     $state.go('add_customer')
 
   }
   $scope.add_company=function(){
-    localstorage('add_company.html',JSON.stringify({action:"add_company_for_contract",location:$scope.curr_page}))
+    localstorage('add_company',JSON.stringify({action:"add_company_for_contract",location:$scope.curr_page}))
     localstorage('Contract',JSON.stringify($scope.Contract))
     $state.go('add_company')
 
   }
   $scope.add_other=function(){
-    localstorage('add_customer.html',JSON.stringify({action:"add_other_for_contract",location:$scope.curr_page}))
+    localstorage('add_customer',JSON.stringify({action:"add_other_for_contract",location:$scope.curr_page}))
     localstorage('Contract',JSON.stringify($scope.Contract))
     $state.go('add_customer')
 
-  }
-  $scope.back=function(){
-    history.back()
   }
 
   $scope.deleteDoc=function(Doc )
@@ -387,7 +387,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope, $s
     if (Doc===undefined){
       Doc={}
     }
-    localstorage('add_document.html',JSON.stringify({action:"add_document_for_contract",location:curr_page}))
+    localstorage('add_document',JSON.stringify({action:"add_document_for_contract",location:$scope.curr_page}))
     Doc.doc_name="Immagine Contratto"
     Doc.doc_type="Contratto di Servizio"
     Doc.agency_id=localStorage.getItem('agencyId')
@@ -405,7 +405,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope, $s
   }
 
   $scope.edit_doc=function(Doc,indice){
-    localstorage('add_document.html',JSON.stringify({action:"edit_document_for_contract",location:curr_page}))
+    localstorage('add_document',JSON.stringify({action:"edit_document_for_contract",location:$scope.curr_page}))
     Doc.indice=indice
     localstorage('Doc',JSON.stringify(Doc))
     $state.go('add_document')    }
@@ -417,7 +417,16 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope, $s
     }
 		$scope.main.loader=false
 
-  })
+		$scope.back=function(){
+	    $state.go($scope.page.location)
+	  }
+		$scope.$on('backButton', function(e) {
+	      $scope.back()
+	  });
+
+	  $scope.$on('addButton', function(e) {
+		})
+  	})
 
   function onConfirm(buttonIndex,$scope,doc) {
     if (buttonIndex=1)

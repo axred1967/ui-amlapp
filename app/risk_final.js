@@ -16,6 +16,7 @@ app2.controller('risk_final', function ($scope,$http,$state,$translate) {
     $scope.action=$scope.page.action
 
   }
+  $scope.main.location=$scope.page.location
 
   $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
 
@@ -110,7 +111,7 @@ app2.controller('risk_final', function ($scope,$http,$state,$translate) {
     .success(function(data) {
       $('#loader_img').hide();
       if(data.RESPONSECODE=='1') 			{
-        swal("",data.RESPONSE);
+        //swal("",data.RESPONSE);
         $scope.lastid=data.lastid
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
 
@@ -208,5 +209,11 @@ app2.controller('risk_final', function ($scope,$http,$state,$translate) {
 
      $state.go($scope.page.location)
    }
+   $scope.$on('backButton', function(e) {
+       $scope.back()
+   });
+
+   $scope.$on('addButton', function(e) {
+   })
 
 })

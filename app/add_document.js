@@ -1,3 +1,4 @@
+
 app2.controller('add_document', function ($scope,$http,$translate,$state) {
   $scope.loader=true
 
@@ -11,16 +12,17 @@ app2.controller('add_document', function ($scope,$http,$translate,$state) {
   $scope.Doc={}
   $scope.word={};
   $scope.page={}
-  $scope.curr_page='add_document.html'
+  $scope.curr_page='add_document'
   page=localStorage.getItem($scope.curr_page)
-  
+
   if (page.length >0 ){
     $scope.page=JSON.parse(page)
     $scope.action=$scope.page.action
 
   }
+  $scope.main.location=$scope.page.location
 
-  //localstorage("back","view_contract.html");
+  //localstorage("back","view_contract");
   switch ($scope.action){
     case 'edit' :
     Doc=JSON.parse(localStorage.getItem('Doc'))
@@ -139,7 +141,55 @@ app2.controller('add_document', function ($scope,$http,$translate,$state) {
     $scope.viewName="Nuovo Documento"
     break;
   }
+  $scope.image_type=['.png','.gif','.png','.tif','.bmp']
+  $scope.Doc.isImage=true
+  if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
+    $scope.Doc.isImage=false
+  }
 
+  /*
+  var fd = new FormData();
+          fd.append('file', data);
+          fd.append('file_name',$scope.f.name.name);
+          fd.append('action',"upload_document_ax")
+          fd.append('userid',$scope.Doc.per_id)
+          fd.append('for',$scope.Doc.per)
+
+  */
+  $scope.uploadfileweb=function(){
+      $("#loader_img_int").show()
+        var f = document.getElementById('msds').files[0],
+            r = new FileReader();
+            $scope.f=f
+        r.onloadend = function(e) {
+            var data = e.target.result;
+            console.log(data);
+            f={}
+            f.data=data
+            f.name=$scope.f.name
+            data= {action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, f:f}
+            $http.post(SERVICEURL2,data,{
+            headers: {'Content-Type': undefined}
+        })
+            .success(function(data){
+              $scope.Doc.doc_image=data.response;
+              $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
+              $scope.loaded=true
+              $scope.Doc.file_type=data.file_type
+              $scope.Doc.isImage=true
+              if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
+                $scope.Doc.isImage=false
+              }
+              $("#loader_img_int").hide()
+                console.log('success');
+            })
+            .error(function(){
+                console.log('error');
+            });
+        };
+        r.readAsDataURL(f);
+
+  }
 
 
 
@@ -216,7 +266,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state) {
 
     options.params = params;
     var ft = new FileTransfer();
-    $http.post( LOG,  {data:BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per})
+    //$http.post( LOG,  {data:BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per})
 
     ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
 
@@ -391,6 +441,14 @@ app2.controller('add_document', function ($scope,$http,$translate,$state) {
     }
     history.back()
   }
+  $scope.$on('backButton', function(e) {
+      $scope.back()
+  });
+
+  $scope.$on('addButton', function(e) {
+
+  })
+
   $scope.loader=false
 
 })

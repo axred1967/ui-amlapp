@@ -10,12 +10,13 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
 
   $scope.page={}
 
-  $scope.curr_page="owners_list.html"
+  $scope.curr_page="owners_list"
   page=localStorage.getItem($scope.curr_page)
   if ( page!= null && page.length >0 ){
     $scope.page=JSON.parse(page)
     $scope.action=$scope.page.action
   }
+  $scope.main.location=$scope.page.location
 
   switch ($scope.action){
     case "owner_from_contract":
@@ -54,10 +55,10 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
   $scope.add_owner=function(Owner){
     if ($scope.main.action=='owner_from_contract'){
       localstorage('Contract',JSON.stringify($scope.Contract))
-      localstorage('add_owners.html',JSON.stringify({action:'add_owner_from_contract',location:'owners_list.html'}))
+      localstorage('add_owners',JSON.stringify({action:'add_owner_from_contract',location:'owners_list'}))
 
     }else {
-      localstorage('add_owners.html',JSON.stringify({action:'',location:'owners_list.html'}))
+      localstorage('add_owners',JSON.stringify({action:'',location:'owners_list'}))
 
     }
 
@@ -67,11 +68,11 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
   $scope.edit_owner=function(Owner,indice){
     if ($scope.main.action=='owner_from_contract'){
       localstorage('Contract',JSON.stringify($scope.Contract))
-      localstorage('add_customer.html',JSON.stringify({action:'edit_customer_for_kyc_owner',location:$scope.curr_page,owners:true}))
+      localstorage('add_customer',JSON.stringify({action:'edit_customer_for_kyc_owner',location:$scope.curr_page,owners:true}))
       localstorage('Owner',JSON.stringify(Owner))
 
     }else {
-      localstorage('add_customer.html',JSON.stringify({action:'edit_customer_for_kyc_owner',location:$scope.curr_page}))
+      localstorage('add_customer',JSON.stringify({action:'edit_customer_for_kyc_owner',location:$scope.curr_page}))
       localstorage('Owner',JSON.stringify(Owner))
     }
     Owner.indice=indice
@@ -126,6 +127,13 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
     }
     redirect($scope.main.location)
   }
+  $scope.$on('backButton', function(e) {
+      $scope.back()
+  });
+
+  $scope.$on('addButton', function(e) {
+    $scope.add_owner()
+  })
 
   $scope.loader=false
 });
