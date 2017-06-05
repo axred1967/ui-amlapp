@@ -1,4 +1,4 @@
-app2.controller('add_contract', function ($scope,$http,$translate,$rootScope, $state) {
+app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$timeout,$state) {
 		$scope.main.Back=true
 		$scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -93,14 +93,107 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope, $s
          $scope.newDocs=true;
 
      }
+		 $scope.countryList=JSON.parse(localStorage.getItem('countryList'))
 
-     $('input.mdl-textfield__input').each(
-       function(index){
-         $(this).parent('div.mdl-textfield').addClass('is-dirty');
-         $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-       }
-     );
+		 $scope.toogle=function(o){
+			 o = o.split(".")
+			 switch (s.length){
+				 case 1:
+				 $val= $scope[o[0]]
+				 if ($val==1){
+					 $scope[o[0]]=0;
+	 					return
+				 }
+				 if ($val==0){
+					 $scope[o[0]]=1;
+	 					return
+				 }
+				 break;
+				 case 2:
+				 $val= $scope[o[0]][o[1]]
+				 if ($val==1){
+					 $scope[o[0]][o[1]]=0;
+						return
+				 }
+				 if ($val==0){
+					 $scope[o[0]][o[1]]=1;
+						return
+				 }
+				 break;
+				 case 3:
+				 $val= $scope[o[0]][o[1]][o[2]]
+				 if ($val==1){
+					 $scope[o[0]][o[1]][o[2]]=0
+						return
+				 }
+				 if ($val==0){
+					 $scope[o[0]][o[1]][o[2]]=1;
+						return
+				 }
+				 break;
+				 case 4:
+				 $val= $scope[o[0]][o[1]][o[2]][o[3]]
+				 if ($val==1){
+					 $scope[o[0]][o[1]][o[2]][o[3]]=0
+						return
+				 }
+				 if ($val==0){
+					 $scope[o[0]][o[1]][o[2]][o[3]]=1;
+						return
+				 }
+				 break;
 
+			 }
+
+
+		 }
+		 $scope.$on('$viewContentLoaded',
+	            function(event){
+								$timeout(function() {
+									$('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox__input').each(
+						 			 function(index){
+						 				 ngm=$(this).attr('ng-model')
+										 if (ngm===undefined){
+											 ngm=$(this).attr('modelAx')
+										 }
+											 s = ngm.split(".")
+											 switch (s.length){
+												 case 1:
+												 $val= $scope[s[0]]
+												 break;
+												 case 2:
+												 $val= $scope[s[0]][s[1]]
+												 break;
+												 case 3:
+												 $val= $scope[s[0]][s[1]][s[2]]
+												 break;
+												 case 4:
+												 $val= $scope[s[0]][s[1]][s[2]][s[3]]
+												 break;
+ 										 	}
+
+
+							 				 if ( $(this).attr('type')=="radio" && $val==$(this).attr('value') && document.getElementById($(this).attr('id')).parentNode.MaterialRadio!==undefined)
+							 					 document.getElementById($(this).attr('id')).parentNode.MaterialRadio.check()
+							 						 //$(this).parentNode.MaterialRadio.check()
+							 					 if ($(this).attr('type')=="checkbox" && $val==$(this).attr('value') && document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox!==undefined)
+							 					  document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox.check()
+							 //                $(this).parentNode.MaterialCheckbox.check()
+
+
+
+						 				 $(this).parent('div.mdl-textfield').addClass('is-dirty');
+						 				 $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+						 			 }
+						 		 );
+								 if (! $scope.Contract.activity_country>0){
+	 								$scope.Contract.activity_country=194;
+	 							}
+
+								 $scope.main.loader=false
+
+						    }, 5);
+	            });
 		 $scope.showContractorList=function(){
        if ((typeof $scope.Contract.fullname !== "undefined" && $scope.Contract.fullname.length>4 && $scope.oldContrator!=$scope.Contract.fullname)){
          data={ "action":"ACCustomerList", name:$scope.Contract.fullname}
@@ -415,7 +508,6 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope, $s
       $scope[res[0]][res[1]]=$word
       $scope.word[res[1]]=[]
     }
-		$scope.main.loader=false
 
 		$scope.back=function(){
 	    $state.go($scope.page.location)

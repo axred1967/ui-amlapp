@@ -21,7 +21,7 @@ app2.factory('Contracts_inf', function($http) {
       last=this.Contracts[lastkey].contract_id;
 
     }
-    data= {"action":"ContractList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last}
+    data= {"action":"ContractList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post(SERVICEURL2,  data )
     .success(function(responceData)  {
       if(responceData.RESPONSECODE=='1') 			{
@@ -46,6 +46,10 @@ app2.factory('Contracts_inf', function($http) {
         this.busy = false;
       }
       else   {
+        if (responceData.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          redirect('login.html');
+        }
         this.busy = false;
         this.loaded=-1
         console.log('no customer')

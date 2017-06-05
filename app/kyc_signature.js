@@ -214,7 +214,7 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate) {
 
    $scope.back=function(passo){
      if (passo==-1){
-         history.back()
+        $state.go($scope.page.prev_page)
          return;
      }
      //$scope.loader=false
@@ -226,5 +226,6 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate) {
 
    $scope.$on('addButton', function(e) {
    })
+   $scope.main.loader=false
 
 })

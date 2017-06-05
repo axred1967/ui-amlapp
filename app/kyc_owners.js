@@ -244,5 +244,6 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate) {
 
   $scope.$on('addButton', function(e) {
   })
+  $scope.main.loader=false
 
 });

@@ -46,8 +46,33 @@ app2.controller('risk_profile01', function ($scope,$http,$state,$translate) {
           $scope.PEP="il Cliente si è dichiarato PEP"
 
         }
-        $('input.mdl-textfield__input').each(
+
+        $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
           function(index){
+            ngm=$(this).attr('ng-model')
+            s = ngm.split(".")
+            switch (s.length){
+              case 1:
+                  $val= $scope[s[0]]
+                  break;
+                  case 2:
+                      $val= $scope[s[0]][s[1]]
+                      break;
+                      case 3:
+                          $val= $scope[s[0]][s[1]][s[2]]
+                          break;
+                          case 4:
+                              $val= $scope[s[0]][s[1]][s[2]][s[3]]
+                              break;
+
+            }
+            if ( $(this).attr('type')=="radio" && $val==$(this).attr('value'))
+              document.getElementById($(this).attr('id')).parentNode.MaterialRadio.check()
+                //$(this).parentNode.MaterialRadio.check()
+              if ($(this).attr('type')=="checkbox" && $val==$(this).attr('value'))
+              document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox.check()
+//                $(this).parentNode.MaterialCheckbox.check()
+
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
             $(this).parent('div.mdl-textfield').removeClass('is-invalid');
           }
@@ -93,7 +118,7 @@ app2.controller('risk_profile01', function ($scope,$http,$state,$translate) {
     .success(function(data) {
       $('#loader_img').hide();
       if(data.RESPONSECODE=='1') 			{
-        swal("",data.RESPONSE);
+        //swal("",data.RESPONSE);
         $scope.lastid=data.lastid
 
         $scope.back(passo)
@@ -185,12 +210,12 @@ app2.controller('risk_profile01', function ($scope,$http,$state,$translate) {
    $scope.back=function(passo){
      if (passo>0){
          localstorage('risk_profile0'+ passo +'',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
-         $stste.go('risk_profile0'+ passo )
+         $state.go('risk_profile0'+ passo )
          return;
      }
      if (passo==-1){
-         history.back()
-         return;
+        $state.go($scope.page.location)
+        return;
      }
      $state.go($scope.page.location)
    }
@@ -200,5 +225,6 @@ app2.controller('risk_profile01', function ($scope,$http,$state,$translate) {
 
    $scope.$on('addButton', function(e) {
    })
+   $scope.main.loader=false
 
 })

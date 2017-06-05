@@ -67,7 +67,7 @@
                 <fieldset>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="text" id="Customer_mobile"  name="Customer_mobile" value=" "
-                    ng-model="Customer.mobile_number" ng-change="Customer.mobile=(Customer.mobile| capitalize)"  />
+                    ng-model="Customer.mobile"  />
                     <label class="mdl-textfield__label" for="mobile">{{'Mobile' | translate}}*</label>
                     <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_mobile" ng-show="form.Customer_mobile.$invalid && form.Customer_mobile.$touched">
                       <span ng-show="form.Customer_mobile.$error.required">Required.</span>
@@ -408,7 +408,7 @@
                   <label class="mdl-textfield__label" for="pep_charge">{{'Tipo di carica ricoperta'|translate}} *</label>
                   <table class="mdl-data-table mdl-js-data-table  border-none  ">
                     <tbody style="display:table">
-                      <tr ng-click="addWord('Customer.pep_charge',item.word)" ng-repeat="item in word.profession">
+                      <tr ng-click="addWord('Customer.pep_charge',item.word)" ng-repeat="item in word.pep_charge">
                         <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
                       </tr>
                     </tbody>
@@ -461,6 +461,20 @@
                   </span>
                 </div>
               </fieldset>
+              <fieldset>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                  <select ng-model="Kyc.contractor_data.main_activity_country" class="mdl-textfield__input"
+                  ng-required="page.other_data && ! page.owners"
+                  id="customer_main_activity_country" name="customer_main_activity_country" >
+                  <option ng-repeat="option in countryList" value="{{option.country_id}}">{{option.country_name}}</option>
+
+                </select>
+                <label class="mdl-textfield__label" for="customer_main_activity_country">{{'Paese di prevalente attività economica'|translate}} *</label>
+                <span class="mdl-tooltip mdl-tooltip--validation" for="customer_main_activity_country" ng-show="form.customer_main_activity_country.$invalid && form.customer_main_activity_country.$touched">
+                  <span ng-show="form.customer_main_activity_country.$error.required">{{'Richiesto'| translate}}</span>
+                </span>
+              </div>
+            </fieldset>
               <fieldset>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" id="customer_fiscal_number" name="customer_fiscal_number"

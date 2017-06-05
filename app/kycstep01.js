@@ -6,7 +6,6 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
   $scope.main.Sidebar=false
   $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Dati Cliente"
-  $scope.main.loader=true
   $scope.page={}
 
   $scope.curr_page='kycstep01'
@@ -28,6 +27,7 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
           $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
           appData=$scope.Contract
           data= {"action":"kycAx",appData:appData}
+          $scope.main.loader=true
           $scope.loader=true
           $http.post( SERVICEURL2,  data )
               .success(function(responceData) {
@@ -42,8 +42,8 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
                            convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
                            convertDateStringsToDates($scope.Kyc.company_data)
                            convertDateStringsToDates($scope.Kyc.owner_data)
-                           $scope.loader=false
-                           $('input.mdl-textfield__input').each(
+                           $scope.main.loader=false
+                             $('input.mdl-textfield__input').each(
                              function(index){
                                $(this).parent('div.mdl-textfield').addClass('is-dirty');
                                $(this).parent('div.mdl-textfield').removeClass('is-invalid');
@@ -52,7 +52,7 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
                          }
                          else
                          {
-                           $scope.loader=false
+                           $scope.main.loader=false
                            console.log('error');
                          }
                })
@@ -122,7 +122,7 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
         history.back()
         return;
     }
-    $state.go(state.page.location)
+    $state.go($scope.page.location)
 
   }
   $scope.$on('backButton', function(e) {
@@ -132,5 +132,6 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
   $scope.$on('addButton', function(e) {
     $scope.add_contract()
   })
+  $scope.main.loader=false
 
 })

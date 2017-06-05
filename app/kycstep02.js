@@ -1,4 +1,4 @@
-app2.controller('kycstep02', function ($scope,$http,$translate) {
+app2.controller('kycstep02', function ($scope,$http,$state,$translate) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -58,7 +58,7 @@ app2.controller('kycstep02', function ($scope,$http,$translate) {
       $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
       appData=$scope.Contract
       data= {"action":"kycAx",appData:appData,country:true}
-      $scope.loader=true;
+      $scope.main.loader=true;
       $http.post( SERVICEURL2,  data )
       .success(function(responceData) {
         if(responceData.RESPONSECODE=='1') 			{
@@ -85,7 +85,7 @@ app2.controller('kycstep02', function ($scope,$http,$translate) {
           convertDateStringsToDates($scope.Kyc.owner_data)
           console.log($scope.Kyc.contractor_data.Docs)
 
-          $scope.loader=false;
+          $scope.main.loader=false;
 
           $('input.mdl-textfield__input').each(
             function(index){
@@ -274,7 +274,7 @@ app2.controller('kycstep02', function ($scope,$http,$translate) {
       return;
     }
     if (passo==-1){
-      history.back()
+      $state.go($scope.page.prev_page)
       return;
     }
     $state.go($scope.page.location)

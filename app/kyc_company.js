@@ -305,7 +305,7 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate) {
          return;
      }
      if (passo==-1){
-         history.back()
+       $state.go($scope.page.prev_page)
          return;
      }
      $state.go('view_contract')

@@ -32,7 +32,14 @@ function getChkLogin()
 
 
 }
-
+$(document).ready(function(){
+  msg=localStorage.getItem("msg");
+  if (msg.length>0){
+    swal('',msg)
+    localstorage('msg','');
+  }
+  
+})
 
 
 function login()
@@ -84,7 +91,9 @@ function login()
           localstorage("userId",data.userId);
           localstorage("userType",data.usertype);
           localstorage("userEmail",data.email);
+          localstorage("agentId",data.userId);
           localstorage("agencyId",data.agencyId);
+          localstorage("cookie",data.cookie);
           //alert(data.agencyId);
           localstorage("Name",data.name);
           localstorage("Profileimageagencyuser",data.image_name);

@@ -47,7 +47,7 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate) {
       $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
       appData=$scope.Contract
       data= {"action":"kycAx",appData:appData,country:true}
-      $scope.loader=true
+      $scope.main.loader=true
       $http.post( SERVICEURL2,  data )
       .success(function(responceData) {
         if(responceData.RESPONSECODE=='1') 			{
@@ -67,7 +67,18 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate) {
           convertDateStringsToDates($scope.Kyc.owner_data)
           if($scope.Kyc.contractor_data.check_pep===undefined || $scope.Kyc.contractor_data.check_pep==null)
             $scope.Kyc.contractor_data.check_pep=0
-          $scope.loader=false
+          if ($scope.Kyc.contractor_data.check_residence)
+            document.querySelector('#ckres').MaterialCheckbox.check();
+          if ($scope.Kyc.contractor_data.check_pep==1)
+            document.querySelector('#lpep1').MaterialRadio.check();
+          if ($scope.Kyc.contractor_data.check_pep==0)
+            document.querySelector('#lpep0').MaterialRadio.check();
+            if ($scope.Kyc.contractor_data.pep_domestic==1)
+              document.querySelector('#lpepdom1').MaterialRadio.check();
+            if ($scope.Kyc.contractor_data.pep_domestic==0)
+              document.querySelector('#lpepdom0').MaterialRadio.check();
+
+
 
           $('input.mdl-textfield__input').each(
             function(index){
@@ -75,6 +86,8 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate) {
               $(this).parent('div.mdl-textfield').removeClass('is-invalid');
             }
           );
+          $scope.main.loader=false
+
         }
         else
         {
@@ -238,7 +251,7 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate) {
       }
     }
     if (passo==-1){
-      history.back()
+      $state.go($scope.page.prev_page)
       return;
     }
     $state.go($sceop.page.location)
@@ -254,5 +267,5 @@ $scope.console=function(){
   console.log("xxx". $scope.Kyc.contractor_data.check_pep);
 
 }
-
+$scope.main.loader=false
 })

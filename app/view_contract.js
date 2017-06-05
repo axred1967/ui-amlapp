@@ -1,4 +1,4 @@
-app2.controller('view_contract', function ($scope,$http,$translate,$rootScope) {
+app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootScope) {
 		$scope.main.Back=true
 		$scope.main.Add=true
 		$scope.main.AddPage="add_contract"
@@ -8,11 +8,11 @@ app2.controller('view_contract', function ($scope,$http,$translate,$rootScope) {
 		$('.mdl-layout__drawer-button').hide()
 	  $scope.main.viewName="Contratto"
 
-	  curr_page=base_name()
-	  page=localStorage.getItem(curr_page)
+	  $scope.curr_page="view_contract"
+		page=localStorage.getItem($scope.curr_page)
 	  if ( page!= null && page.length >0 ){
-	    $scope.main=JSON.parse(page)
-	    $scope.action=$scope.main.action
+	    $scope.page=JSON.parse(page)
+	    $scope.action=$scope.page.action
 
 	  }
 		$scope.main.location=$scope.page.location
@@ -67,9 +67,9 @@ app2.controller('view_contract', function ($scope,$http,$translate,$rootScope) {
 	 $state.go('my_document')
 };
  $scope.edit_kyc = function(){
-	 localstorage('kyc',JSON.stringify({action:'edit_kyc',location:'view_contract'}))
+	 localstorage('kycstep01',JSON.stringify({action:'edit_kyc',location:'view_contract'}))
    localstorage('Contract',JSON.stringify($scope.Contract))
-   $state.go('kyc')
+   $state.go('kycstep01')
 };
 $scope.edit_risk = function(){
 	localstorage('risk_profile01',JSON.stringify({action:'',location:'view_contract'}))

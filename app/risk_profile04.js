@@ -39,8 +39,32 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate) {
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         convertDateStringsToDates($scope.Risk)
         convertDateStringsToDates($scope.Risk.risk_data)
-        $('input.mdl-textfield__input').each(
+        $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
           function(index){
+            ngm=$(this).attr('ng-model')
+            s = ngm.split(".")
+            switch (s.length){
+              case 1:
+                  $val= $scope[s[0]]
+                  break;
+                  case 2:
+                      $val= $scope[s[0]][s[1]]
+                      break;
+                      case 3:
+                          $val= $scope[s[0]][s[1]][s[2]]
+                          break;
+                          case 4:
+                              $val= $scope[s[0]][s[1]][s[2]][s[3]]
+                              break;
+
+            }
+            if ( $(this).attr('type')=="radio" && $val==$(this).attr('value'))
+              document.getElementById($(this).attr('id')).parentNode.MaterialRadio.check()
+                //$(this).parentNode.MaterialRadio.check()
+              if ($(this).attr('type')=="checkbox" && $val==$(this).attr('value'))
+              document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox.check()
+  //                $(this).parentNode.MaterialCheckbox.check()
+
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
             $(this).parent('div.mdl-textfield').removeClass('is-invalid');
           }
@@ -213,7 +237,7 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate) {
          return;
      }
      if (passo==-1){
-         history.back()
+       $state.go($scope.page.prev_page)
          return;
      }
      $state.go($scope.page.location)
@@ -224,5 +248,5 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate) {
 
    $scope.$on('addButton', function(e) {
    })
-
+$scope.main.loader=false
 })
