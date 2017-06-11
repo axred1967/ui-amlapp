@@ -39,7 +39,7 @@ app2.factory('Companies_inf', function($http) {
       else   {
         if (responceData.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
-           redirect('login.html');
+           $state.go('login');;;
         }
         console.log('no customer')
       }

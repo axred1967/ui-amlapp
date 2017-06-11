@@ -204,7 +204,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
            }
 		if (responceData.RESPONSECODE=='-1'){
 		   localstorage('msg','Sessione Scaduta ');
-		   redirect('login.html');
+		   $state.go('login');;;
 		}
 
          })
@@ -224,7 +224,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
            }
 		if (data.RESPONSECODE=='-1'){
 		   localstorage('msg','Sessione Scaduta ');
-		   redirect('login.html');
+		   $state.go('login');;;
 		}
 
          })
@@ -244,7 +244,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
            }
 		if (data.RESPONSECODE=='-1'){
 		   localstorage('msg','Sessione Scaduta ');
-		   redirect('login.html');
+		   $state.go('login');;;
 		}
 
          })
@@ -273,7 +273,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
            }
 		if (data.RESPONSECODE=='-1'){
 		   localstorage('msg','Sessione Scaduta ');
-		   redirect('login.html');
+		   $state.go('login');;;
 		}
 
          })
@@ -372,7 +372,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
       else      {
 		if (data.RESPONSECODE=='-1'){
 		   localstorage('msg','Sessione Scaduta ');
-		   redirect('login.html');
+		   $state.go('login');;;
 		}
 			$scope.main.loader=false
 
@@ -492,7 +492,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
       }
 			if (data.RESPONSECODE=='-1'){
 				 localstorage('msg','Sessione Scaduta ');
-				 redirect('login.html');
+				 $state.go('login');;;
 			}
     })
     .error(function() {

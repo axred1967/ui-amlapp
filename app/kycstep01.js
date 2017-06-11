@@ -58,7 +58,7 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate,$timeout) 
                          {
                            if (responceData.RESPONSECODE=='-1'){
                               localstorage('msg','Sessione Scaduta ');
-                              redirect('login.html');
+                              $state.go('login');;;
                            }
                            $scope.main.loader=false
                            console.log('error');
@@ -109,7 +109,7 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate,$timeout) 
         {
           if (data.RESPONSECODE=='-1'){
              localstorage('msg','Sessione Scaduta ');
-             redirect('login.html');
+             $state.go('login');;;
           }
           console.log('error');
           swal("",data.RESPONSE);

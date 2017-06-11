@@ -77,7 +77,7 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout)
         }
         if (data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
-           redirect('login.html');
+           $state.go('login');;;
         }
       })
       .error(function() {
@@ -131,7 +131,7 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout)
       else      {
         if (data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
-           redirect('login.html');
+           $state.go('login');;;
         }
         swal("",data.RESPONSE);
       }

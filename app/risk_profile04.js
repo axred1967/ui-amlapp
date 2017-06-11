@@ -74,7 +74,7 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate,$time
       {
         if (responceData.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
-          redirect('login.html');
+          $state.go('login');;;
         }
         console.log('error');
       }
@@ -124,7 +124,7 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate,$time
       {
         if (data.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
-          redirect('login.html');
+          $state.go('login');;;
         }
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         console.log('error');
@@ -164,7 +164,7 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate,$time
         }
         if (data.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
-          redirect('login.html');
+          $state.go('login');;;
         }
       })
       .error(function() {

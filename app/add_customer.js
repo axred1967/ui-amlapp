@@ -54,7 +54,7 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
       {
         if (responceData.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
-           redirect('login.html');
+           $state.go('login');;;
         }
         console.log('error');
       }
@@ -166,7 +166,7 @@ $scope.uploadprofileweb=function(){
             $("#loader_img_int").hide()
             if (data.RESPONSECODE=='-1'){
                localstorage('msg','Sessione Scaduta ');
-               redirect('login.html');
+               $state.go('login');;;
             }
               console.log('success');
           })
@@ -227,7 +227,7 @@ $scope.add_customer= function (){
     {
       if (data.RESPONSECODE=='-1'){
          localstorage('msg','Sessione Scaduta ');
-         redirect('login.html');
+         $state.go('login');;;
       }
       console.log('error');
       swal("",data.RESPONSE);
@@ -335,7 +335,7 @@ $scope.showAC=function($search,$word){
       }
       if (data.RESPONSECODE=='-1'){
          localstorage('msg','Sessione Scaduta ');
-         redirect('login.html');
+         $state.go('login');;;
       }
     })
     .error(function() {

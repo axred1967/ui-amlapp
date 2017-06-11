@@ -77,7 +77,7 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
       {
         if (responceData.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
-          redirect('login.html');
+          $state.go('login');;;
         }
         console.log('error');
       }
@@ -125,7 +125,7 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
       {
         if (data.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
-          redirect('login.html');
+          $state.go('login');;;
         }
         console.log('error');
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
@@ -165,7 +165,7 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
         }
         if (data.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
-          redirect('login.html');
+          $state.go('login');;;
         }
       })
       .error(function() {

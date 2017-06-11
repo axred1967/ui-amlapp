@@ -96,7 +96,7 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
       {
         if (data.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
-          redirect('login.html');
+          $state.go('login');;;
         }
         console.log('error');
         swal("",data.RESPONSE);

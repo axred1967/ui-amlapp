@@ -50,7 +50,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
       {
 		if (responceData.RESPONSECODE=='-1'){
 		   localstorage('msg','Sessione Scaduta ');
-		   redirect('login.html');
+		   $state.go('login');;;
 		}
 
         console.log('no customer')
@@ -135,7 +135,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
               $("#loader_img_int").hide()
               if (data.RESPONSECODE=='-1'){
                  localstorage('msg','Sessione Scaduta ');
-                 redirect('login.html');
+                 $state.go('login');;;
               }
                 console.log('success');
             })
@@ -173,7 +173,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
         }
 		if (data.RESPONSECODE=='-1'){
 		   localstorage('msg','Sessione Scaduta ');
-		   redirect('login.html');
+		   $state.go('login');;;
 		}
 
       })
@@ -225,7 +225,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
       {
 		if (data.RESPONSECODE=='-1'){
 		   localstorage('msg','Sessione Scaduta ');
-		   redirect('login.html');
+		   $state.go('login');;;
 		}
 
 		console.log('error');

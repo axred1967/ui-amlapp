@@ -44,7 +44,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
                    {
 										 if (responceData.RESPONSECODE=='-1'){
 						           localstorage('msg','Sessione Scaduta ');
-						           redirect('login.html');
+						           $state.go('login');;;
 						         }
 
                      console.log('error');

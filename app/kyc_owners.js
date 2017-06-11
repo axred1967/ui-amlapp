@@ -89,7 +89,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout)
       {
         if (responceData.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
-           redirect('login.html');
+           $state.go('login');;;
         }
         console.log('error');
       }
@@ -118,7 +118,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout)
       {
         if (data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
-           redirect('login.html');
+           $state.go('login');;;
         }
         console.log('error');
         swal("",data.RESPONSE);
@@ -155,7 +155,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout)
       {
         if (data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
-           redirect('login.html');
+           $state.go('login');;;
         }
         console.log('error');
         swal("",data.RESPONSE);
@@ -193,7 +193,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout)
         }
         if (data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
-           redirect('login.html');
+           $state.go('login');;;
         }
       })
       .error(function() {

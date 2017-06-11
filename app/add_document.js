@@ -41,7 +41,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
       }
       if (data.RESPONSECODE=='-1'){
          localstorage('msg','Sessione Scaduta ');
-         redirect('login.html');
+         $state.go('login');;;
       }
     })
     .error(function() {
@@ -187,7 +187,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
               $("#loader_img_int").hide()
               if (data.RESPONSECODE=='-1'){
                  localstorage('msg','Sessione Scaduta ');
-                 redirect('login.html');
+                 $state.go('login');;;
               }
                 console.log('success');
             })
@@ -223,7 +223,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
         }
         if (data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
-           redirect('login.html');
+           $state.go('login');;;
         }
       })
       .error(function() {
@@ -304,7 +304,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
       }
       if (data.RESPONSECODE=='-1'){
          localstorage('msg','Sessione Scaduta ');
-         redirect('login.html');
+         $state.go('login');;;
       }
     })
     .error(function() {
@@ -356,7 +356,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
       else      {
         if (data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
-           redirect('login.html');
+           $state.go('login');;;
         }
         swal("",data.RESPONSE);
       }

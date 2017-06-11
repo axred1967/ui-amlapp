@@ -48,7 +48,7 @@ app2.factory('Contracts_inf', function($http) {
       else   {
         if (responceData.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
-          redirect('login.html');
+          $state.go('login');;;
         }
         this.busy = false;
         this.loaded=-1

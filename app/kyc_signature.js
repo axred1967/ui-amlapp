@@ -70,7 +70,7 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
       {
         if (responceData.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
-           redirect('login.html');
+           $state.go('login');;;
         }
         console.log('error');
       }
@@ -178,7 +178,7 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
       {
         if (data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
-           redirect('login.html');
+           $state.go('login');;;
         }
         console.log('error');
         swal("",data.RESPONSE);
