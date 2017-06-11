@@ -82,6 +82,7 @@ $scope.edit_risk = function(){
 	$state.go('risk_profile01')
 };
 $scope.print_kyc=function(){
+/*
 	url=BASEURL + 'pdfgeneration/kyc.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
 		$http.get(url, {
 				responseType: "arraybuffer"
@@ -95,10 +96,12 @@ $scope.print_kyc=function(){
 					download: 'kyc'+$scope.Contract.contract_id+ "-"+$scope.agent.id+".pdf"
 				})[0].click();
 			})
-
+*/
+window.open(BASEURL + 'pdfgeneration/kyc.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie, '_blank', 'location=yes');
 
 }
 $scope.print_risk=function(){
+/*
 	url=BASEURL + 'pdfgeneration/risk.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
 		$http.get(url, {
 				responseType: "arraybuffer"
@@ -112,7 +115,8 @@ $scope.print_risk=function(){
 					download: 'kyc'+$scope.Contract.contract_id+ "-"+$scope.agent.id+".pdf"
 				})[0].click();
 			})
-
+*/
+window.open(BASEURL + 'pdfgeneration/risk.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie, '_blank', 'location=yes');
 
 }
 $scope.owners = function(){

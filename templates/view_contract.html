@@ -143,16 +143,17 @@
               </div>
 
               <div class="mdl-card__actions mdl-card--border">
-                <div ng-show="Contract.kyc_status==1" class="mdl-cell--6-col">
-                  <button  id="print_kyc" ng-click="print_kyc()" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
+                <div  class="mdl-cell--6-col">
+                  <button  ng-show="Contract.kyc_status==1" id="print_kyc" ng-click="print_kyc()" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
                     <i class="material-icons">printer</i>
                   </button>
                   <span class="mdl-tooltip mdl-tooltip--validation" for="print_kyc" >
                     <span >{{'Stampa Kyc'|translate}}.</span>
                   </span>
+                  &nbsp;
                 </div>
-                <div ng-show="Contract.status ==1" class=" mdl-cell--6-col">
-                  <button  id="print" ng-click="print_risk()" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
+                <div  class=" mdl-cell--6-col">
+                  <button ng-show="Contract.status ==1" id="print" ng-click="print_risk()" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
                     <i class="material-icons">printer</i>
                   </button>
                   <span class="mdl-tooltip mdl-tooltip--validation" for="print" >
