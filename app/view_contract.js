@@ -97,9 +97,12 @@ $scope.print_kyc=function(){
 				})[0].click();
 			})
 */
-window.open(BASEURL + 'pdfgeneration/kyc.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie, '_blank', 'location=yes');
+//window.open(BASEURL + 'pdfgeneration/kyc.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie, '_blank', 'location=yes');
+cordova.plugins.SitewaertsDocumentViewer.viewDocument(
+    BASEURL + 'pdfgeneration/kyc.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie, 'application/pdf');
 
 }
+
 $scope.print_risk=function(){
 /*
 	url=BASEURL + 'pdfgeneration/risk.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
