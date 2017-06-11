@@ -4,6 +4,7 @@ app2.controller('language', function ($scope,$http,$translate,$rootScope,$timeou
   $scope.main.Search=false
   $scope.main.viewName=""
   $scope.main.Sidebar=false
+  $scope.main.login=true
   $('.mdl-layout__drawer-button').hide()
 
 
@@ -16,6 +17,10 @@ $scope.clang=function(lang)
     if (!chksession)
     {
       $state.go("login");
+    }
+    {
+      $state.go("home");
+
     }
 
 }

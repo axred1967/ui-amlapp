@@ -66,6 +66,7 @@ app2.factory('Contracts_inf', function($http) {
 
 app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$state,Contracts_inf,$timeout) {
   //alert(window.location.pathname.replace(/^\//, ''));
+  $scope.main.login=false  
   $scope.main.Back=false
   $scope.main.Add=true
   $scope.main.Add=true

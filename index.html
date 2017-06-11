@@ -88,26 +88,26 @@
     width:100%;
     text-align:center;
 
-}
+  }
 
-#left {
+  #left {
     float:left;
     width:100px;
-}
+  }
 
-#center {
+  #center {
     display: inline-block;
     margin:0 auto;
 
-}
+  }
 
-#right {
+  #right {
     float:right;
     width:100px;
-}
-main{
-  overflow-y:hidden !important
-}
+  }
+  main{
+    overflow-y:hidden !important
+  }
   </style>
   <body>
     <div ng-app="myApp" ng-controller="personCtrl"  class="animsition">
@@ -116,31 +116,31 @@ main{
         <!-- Sidebar -->
         <div  ng-show="main.Sidebar" id="sidebar_agency" class="mdl-layout__drawer">
           <div class="mdl-card mdl-shadow--2dp mdl-color--primary mdl-color-text--blue-grey-50 drawer-profile">
-              <div class="mdl-card__title user dark-blue-bg">
-                  <center><img id="Profileimageagencyuser" ng-src="{{agent.imageurl}}" alt="" />
-                  <span  id="Profileimageagencyusername" class="user-name">{{agent.name}}</span>
-                  <span  id="Profileimageagencyuseremail" class="user-mail">{{agent.email}}</span>
-                </center>
-              </div>
-              <!-- Top-right User -->
+            <div class="mdl-card__title user dark-blue-bg">
+              <center><img id="Profileimageagencyuser" ng-src="{{agent.imageurl}}" alt="" />
+                <span  id="Profileimageagencyusername" class="user-name">{{agent.name}}</span>
+                <span  id="Profileimageagencyuseremail" class="user-mail">{{agent.email}}</span>
+              </center>
+            </div>
+            <!-- Top-right User -->
             <nav class="mdl-navigation" style="background-color:white">
-                <a class="mdl-navigation__link animsition-link" ui-sref="home"><i style="color:#757575" class="material-icons">reorder</i><span>{{'Contratti'|translate}}</span></a>
-                <a class="mdl-navigation__link animsition-link" ui-sref="my_customer" ><i style="color:#757575" class="material-icons">accessibility</i><span>{{'Persone'||translate}}</span></a>
-                <a class="mdl-navigation__link animsition-link" ui-sref="my_company" ><i style="color:#757575" class="material-icons">business</i><span>{{'Società'|translate}}</span></a>
-                <a class="mdl-navigation__link animsition-link" ui-sref="my_agent"> <i style="color:#757575" class="material-icons">group</i><span>{{'Agenti'|translate}}</span></a>
-                <a class="mdl-navigation__link animsition-link" ui-sref="my_profile" ><i style="color:#757575" class="material-icons tiny" >contacts</i><span>{{'Profilo'|translate}}</span></a>
-                <a class="mdl-navigation__link animsition-link" ui-sref="language" ><i style=";color:#757575" class="material-icons">language</i><span>{{'lingua' |translate}} </span></div>
-                <a class="mdl-navigation__link animsition-link" ui-sref="logout()" ><i style=";color:#757575" class="material-icons">input</i><span>Logout </span></div>
+              <a class="mdl-navigation__link animsition-link" ui-sref="home"><i style="color:#757575" class="material-icons">reorder</i><span>{{'Contratti'|translate}}</span></a>
+              <a class="mdl-navigation__link animsition-link" ui-sref="my_customer" ><i style="color:#757575" class="material-icons">accessibility</i><span>{{'Persone'||translate}}</span></a>
+              <a class="mdl-navigation__link animsition-link" ui-sref="my_company" ><i style="color:#757575" class="material-icons">business</i><span>{{'Società'|translate}}</span></a>
+              <a class="mdl-navigation__link animsition-link" ui-sref="my_agent"> <i style="color:#757575" class="material-icons">group</i><span>{{'Agenti'|translate}}</span></a>
+              <a class="mdl-navigation__link animsition-link" ui-sref="my_profile" ><i style="color:#757575" class="material-icons tiny" >contacts</i><span>{{'Profilo'|translate}}</span></a>
+              <a class="mdl-navigation__link animsition-link" ui-sref="language" ><i style=";color:#757575" class="material-icons">language</i><span>{{'lingua' |translate}} </span></a>
+              <a class="mdl-navigation__link animsition-link" ui-sref="logout()" ><i style=";color:#757575" class="material-icons">input</i><span>Logout </span></a>
 
             </nav>
           </div>          <!-- Top -->
-
+        </div>
 
         <!-- Page Content -->
         <main class="mdl-layout__content">
           <div class=""> <!-- card -->
 
-            <div class="account-info dark-blue-bg">
+            <div ng-hide="main.login"  class="account-info dark-blue-bg">
 
               <div id="heading" class="account-navigation"> <!-- top icons -->
                 <!--  <a class="mdl-button mdl-js-button mdl-button--icon left" onClick="logout()" href="javascript:void(0)">
@@ -175,29 +175,19 @@ main{
           <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
         </div>
         <div  ui-view ng-hide="main.loader==true" class="account-data add-customer-data content-data-ax" ng-cloak> <!-- text fields -->
-
-
         </div>
 
       </div>
     </main>
   </div>
-
-
-
-
-
-
-
-  </div>
-
-  </body>
-  <script>
-    $( document ).ready(function() {
-      $('.mdl-navigation__link').click(function(){
-        $('.mdl-layout__drawer').toggleClass('is-visible');
-        $('.mdl-layout__obfuscator').toggleClass('is-visible');
-       });
-    });
-  </script>
-  </html>
+</div>
+<script>
+$( document ).ready(function() {
+  $('.mdl-navigation__link').click(function(){
+    $('.mdl-layout__drawer').toggleClass('is-visible');
+    $('.mdl-layout__obfuscator').toggleClass('is-visible');
+  });
+});
+</script>
+</body>
+</html>

@@ -2,8 +2,9 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
   $scope.main.Back=false
   $scope.main.Add=false
   $scope.main.Search=false
-  $scope.main.viewName=""
+  $scope.main.viewName="\n"
   $scope.main.Sidebar=false
+  $scope.main.login=true
   $('.mdl-layout__drawer-button').hide()
   $scope.main.loader=true
 
@@ -12,7 +13,7 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
     swal('',msg)
     localstorage('msg','');
   }
-
+$
 
 
   $scope.loginf=function()   {

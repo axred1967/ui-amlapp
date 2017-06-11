@@ -1,18 +1,14 @@
-<div class="dark-blue-bg account-navigation">
-  <div class="add-account-container">
-    <a ng-click="clang('en')" href="javascript:;">
-      <div  class="add-account">
+<div style="position:fixed;top:0px;width:100%" class="dark-blue-bg">
+  <div class="dark-blue-bg" style="heigt:600px;">
+    <div style="padding:20px" class="add-account-container" >
+      <div ng-click="clang('en');$event.preventDefault(); $event.stopPropagation();"  class="add-account">
         <img id="view_profile_image" src="img/englandflag.png">
       </div>
-    </a>
-
-  </div>
-  <div class="add-account-container">
-    <a  ng-click="clang('it')" href="javascript:;">
-      <div  class="add-account">
+    </div>
+    <div style="padding:20px"  class="add-account-container">
+      <div  ng-click="clang('it');$event.preventDefault(); $event.stopPropagation();" class="add-account">
         <img id="view_profile_image" src="img/italyflag.png">
       </div>
-    </a>
-
+    </div>
   </div>
 </div>
