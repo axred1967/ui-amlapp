@@ -34,11 +34,11 @@ function getChkLogin()
 }
 $(document).ready(function(){
   msg=localStorage.getItem("msg");
-  if (msg.length>0){
+  if (msg!==undefined && msg.length>0){
     swal('',msg)
     localstorage('msg','');
   }
-  
+
 })
 
 
