@@ -22,7 +22,7 @@ app2.factory('Companies_inf', function($http) {
       last=this.Companies[lastkey].company_id;
     }
 
-    data= {"action":"CompanyList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last}
+    data={"action":"CompanyList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post(SERVICEURL2,  data )
     .success(function(responceData)  {
       if(responceData.RESPONSECODE=='1') 			{
@@ -37,6 +37,10 @@ app2.factory('Companies_inf', function($http) {
 
       }
       else   {
+        if (responceData.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           redirect('login.html');
+        }
         console.log('no customer')
       }
     }.bind(this))
@@ -49,7 +53,7 @@ app2.factory('Companies_inf', function($http) {
   return Companies_inf;
 
 });
-app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$state, Companies_inf) {
+app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$state, Companies_inf,$timeout) {
   //$scope.datalang = DATALANG;
   $scope.main.Back=false
   $scope.main.Add=true
@@ -59,7 +63,7 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
   $scope.main.viewName="Le mie Società"
   $scope.main.Sidebar=true
   $('.mdl-layout__drawer-button').show()
-
+  $scope.main.loader=true;
   $scope.page={}
 
    $scope.curr_page='my_company'
@@ -74,13 +78,13 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
   $scope.Companies_inf=new Companies_inf
 
 
-  $scope.imageurl=function(Company){
-    Company.IMAGEURI=BASEURL+"uploads/company/small/"
-    if (Company.image===undefined || Company.image.length==0)
-      Company.imageurl= '../img/customer-listing1.png'
+  $scope.imageurl=function(image){
+    if (image===undefined || image.length==0)
+      imageurl= '../img/customer-listing1.png'
     else
-      Company.imageurl= Company.IMAGEURI +Company.image
-    return   Company.imageurl
+        imageurl= BASEURL+ "file_down.php?file=" + image +"&profile=1&entity=company"
+    return   imageurl
+
 
   }
 
@@ -119,7 +123,8 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
 
   }
   $scope.deleteCompany2=function(Company,index){
-    $http.post(SERVICEURL2,{action:'delete',table:'comapny','primary':'id',id:Company.company_id })
+    data={action:'delete',table:'comapny','primary':'id',id:Company.company_id ,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    $http.post(SERVICEURL2,data)
     $scope.Companies_inf.Companies.splice(index,1);
   }
   $scope.$on('backButton', function(e) {
@@ -128,5 +133,16 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
   $scope.$on('addButton', function(e) {
     $scope.add_company()
   })
+  $scope.$on('$viewContentLoaded',
+           function(event){
+             $timeout(function() {
+               $('input.mdl-textfield__input').each(
+                 function(index){
+                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                 })
+               $scope.main.loader=false
+            }, 5);
+  });
 
 });

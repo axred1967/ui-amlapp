@@ -1,4 +1,4 @@
-app2.controller('risk_profile02', function ($scope,$http,$state,$translate) {
+app2.controller('risk_profile02', function ($scope,$http,$state,$translate,$timeout) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -26,7 +26,7 @@ app2.controller('risk_profile02', function ($scope,$http,$state,$translate) {
     var email=localStorage.getItem("userEmail");
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     appData=$scope.Contract
-    data= {"action":"riskAx",appData:appData,country:true}
+   data={"action":"riskAx",appData:appData,country:true,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(responceData) {
       $('#loader_img').hide();
@@ -76,6 +76,10 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
       }
       else
       {
+        if (responceData.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          redirect('login.html');
+        }
         console.log('error');
       }
     })
@@ -108,7 +112,7 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
     dbData.risk_data=JSON.stringify(dbData.risk_data)
 
     $('#loader_img').show();
-    data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData}
+   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       $('#loader_img').hide();
@@ -121,6 +125,10 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
       }
       else
       {
+        if (data.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          redirect('login.html');
+        }
         console.log('error');
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         swal("",data.RESPONSE);
@@ -150,12 +158,16 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
 
     if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
 
-      data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table}
+     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
       $http.post( SERVICEURL2,  data )
       .success(function(data) {
         if(data.RESPONSECODE=='1') 			{
           //$word=$($search.currentTarget).attr('id');
           $scope.word[$search]=data.RESPONSE;
+        }
+        if (data.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          redirect('login.html');
         }
       })
       .error(function() {
@@ -245,6 +257,16 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
 
    $scope.$on('addButton', function(e) {
    })
-$scope.main.loader=false
+   $scope.$on('$viewContentLoaded',
+            function(event){
+              $timeout(function() {
+                $('input.mdl-textfield__input').each(
+                  function(index){
+                    $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                  })
+                $scope.main.loader=false
+             }, 5);
+   });
 
 })

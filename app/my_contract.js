@@ -64,7 +64,7 @@ app2.factory('Contracts_inf', function($http) {
   return Contracts_inf;
 });
 
-app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$state,Contracts_inf) {
+app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$state,Contracts_inf,$timeout) {
   //alert(window.location.pathname.replace(/^\//, ''));
   $scope.main.Back=false
   $scope.main.Add=true
@@ -75,7 +75,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   $scope.main.viewName="I miei Contratti"
   $scope.main.Sidebar=true
   $('.mdl-layout__drawer-button').show()
-
+  $scope.main.loader=true
   $scope.page={}
 
    $scope.curr_page='home'
@@ -98,15 +98,13 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
   $scope.imageurl=function(Contract){
     if (Contract.act_for_other==1 && Contract.company_image!==undefined && Contract.company_image !=null && Contract.company_image.length>0){
-      Contract.IMAGEURI=BASEURL+"uploads/company/small/"
       //Contract.imageurl= Contract.IMAGEURI +Contract.company_image
-      Contract.imageurl= BASEURL + "file_down.php?file=" + Contract.company_image +"&profile=1"
+      Contract.imageurl= BASEURL + "file_down.php?file=" + Contract.company_image +"&profile=1&entity=company"
 
       return   Contract.imageurl
 
     }
     if (Contract.act_for_other==2 && Contract.owner_image!==undefined && Contract.owner_image  !=null && Contract.owner_image.length>0){
-      Contract.IMAGEURI=BASEURL+"uploads/company/small/"
 //      Contract.imageurl= Contract.IMAGEURI +Contract.owner_image
       Contract.imageurl= BASEURL + "file_down.php?file=" + Contract.owner_image +"&profile=1"
       return   Contract.imageurl
@@ -155,7 +153,8 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
   }
   $scope.deleteContract2=function(contract,index){
-    $http.post(SERVICEURL2,{action:'delete',table:'contract','primary':'id',id:contract.contract_id })
+    data={action:'delete',table:'contract','primary':'id',id:contract.contract_id ,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    $http.post(SERVICEURL2,data)
     $scope.Contracts.splice(index,1);
   }
   $scope.back = function(d){
@@ -168,5 +167,16 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   $scope.$on('addButton', function(e) {
     $scope.add_contract()
   })
+  $scope.$on('$viewContentLoaded',
+           function(event){
+             $timeout(function() {
+               $('input.mdl-textfield__input').each(
+                 function(index){
+                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                 })
+               $scope.main.loader=false
+            }, 5);
+  });
 
 });

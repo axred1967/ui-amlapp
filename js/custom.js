@@ -5,10 +5,20 @@ document.title = SITE_TITLE;
 //var BASEURL = "http://192.168.0.5/Deve02/amlapp/";
 //var SERVICEURL = "http://192.168.0.5/Deve02/amlapp/service.php";
 //var SERVICEURL2 = "http://192.168.0.5/Deve02/amlapp/service2.php";
+//test su euriskoformazion
+
 var BASEURL = "http://www.euriskoformazione.com/amlapp/";
 var SERVICEURL = "http://www.euriskoformazione.com/amlapp/service.php";
 var SERVICEURL2 = "http://www.euriskoformazione.com/amlapp/service.php";
 var LOG = "http://www.euriskoformazione.com/amlapp/log.php";
+
+// su amlapp
+/*
+var BASEURL = "http://amlapp.euriskoformazione.com/";
+var SERVICEURL = "http://amlapp.euriskoformazione.com/service.php";
+var SERVICEURL2 = "http://amlapp.euriskoformazione.com/service.php";
+var LOG = "http://amlapp.euriskoformazione.com/log.php";
+*/
 
 function chkloggedin()
 {
@@ -331,7 +341,7 @@ function getCountryList(){
     type: "POST",
     async:false,
     url: SERVICEURL,
-    data: {"action":"countryList"},
+    data: {"action":"countryList",agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")},
     crossDomain: true,
     success:function(responceData){
       //  alert(data);

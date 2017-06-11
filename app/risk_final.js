@@ -1,4 +1,4 @@
-app2.controller('risk_final', function ($scope,$http,$state,$translate) {
+app2.controller('risk_final', function ($scope,$http,$state,$translate,$timeout) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -28,7 +28,7 @@ app2.controller('risk_final', function ($scope,$http,$state,$translate) {
     var email=localStorage.getItem("userEmail");
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     appData=$scope.Contract
-    data= {"action":"riskAx",appData:appData,kyc:true}
+    data={"action":"riskAx",appData:appData,kyc:true,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(responceData) {
       $('#loader_img').hide();
@@ -98,6 +98,10 @@ app2.controller('risk_final', function ($scope,$http,$state,$translate) {
       }
       else
       {
+        if (responceData.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          redirect('login.html');
+        }
         console.log('error');
       }
     })
@@ -130,7 +134,7 @@ app2.controller('risk_final', function ($scope,$http,$state,$translate) {
     dbData.risk_data=JSON.stringify(dbData.risk_data)
 
     $('#loader_img').show();
-    data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,final:true}
+   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,final:true,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       $('#loader_img').hide();
@@ -144,6 +148,10 @@ app2.controller('risk_final', function ($scope,$http,$state,$translate) {
       }
       else
       {
+        if (responceData.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          redirect('login.html');
+        }
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         console.log('error');
         swal("",data.RESPONSE);
@@ -173,12 +181,16 @@ app2.controller('risk_final', function ($scope,$http,$state,$translate) {
 
     if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
 
-      data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table}
+     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
       $http.post( SERVICEURL2,  data )
       .success(function(data) {
         if(data.RESPONSECODE=='1') 			{
           //$word=$($search.currentTarget).attr('id');
           $scope.word[$search]=data.RESPONSE;
+        }
+        if (data.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          redirect('login.html');
         }
       })
       .error(function() {

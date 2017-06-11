@@ -59,30 +59,37 @@
 
 
                             <fieldset>
+                              <div class="mdl-grid">
+                                <div ng-class="{'mdl-cell--3-col-desktop mdl-cell-12-col-phone mdl-cell-6-col-tablet': main.web }">
+
                               <div class="demo-card-image mdl-card mdl-shadow--2dp">
                                 <div class="mdl-card__title mdl-card--expand">{{'Logo Società'|translate}}</div>
-                                <img  ng-show="Company.image.length>0" ng-src ="{{Company.image.length>0 ? Company.IMAGEURI+ Company.image :'' }}" ></img>
+                                <img  ng-show="Company.image.length>0" ng-src ="{{imageurl(Company.image)}}" ></img>
                                 <center>   </center>
 
                                 <div class="mdl-card__actions">
                                   <div class="mdl-layout-spacer"></div>
-
-                                  <button id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
+                                  <input ng-show="main.web"  type="file" id="msds"  name="msds" ng-model="fileweb"/>
+                                  <button ng-show="main.web" id="addfileweb"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadprofileweb()" ><i class="material-icons">file_upload</i></button>
+                                  <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
+                                    <span >{{'Carica da WEB'|translate}}.</span>
+                                  </span>
+                                  <button ng-hide="main.web"  id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
                                   <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
                                     <span >{{'Scatta una foto'|translate}}.</span>
                                   </span>
-                                  <button id="addGallery" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
+                                  <button ng-hide="main.web" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
                                   <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
                                     <span >{{'Scegli da Galleria'|translate}}.</span>
                                   </span>
-
-                                  <button ng-hide="DocLoaded==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
+                                  <button ng-show="loaded" id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
                                   <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
                                     <span >{{'Cancella'|translate}}.</span>
                                   </span>
                                 </div>
-
                               </div>
+                            </div>
+                          </div>
 
                             </fieldset>
                             <div ng-show="page.other_data">
@@ -155,7 +162,7 @@
                                 ng-keyup="showAC('company.mainActivity','Company_mainActivity');"
                                 ng-focus="resetAC()"
                                 />
-                                <label class="mdl-textfield__label" for="Company_mainActivity">{{'Principale Attività Econoica'|translate}} *</label>
+                                <label class="mdl-textfield__label" for="Company_mainActivity">{{'Principale Attività Economica'|translate}} *</label>
                                 <table class="mdl-data-table mdl-js-data-table  border-none  ">
                                   <tbody style="display:table">
                                     <tr ng-click="addWord('Company.mainActivity',item.word)" ng-repeat="item in word.mainActivity">

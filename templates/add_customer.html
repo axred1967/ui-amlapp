@@ -85,17 +85,20 @@
 
                     <div class="mdl-card__actions">
                       <div class="mdl-layout-spacer"></div>
-
-                      <button id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
+                      <input ng-show="main.web"  type="file" id="msds"  name="msds" ng-model="fileweb"/>
+                      <button ng-show="main.web" id="addfileweb"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadprofileweb()" ><i class="material-icons">file_upload</i></button>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
+                        <span >{{'Carica da WEB'|translate}}.</span>
+                      </span>
+                      <button ng-hide="main.web"  id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
                       <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
                         <span >{{'Scatta una foto'|translate}}.</span>
                       </span>
-                      <button id="addGallery" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
+                      <button ng-hide="main.web" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
                       <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
                         <span >{{'Scegli da Galleria'|translate}}.</span>
                       </span>
-
-                      <button ng-hide="DocLoaded==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
+                      <button ng-show="loaded" id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
                       <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
                         <span >{{'Cancella'|translate}}.</span>
                       </span>
@@ -108,6 +111,52 @@
 
                 <div ng-show="page.other_data">
                   <br/>
+<!--- -->
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="date" id="Kyc_dob" name="Kyc_dob"
+                      ng-model="Customer.dob"   ng-required="page.other_data"
+                      />
+                      <label class="mdl-textfield__label" for="Kyc_dob">{{'Dob'|translate}} *</label>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_dob" ng-show="form.Kyc_dob.$invalid && form.Kyc_dob.$touched">
+                        <span ng-show="form.Kyc_dob.$error.required">{{'Richiesto'| translate}}</span>
+                      </span>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                      <input class="mdl-textfield__input" type="text" id="tob" name="tob"  pattern="[A-Za-z\s]*"
+                      ng-model="Customer.birth_town"  ng-change="Customer.birth_town=(Customer.birth_town| capitalize)"
+                      minlength="3" ng-required="page.other_data" ng-keyup="showAC('Kyc.contractor_data.birth_town','Kyc_tob');"
+                      ng-focus="resetAC()"
+                      />
+                      <label class="mdl-textfield__label" for="tob">{{'Città di Nascita'|translate}} *</label>
+                      <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                        <tbody style="display:table">
+                          <tr ng-click="addWord('users.birth_town',item.word)" ng-repeat="item in word.town_of_birth">
+                            <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <span class="mdl-tooltip mdl-tooltip--validation" for="tob" ng-show="form.tob.$invalid && form.tob.$touched">
+                        <span ng-show="form.tob.$error.required">{{'Richiesto'| translate}}</span>
+                      </span>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                      <select ng-model="Customer.birth_country" class="mdl-textfield__input" placeholder="{{'Nazione di Nascita' | translate}}"
+                      ng-required="page.other_data"
+                      id="customer_birth_country" name="customer_birth_country">
+                      <option ng-repeat="option in countryList" value="{{option.country_id}}">{{option.country_name}}</option>
+                    </select>
+                    <label class="mdl-textfield__label" for="customer_birth_country">{{'placeofbirth'|translate}} *</label>
+                    <span class="mdl-tooltip mdl-tooltip--validation" for="customer_birth_country" ng-show="form.customer_birth_country.$invalid && form.customer_birth_country.$touched">
+                      <span ng-show="form.customer_birth_country.$error.required">{{'Richiesto'| translate}}</span>
+                    </span>
+                  </div>
+                </fieldset>
+<!--- -->
                   <fieldset>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                       <input class="mdl-textfield__input" type="text" id="Kyc_tdi" name="Kyc_tdi"
@@ -179,18 +228,7 @@
                       </span>
                     </div>
                   </fieldset>
-                  <fieldset>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                      <input ng-currency class="mdl-textfield__input" type="text" id="kyc_annual_income" name="kyc_annual_income" minlength="3"  value=" "
-                      ng-model="Customer.annual_income"   minlength="3"
-                      />
-                      <label class="mdl-textfield__label" for="kyc_annual_income">{{'Annualincome' | translate }}*</label>
-                      <span class="mdl-tooltip mdl-tooltip--validation" for="kyc_annual_income" ng-show="form.kyc_annual_income.$invalid && form.kyc_annual_income.$touched">
-                        <span ng-show="form.kyc_annual_income.$error.required">{{'Richiesto'|translate}}.</span>
-                      </span>
-
-                    </div>
-                  </fieldset>
+<!--
                   <fieldset>
                     <div id="list_doc"   ng-repeat="Doc in Customer.Docs  |filter:  {per_id: Customer.user_id } as identityDocs" ng-init="DocIndex=$index">
                       <div ng-hide="Doc.deleted" >
@@ -244,6 +282,7 @@
                       </div>
                     </div>
                   </fieldset>
+-->
                   <br/>
                   <fieldset>
                     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
@@ -272,9 +311,9 @@
                 <fieldset>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="text" id="customer_town_resi" name="customer_town_resi"
-                    ng-model="Customer.town_resi"  ng-change="Customer.town_resi=(Customer.town_resi| capitalize)"
+                    ng-model="Customer.resi_town"  ng-change="Customer.resi_town=(Customer.resi_town| capitalize)"
                     minlength="3" ng-required="page.other_data "
-                    ng-keyup="showAC('users.town_resi','customer_town_resi');"
+                    ng-keyup="showAC('users.resi_town','customer_town_resi');"
                     ng-focus="resetAC()"
                     />
                     <label class="mdl-textfield__label" for="customer_town_resi">{{'Città di residenza'|translate}} *</label>
@@ -288,13 +327,13 @@
                     <span class="mdl-tooltip mdl-tooltip--validation" for="customer_town_resi" ng-show="form.customer_town_resi.$invalid && form.customer_town_resi.$touched">
                       <span ng-show="form.customer_town_resi.$error.required">{{'Richiesto'| translate}}</span>
                     </span>
-                  </div>
+
                 </fieldset>
 
                 <fieldset>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="check_residence">
-                      <input id="check_residence" name="check_residence" value="1"  type="checkbox" class="mdl-checkbox__input"
+                      <input id="check_residence" name="check_residence" ng-true-value="1"  type="checkbox" class="mdl-checkbox__input"
                       ng-model="Customer.check_residence"
                       />
                       <span class="mdl-checkbox__label">{{'weatherdomiciledifferentfromresedence'|translate}}</span>
@@ -320,7 +359,7 @@
                 <fieldset>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="text" id="customer_address_domi" name="customer_address_domi"
-                    ng-model="Customer.address_domi"  ng-change="Customer.address_domi=(Customer.address_domi| capitalize)"
+                    ng-model="Customer.domi_address"  ng-change="Customer.domi_address=(Customer.domi_address| capitalize)"
                     minlength="3"      ng-required="{{Customer.check_residence==1}}"
 
                     />
@@ -333,7 +372,7 @@
                 <fieldset>
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input class="mdl-textfield__input" type="text" id="customer_town_domi" name="customer_town_domi"
-                    ng-model="Customer.town_domi"  ng-change="Customer.town_domi=(Customer.town_domi| capitalize)"
+                    ng-model="Customer.domi_town"  ng-change="Customer.domi_town=(Customer.domi_town| capitalize)"
                     minlength="3"   ng-required="{{Customer.check_residence==1}}"
                     ng-keyup="showAC('users.town_domi','customer_town_domi');"
                     ng-focus="resetAC()"
@@ -463,7 +502,7 @@
               </fieldset>
               <fieldset>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                  <select ng-model="Kyc.contractor_data.main_activity_country" class="mdl-textfield__input"
+                  <select ng-model="Customer.main_activity_country" class="mdl-textfield__input"
                   ng-required="page.other_data && ! page.owners"
                   id="customer_main_activity_country" name="customer_main_activity_country" >
                   <option ng-repeat="option in countryList" value="{{option.country_id}}">{{option.country_name}}</option>

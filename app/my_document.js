@@ -19,7 +19,7 @@ app2.factory('Docs_inf', function($http) {
       last=this.Docs[lastkey].id;
     }
     dbData=this.Docload
-    data={ "action":"documentList", dbData:dbData,last:last}
+   data={ "action":"documentList", dbData:dbData,last:last,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post(SERVICEURL2,  data )
     .success(function(responceData)  {
       $('#loader_img').hide();
@@ -47,6 +47,10 @@ app2.factory('Docs_inf', function($http) {
       }
 
       else   {
+        if (responceData.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          redirect('login.html');
+        }
         this.busy = false;
         this.loaded=-1
         console.log('no docs')
@@ -64,7 +68,7 @@ app2.factory('Docs_inf', function($http) {
 
 });
 
-app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_inf) {
+app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_inf,$timeout) {
   $scope.loader=true
   $scope.main.Back=true
   $scope.main.Add=true
@@ -177,7 +181,8 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
 
   }
   $scope.deleteDoc2=function(Doc,index){
-    $http.post(SERVICEURL2,{action:'delete',table:'documents','primary':'id',id:Doc.id })
+    data={action:'delete',table:'documents','primary':'id',id:Doc.id }
+    $http.post(SERVICEURL2,data)
     $scope.Docs_inf.D.splice(index,1);
   }
   $scope.download = function(Doc) {

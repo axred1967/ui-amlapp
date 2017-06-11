@@ -1,4 +1,4 @@
-app2.controller('kycstep02', function ($scope,$http,$state,$translate) {
+app2.controller('kycstep02', function ($scope,$http,$state,$translate,$timeout) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -17,7 +17,7 @@ app2.controller('kycstep02', function ($scope,$http,$state,$translate) {
 
   }
   $scope.main.location=$scope.page.location
-
+  $scope.countryList=getCountryList()
   if ($scope.page.editDoc) {
     $scope.countryList=JSON.parse(localStorage.getItem('countryList'))
     $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
@@ -57,18 +57,19 @@ app2.controller('kycstep02', function ($scope,$http,$state,$translate) {
       var email=localStorage.getItem("userEmail");
       $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
       appData=$scope.Contract
-      data= {"action":"kycAx",appData:appData,country:true}
+      data={"action":"kycAx",appData:appData,country:true,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
       $scope.main.loader=true;
       $http.post( SERVICEURL2,  data )
       .success(function(responceData) {
         if(responceData.RESPONSECODE=='1') 			{
           data=responceData.RESPONSE;
           $scope.Kyc=data;
-          $scope.countryList=responceData.countrylist
-          localstorage('countrylist',JSON.stringify($scope.countryList))
           if ($scope.Kyc.date_of_identification===undefined || $scope.Kyc.date_of_identification)
           $scope.Kyc.date_of_identification=new Date()
+          $scope.Kyc.contract_data=IsJsonString($scope.Kyc.contract_data)
+          $scope.Kyc.contract_data.Docs=IsJsonString($scope.Kyc.contract_data.Docs)
           $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
+
           $scope.Kyc.contractor_data.Docs=IsJsonString($scope.Kyc.contractor_data.Docs)
           if (!isObject($scope.Kyc.contractor_data.Docs)){
               $scope.Kyc.contractor_data.Docs=[{}]
@@ -79,6 +80,9 @@ app2.controller('kycstep02', function ($scope,$http,$state,$translate) {
           $scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data)
           $scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
           convertDateStringsToDates($scope.Kyc)
+          convertDateStringsToDates($scope.Kyc.contract_data)
+          convertDateStringsToDates($scope.Kyc.contract_data.Docs)
+
           convertDateStringsToDates($scope.Kyc.contractor_data)
           convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
           convertDateStringsToDates($scope.Kyc.company_data)
@@ -96,6 +100,10 @@ app2.controller('kycstep02', function ($scope,$http,$state,$translate) {
         }
         else
         {
+          if (responceData.RESPONSECODE=='-1'){
+             localstorage('msg','Sessione Scaduta ');
+             redirect('login.html');
+          }
           console.log('error');
         }
       })
@@ -123,13 +131,14 @@ app2.controller('kycstep02', function ($scope,$http,$state,$translate) {
     }
     var langfileloginchk = localStorage.getItem("language");
     dbData=$scope.Kyc
+    dbData.contract_data=JSON.stringify(dbData.contract_data)
     dbData.contractor_data=JSON.stringify(dbData.contractor_data)
     dbData.company_data=JSON.stringify(dbData.company_data)
     dbData.owner_data=JSON.stringify(dbData.owner_data)
 
 
-    $scope.loader=true
-    data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData}
+    $scope.main.loader=true
+   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       if(data.RESPONSECODE=='1') 			{
@@ -141,6 +150,10 @@ app2.controller('kycstep02', function ($scope,$http,$state,$translate) {
       }
       else
       {
+        if (data.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           redirect('login.html');
+        }
         console.log('error');
         swal("",data.RESPONSE);
       }
@@ -169,12 +182,16 @@ app2.controller('kycstep02', function ($scope,$http,$state,$translate) {
 
     if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
 
-      data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table}
+     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
       $http.post( SERVICEURL2,  data )
       .success(function(data) {
         if(data.RESPONSECODE=='1') 			{
           //$word=$($search.currentTarget).attr('id');
           $scope.word[$search]=data.RESPONSE;
+        }
+        if (data.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           redirect('login.html');
         }
       })
       .error(function() {
@@ -261,7 +278,8 @@ app2.controller('kycstep02', function ($scope,$http,$state,$translate) {
 
   }
   $scope.deleteDoc2=function(Doc,indice){
-    $http.post(SERVICEURL2,{action:'delete',table:'documents','primary':'id',id:Doc.id })
+    data={action:'delete',table:'documents','primary':'id',id:Doc.id ,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    $http.post(SERVICEURL2,data)
     //Doc.deleted=true;
     $scope.Kyc.contractor_data.Docs.splice(indice,indice);
 
@@ -286,8 +304,17 @@ app2.controller('kycstep02', function ($scope,$http,$state,$translate) {
   $scope.$on('addButton', function(e) {
     $scope.add_contract()
   })
-
-  $scope.main.loader=false
+  $scope.$on('$viewContentLoaded',
+           function(event){
+             $timeout(function() {
+               $('input.mdl-textfield__input').each(
+                 function(index){
+                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                 })
+               $scope.main.loader=false
+            }, 5);
+  });
 })
 function onConfirm(buttonIndex,$scope,doc) {
     if (buttonIndex=1)

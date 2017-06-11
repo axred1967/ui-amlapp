@@ -278,6 +278,7 @@ app2.controller('personCtrl', function ($scope, $state) {
     $scope.agent.name=localStorage.getItem('Name');
     $scope.agent.email=localStorage.getItem('userEmail');
     $scope.agent.id=localStorage.getItem('userId');
+    $scope.agent.cookie=localStorage.getItem('cookie');
     $scope.agent.agency_id=localStorage.getItem('agencyId');
     $scope.agent.user_type=localStorage.getItem('userType');
     $scope.agent.image=localStorage.getItem('Profileimageagencyuser');

@@ -1,4 +1,4 @@
-app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$timeout,$state) {
+app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$timeout,$state,$timeout) {
 		$scope.main.Back=true
 		$scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -7,7 +7,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 		$('.mdl-layout__drawer-button').hide()
 	  $scope.main.viewName="Nuovo  Contratto"
     $scope.main.loader=true
-
+		$scope.aggKyc=false;
 		$scope.page={}
 
      $scope.curr_page='add_contract'
@@ -196,12 +196,17 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 	            });
 		 $scope.showContractorList=function(){
        if ((typeof $scope.Contract.fullname !== "undefined" && $scope.Contract.fullname.length>4 && $scope.oldContrator!=$scope.Contract.fullname)){
-         data={ "action":"ACCustomerList", name:$scope.Contract.fullname}
+        data={ "action":"ACCustomerList", name:$scope.Contract.fullname,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
          $http.post( SERVICEURL2,  data )
          .success(function(data) {
            if(data.RESPONSECODE=='1') 			{
              $scope.list=data.RESPONSE;
            }
+		if (responceData.RESPONSECODE=='-1'){
+		   localstorage('msg','Sessione Scaduta ');
+		   redirect('login.html');
+		}
+
          })
          .error(function() {
            console.log("error");
@@ -211,12 +216,17 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
      }
      $scope.showCompanyList=function(){
        if ((typeof $scope.Contract.name !== "undefined" && $scope.Contract.name.length>4 && $scope.oldCompany!=$scope.Contract.name)){
-         data={ "action":"ACCompanyList", name:$scope.Contract.name}
+        data={ "action":"ACCompanyList", name:$scope.Contract.name,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
          $http.post( SERVICEURL2,  data )
          .success(function(data) {
            if(data.RESPONSECODE=='1') 			{
              $scope.listCompany=data.RESPONSE;
            }
+		if (data.RESPONSECODE=='-1'){
+		   localstorage('msg','Sessione Scaduta ');
+		   redirect('login.html');
+		}
+
          })
          .error(function() {
            console.log("error");
@@ -226,12 +236,17 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
      }
      $scope.showOtherList=function(){
        if ((typeof $scope.Contract.other_name !== "undefined" && $scope.Contract.other_name.length>4 && $scope.Contract.other_name!=$scope.oldOther)){
-         data={ "action":"ACCustomerList", name:$scope.Contract.other_name}
+        data={ "action":"ACCustomerList", name:$scope.Contract.other_name,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
          $http.post( SERVICEURL2,  data )
          .success(function(data) {
            if(data.RESPONSECODE=='1') 			{
              $scope.listOther=data.RESPONSE;
            }
+		if (data.RESPONSECODE=='-1'){
+		   localstorage('msg','Sessione Scaduta ');
+		   redirect('login.html');
+		}
+
          })
          .error(function() {
            console.log("error");
@@ -249,13 +264,18 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
        if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
 
-         data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table}
+        data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
          $http.post( SERVICEURL2,  data )
          .success(function(data) {
            if(data.RESPONSECODE=='1') 			{
              //$word=$($search.currentTarget).attr('id');
              $scope.word[$search]=data.RESPONSE;
            }
+		if (data.RESPONSECODE=='-1'){
+		   localstorage('msg','Sessione Scaduta ');
+		   redirect('login.html');
+		}
+
          })
          .error(function() {
            console.log("error");
@@ -335,8 +355,8 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
     }
 
 
-    $scope.loader=true
-    data= {"action":"addcontract",appData:appData,dbData:dbData,edit:$scope.action}
+    $scope.main.loader=true
+   data={"action":"addcontract",appData:appData,dbData:dbData,aggKyc:$scope.aggKyc,edit:$scope.action,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post(SERVICEURL2,data)
     .success(function(data){
       $('#loader_img').hide();
@@ -350,11 +370,17 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
       }
       else      {
+		if (data.RESPONSECODE=='-1'){
+		   localstorage('msg','Sessione Scaduta ');
+		   redirect('login.html');
+		}
+			$scope.main.loader=false
 
         swal("",data.RESPONSE);
       }
     })
     .error(function(){
+			$('#loader_img').show();
       console.log('error');
     })
   }
@@ -392,7 +418,8 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
   }
   $scope.deleteDoc2=function(Doc){
-    $http.post(SERVICEURL2,{action:'delete',table:'documents','primary':'id',id:Doc.id })
+	data={action:'delete',table:'documents','primary':'id',id:Doc.id ,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    $http.post(SERVICEURL2,data)
     Doc.deleted=true;
   }
 
@@ -455,7 +482,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
     $('#doc_image').val(review_info.response);
     // var review_selected_image  =  review_info.review_id;
     //$('#review_id_checkin').val(review_selected_image);
-    data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id}
+   data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       if(data.RESPONSECODE=='1') 			{
@@ -463,6 +490,10 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
         $scope.Contract.Docs[Doc.index].doc_image=data.RESPONSE;
         $("#loader_img").hide()
       }
+			if (data.RESPONSECODE=='-1'){
+				 localstorage('msg','Sessione Scaduta ');
+				 redirect('login.html');
+			}
     })
     .error(function() {
       $("#loader_img").hide()
@@ -518,6 +549,18 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
 	  $scope.$on('addButton', function(e) {
 		})
+		$scope.$on('$viewContentLoaded',
+	           function(event){
+	             $timeout(function() {
+	               $('input.mdl-textfield__input').each(
+	                 function(index){
+	                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
+	                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+	                 })
+	               $scope.main.loader=false
+	            }, 5);
+	  });
+
   	})
 
   function onConfirm(buttonIndex,$scope,doc) {

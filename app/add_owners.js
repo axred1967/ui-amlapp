@@ -1,4 +1,4 @@
-app2.controller('add_owners', function ($scope,$http,$state,$translate) {
+app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout) {
   $scope.loader=true
 
   $scope.main.Back=true
@@ -69,11 +69,15 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate) {
 
   $scope.showContractorList=function(){
     if ((typeof $scope.Owner.fullname !== "undefined" && $scope.Owner.fullname.length>4 && $scope.oldContrator!=$scope.Owner.fullname)){
-      data={ "action":"ACCustomerList", name:$scope.Owner.fullname}
+     data={ "action":"ACCustomerList", name:$scope.Owner.fullname,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
       $http.post( SERVICEURL2,  data )
       .success(function(data) {
         if(data.RESPONSECODE=='1') 			{
           $scope.list=data.RESPONSE;
+        }
+        if (data.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           redirect('login.html');
         }
       })
       .error(function() {
@@ -111,7 +115,7 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate) {
 
 
     $scope.loader=true
-    data= {"action":$scope.action,appData:appData,dbData: dbData}
+    data={"action":$scope.action,appData:appData,dbData: dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post(SERVICEURL2,data)
     .success(function(data){
       $('#loader_img').hide();
@@ -125,6 +129,10 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate) {
 
       }
       else      {
+        if (data.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           redirect('login.html');
+        }
         swal("",data.RESPONSE);
       }
     })

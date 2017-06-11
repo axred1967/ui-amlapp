@@ -1,4 +1,4 @@
-app2.controller('add_company', function ($scope,$http,$state,$translate,$rootScope) {
+app2.controller('add_company', function ($scope,$http,$state,$translate,$rootScope,$timeout) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -24,7 +24,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
   $scope.loadItem=function(){
     var CompanyID=localStorage.getItem("CompanyID");
     var email=localStorage.getItem("userEmail");
-    data= {"action":"show_edit_company",company_id:CompanyID}
+   data={"action":"show_edit_company",company_id:CompanyID,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $scope.loader=true
     $http.post( SERVICEURL2,  data)
     .success(function(responceData)
@@ -48,6 +48,11 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
       }
       else
       {
+		if (responceData.RESPONSECODE=='-1'){
+		   localstorage('msg','Sessione Scaduta ');
+		   redirect('login.html');
+		}
+
         console.log('no customer')
       }
 
@@ -105,6 +110,53 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
   }
   $scope.countryList=getCountryList()
 
+
+  $scope.uploadprofileweb=function(){
+      $("#loader_img_int").show()
+        var f = document.getElementById('msds').files[0],
+            r = new FileReader();
+            $scope.f=f
+        r.onloadend = function(e) {
+            var data = e.target.result;
+            console.log(data);
+            f={}
+            f.data=data
+            f.name=$scope.f.name
+            data={action:"upload_document_ax",type:"profile",id:$scope.Company.company_id, f:f,
+            agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie"), entity:'company',entity_key:'company_id'}
+            $http.post(SERVICEURL2,data,{
+            headers: {'Content-Type': undefined}
+        })
+            .success(function(data){
+              $scope.Company.image=data.image;
+              if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
+                $scope.Doc.isImage=false
+              }
+              $("#loader_img_int").hide()
+              if (data.RESPONSECODE=='-1'){
+                 localstorage('msg','Sessione Scaduta ');
+                 redirect('login.html');
+              }
+                console.log('success');
+            })
+            .error(function(){
+                console.log('error');
+            });
+        };
+        r.readAsDataURL(f);
+
+  }
+
+  $scope.imageurl=function(image){
+    if (image===undefined ||  image== null || image.length==0)
+      imageurl= ''
+    else
+    imageurl= BASEURL+ "file_down.php?file=" + image +"&profile=1&entity=company"
+  //
+    //  Customer.imageurl= Customer.IMAGEURI +Customer.image
+    return   imageurl
+  }
+
   // autocomplete parole
   $scope.showAC=function($search,$table){
     var id=localStorage.getItem("userId");
@@ -112,13 +164,18 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
 
     if ((typeof $($search.currentTarget).val()  !== "undefined" && $($search.currentTarget).val().length>3 &&  $($search.currentTarget).val()!=$scope.oldWord)){
       $word=$($search.currentTarget).attr('id');
-      data={ "action":"ACWord", id:id,usertype:usertype, name:$scope.searchContractor, search:$($search.currentTarget).val() ,word:$word ,table:$table}
+     data={ "action":"ACWord", id:id,usertype:usertype, name:$scope.searchContractor, search:$($search.currentTarget).val() ,word:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
       $http.post( SERVICEURL2,  data )
       .success(function(data) {
         if(data.RESPONSECODE=='1') 			{
           $word=$($search.currentTarget).attr('id');
           $scope.word[$word]=data.RESPONSE;
         }
+		if (data.RESPONSECODE=='-1'){
+		   localstorage('msg','Sessione Scaduta ');
+		   redirect('login.html');
+		}
+
       })
       .error(function() {
         console.log("error");
@@ -134,12 +191,15 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
   $scope.add_company= function (){
     var langfileloginchk = localStorage.getItem("language");
     if ($scope.form.$invalid) {
+      $scope.invalid=""
       angular.forEach($scope.form.$error, function(field) {
         angular.forEach(field, function(errorField) {
           errorField.$setTouched();
+          $scope.invalid+=errorField.$name+ " - "
         })
       });
       $scope.formStatus = "Dati non Validi.";
+      swal('',"Dati non Validi:" +$scope.invalid)
       console.log("Form is invalid.");
       return
     } else {
@@ -153,7 +213,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     var usertype = localStorage.getItem('userType');
     $scope.loader=true
     dbData= $scope.Company
-    data={ "action":$scope.action, id:id,email:email,usertype:usertype,lang:langfileloginchk, dbData:dbData}
+   data={ "action":$scope.action, id:id,email:email,usertype:usertype,lang:langfileloginchk, dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       if(data.RESPONSECODE=='1') 			{
@@ -163,7 +223,12 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
       }
       else
       {
-        console.log('error');
+		if (data.RESPONSECODE=='-1'){
+		   localstorage('msg','Sessione Scaduta ');
+		   redirect('login.html');
+		}
+
+		console.log('error');
         $scope.loader=false
         swal("",data.RESPONSE);
       }
@@ -299,6 +364,16 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
 
   $scope.$on('addButton', function(e) {
   })
-  $scope.main.loader=false
+  $scope.$on('$viewContentLoaded',
+           function(event){
+             $timeout(function() {
+               $('input.mdl-textfield__input').each(
+                 function(index){
+                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                 })
+               $scope.main.loader=false
+            }, 5);
+  });
 
 })

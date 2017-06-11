@@ -1,4 +1,4 @@
-app2.controller('kyc_company', function ($scope,$http,$state,$translate) {
+app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -23,7 +23,7 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate) {
     var email=localStorage.getItem("userEmail");
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     appData=$scope.Contract
-    data= {"action":"kycAx",appData:appData,country:true}
+    data={"action":"kycAx",appData:appData,country:true,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(responceData) {
       $('#loader_img').hide();
@@ -52,6 +52,10 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate) {
       }
       else
       {
+        if (responceData.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           redirect('login.html');
+        }
         console.log('error');
       }
     })
@@ -123,7 +127,7 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate) {
     dbData.owner_data=JSON.stringify(dbData.owner_data)
 
     $('#loader_img').show();
-    data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData}
+   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       $('#loader_img').hide();
@@ -136,6 +140,10 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate) {
       }
       else
       {
+        if (data.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           redirect('login.html');
+        }
         console.log('error');
         swal("",data.RESPONSE);
       }
@@ -163,12 +171,16 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate) {
 
     if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
 
-      data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table}
+     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
       $http.post( SERVICEURL2,  data )
       .success(function(data) {
         if(data.RESPONSECODE=='1') 			{
           //$word=$($search.currentTarget).attr('id');
           $scope.word[$search]=data.RESPONSE;
+        }
+        if (data.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           redirect('login.html');
         }
       })
       .error(function() {
@@ -258,13 +270,17 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate) {
       $('#doc_image').val(review_info.response);
      // var review_selected_image  =  review_info.review_id;
       //$('#review_id_checkin').val(review_selected_image);
-      data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id}
+     data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
       $http.post( SERVICEURL2,  data )
           .success(function(data) {
                     if(data.RESPONSECODE=='1') 			{
                       //$word=$($search.currentTarget).attr('id');
                       $scope.Cotnract.Docs[Doc.index].doc_image=data.RESPONSE;
                       $("#loader_img").hide()
+                    }
+                    if (data.RESPONSECODE=='-1'){
+                       localstorage('msg','Sessione Scaduta ');
+                       redirect('login.html');
                     }
            })
           .error(function() {
@@ -316,5 +332,16 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate) {
 
    $scope.$on('addButton', function(e) {
    })
+   $scope.$on('$viewContentLoaded',
+            function(event){
+              $timeout(function() {
+                $('input.mdl-textfield__input').each(
+                  function(index){
+                    $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                  })
+                $scope.main.loader=false
+             }, 5);
+   });
 
 })

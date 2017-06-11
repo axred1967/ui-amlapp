@@ -1,4 +1,4 @@
-app2.controller('owners_list', function ($scope,$http,$translate,$state,Customers_inf) {
+app2.controller('owners_list', function ($scope,$http,$translate,$state,Customers_inf,$timeout) {
   $scope.loader=true;
   $scope.main.Back=true
   $scope.main.Add=true
@@ -83,7 +83,7 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
   $scope.deleteOwn= function (Own,index){
     owner_id=Own.user_id
     $('#loader_img').show();
-    data={ "action":"deleteOwner", appData:$scope.Contract,user_id:owner_id}
+   data={ "action":"deleteOwner", appData:$scope.Contract,user_id:owner_id,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       $('#loader_img').hide();
@@ -94,6 +94,10 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
       }
       else
       {
+        if (data.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          redirect('login.html');
+        }
         console.log('error');
         swal("",data.RESPONSE);
       }

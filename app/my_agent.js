@@ -1,4 +1,4 @@
-app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_inf) {
+app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_inf,$timeout) {
   $scope.loader=true;
   $scope.main.Back=false
   $scope.main.Add=true
@@ -68,7 +68,8 @@ app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_i
 
   }
   $scope.deleteCustomer=function(Customer,index){
-    $http.post(SERVICEURL2,{action:'delete',table:'users','primary':'id',id:Customer.user_id, agent:true })
+    data={action:'delete',table:'users','primary':'id',id:Customer.user_id, agent:true ,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    $http.post(SERVICEURL2,data)
     $scope.Customer.splice(index,1);
   }
   $scope.back=function(){

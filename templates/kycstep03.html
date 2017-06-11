@@ -80,7 +80,7 @@
       <fieldset>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="text" id="customer_address_domi" name="customer_address_domi"
-          ng-model="Kyc.contractor_data.address_domi"  ng-change="Kyc.contractor_data.address_domi=(Kyc.contractor_data.address_domi| capitalize)"
+          ng-model="Kyc.contractor_data.domi_address"  ng-change="Kyc.contractor_data.domi_address=(Kyc.contractor_data.domi_address| capitalize)"
           minlength="3"      ng-required="{{Kyc.contractor_data.check_residence==1}}"
 
           />
@@ -93,9 +93,9 @@
       <fieldset>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="text" id="customer_town_domi" name="customer_town_domi"
-          ng-model="Kyc.contractor_data.town_domi"  ng-change="Kyc.contractor_data.town_domi=(Kyc.contractor_data.town_domi| capitalize)"
+          ng-model="Kyc.contractor_data.domi_town"  ng-change="Kyc.contractor_data.domi_town=(Kyc.contractor_data.domi_town| capitalize)"
           minlength="3"   ng-required="{{Kyc.contractor_data.check_residence==1}}"
-          ng-keyup="showAC('users.town_domi','customer_town_domi');"
+          ng-keyup="showAC('users.domi_town','customer_town_domi');"
           ng-focus="resetAC()"
           />
           <label class="mdl-textfield__label" for="customer_town_domi">{{'Città di Domicilio'|translate}} *</label>

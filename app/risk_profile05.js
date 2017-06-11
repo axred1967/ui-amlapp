@@ -1,4 +1,4 @@
-app2.controller('risk_profile05', function ($scope,$http,$state,$translate) {
+app2.controller('risk_profile05', function ($scope,$http,$state,$translate,$timeout) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -26,7 +26,7 @@ app2.controller('risk_profile05', function ($scope,$http,$state,$translate) {
     var email=localStorage.getItem("userEmail");
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     appData=$scope.Contract
-    data= {"action":"riskAx",appData:appData,country:true}
+   data={"action":"riskAx",appData:appData,country:true,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(responceData) {
       $('#loader_img').hide();
@@ -69,6 +69,10 @@ app2.controller('risk_profile05', function ($scope,$http,$state,$translate) {
       }
       else
       {
+        if (responceData.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          redirect('login.html');
+        }
         console.log('error');
       }
     })
@@ -101,7 +105,7 @@ app2.controller('risk_profile05', function ($scope,$http,$state,$translate) {
     dbData.risk_data=JSON.stringify(dbData.risk_data)
 
     $('#loader_img').show();
-    data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData}
+   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       $('#loader_img').hide();
@@ -114,6 +118,10 @@ app2.controller('risk_profile05', function ($scope,$http,$state,$translate) {
       }
       else
       {
+        if (data.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          redirect('login.html');
+        }
         console.log('error');
         swal("",data.RESPONSE);
       }
@@ -160,5 +168,15 @@ app2.controller('risk_profile05', function ($scope,$http,$state,$translate) {
 
    $scope.$on('addButton', function(e) {
    })
-$scope.main.loader=false
+   $scope.$on('$viewContentLoaded',
+            function(event){
+              $timeout(function() {
+                $('input.mdl-textfield__input').each(
+                  function(index){
+                    $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                  })
+                $scope.main.loader=false
+             }, 5);
+   });
 })

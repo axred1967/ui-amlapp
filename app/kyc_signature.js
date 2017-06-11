@@ -1,4 +1,4 @@
-app2.controller('kyc_signature', function ($scope,$http,$state,$translate) {
+app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeout) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -26,8 +26,8 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate) {
     var id=localStorage.getItem("CustomerProfileId");
     var email=localStorage.getItem("userEmail");
     appData=$scope.Contract
-    data= {"action":"kycAx",appData:appData}
-//    $scope.loader=true
+    data={"action":"kycAx",appData:appData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    $scope.main.loader=true
     $http.post( SERVICEURL2,  data )
     .success(function(responceData) {
 
@@ -68,6 +68,10 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate) {
       }
       else
       {
+        if (responceData.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           redirect('login.html');
+        }
         console.log('error');
       }
     })
@@ -159,8 +163,8 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate) {
     dbData.company_data=JSON.stringify(dbData.company_data)
     dbData.owner_data=JSON.stringify(dbData.owner_data)
 
-    data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,final:true}
-    $scope.loader=true
+   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,final:true,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    $scope.main.loader=true
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       if(data.RESPONSECODE=='1') 			{
@@ -172,6 +176,10 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate) {
       }
       else
       {
+        if (data.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           redirect('login.html');
+        }
         console.log('error');
         swal("",data.RESPONSE);
       }
@@ -226,6 +234,16 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate) {
 
    $scope.$on('addButton', function(e) {
    })
-   $scope.main.loader=false
+   $scope.$on('$viewContentLoaded',
+            function(event){
+              $timeout(function() {
+                $('input.mdl-textfield__input').each(
+                  function(index){
+                    $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                  })
+                $scope.main.loader=false
+             }, 5);
+   });
 
 })

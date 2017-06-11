@@ -25,15 +25,15 @@ app2.factory('Customers_inf', function($http) {
       if (agent=='Owners')
         last=this.Customers[lastkey].id;
     }
-    data= {"action":"CustomerList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last}
+    data={"action":"CustomerList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     if (agent)
-    data= {"action":"AgentList",id:id,email:email,usertype:usertype,priviledge:priviledge,agency_id:agencyId,last:last}
+    data={"action":"AgentList",id:id,email:email,usertype:usertype,priviledge:priviledge,agency_id:agencyId,last:last,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     if (agent=='Owners'){
       if (isObject(this.Contract))
         appData=this.Contract
       else
         appData=[]
-      data= {"action":"OwnersList",company_id:this.CompanyId,last:last,appData:appData}
+      data={"action":"OwnersList",company_id:this.CompanyId,last:last,appData:appData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     }
 
     $http.post(SERVICEURL2,  data )
@@ -53,6 +53,10 @@ app2.factory('Customers_inf', function($http) {
 
       }
       else   {
+        if (responceData.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          redirect('login.html');
+        }
         this.busy = false;
         this.loaded=-1
         console.log('no customer')
@@ -70,7 +74,7 @@ app2.factory('Customers_inf', function($http) {
 
 });
 
-app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $state, Customers_inf) {
+app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $state, Customers_inf,$timeout) {
   $scope.loader=true;
   $scope.main.Back=false
   $scope.main.Add=true
@@ -140,7 +144,8 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
 
   }
   $scope.deleteCustomer2=function(Customer,index){
-    $http.post(SERVICEURL2,{action:'delete',table:'users','primary':'user_id',id:Customer.user_id })
+    data={action:'delete',table:'users','primary':'user_id',id:Customer.user_id ,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    $http.post(SERVICEURL2,data)
     $scope.Customers_inf.Customers.splice(index,1);
   }
   $scope.$on('backButton', function(e) {
@@ -149,8 +154,18 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
   $scope.$on('addButton', function(e) {
     $scope.add_customer()
   })
+  $scope.$on('$viewContentLoaded',
+           function(event){
+             $timeout(function() {
+               $('input.mdl-textfield__input').each(
+                 function(index){
+                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                 })
+               $scope.main.loader=false
+            }, 5);
+  });
 
-  $scope.loader=false
 });
 function onConfirm(buttonIndex,$scope,doc) {
     if (buttonIndex=1)

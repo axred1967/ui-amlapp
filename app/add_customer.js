@@ -1,4 +1,4 @@
-app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootScope) {
+app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootScope,$timeout) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -19,8 +19,8 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
    $scope.main.location=$scope.page.location
 
   $scope.loadItem=function(){
-    data= {"action":"view_Customer_Profile_info",customer_id:$scope.id,email:$scope.email,agency_id:$scope.agencyId}
-    $scope.loader=true
+    data={"action":"view_Customer_Profile_info",customer_id:$scope.id,email:$scope.email,agency_id:$scope.agencyId,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    $scope.main.loader=true
     $http.post( SERVICEURL2,  data )
     .success(function(responceData) {
       if(responceData.RESPONSECODE=='1') 			{
@@ -40,6 +40,7 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
             $scope.newDocs=true;
 
         }
+        convertDateStringsToDates($scope.Customer)
 
         $('input.mdl-textfield__input').each(
           function(index){
@@ -51,6 +52,10 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
       }
       else
       {
+        if (responceData.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           redirect('login.html');
+        }
         console.log('error');
       }
     })
@@ -138,7 +143,40 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
      if ($scope.action=="saveProfileCustomer")
         $scope.loadItem()
 }
+$scope.uploadprofileweb=function(){
+    $("#loader_img_int").show()
+      var f = document.getElementById('msds').files[0],
+          r = new FileReader();
+          $scope.f=f
+      r.onloadend = function(e) {
+          var data = e.target.result;
+          console.log(data);
+          f={}
+          f.data=data
+          f.name=$scope.f.name
+          data={action:"upload_document_ax",type:"profile",id:$scope.Customer.user_id, f:f,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+          $http.post(SERVICEURL2,data,{
+          headers: {'Content-Type': undefined}
+      })
+          .success(function(data){
+            $scope.Customer.image=data.image;
+            if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
+              $scope.Doc.isImage=false
+            }
+            $("#loader_img_int").hide()
+            if (data.RESPONSECODE=='-1'){
+               localstorage('msg','Sessione Scaduta ');
+               redirect('login.html');
+            }
+              console.log('success');
+          })
+          .error(function(){
+              console.log('error');
+          });
+      };
+      r.readAsDataURL(f);
 
+}
 
 $scope.imageurl=function(image){
   if (image===undefined ||  image== null || image.length==0)
@@ -176,8 +214,8 @@ $scope.add_customer= function (){
   dbData=$scope.Customer
   if ($scope.main.agent)
   dbData['user_type']=2
-  data={ "action":$scope.action, id:userId,email:email,usertype:usertype,lang:lang, dbData: dbData,agent:$scope.main.agent,agency_id:agencyId}
-  $scope.loader=true
+ data={ "action":$scope.action, id:userId,email:email,usertype:usertype,lang:lang, dbData: dbData,agent:$scope.main.agent,agency_id:agencyId,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie"),agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+  $scope.main.loader=true
   $http.post( SERVICEURL2,  data )
   .success(function(data) {
     if(data.RESPONSECODE=='1') 			{
@@ -187,6 +225,10 @@ $scope.add_customer= function (){
     }
     else
     {
+      if (data.RESPONSECODE=='-1'){
+         localstorage('msg','Sessione Scaduta ');
+         redirect('login.html');
+      }
       console.log('error');
       swal("",data.RESPONSE);
       $scope.loader=false
@@ -284,12 +326,16 @@ $scope.showAC=function($search,$word){
 
   if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
 
-    data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table}
+   data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       if(data.RESPONSECODE=='1') 			{
         //$word=$($search.currentTarget).attr('id');
         $scope.word[$search]=data.RESPONSE;
+      }
+      if (data.RESPONSECODE=='-1'){
+         localstorage('msg','Sessione Scaduta ');
+         redirect('login.html');
       }
     })
     .error(function() {
@@ -321,10 +367,10 @@ $scope.addWord=function($search,$word){
   }
 }
 $scope.other=function(){
-  if($scope.main.other_data)
-  $scope.main.other_data=false
+  if($scope.page.other_data)
+  $scope.page.other_data=false
   else
-  $scope.main.other_data=true
+  $scope.page.other_data=true
   $scope.arrow=(page.other_data!== undefined || page.other_data) ? 'arrow_drop_up' : 'arrow_drop_down';
 
 }
@@ -417,6 +463,17 @@ $scope.back=function(){
   $scope.$on('addButton', function(e) {
 
   })
+  $scope.$on('$viewContentLoaded',
+           function(event){
+             $timeout(function() {
+               $('input.mdl-textfield__input').each(
+                 function(index){
+                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                 })
+               $scope.main.loader=false
+            }, 5);
+  });
 
 
 })

@@ -1,5 +1,5 @@
 
-app2.controller('add_document', function ($scope,$http,$translate,$state) {
+app2.controller('add_document', function ($scope,$http,$translate,$state,$timeout) {
   $scope.loader=true
 
   $scope.main.Back=true
@@ -32,12 +32,16 @@ app2.controller('add_document', function ($scope,$http,$translate,$state) {
     $scope.viewName="Modifica Documento"
     dbData=$scope.Doc
     $scope.loaded=true
-    data={ "action":"documentList", dbData:dbData}
+   data={ "action":"documentList", dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       if(data.RESPONSECODE=='1') 			{
         //$word=$($search.currentTarget).attr('id');
         $scope.word[$search]=data.RESPONSE;
+      }
+      if (data.RESPONSECODE=='-1'){
+         localstorage('msg','Sessione Scaduta ');
+         redirect('login.html');
       }
     })
     .error(function() {
@@ -167,7 +171,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state) {
             f={}
             f.data=data
             f.name=$scope.f.name
-            data= {action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, f:f}
+            data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, f:f,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
             $http.post(SERVICEURL2,data,{
             headers: {'Content-Type': undefined}
         })
@@ -181,6 +185,10 @@ app2.controller('add_document', function ($scope,$http,$translate,$state) {
                 $scope.Doc.isImage=false
               }
               $("#loader_img_int").hide()
+              if (data.RESPONSECODE=='-1'){
+                 localstorage('msg','Sessione Scaduta ');
+                 redirect('login.html');
+              }
                 console.log('success');
             })
             .error(function(){
@@ -206,12 +214,16 @@ app2.controller('add_document', function ($scope,$http,$translate,$state) {
 
     if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
 
-      data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table}
+     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
       $http.post( SERVICEURL2,  data )
       .success(function(data) {
         if(data.RESPONSECODE=='1') 			{
           //$word=$($search.currentTarget).attr('id');
           $scope.word[$search]=data.RESPONSE;
+        }
+        if (data.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           redirect('login.html');
         }
       })
       .error(function() {
@@ -279,7 +291,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state) {
     var id = review_info.id;
     $http.post( LOG,  {r:r,Doc:$scope.Doc})
     //$('#review_id_checkin').val(review_selected_image);
-    data={ "action":"get_document_image_name_multi", id:id}
+   data={ "action":"get_document_image_name_multi", id:id,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       if(data.RESPONSECODE=='1') 			{
@@ -289,6 +301,10 @@ app2.controller('add_document', function ($scope,$http,$translate,$state) {
         $("#loader_img_int").hide()
         //  $http.post( LOG,  {dt:data.RESPONSE ,doc:$scope.Doc})
 
+      }
+      if (data.RESPONSECODE=='-1'){
+         localstorage('msg','Sessione Scaduta ');
+         redirect('login.html');
       }
     })
     .error(function() {
@@ -325,7 +341,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state) {
     dbData=$scope.Doc
 
     var langfileloginchk = localStorage.getItem("language");
-    data= {"action":"savedocument",type:$scope.action, dbData:dbData}
+    data={"action":"savedocument",type:$scope.action, dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post(SERVICEURL2,data)
     .success(function(data){
       $('#loader_img').hide();
@@ -338,6 +354,10 @@ app2.controller('add_document', function ($scope,$http,$translate,$state) {
         $scope.back()
       }
       else      {
+        if (data.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           redirect('login.html');
+        }
         swal("",data.RESPONSE);
       }
     })

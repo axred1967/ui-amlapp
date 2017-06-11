@@ -57,7 +57,7 @@
               <label class="mdl-textfield__label" for="Kyc_poi">{{'Città di Nascita'|translate}} *</label>
               <table class="mdl-data-table mdl-js-data-table  border-none  ">
                 <tbody style="display:table">
-                  <tr ng-click="addWord('Kyc.contractor_data.birth_town',item.word)" ng-repeat="item in word.town_of_birth">
+                  <tr ng-click="addWord('users.birth_town',item.word)" ng-repeat="item in word.town_of_birth">
                     <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
                   </tr>
                 </tbody>
@@ -152,7 +152,7 @@
             </span>
           </div>
         </fieldset>
-
+<!--
         <fieldset>
           <div id="list_doc" ng-show="! newDocs && Kyc.contractor_data.Docs.length>0"  ng-repeat="Doc in Kyc.contractor_data.Docs  | filter: {per_id: Kyc.contractor_id } as identityDocs" ng-init="DocIndex=$index">
             <div ng-hide="Doc.deleted" >
@@ -204,7 +204,7 @@
             </div>
           </div>
         </fieldset>
-
+-->
 
       </form>
     </div>

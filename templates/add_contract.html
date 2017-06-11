@@ -90,6 +90,7 @@
 
           </div>
         </fieldset>
+
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
             <select ng-model="Contract.activity_country" class="mdl-textfield__input" placeholder="{{'Paese dove si svolge operazione' | translate}}"
@@ -103,62 +104,69 @@
           </span>
         </div>
       </fieldset>
-      <input id="Contract_docu" name="Contract_docu"
-        ng-model="Contract.docu"  type="hidden"
-        />
-        <div  ng-show="! newDocs && Contract.Docs.length>0"  ng-repeat="Doc in Contract.Docs  | filter: {doc_id: contract_id } as identityDocs" ng-init="DocIndex=$index">
-          <div ng-hide="Doc.deleted" >
+  <!--
+      <fieldset>
+      <div ng-class="{'mdl-grid': main.web }">
+        <div ng-class="{'mdl-cell--4-col': main.web }">
 
-            <div class="demo-card-image mdl-card mdl-shadow--2dp">
-              <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
-              <img ng-click="edit_doc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ng-show="Doc.doc_image.length>0" ng-src ="{{Doc.doc_image.length>0 ? Doc.IMAGEURI+ Doc.doc_image :'' }}" ></img>
-              <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
+          <div  ng-show="! newDocs && Contract.Docs.length>0"  ng-repeat="Doc in Contract.Docs  | filter: {doc_id: contract_id } as identityDocs" ng-init="DocIndex=$index">
+            <div ng-hide="Doc.deleted" >
 
-              <div class="mdl-card__actions">
-                <div class="mdl-layout-spacer"></div>
-                <button ng-hide="Contract.DocsLoaded>0 " id="addDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_document(Doc);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">add</i></button>
-                <span class="mdl-tooltip mdl-tooltip--validation" for="addDoc" >
-                  <span >{{'Aggiungi Immagine'|translate}}.</span>
-                </span>
+              <div class="demo-card-image mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
+                <img ng-click="edit_doc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();"  class="toload" ng-show="Doc.isImage && Doc.doc_image.length>0"
+                ng-src ="{{Doc.doc_image.length>0 ? Doc.IMAGEURI+ Doc.doc_image :'' }}" ></img>
+                <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img_int" src="img/loader2.gif"  /> </center>
+                <img class="toload" ng-show="! Doc.isImage && Doc.doc_image.length>0" ng-src ="{{'/img/'+ Doc.file_type.substr(1)+'.png' }}" ></img>
 
-                <button ng-hide="Contract.DocsLoaded==0 "id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="edit_doc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">add_a_photo</i></button>
-                <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
-                  <span >{{'Cambia immagine'|translate}}.</span>
-                </span>
+                <img ng-click="edit_doc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ng-show="Doc.doc_image.length>0" ng-src ="{{Doc.doc_image.length>0 ? Doc.IMAGEURI+ Doc.doc_image :''}}" ></img>
+                <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
+                
+                <div class="mdl-card__actions">
+                  <div class="mdl-layout-spacer"></div>
+                  <button ng-hide="Contract.DocsLoaded>0 " id="addDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_document(Doc);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">add</i></button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="addDoc" >
+                    <span >{{'Aggiungi Immagine'|translate}}.</span>
+                  </span>
 
-                <button ng-hide="Contract.DocsLoaded==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">delete</i></button>
-                <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
-                  <span >{{'Cancella'|translate}}.</span>
-                </span>
+                  <button ng-hide="Contract.DocsLoaded==0 "id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="edit_doc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">add_a_photo</i></button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
+                    <span >{{'Cambia immagine'|translate}}.</span>
+                  </span>
+
+                  <button ng-hide="Contract.DocsLoaded==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">delete</i></button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+                    <span >{{'Cancella'|translate}}.</span>
+                  </span>
+                </div>
+
               </div>
-
             </div>
           </div>
-
-
         </div>
+      </div>
 
-        <div ng-show="newDocs || identityDocs.length==0"  >
+      <div ng-show="newDocs || identityDocs.length==0"  >
 
-          <div class="demo-card-image mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title mdl-card--expand">{{'Documenti Contratto'|translate}}</div>
-            <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
+        <div class="demo-card-image mdl-card mdl-shadow--2dp">
+          <div class="mdl-card__title mdl-card--expand">{{'Documenti Contratto'|translate}}</div>
+          <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
 
-            <div class="mdl-card__actions">
-              <div class="mdl-layout-spacer"></div>
-              <button  id="addDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_document(Doc);$event.preventDefault(); $event.stopPropagation();" >
-                <i class="material-icons">add</i>
-              </button>
-              <span class="mdl-tooltip mdl-tooltip--validation" for="addDoc" >
-                <span >{{'Aggiungi Immagine'|translate}}.</span>
-              </span>
-
-            </div>
+          <div class="mdl-card__actions">
+            <div class="mdl-layout-spacer"></div>
+            <button  id="addDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_document(Doc);$event.preventDefault(); $event.stopPropagation();" >
+              <i class="material-icons">add</i>
+            </button>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="addDoc" >
+              <span >{{'Aggiungi Immagine'|translate}}.</span>
+            </span>
 
           </div>
+
         </div>
+      </div>
       </fieldset>
-
+-->
       <fieldset>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
           <label  for="searchContractor" class="mdl-textfield__label" >{{'Cerca Firmatario' | translate }}</label>
@@ -283,7 +291,7 @@
                   <span class="mdl-tooltip mdl-tooltip--validation" for="FindCompany" ng-show="form.other_id.$invalid ">
                     <span ng-show="form.other_id.$error.required">{{'Richiesto'|translate}}.</span>
                   </div>
-                  <button ng-focus="resetAC()"  id="add_owner" ngg-click="add_other()" class="right mdl-button mdl-js-button mdl-button--fab   mdl-button--mini-fab mdl-button--colored blue-btn">
+                  <button ng-focus="resetAC()"  id="add_owner" ng-click="add_other()" class="right mdl-button mdl-js-button mdl-button--fab   mdl-button--mini-fab mdl-button--colored blue-btn">
                     <i class="material-icons">add</i>
                   </button>
                   <span class="mdl-tooltip mdl-tooltip--validation" for="add_owner" >
@@ -299,6 +307,17 @@
       </div>
 
       <br/>
+        <div ng-show="action=='edit'" class="mdl-grid">
+          <div class="mdl-cell mdl-cell--12-col ">
+            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="aggKyc-1">
+              <input type="checkbox" id="aggKyc-1" ng-model="aggKyc" class="mdl-checkbox__input" checked>
+              <span class="mdl-checkbox__label">{{'Aggiorna Anagrafiche Kyc'| translate}}</span>
+            </label>
+          </div>
+        </div>
+      <br/>
+
+
       <div style="clear:both" class="center-align">
         <a id="save_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_contract()" href="javascript:;">
           {{'Save' | translate }}

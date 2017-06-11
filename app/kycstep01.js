@@ -1,4 +1,4 @@
-app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
+app2.controller('kycstep01', function ($scope,$http,$state,$translate,$timeout) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -26,7 +26,7 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
         	var email=localStorage.getItem("userEmail");
           $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
           appData=$scope.Contract
-          data= {"action":"kycAx",appData:appData}
+          data={"action":"kycAx",appData:appData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
           $scope.main.loader=true
           $scope.loader=true
           $http.post( SERVICEURL2,  data )
@@ -34,10 +34,14 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
                         if(responceData.RESPONSECODE=='1') 			{
                            data=responceData.RESPONSE;
                            $scope.Kyc=data;
+                           $scope.Kyc.contract_data=IsJsonString($scope.Kyc.contract_data)
+                           $scope.Kyc.contract_data.Docs=IsJsonString($scope.Kyc.contract_data.Docs)
                            $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
                            $scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data)
                            $scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
                            convertDateStringsToDates($scope.Kyc)
+                           convertDateStringsToDates($scope.Kyc.contract_data)
+                           convertDateStringsToDates($scope.Kyc.contract_data.Docs)
                            convertDateStringsToDates($scope.Kyc.contractor_data)
                            convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
                            convertDateStringsToDates($scope.Kyc.company_data)
@@ -52,6 +56,10 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
                          }
                          else
                          {
+                           if (responceData.RESPONSECODE=='-1'){
+                              localstorage('msg','Sessione Scaduta ');
+                              redirect('login.html');
+                           }
                            $scope.main.loader=false
                            console.log('error');
                          }
@@ -81,11 +89,12 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
       }
       var langfileloginchk = localStorage.getItem("language");
       dbData=$scope.Kyc
+      dbData.contract_data=JSON.stringify(dbData.contract_data)
       dbData.contractor_data=JSON.stringify(dbData.contractor_data)
       dbData.company_data=JSON.stringify(dbData.company_data)
       dbData.owner_data=JSON.stringify(dbData.owner_data)
       $scope.loader=true
-      data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData}
+     data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
       $http.post( SERVICEURL2,  data )
       .success(function(data) {
         //$scope.loader=false
@@ -98,6 +107,10 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate) {
         }
         else
         {
+          if (data.RESPONSECODE=='-1'){
+             localstorage('msg','Sessione Scaduta ');
+             redirect('login.html');
+          }
           console.log('error');
           swal("",data.RESPONSE);
           $scope.loader=false

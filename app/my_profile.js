@@ -1,4 +1,4 @@
-app2.controller('my_profile', function ($scope,$http,$state,$translate) {
+app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout) {
   $scope.loader=true;
   $scope.main.Back=false
   $scope.main.Add=false
@@ -10,7 +10,7 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate) {
   var id=localStorage.getItem("userId");
   var agency_id=localStorage.getItem("agencyId");
   var email=localStorage.getItem("userEmail");
-  data= {"action":"view_Customer_Profile_info",customer_id:id,email:email,agency_id:agency_id}
+  data={"action":"view_Customer_Profile_info",customer_id:id,email:email,agency_id:agency_id,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
 
   $http.post( SERVICEURL2,  data )
   .success(function(responceData) {
@@ -31,6 +31,10 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate) {
     }
     else
     {
+      if (responceData.RESPONSECODE=='-1'){
+        localstorage('msg','Sessione Scaduta ');
+        redirect('login.html');
+      }
       console.log('error');
     }
   })
@@ -123,7 +127,7 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate) {
     lang=localStorage.getItem('language');
     var usertype = localStorage.getItem('userType');
     $('#loader_img').show();
-    data={ "action":'saveProfileAx',id:id, lang:lang, dbData: $scope.Customer}
+   data={ "action":'saveProfileAx',id:id, lang:lang, dbData: $scope.Customer,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
     $http.post( SERVICEURL2,  data )
     .success(function(data) {
       $('#loader_img').hide();
@@ -143,6 +147,10 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate) {
       }
       else
       {
+        if (data.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          redirect('login.html');
+        }
         console.log('error');
         swal("",data.RESPONSE);
       }
@@ -207,7 +215,7 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate) {
     else if(new_password != re_new_password) swal("",re_new_passwordmsgnotmatch);
     else
     {
-      data= {"action":"Password",id:id,email:email,currentPassword:current_password,newPassword:new_password},
+      data={"action":"Password",id:id,email:email,currentPassword:current_password,newPassword:new_password,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")},
       $http.post( SERVICEURL2,  data )
       .success(function(data) {
         if(data.RESPONSECODE=='1')
@@ -221,6 +229,10 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate) {
         }
         else
         {
+          if (data.RESPONSECODE=='-1'){
+            localstorage('msg','Sessione Scaduta ');
+            redirect('login.html');
+          }
           swal("",data.RESPONSE);
         }
 
