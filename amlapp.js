@@ -34,10 +34,21 @@ app2.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
 
         // HOME STATES AND NESTED VIEWS ========================================
+
         .state('home', {
             url: '/home',
             templateUrl: 'templates/my_contract.html',
             controller: 'my_contract'
+        })
+        .state('login', {
+            url: '/login',
+            templateUrl: 'templates/login.html',
+            controller: 'login'
+        })
+        .state('language', {
+            url: '/language',
+            templateUrl: 'templates/language.html',
+            controller: 'language'
         })
         .state('view_contract', {
             url: '/view_contract',
@@ -264,14 +275,14 @@ app2.controller('personCtrl', function ($scope, $state) {
   var langchkvarlang = localStorage.getItem("language");
   if(langchkvarlang == null)
   {
-    redirect("language.html");
+    $state.go("language");
   }
   var chksession = localStorage.getItem('userId');
   var typesi = localStorage.getItem('userType');
   var langfile = localStorage.getItem("language");
   if (!chksession)
   {
-    window.location = "login.html";
+    $state.go("login");
   }
     //checkthesidebarinfouser();
     $scope.agent={}
@@ -339,5 +350,5 @@ app2.controller('logout', function ($scope, $state) {
   localStorage.removeItem('agencyId');
   localStorage.removeItem('agencyId');
   localStorage.removeItem('Profileimageagencyuser');
-  redirect('login.html')
+  $state.go('login')
 });
