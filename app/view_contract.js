@@ -82,44 +82,84 @@ $scope.edit_risk = function(){
 	$state.go('risk_profile01')
 };
 $scope.print_kyc=function(){
-/*
 	url=BASEURL + 'pdfgeneration/kyc.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
-		$http.get(url, {
-				responseType: "arraybuffer"
-			})
-			.success(function(data) {
-				var anchor = angular.element('<a/>');
-				var blob = new Blob([data]);
-				anchor.attr({
-					href: window.URL.createObjectURL(blob),
-					target: '_blank',
-					download: 'kyc'+$scope.Contract.contract_id+ "-"+$scope.agent.id+".pdf"
-				})[0].click();
-			})
-*/
-//window.open(BASEURL + 'pdfgeneration/kyc.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie, '_blank', 'location=yes');
-cordova.plugins.SitewaertsDocumentViewer.viewDocument(
-    BASEURL + 'pdfgeneration/kyc.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie, 'application/pdf');
+	if ($scope.main.web){
+			$http.get(url, {
+					responseType: "arraybuffer"
+				})
+				.success(function(data) {
+					var anchor = angular.element('<a/>');
+					var blob = new Blob([data]);
+					anchor.attr({
+						href: window.URL.createObjectURL(blob),
+						target: '_blank',
+						download: 'kyc'+$scope.Contract.contract_id+ "-"+$scope.agent.id+".pdf"
+					})[0].click();
+				})
+
+	}
+	else {
+		var fileTransfer = new FileTransfer();
+	    var uri = encodeURI(url);
+
+	    fileTransfer.download(
+	          uri,
+	          fileSystem.root.fullPath+"/download/MyPdf.pdf",
+	          function(entry) {
+							cordova.plugins.SitewaertsDocumentViewer.viewDocument(
+							    fileSystem.root.fullPath+"/download/MyPdf.pdf", 'application/pdf');
+
+	            console.log("download complete: " + entry.fullPath);
+	          },
+	          function(error) {
+	                console.log("download error source " + error.source);
+	                console.log("download error target " + error.target);
+	                console.log("upload error code" + error.code);
+	          }
+	      );
+
+	}
 
 }
 
 $scope.print_risk=function(){
-/*
 	url=BASEURL + 'pdfgeneration/risk.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
-		$http.get(url, {
-				responseType: "arraybuffer"
-			})
-			.success(function(data) {
-				var anchor = angular.element('<a/>');
-				var blob = new Blob([data]);
-				anchor.attr({
-					href: window.URL.createObjectURL(blob),
-					target: '_blank',
-					download: 'kyc'+$scope.Contract.contract_id+ "-"+$scope.agent.id+".pdf"
-				})[0].click();
-			})
-*/
-window.open(BASEURL + 'pdfgeneration/risk.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie, '_blank', 'location=yes');
+	if ($scope.main.web){
+			$http.get(url, {
+					responseType: "arraybuffer"
+				})
+				.success(function(data) {
+					var anchor = angular.element('<a/>');
+					var blob = new Blob([data]);
+					anchor.attr({
+						href: window.URL.createObjectURL(blob),
+						target: '_blank',
+						download: 'kyc'+$scope.Contract.contract_id+ "-"+$scope.agent.id+".pdf"
+					})[0].click();
+				})
+
+	}
+	else {
+		var fileTransfer = new FileTransfer();
+	    var uri = encodeURI(url);
+
+	    fileTransfer.download(
+	          uri,
+	          fileSystem.root.fullPath+"/download/MyPdf.pdf",
+	          function(entry) {
+							cordova.plugins.SitewaertsDocumentViewer.viewDocument(
+							    fileSystem.root.fullPath+"/download/MyPdf.pdf", 'application/pdf');
+
+	            console.log("download complete: " + entry.fullPath);
+	          },
+	          function(error) {
+	                console.log("download error source " + error.source);
+	                console.log("download error target " + error.target);
+	                console.log("upload error code" + error.code);
+	          }
+	      );
+
+	}
 
 }
 $scope.owners = function(){

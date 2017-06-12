@@ -261,7 +261,12 @@ app2.controller('personCtrl', function ($scope, $state) {
   $scope.main.Search=false
   $scope.main.viewName=""
   $scope.main.other_data=false
-  $scope.main.web=true
+  var isapp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+  if ( isapp ) {
+    $scope.main.web=false
+  } else {
+    $scope.main.web=true
+  }
   $scope.back=function(){
     $scope.$broadcast('backButton')
 
