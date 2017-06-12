@@ -1,4 +1,4 @@
-app2.factory('Docs_inf', function($http) {
+app2.factory('Docs_inf', function($http,$state) {
   var Docs_inf = function() {
     this.Docs = [];
     this.busy = false;

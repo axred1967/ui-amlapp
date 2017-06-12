@@ -1,4 +1,4 @@
-app2.factory('Customers_inf', function($http) {
+app2.factory('Customers_inf', function($http,$state) {
   var Customers_inf = function() {
     this.Customers = [];
     this.busy = false;
