@@ -104,10 +104,10 @@ $scope.print_kyc=function(){
 
 	    fileTransfer.download(
 	          uri,
-	          fileSystem.root.fullPath+"/download/MyPdf.pdf",
+	          "/download/MyPdf.pdf",
 	          function(entry) {
 							cordova.plugins.SitewaertsDocumentViewer.viewDocument(
-							    fileSystem.root.fullPath+"/download/MyPdf.pdf", 'application/pdf');
+							    "/download/MyPdf.pdf", 'application/pdf');
 
 	            console.log("download complete: " + entry.fullPath);
 	          },
@@ -145,10 +145,10 @@ $scope.print_risk=function(){
 
 	    fileTransfer.download(
 	          uri,
-	          fileSystem.root.fullPath+"/download/MyPdf.pdf",
+	          "/download/MyPdf.pdf",
 	          function(entry) {
 							cordova.plugins.SitewaertsDocumentViewer.viewDocument(
-							    fileSystem.root.fullPath+"/download/MyPdf.pdf", 'application/pdf');
+							    "/download/MyPdf.pdf", 'application/pdf');
 
 	            console.log("download complete: " + entry.fullPath);
 	          },
