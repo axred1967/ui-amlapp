@@ -31,7 +31,7 @@
     <plugin name="cordova-plugin-statusbar" source="npm" spec="~2.1.2" />
     <plugin name="cordova-plugin-vibration" source="npm" spec="~2.1.0" />
     <plugin name="cordova-plugin-whitelist" source="npm" spec="~1.2.1" />
-    <gap:plugin name="cordova-plugin-document-viewer" />
+    <plugin name="cordova-plugin-document-viewer" source="npm" />
     <icon src="icon.png" />
     <splash src="res/screen/android/screen-ldpi-portrait.png" />
     <platform name="ios">
