@@ -19,18 +19,18 @@ app2.factory('Docs_inf', function($http,$state) {
       last=this.Docs[lastkey].id;
     }
     dbData=this.Docload
-   data={ "action":"documentList", dbData:dbData,last:last,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+   data={ "action":"documentList", dbData:dbData,last:last,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post(SERVICEURL2,  data )
-    .success(function(responceData)  {
+    .then(function(responceData)  {
       $('#loader_img').hide();
-      if(responceData.RESPONSECODE=='1') 			{
-        data=responceData.RESPONSE;
+      if(responceData.data.RESPONSECODE=='1') 			{
+        data=responceData.data.RESPONSE;
         angular.forEach(data,function(value,key) {
-          image_type=['.png','.gif','.png','.tif','.bmp']
+          image_type=['.png','.gif','.png','.tif','.bmp','.jpg']
           data[key].IMAGEURI=BASEURL+'uploads/document/'+data[key].per+'_'+data[key].per_id +'/resize/'
-          data['isImage']=true
-          if(image_type.indexOf(data['file_type']) !== -1) {
-            data['isImage']=false
+          data[key]['isImage']=false
+          if(image_type.indexOf(data[key]['file_type']) !== -1) {
+            data[key]['isImage']=true
           }
 
         })
@@ -47,7 +47,7 @@ app2.factory('Docs_inf', function($http,$state) {
       }
 
       else   {
-        if (responceData.RESPONSECODE=='-1'){
+        if (responceData.data.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
           $state.go('login');;;
         }
@@ -56,7 +56,7 @@ app2.factory('Docs_inf', function($http,$state) {
         console.log('no docs')
       }
     }.bind(this))
-    .error(function() {
+    , (function() {
       this.busy = false;
       this.loaded=-1
       console.log("error");
@@ -75,6 +75,7 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
 	$scope.main.AddPage="add_document"
   $scope.main.Search=false
   $scope.main.Sidebar=false
+  $scope.deleted=0
   $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Documenti"
 
@@ -166,39 +167,69 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
 /*
   }
 */
-  $scope.deleteDoc=function(Doc )
+
+  $scope.imageurl=function(Doc){
+
+    if (Doc===undefined || Doc.doc_image===undefined ||  Doc.doc_image== null || Doc.doc_image.length==0)
+      imageurl= '../img/customer-listing1.png'
+    else
+      imageurl= BASEURL+ "file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id +"&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+
+    //  Customer.imageurl= Customer.IMAGEURI +Customer.image
+    return   imageurl
+
+  }
+  $scope.deleteDoc=function(Doc,index )
   {
-    navigator.notification.confirm(
-      'Vuoi cancellare il Documento!', // message
-      function(button) {
-        if ( button == 1 ) {
-          $scope.deleteDoc2(Doc);
-        }
-      },            // callback to invoke with index of button pressed
-      'Sei sicuro?',           // title
-      ['Si','No']     // buttonLabels
-    );
+    if ($scope.main.web){
+      r=confirm("Vuoi Cancellare il documento?");
+      if (r == true) {
+        $scope.deleteDoc2(Doc,index);
+      }
+    }
+    else{
+      navigator.notification.confirm(
+        'Vuoi cancellare il Documento!', // message
+        function(button) {
+          if ( button == 1 ) {
+            $scope.deleteDoc2(Doc,index);
+          }
+        },            // callback to invoke with index of button pressed
+        'Sei sicuro?',           // title
+        ['Si','No']     // buttonLabels
+      );
+    }
 
   }
   $scope.deleteDoc2=function(Doc,index){
-    data={action:'delete',table:'documents','primary':'id',id:Doc.id }
+    data={action:'delete',table:'documents','primary':'id',id:Doc.id,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie} }
+
     $http.post(SERVICEURL2,data)
-    $scope.Docs_inf.D.splice(index,1);
+    .then(function(responceData)  {
+      console.log(responceData);
+    })
+    , (function(error) {
+      console.log("error");
+    })
+
+    $state.reload();
   }
   $scope.download = function(Doc) {
-     url=BASEURL + "file_down.php?file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage
-       $http.get(url, {
-           responseType: "arraybuffer"
-         })
-         .success(function(data) {
-           var anchor = angular.element('<a/>');
-           var blob = new Blob([data]);
-           anchor.attr({
-             href: window.URL.createObjectURL(blob),
-             target: '_blank',
-             download: Doc.doc_image
-           })[0].click();
-         })
+     url=BASEURL + "file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+"&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+     $http.get(url, {
+         responseType: "arraybuffer"
+       })
+       .then(function(data) {
+         var anchor = angular.element('<a/>');
+         angular.element(document.body).append(anchor);
+         var ev = document.createEvent("MouseEvents");
+         ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+         anchor.attr({
+           href: url,
+           target: '_blank',
+           download: Doc.doc_image
+         })[0].dispatchEvent(ev);
+       })
      }
 
 

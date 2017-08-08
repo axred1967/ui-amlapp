@@ -7,7 +7,7 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
   $scope.main.action="add_owner"
   $scope.main.Sidebar=false
   $('.mdl-layout__drawer-button').hide()
-
+  $scope.deleted=0
   $scope.page={}
 
   $scope.curr_page="owners_list"
@@ -47,13 +47,13 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
 
   $scope.Owners_inf=new Customers_inf;
   $scope.Owners_inf.CompanyId=$scope.company_id
-  if (isObject($scope.Contract))
-  $scope.Owner_inf.Contract=$scope.Contract
+  if ($scope.Contract!==undefined && isObject($scope.Contract))
+  $scope.Owners_inf.Contract=$scope.Contract
   //$scope.Company.name=localStorage.getItem("Company_name");
 
 
   $scope.add_owner=function(Owner){
-    if ($scope.main.action=='owner_from_contract'){
+    if ($scope.page.action=='owner_from_contract'){
       localstorage('Contract',JSON.stringify($scope.Contract))
       localstorage('add_owners',JSON.stringify({action:'add_owner_from_contract',location:'owners_list'}))
 
@@ -66,7 +66,7 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
 
   }
   $scope.edit_owner=function(Owner,indice){
-    if ($scope.main.action=='owner_from_contract'){
+    if ($scope.page.action=='owner_from_contract'){
       localstorage('Contract',JSON.stringify($scope.Contract))
       localstorage('add_customer',JSON.stringify({action:'edit_customer_for_kyc_owner',location:$scope.curr_page,owners:true}))
       localstorage('Owner',JSON.stringify(Owner))
@@ -80,34 +80,34 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
     $state.go('add_customer')
 
   }
-  $scope.deleteOwn= function (Own,index){
-    owner_id=Own.user_id
-    $('#loader_img').show();
-   data={ "action":"deleteOwner", appData:$scope.Contract,user_id:owner_id,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
-    $http.post( SERVICEURL2,  data )
-    .success(function(data) {
-      $('#loader_img').hide();
-      if(data.RESPONSECODE=='1') 			{
-        swal("",data.RESPONSE);
-        $scope.Kyc.Contract.splice(index,index);
-
+  $scope.deleteOwn=function(ob,index )
+  {
+    if ($scope.main.web){
+      r=confirm("Vuoi Cancellare il Titolare Effettivo" + ob.fullname +"?");
+      if (r == true) {
+        $scope.deleteOwn2(ob,index);
       }
-      else
-      {
-        if (data.RESPONSECODE=='-1'){
-          localstorage('msg','Sessione Scaduta ');
-          $state.go('login');;;
-        }
-        console.log('error');
-        swal("",data.RESPONSE);
-      }
-    })
-    .error(function() {
-      console.log("error");
-    });
-
+    }
+    else{
+      navigator.notification.confirm(
+        "Vuoi Cancellare il Titolare Effettivo" + ob.fullname +"?", // message
+        function(button) {
+          if ( button == 1 ) {
+            $scope.deleteOwn2(ob,index);
+          }
+        },            // callback to invoke with index of button pressed
+        'Sei sicuro?',           // title
+        ['Si','No']     // buttonLabels
+    );
+    }
 
   }
+  $scope.deleteOwn2=function(ob,index){
+    data={action:'delete',table:'company_owners','primary':'id',id:ob.id ,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    $http.post(SERVICEURL2,data)
+    $state.reload()
+  }
+
   $scope.imageurl=function(Customer){
     Customer.IMAGEURI=BASEURL+"uploads/user/small/"
     if (Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
@@ -119,7 +119,7 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
   }
 
   $scope.back=function(){
-    switch ($scope.main.action){
+    switch ($scope.page.action){
       case'add_company_for_contract':
       if ($scope.lastid!==undefined && $scope.lastid>0 ){
         $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
@@ -129,7 +129,7 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
       }
       break;
     }
-    redirect($scope.main.location)
+    $state.go($scope.page.location)
   }
   $scope.$on('backButton', function(e) {
       $scope.back()

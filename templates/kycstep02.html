@@ -4,15 +4,15 @@
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--12-col">
         <h5 ng-if="formStatus">{{formStatus}}</h5>
-        <form id="form" name="form" action="#" novalidate="">
+        <form id="form" name="form" action="#" novalidate="" autocomplete="off" >
           <fieldset>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="text" id="Kyc_poi" name="Kyc_poi"  pattern="[A-Za-z\s]*"
               ng-model="Kyc.place_of_identification"  ng-change="Kyc.place_of_identification=(Kyc.place_of_identification| capitalize)"
               minlength="3" ng-required="true" ng-keyup="showAC('Kyc.place_of_identification');"
-              ng-focus="resetAC()"
+              ng-focus="resetAC()" autocomplete="off"
               />
-              <label class="mdl-textfield__label" for="Kyc_poi">{{'place_of_identification'|translate}} *</label>
+              <label class="mdl-textfield__label" for="Kyc_poi">{{'luogo di identificazione'|translate}}</label>
               <table class="mdl-data-table mdl-js-data-table  border-none  ">
                 <tbody style="display:table">
                   <tr ng-click="addWord('Kyc.place_of_identification',item.word)" ng-repeat="item in word.place_of_identification">
@@ -28,9 +28,9 @@
           <fieldset>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="date" id="Kyc_doi" name="Kyc_doi"
-              ng-model="Kyc.date_of_identification"   ng-required="true"
+              ng-model="Kyc.date_of_identification"   ng-required="true" autocomplete="off"
               />
-              <label class="mdl-textfield__label" for="Kyc_doi">{{'dateofidentification'|translate}} *</label>
+              <label class="mdl-textfield__label" for="Kyc_doi">{{'Data di identificazione'|translate}} *</label>
               <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_doi" ng-show="form.Kyc_doi.$invalid && form.Kyc_doi.$touched">
                 <span ng-show="form.Kyc_doi.$error.required">{{'Richiesto'| translate}}</span>
               </span>
@@ -39,7 +39,7 @@
           <fieldset>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="date" id="Kyc_dob" name="Kyc_dob"
-              ng-model="Kyc.contractor_data.dob"   ng-required="true"
+              ng-model="Kyc.contractor_data.dob"   ng-required="true" autocomplete="off"
               />
               <label class="mdl-textfield__label" for="Kyc_dob">{{'Dob'|translate}} *</label>
               <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_dob" ng-show="form.Kyc_dob.$invalid && form.Kyc_dob.$touched">
@@ -52,7 +52,7 @@
               <input class="mdl-textfield__input" type="text" id="Kyc_tob" name="Kyc_tob"  pattern="[A-Za-z\s]*"
               ng-model="Kyc.contractor_data.birth_town"  ng-change="Kyc.contractor_data.birth_town=(Kyc.contractor_data.birth_town| capitalize)"
               minlength="3" ng-required="true" ng-keyup="showAC('Kyc.contractor_data.birth_town','Kyc_tob');"
-              ng-focus="resetAC()"
+              ng-focus="resetAC()" autocomplete="off"
               />
               <label class="mdl-textfield__label" for="Kyc_poi">{{'Città di Nascita'|translate}} *</label>
               <table class="mdl-data-table mdl-js-data-table  border-none  ">
@@ -68,29 +68,50 @@
             </div>
           </fieldset>
           <fieldset>
+<!--
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
               <select ng-model="Kyc.contractor_data.birth_country" class="mdl-textfield__input" placeholder="{{'Nazione di Nascita' | translate}}"
               ng-required="true"
               id="customer_birth_country" name="customer_birth_country">
               <option ng-repeat="option in countryList" value="{{option.country_id}}">{{option.country_name}}</option>
             </select>
-            <label class="mdl-textfield__label" for="customer_birth_country">{{'placeofbirth'|translate}} *</label>
+            <label class="mdl-textfield__label" for="customer_birth_country">{{'Paese di Nascita'|translate}} *</label>
             <span class="mdl-tooltip mdl-tooltip--validation" for="customer_birth_country" ng-show="form.customer_birth_country.$invalid && form.customer_birth_country.$touched">
               <span ng-show="form.customer_birth_country.$error.required">{{'Richiesto'| translate}}</span>
             </span>
           </div>
+-->
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="birth_country" name="birth_country" minlength="3"  value=" "
+          ng-model="Kyc.contractor_data.birth_country"   minlength="3" autocomplete="off"
+          ng-keyup="showAC('users.birth_country','birth_country',{countries:true,zero:true});"
+          ng-focus="showAC('users.birth_country','birth_country',{countries:true,zero:true});resetAC()"
+          />
+          <label class="mdl-textfield__label" for="birth_country">{{'Paese di Nascita'|translate}} *</label>
+          <table class="mdl-data-table mdl-js-data-table  border-none  scrolly">
+            <tbody style="display:table">
+              <tr ng-click="addWord('Kyc.contractor_data.birth_country',item.word,{countries:true,id:'birth_country'})" ng-repeat="item in word.birth_country">
+                <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <span class="mdl-tooltip mdl-tooltip--validation" for="birth_country" ng-show="form.birth_country.$invalid && form.birth_country.$touched">
+            <span ng-show="form.birth_country.$error.required">{{'Richiesto'| translate}}</span>
+          </span>
+        </div>
         </fieldset>
 
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="Kyc_tdi" name="Kyc_tdi"
             ng-model="Kyc.contractor_data.id_type"  ng-change="Kyc.contractor_data.id_type=(Kyc.contractor_data.id_type| capitalize)" minlength="3" ng-required="true"
-            ng-keyup="showAC('users.id_type','Kyc_tdi');"
-            ng-focus="resetAC()" />
+            ng-keyup="showAC('users.id_type','Kyc_tdi',{zero:true});" autocomplete="off"
+            ng-focus="resetAC();showAC('users.id_type','Kyc_tdi',{zero:true});" />
             <label class="mdl-textfield__label" for="Kyc_tdi">{{'Tipo documento identità'|translate}} *</label>
-            <table class="mdl-data-table mdl-js-data-table  border-none  ">
+            <table class="mdl-data-table mdl-js-data-table  border-none scrolly ">
               <tbody style="display:table">
-                <tr ng-click="addWord('Kyc.contractor_data.id_type',item.word)" ng-repeat="item in word.id_type">
+                <tr ng-click="addWord('Kyc.contractor_data.id_type',item.word,{id:'Kyc_tdi'})" ng-repeat="item in word.id_type">
                   <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
                 </tr>
               </tbody>
@@ -102,14 +123,15 @@
         </fieldset>
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="Kyc_ard" name="Kyc_ard"
+            <input class="mdl-textfield__input" type="text" id="Kyc_ard" name="Kyc_ard" autocomplete="off"
             ng-model="Kyc.contractor_data.id_authority_name"  ng-change="Kyc.contractor_data.id_authority_name=(Kyc.contractor_data.id_authority_name| capitalize)"
-            minlength="3" ng-required="true" ng-focus="resetAC()"
-            ng-keyup="showAC('users.id_authority_name','Kyc_ard');"  />
+            minlength="3" ng-required="true"
+            ng-focus="resetAC();showAC('users.id_authority_name','Kyc_ard',{zero:true});"
+            ng-keyup="showAC('users.id_authority_name','Kyc_ard',{zero:true});"  />
             <label class="mdl-textfield__label" for="Kyc_ard">{{'AuthoritythatreleasedIdentityDocument'|translate}} *</label>
-            <table class="mdl-data-table mdl-js-data-table  border-none  ">
+            <table class="mdl-data-table mdl-js-data-table  border-none scrolly ">
               <tbody style="display:table">
-                <tr ng-click="addWord('Kyc.data_of_identification',item.word)" ng-repeat="item in word.date_of_identification">
+                <tr ng-click="addWord('Kyc.contractor_data.id_authority_name',item.word,{id:'Kyc_ard'})" ng-repeat="item in word.id_authority_name">
                   <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
                 </tr>
               </tbody>
@@ -122,7 +144,7 @@
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="Kyc_ndoc" name="Kyc_ndoc"
-            ng-model="Kyc.contractor_data.id_number"   ng-required="true"
+            ng-model="Kyc.contractor_data.id_number"   ng-required="true" autocomplete="off"
             />
             <label class="mdl-textfield__label" for="Kyc_doi">{{'Numero del documento di identità'|translate}} *</label>
             <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_ndoc" ng-show="form.Kyc_ndoc.$invalid && form.Kyc_ndoc.$touched">
@@ -132,7 +154,7 @@
         </fieldset>                  <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="date" id="Kyc_ddoc" name="Kyc_ddoc"
-            ng-model="Kyc.contractor_data.id_release_date"   ng-required="true"
+            ng-model="Kyc.contractor_data.id_release_date"   ng-required="true" autocomplete="off"
             />
             <label class="mdl-textfield__label" for="Kyc_doi">{{'ReleaseDateofIdentityDocument'|translate}} *</label>
             <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_ddoc" ng-show="form.Kyc_ddoc.$invalid && form.Kyc_ddoc.$touched">
@@ -144,7 +166,7 @@
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="date" id="Kyc_eovdoc" name="Kyc_eovdoc"
-            ng-model="Kyc.contractor_data.id_validity"   ng-required="true"
+            ng-model="Kyc.contractor_data.id_validity"   ng-required="true" autocomplete="off"
             />
             <label class="mdl-textfield__label" for="Kyc_doi">{{'Data Scandenza Documento'|translate}} *</label>
             <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_eovdoc" ng-show="form.Kyc_eovdoc.$invalid && form.Kyc_eovdoc.$touched">

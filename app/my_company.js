@@ -22,11 +22,11 @@ app2.factory('Companies_inf', function($http) {
       last=this.Companies[lastkey].company_id;
     }
 
-    data={"action":"CompanyList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    data={"action":"CompanyList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post(SERVICEURL2,  data )
-    .success(function(responceData)  {
-      if(responceData.RESPONSECODE=='1') 			{
-        data=responceData.RESPONSE;
+    .then(function(responceData)  {
+      if(responceData.data.RESPONSECODE=='1') 			{
+        data=responceData.data.RESPONSE;
         this.loaded=data.length
         if (last==99999999999)
         this.Companies=data;
@@ -37,14 +37,14 @@ app2.factory('Companies_inf', function($http) {
 
       }
       else   {
-        if (responceData.RESPONSECODE=='-1'){
+        if (responceData.data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
            $state.go('login');;;
         }
         console.log('no customer')
       }
     }.bind(this))
-    .error(function() {
+    , (function() {
       console.log("error");
     });
 
@@ -65,7 +65,7 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
   $('.mdl-layout__drawer-button').show()
   $scope.main.loader=true;
   $scope.page={}
-
+  $scope.deleted=0
    $scope.curr_page='my_company'
    page=localStorage.getItem($scope.curr_page)
    if ( page!= null && page.length >0 ){
@@ -82,7 +82,7 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
     if (image===undefined || image.length==0)
       imageurl= '../img/customer-listing1.png'
     else
-        imageurl= BASEURL+ "file_down.php?file=" + image +"&profile=1&entity=company"
+        imageurl= BASEURL+ "file_down.php?file=" + image +"&profile=1&entity=company&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
     return   imageurl
 
 
@@ -110,22 +110,31 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
   };
   $scope.deleteCompany=function(Company,index )
   {
-    navigator.notification.confirm(
-        'Vuoi cancellare La Società!', // message
-        function(button) {
-         if ( button == 1 ) {
-             $scope.deleteCompany2(Company,index);
-         }
-        },            // callback to invoke with index of button pressed
-        'Sei sicuro?',           // title
-        ['Si','No']     // buttonLabels
-        );
+    if ($scope.main.web){
+      r=confirm("Vuoi Cancellare la Società" +Company.name +"?");
+      if (r == true) {
+        $scope.deleteCompany2(Company,index);
+      }
+    }
+    else{
+      navigator.notification.confirm(
+          "Vuoi cancellare La Società"+Company.name +"?", // message
+          function(button) {
+           if ( button == 1 ) {
+               $scope.deleteCompany2(Company,index);
+           }
+          },            // callback to invoke with index of button pressed
+          'Sei sicuro?',           // title
+          ['Si','No']     // buttonLabels
+          );
+
+    }
 
   }
   $scope.deleteCompany2=function(Company,index){
-    data={action:'delete',table:'comapny','primary':'id',id:Company.company_id ,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    data={action:'delete',table:'comapny','primary':'id',id:Company.company_id ,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post(SERVICEURL2,data)
-    $scope.Companies_inf.Companies.splice(index,1);
+    $state.reload()
   }
   $scope.$on('backButton', function(e) {
   });
@@ -144,5 +153,6 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
                $scope.main.loader=false
             }, 5);
   });
+
 
 });

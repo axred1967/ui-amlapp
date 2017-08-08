@@ -19,12 +19,12 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
    $scope.main.location=$scope.page.location
 
   $scope.loadItem=function(){
-    data={"action":"view_Customer_Profile_info",customer_id:$scope.id,email:$scope.email,agency_id:$scope.agencyId,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    data={"action":"view_Customer_Profile_info",customer_id:$scope.id,email:$scope.email,agency_id:$scope.agencyId,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $scope.main.loader=true
     $http.post( SERVICEURL2,  data )
-    .success(function(responceData) {
-      if(responceData.RESPONSECODE=='1') 			{
-        data=responceData.RESPONSE;
+    .then(function(responceData) {
+      if(responceData.data.RESPONSECODE=='1') 			{
+        data=responceData.data.RESPONSE;
         $.each(data, function(key, value){
           if (value === null){
             delete data[key];
@@ -52,14 +52,14 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
       }
       else
       {
-        if (responceData.RESPONSECODE=='-1'){
+        if (responceData.data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
            $state.go('login');;;
         }
         console.log('error');
       }
     })
-    .error(function() {
+    , (function() {
       console.log("error");
     });
 
@@ -71,7 +71,7 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
     case 'add_customer':
     $scope.main.viewName="Censisci Cliente"
     $scope.action="addcustomer"
-    if ($scope.main.agent){
+    if ($scope.page.agent){
       $scope.main.viewName="Censisci Agente"
     }
     break;
@@ -81,7 +81,7 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
     $scope.agencyId = localStorage.getItem('agencyId');
 
     $scope.main.viewName="Modifica Cliente"
-    if ($scope.main.agent){
+    if ($scope.page.agent){
       $scope.main.viewName="Modifica Agente"
     }
     $scope.action="saveProfileCustomer"
@@ -154,23 +154,23 @@ $scope.uploadprofileweb=function(){
           f={}
           f.data=data
           f.name=$scope.f.name
-          data={action:"upload_document_ax",type:"profile",id:$scope.Customer.user_id, f:f,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+          data={action:"upload_document_ax",type:"profile",id:$scope.Customer.user_id, f:f,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
           $http.post(SERVICEURL2,data,{
           headers: {'Content-Type': undefined}
       })
-          .success(function(data){
+          .then(function(data){
             $scope.Customer.image=data.image;
             if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
               $scope.Doc.isImage=false
             }
             $("#loader_img_int").hide()
-            if (data.RESPONSECODE=='-1'){
+            if (data.data.RESPONSECODE=='-1'){
                localstorage('msg','Sessione Scaduta ');
                $state.go('login');;;
             }
               console.log('success');
           })
-          .error(function(){
+          , (function(){
               console.log('error');
           });
       };
@@ -182,7 +182,7 @@ $scope.imageurl=function(image){
   if (image===undefined ||  image== null || image.length==0)
     imageurl= ''
   else
-  imageurl= BASEURL+ "file_down.php?file=" + image +"&profile=1"
+  imageurl= BASEURL+ "file_down.php?action=file&file=" + image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
 //
   //  Customer.imageurl= Customer.IMAGEURI +Customer.image
   return   imageurl
@@ -212,29 +212,30 @@ $scope.add_customer= function (){
   var usertype = localStorage.getItem('userType');
   var agencyId = localStorage.getItem('agencyId');
   dbData=$scope.Customer
-  if ($scope.main.agent)
+  if ($scope.page.agent)
   dbData['user_type']=2
- data={ "action":$scope.action, id:userId,email:email,usertype:usertype,lang:lang, dbData: dbData,agent:$scope.main.agent,agency_id:agencyId,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie"),agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+ data={ "action":$scope.action, id:userId,email:email,usertype:usertype,lang:lang, dbData: dbData,agent:$scope.page.agent,agency_id:agencyId,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie},pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
   $scope.main.loader=true
   $http.post( SERVICEURL2,  data )
-  .success(function(data) {
-    if(data.RESPONSECODE=='1') 			{
-      //swal("",data.RESPONSE);
+  .then(function(data) {
+    if(data.data.RESPONSECODE=='1') 			{
+      //swal("",data.data.RESPONSE);
       $scope.lastid=data.lastid
       $scope.back()
     }
     else
     {
-      if (data.RESPONSECODE=='-1'){
+      $scope.main.loader=false
+      if (data.data.RESPONSECODE=='-1'){
          localstorage('msg','Sessione Scaduta ');
          $state.go('login');;;
       }
       console.log('error');
-      swal("",data.RESPONSE);
-      $scope.loader=false
+      swal("",data.data.RESPONSE);
     }
   })
-  .error(function() {
+  , (function() {
+    $scope.main.loader=false
     console.log("error");
     $scope.loader=false
   });
@@ -311,7 +312,7 @@ $scope.failFT =function (error)
   $scope.loader=false
 
 }
-$scope.showAC=function($search,$word){
+$scope.showAC=function($search,$word, settings){
   var id=localStorage.getItem("userId");
   var usertype = localStorage.getItem('userType');
   res = $search.split(".")
@@ -324,21 +325,21 @@ $scope.showAC=function($search,$word){
   }
   $table=res[0].toLowerCase()
 
-  if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
+  if (( $word  !== "undefined" && $word.length>0 &&  $word!=$scope.oldWord) || settings.zero){
 
-   data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+   data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
-    .success(function(data) {
-      if(data.RESPONSECODE=='1') 			{
+    .then(function(data) {
+      if(data.data.RESPONSECODE=='1') 			{
         //$word=$($search.currentTarget).attr('id');
-        $scope.word[$search]=data.RESPONSE;
+        $scope.word[$search]=data.data.RESPONSE;
       }
-      if (data.RESPONSECODE=='-1'){
+      if (data.data.RESPONSECODE=='-1'){
          localstorage('msg','Sessione Scaduta ');
          $state.go('login');;;
       }
     })
-    .error(function() {
+    , (function() {
       console.log("error");
     });
   }
@@ -352,7 +353,7 @@ $scope.resetAC=function(){
 
 
 }
-$scope.addWord=function($search,$word){
+$scope.addWord=function($search,$word,par){
   res = $search.split(".")
   switch(res.length){
     case 2:
@@ -364,6 +365,15 @@ $scope.addWord=function($search,$word){
     $scope.word[res[2]]=[]
     break;
 
+  }
+  if (par.id!==undefined){
+    $('#'+par.id).parent('div.mdl-textfield').addClass('is-dirty');
+    $('#'+par.id).parent('div.mdl-textfield').removeClass('is-invalid');
+
+  }
+
+  if (par.countries && $scope.word['countries']!==undefined){
+    $scope.word['countries']=[]
   }
 }
 $scope.other=function(){

@@ -1232,6 +1232,16 @@ svg {
 	border:none !important;
 
 }
+.scrolly:hover{
+	max-height:15em;
+	overflow-y:auto;
+
+}
+.scrolly{
+	max-height:15em;
+	overflow-y:auto;
+
+}
 
 // validation
 .mdl-textfield.is-invalid .mdl-textfield__input {
@@ -1406,14 +1416,15 @@ td.wordwrap{
 	margin-top:65px
 }
 /* signature pad */
-.Alto{
- color:red;
+.Alto, .RPS{
+ color:red !important;
 
 }
-.Basso{
- color:green;
+.Basso,.RPI{
+ color:green !important;
 
 }
+
 .center2{
 	height: 50px;
 	 width: 50px;
@@ -1429,4 +1440,31 @@ td.wordwrap{
 .content-data-ax{
  position:fixed; top:0px;   bottom:10px;   width:100%; overflow-y: auto;overflow-x: hidden;
 
+}
+
+.ta-text{
+	clear:both;
+}
+.ta-toolbar .btn-group {
+    margin-bottom: 5px;
+}
+.btn-toolbar>.btn, .btn-toolbar>.btn-group, .btn-toolbar>.input-group {
+    margin-left: 5px;
+}
+.btn-toolbar .btn-group, .btn-toolbar .input-group {
+    float: left;
+}
+.btn-group, .btn-group-vertical {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+#toolbarWC,#toolbarCC{
+	display:none !important;
+}
+.ta-scroll-window > .ta-bind {
+    border-bottom: 1px solid #cbcbcb;
+}
+.material_row_selected{
+	background-color:#eee;
 }

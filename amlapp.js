@@ -20,28 +20,32 @@ function getChkLogin()
 {
 
 }
+var autocomplete_table_focus=''
+var first_autocomplete_table_focus=false
 
 
+var app2 = angular.module('myApp', ['ui.router','pascalprecht.translate','ngSanitize','ng-currency','fieldMatch','infinite-scroll','textAngular']);
 
-var app2 = angular.module('myApp', ['ui.router','pascalprecht.translate','ng-currency','fieldMatch','infinite-scroll']);
-
-
+app2.config(['$translateProvider', function ($translateProvider) {
+  // Enable escaping of HTML
+  $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
+}]);
 
 app2.config(function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('login');
 
     $stateProvider
 
         // HOME STATES AND NESTED VIEWS ========================================
 
         .state('home', {
-            url: '/home',
+            url: '/home?action&agency_id&codeCli',
             templateUrl: 'templates/my_contract.html',
             controller: 'my_contract'
         })
         .state('login', {
-            url: '/login',
+            url: '/login?action&agency_id&codeCli',
             templateUrl: 'templates/login.html',
             controller: 'login'
         })
@@ -66,7 +70,7 @@ app2.config(function($stateProvider, $urlRouterProvider) {
             controller: 'add_customer'
         })
         .state('my_customer', {
-            url: '/customer',
+            url: '/my_customer',
             templateUrl: 'templates/my_customer.html',
             controller: 'my_customer'
         })
@@ -171,10 +175,59 @@ app2.config(function($stateProvider, $urlRouterProvider) {
             templateUrl: 'templates/my_profile.html',
             controller: 'my_profile'
         })
+        .state('risk_profile01_sm', {
+            url: '/risk_profile01_sm',
+            templateUrl: 'templates/risk_profile01_sm.html',
+            controller: 'risk_profile01_sm'
+        })
+        .state('risk_profile02_sm', {
+            url: '/risk_profile02_sm',
+            templateUrl: 'templates/risk_profile02_sm.html',
+            controller: 'risk_profile02_sm'
+        })
+        .state('risk_final_sm', {
+            url: '/risk_final_sm',
+            templateUrl: 'templates/risk_final_sm.html',
+            controller: 'risk_final_sm'
+        })
+
         .state('logout', {
             url: '/logout',
             controller: 'logout'
         })
+// Amministrazione
+        .state('my_agencies', {
+            url: '/my_agency',
+            templateUrl: 'templates/my_agencies.html',
+            controller: 'my_agencies'
+        })
+        .state('add_agency', {
+            url: '/add_agency',
+            templateUrl: 'templates/add_agency.html',
+            controller: 'add_agency'
+        })
+        .state('my_plan', {
+            url: '/my_plan',
+            templateUrl: 'templates/my_plan.html',
+            controller: 'my_plan'
+        })
+        .state('add_plan', {
+            url: '/add_plan',
+            templateUrl: 'templates/add_plan.html',
+            controller: 'add_plan'
+        })
+        .state('email_templates', {
+            url: '/email_templates',
+            templateUrl: 'templates/email_templates.html',
+            controller: 'email_templates'
+        })
+        .state('add_email_template', {
+            url: '/add_email_template',
+            templateUrl: 'templates/add_email_template.html',
+            controller: 'add_email_template'
+        })
+
+
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
         .state('about', {
           url: '/view_contract',
@@ -189,6 +242,29 @@ app2.directive('backImg', function(){
                 'background-image': 'url(' + value +')'
 
             });
+        });
+    };
+});
+
+/*
+app2.directive('focusOn', function() {
+   return function(scope, elem, attr) {
+      scope.$on(attr.focusOn, function(e) {
+          elem[0].focus();
+      });
+   };
+});
+*/
+app2.directive('myEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.myEnter);
+                });
+
+                event.preventDefault();
+            }
         });
     };
 });
@@ -236,6 +312,12 @@ app2.run(function($rootScope, $timeout) {
     header: true,
     aside: true
   }
+  $rootScope.$on('$stateChangeError', function(e, toState, toParams, fromState, fromParams, error){
+
+      if(error === "Not Authorized"){
+          $state.go("notAuthorizedPage");
+      }
+    })
 });
 
 app2.filter('capitalize', function() {
@@ -248,11 +330,31 @@ app2.filter('capitalize', function() {
   }
 });
 
+app2.service('AutoComplete',function($http,$state){
+  this.showAC=function($search,$word, settings) {
+    var id=localStorage.getItem("userId");
+    var usertype = localStorage.getItem('userType');
+    res = $search.split(".")
+    $search=res[1]
+    if ($word===undefined){
+      $word=$scope[res[0]][res[1]]
+    }
+    else {
+      $word=$('#'+$word).val()
+    }
+    $table=res[0].toLowerCase()
+    if (( $word  !== "undefined" && $word.length>0 &&  $word!=this.oldWord) || settings.zero){
+     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+     return $http.post( SERVICEURL2,  data )
+    }
+    this.oldWord= $($search.currentTarget).val()
+
+  }
+})
 
 
 
-
-app2.controller('personCtrl', function ($scope, $state) {
+app2.controller('personCtrl', function ($scope, $state,$stateParams) {
   $scope.load=false
   $scope.main={}
   $scope.main.Sidebar=true
@@ -277,6 +379,11 @@ app2.controller('personCtrl', function ($scope, $state) {
 
 
   }
+  if ($stateParams.action=='signup'){
+    localstorage('add_agency',JSON.stringify({action:'complete_signup',location:'login'}))
+    $state.go("add_agency");
+
+  }
   var langchkvarlang = localStorage.getItem("language");
   if(langchkvarlang == null)
   {
@@ -293,19 +400,50 @@ app2.controller('personCtrl', function ($scope, $state) {
     $scope.agent={}
     $scope.agent.name=localStorage.getItem('Name');
     $scope.agent.email=localStorage.getItem('userEmail');
-    $scope.agent.id=localStorage.getItem('userId');
-    $scope.agent.cookie=localStorage.getItem('cookie');
+    $scope.agent.id=localStorage.getItem('agentId');
+    $scope.agent.user_id=localStorage.getItem('userId');
     $scope.agent.agency_id=localStorage.getItem('agencyId');
     $scope.agent.user_type=localStorage.getItem('userType');
+    $scope.agent.cookie=localStorage.getItem('cookie');
     $scope.agent.image=localStorage.getItem('Profileimageagencyuser');
+    $scope.agent.settings=IsJsonString(localStorage.getItem('userSettings'));
+    $scope.agent.pInfo={user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}
     if ($scope.agent.image===undefined ||  $scope.agent.image== null || $scope.agent.image.length==0)
       $scope.agent.imageurl= ''
     else
-      $scope.agent.imageurl= BASEURL+ "file_down.php?file=" + $scope.agent.image +"&profile=1"
+      $scope.agent.imageurl= BASEURL+ "file_down.php?file=" + $scope.agent.image +"&action=file&profile=1"
 
+      $state.go("/");
+})
+window.addEventListener('keydown', function (evt) {
+  if ($(evt.target)===undefined && $(evt.target).get(0) ===undefined){
+    return
+  }
+  if ($(evt.target).is('[autocomplete]') && $(evt.target).get(0).tagName.toLowerCase()=="input"){
+    if (evt.keyCode == 40){
+      evt.preventDefault()
+      autocomplete_table_focus=evt.target.id
+      $('table[autocomplete="'+autocomplete_table_focus+'"] tbody tr:first').addClass('material_row_selected')
+      $('table[autocomplete="'+autocomplete_table_focus+'"] tbody tr:first').focus()
+    }
+    return
+  }
+  if ($(evt.target)!==undefined && $(evt.target).get(0) !==undefined && $(evt.target).get(0).tagName.toLowerCase()=="tr" ){
+
+    if (evt.keyCode == 38  && $('table[autocomplete="'+autocomplete_table_focus+'"] tbody tr.material_row_selected').is(':focus') ) { // up
+      evt.preventDefault()
+      $('table[autocomplete="'+autocomplete_table_focus+'"] tbody tr:not(:first).material_row_selected').removeClass('material_row_selected').prev().addClass('material_row_selected')
+      $('table[autocomplete="'+autocomplete_table_focus+'"] tbody tr.material_row_selected').focus();
+    }
+    if (evt.keyCode == 40  && $('table[autocomplete="'+autocomplete_table_focus+'"] tbody tr.material_row_selected').is(':focus') ) { // down
+      evt.preventDefault()
+      $('table[autocomplete="'+autocomplete_table_focus+'"] tbody tr:not(:last).material_row_selected').removeClass('material_row_selected').next().addClass('material_row_selected')
+      $('table[autocomplete="'+autocomplete_table_focus+'"] tbody tr.material_row_selected').focus();
+    }
+
+  }
 
 })
-
 $(document).ready(function() {
   function resize_img(){
     $('.demo-card-image img.load').each(function() {
@@ -349,11 +487,13 @@ $(document).ready(function() {
   resize_img();
 });
 app2.controller('logout', function ($scope, $state) {
+  $scope.agent={}
   localStorage.removeItem('userId');
   localStorage.removeItem('userType');
   localStorage.removeItem('userEmail');
   localStorage.removeItem('agencyId');
   localStorage.removeItem('agencyId');
   localStorage.removeItem('Profileimageagencyuser');
+  localStorage.removeItem('usersettings');
   $state.go('login')
 });

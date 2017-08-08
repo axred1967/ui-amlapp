@@ -24,13 +24,13 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
   $scope.loadItem=function(){
     var CompanyID=localStorage.getItem("CompanyID");
     var email=localStorage.getItem("userEmail");
-   data={"action":"show_edit_company",company_id:CompanyID,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+   data={"action":"show_edit_company",company_id:CompanyID,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $scope.loader=true
     $http.post( SERVICEURL2,  data)
-    .success(function(responceData)
+    .then(function(responceData)
     {
-      if(responceData.RESPONSECODE=='1') 			{
-        data=responceData.RESPONSE;
+      if(responceData.data.RESPONSECODE=='1') 			{
+        data=responceData.data.RESPONSE;
         $scope.Company=data;
         convertDateStringsToDates($scope.Company)
         if (!isObject($scope.Company.Docs)){
@@ -48,7 +48,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
       }
       else
       {
-		if (responceData.RESPONSECODE=='-1'){
+		if (responceData.data.RESPONSECODE=='-1'){
 		   localstorage('msg','Sessione Scaduta ');
 		   $state.go('login');;;
 		}
@@ -123,23 +123,23 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
             f.data=data
             f.name=$scope.f.name
             data={action:"upload_document_ax",type:"profile",id:$scope.Company.company_id, f:f,
-            agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie"), entity:'company',entity_key:'company_id'}
+            pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}, entity:'company',entity_key:'company_id'}
             $http.post(SERVICEURL2,data,{
             headers: {'Content-Type': undefined}
         })
-            .success(function(data){
+            .then(function(data){
               $scope.Company.image=data.image;
               if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
                 $scope.Doc.isImage=false
               }
               $("#loader_img_int").hide()
-              if (data.RESPONSECODE=='-1'){
+              if (data.data.RESPONSECODE=='-1'){
                  localstorage('msg','Sessione Scaduta ');
                  $state.go('login');;;
               }
                 console.log('success');
             })
-            .error(function(){
+            , (function(){
                 console.log('error');
             });
         };
@@ -151,42 +151,77 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     if (image===undefined ||  image== null || image.length==0)
       imageurl= ''
     else
-    imageurl= BASEURL+ "file_down.php?file=" + image +"&profile=1&entity=company"
+    imageurl= BASEURL+ "file_down.php?action=file&file=" + image +"&profile=1&entity=company&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
   //
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl
   }
 
   // autocomplete parole
-  $scope.showAC=function($search,$table){
+  $scope.showAC=function($search,$word, settings){
     var id=localStorage.getItem("userId");
     var usertype = localStorage.getItem('userType');
+    res = $search.split(".")
+    $search=res[1]
+    if ($word===undefined){
+      $word=$scope[res[0]][res[1]]
+    }
+    else {
+      $word=$('#'+$word).val()
+    }
+    $table=res[0].toLowerCase()
 
-    if ((typeof $($search.currentTarget).val()  !== "undefined" && $($search.currentTarget).val().length>3 &&  $($search.currentTarget).val()!=$scope.oldWord)){
-      $word=$($search.currentTarget).attr('id');
-     data={ "action":"ACWord", id:id,usertype:usertype, name:$scope.searchContractor, search:$($search.currentTarget).val() ,word:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    if (( $word  !== "undefined" && $word.length>0 &&  $word!=$scope.oldWord) || settings.zero){
+
+     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
       $http.post( SERVICEURL2,  data )
-      .success(function(data) {
-        if(data.RESPONSECODE=='1') 			{
-          $word=$($search.currentTarget).attr('id');
-          $scope.word[$word]=data.RESPONSE;
-        }
-		if (data.RESPONSECODE=='-1'){
-		   localstorage('msg','Sessione Scaduta ');
-		   $state.go('login');;;
-		}
+      .then(function(data) {
+        if(data.data.RESPONSECODE=='1') 			{
+          //$word=$($search.currentTarget).attr('id');
+          $scope.word[$search]=data.data.RESPONSE;
 
+        }
+        if (data.data.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           $state.go('login');;;
+        }
       })
-      .error(function() {
+      , (function() {
         console.log("error");
       });
     }
     $scope.oldWord= $($search.currentTarget).val()
   }
-  $scope.addWord=function($e,word){
-    $('#'+$e).val(word);
+  $scope.resetAC=function(){
+    $scope.word={}
+    $scope.list={}
+    $scope.listOther={}
+    $scope.listCompany={}
 
-    $scope.word[$e]=[]
+
+  }
+  $scope.addWord=function($search,$word,par){
+    res = $search.split(".")
+    switch(res.length){
+      case 2:
+      $scope[res[0]][res[1]]=$word
+      $scope.word[res[1]]=[]
+      break;
+      case 3:
+      $scope[res[0]][res[1]][res[2]]=$word
+      $scope.word[res[2]]=[]
+      break;
+
+    }
+    if (par.id!==undefined){
+      $('#'+par.id).parent('div.mdl-textfield').addClass('is-dirty');
+      $('#'+par.id).parent('div.mdl-textfield').removeClass('is-invalid');
+
+    }
+
+    if (par.countries && $scope.word['countries']!==undefined){
+      $scope.word['countries']=[]
+    }
   }
   $scope.add_company= function (){
     var langfileloginchk = localStorage.getItem("language");
@@ -213,27 +248,27 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     var usertype = localStorage.getItem('userType');
     $scope.loader=true
     dbData= $scope.Company
-   data={ "action":$scope.action, id:id,email:email,usertype:usertype,lang:langfileloginchk, dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+   data={ "action":$scope.action, id:id,email:email,usertype:usertype,lang:langfileloginchk, dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
-    .success(function(data) {
-      if(data.RESPONSECODE=='1') 			{
-        //swal("",data.RESPONSE);
+    .then(function(data) {
+      if(data.data.RESPONSECODE=='1') 			{
+        //swal("",data.data.RESPONSE);
         $scope.lastid=data.lastid
         $scope.back()
       }
       else
       {
-		if (data.RESPONSECODE=='-1'){
+		if (data.data.RESPONSECODE=='-1'){
 		   localstorage('msg','Sessione Scaduta ');
 		   $state.go('login');;;
 		}
 
 		console.log('error');
         $scope.loader=false
-        swal("",data.RESPONSE);
+        swal("",data.data.RESPONSE);
       }
     })
-    .error(function() {
+    , (function() {
       $scope.loader=false
       console.log("error");
     });
@@ -346,6 +381,10 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
 
   }
   $scope.back=function(){
+    precPage=JSON.parse(localStorage.getItem($scope.page.location))
+    if (!isObject(precPage))
+      precPage={}
+
     switch ($scope.page.action){
       case'add_company_for_contract':
       if ($scope.lastid!==undefined && $scope.lastid>0 ){
@@ -353,9 +392,11 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
         $scope.Contract.name=$scope.Company.name
         $scope.Contract.company_id= $scope.lastid
         localstorage('Contract', JSON.stringify($scope.Contract));
+        precPage.add=true
       }
       break;
     }
+    localstorage($scope.page.location,JSON.stringify(precPage))
     $state.go($scope.page.location)
   }
   $scope.$on('backButton', function(e) {

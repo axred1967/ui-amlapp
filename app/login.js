@@ -1,4 +1,4 @@
-app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$state,$timeout) {
+app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$state,$timeout,$window,$stateParams) {
   $scope.main.Back=false
   $scope.main.Add=false
   $scope.main.Search=false
@@ -6,17 +6,54 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
   $scope.main.Sidebar=false
   $scope.main.login=true
   $('.mdl-layout__drawer-button').hide()
-  $scope.main.loader=true
+//  $scope.main.loader=true
 
-  msg=localStorage.getItem("msg");
-  if (msg!==undefined && msg.length>0){
+  msg=localStorage.getItem('msg');
+  if (msg!==undefined  && msg.length>0){
     swal('',msg)
     localstorage('msg','');
   }
-$
+  $scope.curr_page="login"
+  page=localStorage.getItem($scope.curr_page)
+  if ( page!= null && page.length >0 ){
+    $scope.page=JSON.parse(page)
+    $scope.action=$scope.page.action
+
+  }
+
+  $scope.inputType = 'password';
+   // Hide & show password function
+   $scope.hideShowPassword = function(){
+     if ($scope.inputType == 'password')
+       $scope.inputType = 'text';
+     else
+       $scope.inputType = 'password';
+   };
+   $scope.signUp=function()   {
+     localstorage('add_agency',JSON.stringify({action:'signUp',location:$scope.curr_page}))
+     $state.go('add_agency')
+
+   }
+
 
 
   $scope.loginf=function()   {
+
+    if ($scope.form.$invalid) {
+      angular.forEach($scope.form.$error, function(field) {
+        angular.forEach(field, function(errorField) {
+          errorField.$setTouched();
+        })
+      });
+      swal("riempire form corretamente");
+      console.log("Form is invalid.");
+      return
+    } else {
+      //$scope.formStatus = "Form is valid.";
+      console.log("Form is valid.");
+      console.log($scope.data);
+    }
+
     /*get all the fields*/
     var username=$.trim($("#username").val());
     var password = $.trim($("#password").val());
@@ -49,28 +86,115 @@ $
       $("#submitbtn").html(waitbutton);
       data={"action":"login","username":username,"password":password}
       $http.post( SERVICEURL2,  data )
-      .success(function(responceData) {
+      .then(function(responceData) {
         data=responceData;
-        if(data.RESPONSECODE==1)
+        if(data.data.RESPONSECODE==1 || data.data.RESPONSECODE==3)
         {
-
-
-          localstorage("userId",data.userId);
-          localstorage("userType",data.usertype);
-          localstorage("userEmail",data.email);
-          localstorage("agentId",data.userId);
-          localstorage("agencyId",data.agencyId);
-          localstorage("cookie",data.cookie);
+          localstorage("userId",data.data.userId);
+          localstorage("agentId",data.data.agentId);
+          localstorage("agencyId",data.data.agencyId);
+          localstorage("userType",data.data.usertype);
+          localstorage("priviledge",data.data.priviledge);
+          localstorage("userEmail",data.data.email);
+          localstorage("agentId",data.data.agentId);
+          localstorage("cookie",data.data.cookie);
           //alert(data.agencyId);
-          localstorage("Name",data.name);
-          localstorage("Profileimageagencyuser",data.image_name);
+          localstorage("Name",data.data.name);
+
+
+          localstorage("userSettings",data.data.settings);
+          $scope.agent.name=data.data.name;
+          $scope.agent.email=data.data.email;
+          $scope.agent.id=data.data.agentId;
+          $scope.agent.user_id=data.data.userId
+          $scope.agent.agency_id=data.data.agencyId;
+          $scope.agent.user_type=data.data.usertype;
+          $scope.agent.priviledge=data.data.priviledge;
+          $scope.agent.cookie=data.data.cookie;
+          $scope.agent.pInfo={user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}
+          settings=IsJsonString(data.data.settings)
+          if (settings!==false && isObject(settings) ){
+            $scope.agent.settings=settings
+
+
+          }
+
+          if ($scope.agent.image===undefined ||  $scope.agent.image== null || $scope.agent.image.length==0)
+            $scope.agent.imageurl= ''
+          else
+            $scope.agent.imageurl= BASEURL+ "file_down.php?action=file&file=" + $scope.agent.image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+
+          if (data.data.RESPONSECODE==3 ){
+            if ( $stateParams.action=='signup'){
+
+            $scope.Ob={}
+            settings={table:'agency',id:'agency_id',
+            fields:{'address':'uno.address',
+            'country':'uno.country',
+            'town':'uno.town',
+            'tipo_cliente_app':'uno.tipo_cliente_app',
+            'name':'j1.name',
+            'email':'j1.email',
+            'settings':'j1.settings',
+            'user_id':'uno.user_id',
+            'agency_id':'uno.agency_id'
+            },
+              join:{
+                'j1':{'table':'users',
+                      'condition':'uno.user_id=j1.user_id '
+                    }
+              },
+              where:{
+                'uno.agency_id':$stateParams.agency_id
+              }
+            }
+            data= {"action":"getObj",settings:this.settings,pInfo:{action:$stateParams.action,user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+            $http.post(SERVICEURL2,  data )
+            .then(function(responceData)  {
+              data=responceData.data.RESPONSE;
+              if(responceData.data.RESPONSECODE=='1') 			{
+                $scope.Ob=data
+                settings=IsJsonString($scope.Ob.settings)
+                if (settings.codeCli==$stateParams.codeCli){
+                  localstorage('add_agency',JSON.stringify({action:'completeSignUp',location:'home'}))
+                  localstorage('Ob',JSON.stringify($scope.Ob))
+                  swal("",'Completa la Registrazione',"warning");
+                  $state.go("add_agency");
+
+                }else{
+                    swal('','Paramateri di verifica mail non corretti','error');
+                }
+
+
+                }
+              else   {
+                if (responceData.data.RESPONSECODE=='-1'){
+                  localstorage('msg','Sessione Scaduta ');
+                  $state.go('login');;;
+                }
+                }
+            }), (function() {
+              console.log("error");
+            });
+
+
+
+
+          }
+
+            swal("",data.data.RESPONSE,"error");
+            $("#submitbtn").html(loginbutdbutton);
+          //$state.go('login');;;
+            return;
+          }
+
           if(data.usertype == 2)
           {
             localstorage("priviligetype",data.privilige);
             if(data.privilige == '0' )
             {
 
-              redirect("my_profile_agent_noprve.html");
+              $state.go("my_profile_agent_noprve.html");
             }
             else
             {
@@ -85,7 +209,7 @@ $
         }
         else
         {
-          swal("",chkemailpassw,"error");
+          swal("",data.data.RESPONSE,"error");
           $("#submitbtn").html(''+loginbutdbutton +' <span class="mdl-button__ripple-container"><span style="width: 270.147px; height: 270.147px; transform: translate(-50%, -50%) translate(29px, 22px);" class="mdl-ripple is-animating"></span></span>');
         }
       })
@@ -102,6 +226,8 @@ $
           $(this).parent('div.mdl-textfield').removeClass('is-invalid');
         })
         $scope.main.loader=false
+
+
       }, 5);
     });
   })

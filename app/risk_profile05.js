@@ -26,12 +26,12 @@ app2.controller('risk_profile05', function ($scope,$http,$state,$translate,$time
     var email=localStorage.getItem("userEmail");
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     appData=$scope.Contract
-   data={"action":"riskAx",appData:appData,country:true,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+   data={"action":"riskAx",appData:appData,country:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
-    .success(function(responceData) {
+    .then(function(responceData) {
       $('#loader_img').hide();
-      if(responceData.RESPONSECODE=='1') 			{
-        data=responceData.RESPONSE;
+      if(responceData.data.RESPONSECODE=='1') 			{
+        data=responceData.data.RESPONSE;
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         convertDateStringsToDates($scope.Risk)
@@ -69,14 +69,14 @@ app2.controller('risk_profile05', function ($scope,$http,$state,$translate,$time
       }
       else
       {
-        if (responceData.RESPONSECODE=='-1'){
+        if (responceData.data.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
           $state.go('login');;;
         }
         console.log('error');
       }
     })
-    .error(function() {
+    , (function() {
       console.log("error");
     });
 
@@ -105,12 +105,12 @@ app2.controller('risk_profile05', function ($scope,$http,$state,$translate,$time
     dbData.risk_data=JSON.stringify(dbData.risk_data)
 
     $('#loader_img').show();
-   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
-    .success(function(data) {
+    .then(function(data) {
       $('#loader_img').hide();
-      if(data.RESPONSECODE=='1') 			{
-        //swal("",data.RESPONSE);
+      if(data.data.RESPONSECODE=='1') 			{
+        //swal("",data.data.RESPONSE);
         $scope.lastid=data.lastid
 
         $scope.back(passo)
@@ -118,15 +118,15 @@ app2.controller('risk_profile05', function ($scope,$http,$state,$translate,$time
       }
       else
       {
-        if (data.RESPONSECODE=='-1'){
+        if (data.data.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
           $state.go('login');;;
         }
         console.log('error');
-        swal("",data.RESPONSE);
+        swal("",data.data.RESPONSE);
       }
     })
-    .error(function() {
+    , (function() {
       console.log("error");
     });
 

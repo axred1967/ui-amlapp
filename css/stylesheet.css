@@ -322,11 +322,11 @@ padding-left: 10px;
   margin-left: 5px;
 }
 .orange {
-	color:#f7961d;
+	color:#f7961d !important;
 
 }
 .blue {
-	color:#1c224b;
+	color:#1c224b !important;
 
 }
 .green{

@@ -16,6 +16,25 @@
                 </div>
               </fieldset>
               <fieldset>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" id="company_type" name="company_type"
+                  ng-model="Kyc.company_data.company_type"   minlength="3" ng-required="true"
+                  ng-keyup="showAC('company.company_type','company_type',{zero:true});"
+                  ng-focus="resetAC();showAC('company.company_type','company_type',{zero:true});" />
+                  <label class="mdl-textfield__label" for="company_type">{{'Tipologia Soggetto Giuridico'|translate}} *</label>
+                  <table class="mdl-data-table mdl-js-data-table  border-none scrolly ">
+                    <tbody style="display:table">
+                      <tr ng-click="addWord('Kyc.company_data.company_type',item.word,{id:'company_type'})" ng-repeat="item in word.company_type">
+                        <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="type" ng-show="form.company_type.$invalid && form.company_type.$touched">
+                    <span ng-show="form.company_type.$error.required">{{'Richiesto'| translate}}</span>
+                  </span>
+                </div>
+              </fieldset>
+              <fieldset>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                   <input class="mdl-textfield__input"   ng-model="Kyc.company_data.address "   type="text"
                   id="company_address" name="company_address" ng-required="true" />
@@ -46,6 +65,7 @@
                   </div>
                 </fieldset>
                 <fieldset>
+<!--
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     <select ng-model="Kyc.company_data.country" class="mdl-textfield__input" placeholder="{{'Paese principale attività' | translate}}"
                     ng-required="true"
@@ -55,6 +75,26 @@
                   <label class="mdl-textfield__label" for="company_country">{{'ResidenceCountry'|translate}} *</label>
                   <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_name" ng-show="form.company_country.$invalid && form.company_country.$touched">
                     <span ng-show="form.company_country.$error.required">{{'Richiesto'| translate}}</span>
+                  </span>
+                </div>
+-->
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" id="country" name="country" minlength="3"  value=" "
+                  ng-model="Kyc.company_data.country"   minlength="3"
+                  ng-keyup="showAC('company.country','country',{countries:true,zero:true});"
+                  ng-focus="showAC('company.country','country',{countries:true,zero:true});resetAC()"
+                  />
+                  <label class="mdl-textfield__label" for="country">{{'Paese sede Principale'|translate}} *</label>
+                  <table class="mdl-data-table mdl-js-data-table  border-none  scrolly">
+                    <tbody style="display:table">
+                      <tr ng-click="addWord('Kyc.company_data.country',item.word,{countries:true,id:'country'})" ng-repeat="item in word.country">
+                        <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="country" ng-show="form.country.$invalid && form.country.$touched">
+                    <span ng-show="form.country.$error.required">{{'Richiesto'| translate}}</span>
                   </span>
                 </div>
               </fieldset>

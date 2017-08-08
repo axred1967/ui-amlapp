@@ -1,43 +1,60 @@
 <div class="mdl-card mdl-shadow--2dp">
   <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--12-col">
-      <form name="form" novalidate>
+      <form name="form" novalidate autocomplete="off">
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="Contract_scope_contract" name="Contract_scope_contract" value=" "  minlength="3"
-            ng-keyup="showAC('Contract.scope_contract');"
-            ng-model="Contract.scope_contract "  ng-change="Contract.scope_contract=(Contract.scope_contract| capitalize)" minlength="3" ng-required="true"
+            <input class="mdl-textfield__input" type="text" id="scope_contract" name="scope_contract" value=" "  minlength="3"
+            ng-keyup="showAC('Contract.scope_contract','scope_contract',{zero:true});"
+            ng-model="Contract.scope_contract "
+            ng-focus="showAC('Contract.scope_contract','scope_contract',{zero:true});resetAC()"
+            ng-change="Contract.scope_contract=(Contract.scope_contract| capitalize)" minlength="3" ng-required="true"
             />
-            <label class="mdl-textfield__label" for="Contract_scope_contract">{{'Scopo del Contratto'|translate}} *</label>
+            <label class="mdl-textfield__label" for="scope_contract">{{'Scopo del Contratto'|translate}} *</label>
             <table class="mdl-data-table mdl-js-data-table  border-none  ">
               <tbody style="display:table">
-                <tr ng-click="addWord('Contract.scope_contract',item.word)" ng-repeat="item in word.scope_contract">
+                <tr ng-click="addWord('Contract.scope_contract',item.word,{id:'scope_contract'})" ng-repeat="item in word.scope_contract">
                   <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
                 </tr>
               </tbody>
             </table>
-            <span class="mdl-tooltip mdl-tooltip--validation" for="Contract_scope_contract" minlength="3" ng-show="form.Contract_scope_contract.$invalid && form.Contract_scope_contract.$touched">
-              <span ng-show="form.Contract_scope_contract.$error.required">{{'Richiesto'|translate}}.</span>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="scope_contract" minlength="3" ng-show="form.scope_contract.$invalid && form.scope_contract.$touched">
+              <span ng-show="form.scope_contract.$error.required">{{'Richiesto'|translate}}.</span>
             </span>
 
           </div>
         </fieldset>
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="Contract_nature_contract" name="Contract_nature_contract" minlength="3"  value=" "   ng-keyup="showAC('Contract.nature_contract');"
-            ng-model="Contract.nature_contract "  ng-change="Contract.nature_contract=(Contract.nature_contract| capitalize)" minlength="3"
-            ng-focus="resetAC()"
+            <input class="mdl-textfield__input" type="text" id="nature_contract" name="nature_contract" minlength="3"  value=" "
+            ng-keyup="showAC('Contract.nature_contract','nature_contract',{zero:true});"
+            ng-model="Contract.nature_contract "
+            ng-change="Contract.nature_contract=(Contract.nature_contract| capitalize)" minlength="3"
+            ng-focus="showAC('Contract.nature_contract','nature_contract',{zero:true});resetAC()"
             />
-            <label class="mdl-textfield__label" for="Contract_nature_contract">{{'Natura del Contratto'|translate}} *</label>
+            <label class="mdl-textfield__label" for="nature_contract">{{'Natura del Contratto'|translate}} *</label>
             <table class="mdl-data-table mdl-js-data-table  border-none  ">
               <tbody style="display:table">
-                <tr ng-click="addWord('Contract.nature_contract',item.word)" ng-repeat="item in word.nature_contract">
+                <tr ng-click="addWord('Contract.nature_contract',item.word,{id:'nature_contract'})" ng-repeat="item in word.nature_contract">
                   <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
                 </tr>
               </tbody>
             </table>
-            <span class="mdl-tooltip mdl-tooltip--validation" for="Contract_nature_contract"  ng-show="form.Contract_nature_Contract_$invalid && form.Contract_nature_Contract_$touched">
-              <span ng-show="form.Contract_nature_Contract_$error.required">{{'Richiesto'|translate}}.</span>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="nature_contract"  ng-show="form.nature_contract.$invalid && form.nature_contract.$touched">
+              <span ng-show="form.nature_contract.$error.required">{{'Richiesto'|translate}}.</span>
+            </span>
+
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="Contract_number" name="number" minlength="3"  value=" "
+            ng-model="Contract.number "   minlength="3" autocomplete="off"
+
+            />
+            <label class="mdl-textfield__label" for="Contract_number">{{'Numero del Contratto'|translate}} *</label>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="Contract_number"  ng-show="form.Contract_number$invalid && form.Contract_number$touched">
+              <span ng-show="form.Contract_number$error.required">{{'Richiesto'|translate}}.</span>
             </span>
 
           </div>
@@ -45,7 +62,7 @@
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="date" id="Contract_contract_date"  name="Contract_contract_date"  minlength="3"  value=" "
-            ng-model="Contract.contract_date"   minlength="3"
+            ng-model="Contract.contract_date"   minlength="3" autocomplete="off"
             />
             <label class="mdl-textfield__label" for="Contract_contract_date">{{'ContractDate' | translate }}*</label>
             <span class="mdl-tooltip mdl-tooltip--validation" for="Contract_contract_date" ng-show="form.Contract_contract_date.$invalid && form.Contract_contract_date.$touched">
@@ -58,7 +75,7 @@
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="date" id="Contract_contract_eov" name="Contract_contract_eov" minlength="3"  value=" "
-            ng-model="Contract.contract_eov"   minlength="3"
+            ng-model="Contract.contract_eov"   minlength="3" autocomplete="off"
             />
             <label class="mdl-textfield__label" for="Contract_contract_value_eov">{{'ContractEOV' | translate }}*</label>
             <span class="mdl-tooltip mdl-tooltip--validation" for="Contract_contract_eov" ng-show="form.Contract_contract_eov.$invalid && form.Contract_contract_eov.$touched">
@@ -71,6 +88,7 @@
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <label  id="lvalue_det" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="value_det">
               <input id="value_det" name="value_det"  type="checkbox" class="mdl-checkbox__input" value="1"
+              autocomplete="off"
               ng-click=toogle('Contract.value_det')  modelAx="Contract.value_det"        />
               <span class="mdl-checkbox__label">{{'Valore contratto determinabile'|translate}}</span>
             </label>
@@ -78,10 +96,10 @@
           </div>
         </fieldset>
 
-        <fieldset ng-show="Contract.value_det==1">
+        <fieldset id="sheconomicVal" ng-show="Contract.value_det==1">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input ng-currency class="mdl-textfield__input" type="text" id="Contract_contract_value" name="Contract_contract_value" minlength="3"  value=" "
-            ng-model="Contract.contract_value"   minlength="3"
+            ng-model="Contract.contract_value"   minlength="3" autocomplete="off"
             />
             <label class="mdl-textfield__label" for="Contract_contract_value">{{'EconomicValueifDeterminable' | translate }}*</label>
             <span class="mdl-tooltip mdl-tooltip--validation" for="Contract_contract__value" ng-show="form.Contract_contract_value.$invalid && form.Contract_contract_value.$touched">
@@ -92,6 +110,7 @@
         </fieldset>
 
         <fieldset>
+<!--
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
             <select ng-model="Contract.activity_country" class="mdl-textfield__input" placeholder="{{'Paese dove si svolge operazione' | translate}}"
             ng-required="page.other_data "
@@ -101,6 +120,26 @@
           <label class="mdl-textfield__label" for="Contract_activity_country">{{'Paese dove si svolge operazione'|translate}} *</label>
           <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_name" ng-show="form.Contract_activity_country.$invalid && form.Contract_activity_country.$touched">
             <span ng-show="form.Contract_activity_country.$error.required">{{'Richiesto'| translate}}</span>
+          </span>
+        </div>
+-->
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="activity_country" name="activity_country" minlength="3"  value=" "
+          ng-model="Contract.activity_country"   minlength="3" autocomplete="off"
+          ng-keyup="showAC('users.activity_country','activity_country',{countries:true,zero:true});"
+          ng-focus="showAC('users.activity_country','activity_country',{countries:true,zero:true});resetAC()"
+          />
+          <label class="mdl-textfield__label" for="activity_country">{{'Paese dove si svolge operazione'|translate}} *</label>
+          <table class="mdl-data-table mdl-js-data-table  border-none  scrolly">
+            <tbody style="display:table">
+              <tr ng-click="addWord('Contract.activity_country',item.word,{countries:true,id:'activity_country'})" ng-repeat="item in word.activity_country">
+                <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <span class="mdl-tooltip mdl-tooltip--validation" for="activity_country" ng-show="form.activity_country.$invalid && form.activity_country.$touched">
+            <span ng-show="form.activity_country.$error.required">{{'Richiesto'| translate}}</span>
           </span>
         </div>
       </fieldset>
@@ -121,7 +160,7 @@
 
                 <img ng-click="edit_doc(Doc,DocIndex);$event.preventDefault(); $event.stopPropagation();" ng-show="Doc.doc_image.length>0" ng-src ="{{Doc.doc_image.length>0 ? Doc.IMAGEURI+ Doc.doc_image :''}}" ></img>
                 <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
-                
+
                 <div class="mdl-card__actions">
                   <div class="mdl-layout-spacer"></div>
                   <button ng-hide="Contract.DocsLoaded>0 " id="addDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_document(Doc);$event.preventDefault(); $event.stopPropagation();" ><i class="material-icons">add</i></button>
@@ -171,7 +210,7 @@
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
           <label  for="searchContractor" class="mdl-textfield__label" >{{'Cerca Firmatario' | translate }}</label>
           <input class="mdl-textfield__input" ng-keyup="showContractorList();" ng-model="Contract.fullname"  type="text"
-          ng-focus="resetAC()"
+          ng-focus="showContractorList();resetAC()" autocomplete="off"
           id="searchContractor" name="searchContractor" ng-required="true" />
           <input type="text" ng-model="Contract.contractor_id" style="display:none" ng-required="true" id="Contractor" name="Contractor" />
           <label  for="searchContractor" class="mdl-textfield__label" >{{'Cerca Firmatario' | translate }}</label>
@@ -224,20 +263,20 @@
           <div id="show_Role" style="width:100%" ng-show="Contract.act_for_other>0">
 
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-              <input class="mdl-textfield__input" type="text" ng-model="Contract.role_for_other" ng-keyup="showAC('Contract.role_for_other');"
-              id="Contract_role_for_other" name="Contract_role_for_other"  ng-required="Contract.act_for_other>0"
-              ng-focus="resetAC()"
+              <input class="mdl-textfield__input" type="text" ng-model="Contract.role_for_other" ng-keyup="showAC('Contract.role_for_other','role_for_other',{zero:true});"
+              id="role_for_other" name="role_for_other"  ng-required="Contract.act_for_other>0" autocomplete="off"
+              ng-focus="showAC('Contract.role_for_other','role_for_other',{zero:true});resetAC()"
               />
-              <label for="Contract_role_for_other" class="mdl-textfield__label" >{{'kindofDelegation' | translate }}</label>
+              <label for="role_for_other" class="mdl-textfield__label" >{{'kindofDelegation' | translate }}</label>
               <table class="mdl-data-table mdl-js-data-table  border-none  ">
                 <tbody style="display:table">
-                  <tr ng-click="addWord('Contract.role_for_other',item.word)" ng-repeat="item in word.role_for_other">
+                  <tr ng-click="addWord('Contract.role_for_other',item.word,{id:'role_for_other'})" ng-repeat="item in word.role_for_other">
                     <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
                   </tr>
                 </tbody>
               </table>
-              <span class="mdl-tooltip mdl-tooltip--validation" for="Contract_role_for_other" ng-show="form.Contract_Contract_role_for_other.$invalid && form.Contract_role_for_other.$touched">
-                <span ng-show="form.Contract_contract_date.$error.required">{{'Richiesto'|translate}}.</span>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="role_for_other" ng-show="form.Contract_Contract_role_for_other.$invalid && form.role_for_other.$touched">
+                <span ng-show="form.role_for_other.$error.required">{{'Richiesto'|translate}}.</span>
               </div>
             </div>
           </fieldset>
@@ -246,10 +285,14 @@
 
             <div id="show_forCompany" ng-show="Contract.act_for_other==1" style="width:100%">
               <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                <input class="mdl-textfield__input" ng-keyup="showCompanyList();" ng-model="Contract.name"
-                type="text" placeholder=" {{'SearchCompanyByEmail' | translate }}" ng-focus="resetAC()"
+                <input class="mdl-textfield__input" ng-keyup="showCompanyList();"
+                ng-model="Contract.name" autocomplete="off"
+                type="text" placeholder=" {{'SearchCompanyByEmail' | translate }}"
+                ng-focus="showCompanyList();resetAC()"
                 id="FindCompany" name="FindCompany" ng-required=" {{Contract.act_for_other==1}}" />
-                <input ng-model="Contract.company_id"  type="text" style="display:none" id="Company" name="Company"  ng-required="Contract.act_for_other==1"/>
+                <input ng-model="Contract.company_id" autocomplete="off"
+                type="text" style="display:none" id="Company" name="Company"
+                ng-required="Contract.act_for_other==1"/>
                 <label class="mdl-textfield__label" for="FindCompany" >{{'SearchCompanyByEmail' | translate }}</label>
                 <table class="mdl-data-table mdl-js-data-table  border-none  ">
                   <tbody>
@@ -275,10 +318,13 @@
 
               <div id="show_forPerson" ng-show="Contract.act_for_other==2" style="width:100%">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                  <input class="mdl-textfield__input" ng-keyup="showOtherList();" ng-model="Contract.other_name"
-                  type="text" ng-required=" {{Contract.act_for_other==2}}" ng-focus="resetAC()"
+                  <input class="mdl-textfield__input" ng-keyup="showOtherList();"
+                  ng-model="Contract.other_name" autocomplete="off"
+                  type="text" ng-required=" {{Contract.act_for_other==2}}"
+                  ng-focus="showOtherList();resetAC()" autocomplete="off"
                   id="FindOther" name="FindOther"/>
-                  <input ng-model="Contract.user_id"  type="text" style="display:none" ng-required="Contract.act_for_other==2" id="other_id" id="other_id" />
+                  <input ng-model="Contract.user_id"  type="text" style="display:none" ng-required="Contract.act_for_other==2"
+                  autocomplete="off" id="other_id" id="other_id" />
                   <label class="mdl-textfield__label" for="FindOther" >{{'Cerca delegante' | translate }}</label>
                   <table class="mdl-data-table mdl-js-data-table  border-none  ">
                     <tbody>

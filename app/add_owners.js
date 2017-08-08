@@ -1,7 +1,7 @@
 app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout) {
   $scope.loader=true
 
-  $scope.main.Back=true
+  $scope.main.Back=false
   $scope.main.Add=false
 	//$scope.main.AddPage="add_document"
   $scope.main.Search=false
@@ -46,12 +46,16 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout)
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     $scope.action='add_owners'
     $scope.main.viewName="Nuovo TE"
+    $scope.Owner.company_id=$scope.Contract.company_id
+    $scope.Owner.contract_id=$scope.Contract.contract_id
     break;
     case 'add_owner_from_contract' :
     $scope.Owner={}
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     $scope.action='add_owners'
     $scope.main.viewName="Nuovo TE"
+    $scope.Owner.company_id=$scope.Contract.company_id
+    $scope.Owner.contract_id=$scope.Contract.contract_id
     break;
     default :
     if($scope.page.load!==undefined && $scope.page.load)
@@ -69,18 +73,18 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout)
 
   $scope.showContractorList=function(){
     if ((typeof $scope.Owner.fullname !== "undefined" && $scope.Owner.fullname.length>4 && $scope.oldContrator!=$scope.Owner.fullname)){
-     data={ "action":"ACCustomerList", name:$scope.Owner.fullname,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+     data={ "action":"ACCustomerList", name:$scope.Owner.fullname,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
       $http.post( SERVICEURL2,  data )
-      .success(function(data) {
-        if(data.RESPONSECODE=='1') 			{
-          $scope.list=data.RESPONSE;
+      .then(function(data) {
+        if(data.data.RESPONSECODE=='1') 			{
+          $scope.list=data.data.RESPONSE;
         }
-        if (data.RESPONSECODE=='-1'){
+        if (data.data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
            $state.go('login');;;
         }
       })
-      .error(function() {
+      , (function() {
         console.log("error");
       });
     }
@@ -115,28 +119,28 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout)
 
 
     $scope.loader=true
-    data={"action":$scope.action,appData:appData,dbData: dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    data={"action":$scope.action,appData:appData,dbData: dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post(SERVICEURL2,data)
-    .success(function(data){
+    .then(function(data){
       $('#loader_img').hide();
-      if(data.RESPONSECODE=='1')
+      if(data.data.RESPONSECODE=='1')
       {
         $scope.contract=[]
-        //swal("",data.RESPONSE);
-        $scope.Owner=data.owner
+        $scope.Owner=data.ownerserv
+        //swal("",data.data.RESPONSE);
         $scope.lastid=data.lastid
         $scope.back()
 
       }
       else      {
-        if (data.RESPONSECODE=='-1'){
+        if (data.data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
            $state.go('login');;;
         }
-        swal("",data.RESPONSE);
+        swal("",data.data.RESPONSE);
       }
     })
-    .error(function(){
+    , (function(){
       console.log('error');
     })
   }
@@ -146,7 +150,6 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout)
 				localstorage('Owner', JSON.stringify($scope.Owner));
 				precPage=JSON.parse(localStorage.getItem($scope.page.location))
 				precPage.edit=true
-				localstorage($scope.page.location,JSON.stringify(precPage))
 			break;
 			case'add_customer_for_kyc_owner':
 			if ($scope.lastid!==undefined && $scope.lastid>0 ){
@@ -155,13 +158,13 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout)
         localstorage('Owner', JSON.stringify($scope.Owner));
 				precPage=JSON.parse(localStorage.getItem($scope.page.location))
 				precPage.add=true
-				localstorage($scope.page.location,JSON.stringify(precPage))
-			}
+				}
       break;
 
     }
     //       windows.histoery.back()
-    history.back()
+    localstorage($scope.page.location,JSON.stringify(precPage))
+    $state.go($scope.page.location)
   }
 
   $scope.add_customer=function(){

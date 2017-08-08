@@ -25,21 +25,25 @@ app2.factory('Customers_inf', function($http,$state) {
       if (agent=='Owners')
         last=this.Customers[lastkey].id;
     }
-    data={"action":"CustomerList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    data={"action":"CustomerList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     if (agent)
-    data={"action":"AgentList",id:id,email:email,usertype:usertype,priviledge:priviledge,agency_id:agencyId,last:last,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    data={"action":"AgentList",id:id,email:email,usertype:usertype,priviledge:priviledge,agency_id:agencyId,last:last,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     if (agent=='Owners'){
       if (isObject(this.Contract))
         appData=this.Contract
       else
         appData=[]
-      data={"action":"OwnersList",company_id:this.CompanyId,last:last,appData:appData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+      data={"action":"OwnersList",company_id:this.CompanyId,last:last,appData:appData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     }
+    $('#ui-content').hide()
+    $('#ui-loader').show()
 
     $http.post(SERVICEURL2,  data )
-    .success(function(responceData)  {
-      if(responceData.RESPONSECODE=='1') 			{
-        data=responceData.RESPONSE;
+    .then(function(responceData)  {
+      $('#ui-content').show()
+      $('#ui-loader').hide()
+      if(responceData.data.RESPONSECODE=='1') 			{
+        data=responceData.data.RESPONSE;
         this.loaded=data.length
         if (last==99999999999)
         this.Customers=data;
@@ -53,7 +57,7 @@ app2.factory('Customers_inf', function($http,$state) {
 
       }
       else   {
-        if (responceData.RESPONSECODE=='-1'){
+        if (responceData.data.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
           $state.go('login');;;
         }
@@ -62,7 +66,7 @@ app2.factory('Customers_inf', function($http,$state) {
         console.log('no customer')
       }
     }.bind(this))
-    .error(function() {
+    , (function() {
       this.busy = false;
       this.loaded=-1
       console.log("error");
@@ -75,15 +79,25 @@ app2.factory('Customers_inf', function($http,$state) {
 });
 
 app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $state, Customers_inf,$timeout) {
+  if ($scope.agent===undefined || !$scope.agent.id>0  ){
+    localstorage('msg','Autenticati per favore ');
+    $state.go('login');;;
+
+  }
   $scope.loader=true;
   $scope.main.Back=false
-  $scope.main.Add=true
+  if ($scope.agent.user_type == 3)
+    $scope.main.Add=false
+  else
+    $scope.main.Add=true
+  $scope.deleted=0
   $scope.main.Search=true
   $scope.main.AddPage="add_customer"
   $scope.main.action="add_customer"
   $scope.main.viewName="Le mie Persone"
   $scope.main.Sidebar=true
   $('.mdl-layout__drawer-button').show()
+  $scope.main.loader=true
   $scope.page={}
 
    $scope.curr_page="my_customer"
@@ -105,7 +119,7 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
     if (Customer===undefined || Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
       imageurl= '../img/customer-listing1.png'
     else
-    imageurl= BASEURL+ "file_down.php?file=" + Customer.image +"&profile=1"
+    imageurl= BASEURL+ "file_down.php?action=file&file=" + Customer.image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
 //
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl
@@ -131,22 +145,30 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
   };
   $scope.deleteCustomer=function(Customer,index )
   {
-    navigator.notification.confirm(
-        'Vuoi cancellare la persona!', // message
-        function(button) {
-         if ( button == 1 ) {
-             $scope.deleteCustomer2(Customer,index);
-         }
-        },            // callback to invoke with index of button pressed
-        'Sei sicuro?',           // title
-        ['Si','No']     // buttonLabels
-        );
+    if ($scope.main.web){
+      r=confirm("Vuoi Cancellare la Persona?");
+      if (r == true) {
+        $scope.deleteCustomer2(Customer,index);
+      }
+    }
+    else{
 
+        navigator.notification.confirm(
+            'Vuoi cancellare la Persona?', // message
+            function(button) {
+             if ( button == 1 ) {
+                 $scope.deleteCustomer2(Customer,index);
+             }
+            },            // callback to invoke with index of button pressed
+            'Sei sicuro?',           // title
+            ['Si','No']     // buttonLabels
+            );
+      }
   }
   $scope.deleteCustomer2=function(Customer,index){
-    data={action:'delete',table:'users','primary':'user_id',id:Customer.user_id ,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    data={action:'delete',table:'users','primary':'user_id',id:Customer.user_id ,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post(SERVICEURL2,data)
-    $scope.Customers_inf.Customers.splice(index,1);
+    $state.reload()
   }
   $scope.$on('backButton', function(e) {
   });

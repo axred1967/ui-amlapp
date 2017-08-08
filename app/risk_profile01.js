@@ -26,13 +26,13 @@ app2.controller('risk_profile01', function ($scope,$http,$state,$translate,$time
     var email=localStorage.getItem("userEmail");
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     appData=$scope.Contract
-    data={"action":"riskAx",appData:appData,kyc:true,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    data={"action":"riskAx",appData:appData,kyc:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
-    .success(function(responceData) {
+    .then(function(responceData) {
       $('#loader_img').hide();
-      if(responceData.RESPONSECODE=='1') 			{
+      if(responceData.data.RESPONSECODE=='1') 			{
         $scope.Kyc=responceData.kyc;
-        data=responceData.RESPONSE;
+        data=responceData.data.RESPONSE;
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
@@ -80,14 +80,14 @@ app2.controller('risk_profile01', function ($scope,$http,$state,$translate,$time
       }
       else
       {
-        if (responceData.RESPONSECODE=='-1'){
+        if (responceData.data.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
           $state.go('login');;;
         }
         console.log('error');
       }
     })
-    .error(function() {
+    , (function() {
       console.log("error");
     });
 
@@ -117,12 +117,12 @@ app2.controller('risk_profile01', function ($scope,$http,$state,$translate,$time
     dbData.risk_data=JSON.stringify(dbData.risk_data)
 
     $('#loader_img').show();
-   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
-    .success(function(data) {
+    .then(function(data) {
       $('#loader_img').hide();
-      if(data.RESPONSECODE=='1') 			{
-        //swal("",data.RESPONSE);
+      if(data.data.RESPONSECODE=='1') 			{
+        //swal("",data.data.RESPONSE);
         $scope.lastid=data.lastid
 
         $scope.back(passo)
@@ -130,15 +130,15 @@ app2.controller('risk_profile01', function ($scope,$http,$state,$translate,$time
       }
       else
       {
-        if (data.RESPONSECODE=='-1'){
+        if (data.data.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
           $state.go('login');;;
         }
         console.log('error');
-        swal("",data.RESPONSE);
+        swal("",data.data.RESPONSE);
       }
     })
-    .error(function() {
+    , (function() {
       console.log("error");
     });
 
@@ -161,19 +161,19 @@ app2.controller('risk_profile01', function ($scope,$http,$state,$translate,$time
 
     if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
 
-     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
       $http.post( SERVICEURL2,  data )
-      .success(function(data) {
-        if(data.RESPONSECODE=='1') 			{
+      .then(function(data) {
+        if(data.data.RESPONSECODE=='1') 			{
           //$word=$($search.currentTarget).attr('id');
-          $scope.word[$search]=data.RESPONSE;
+          $scope.word[$search]=data.data.RESPONSE;
         }
-        if (data.RESPONSECODE=='-1'){
+        if (data.data.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
           $state.go('login');;;
         }
       })
-      .error(function() {
+      , (function() {
         console.log("error");
       });
     }

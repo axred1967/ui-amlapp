@@ -1,4 +1,5 @@
-app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$timeout,$state,$timeout) {
+app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$timeout,$state,$timeout,AutoComplete) {
+		console.log($scope.agent)
 		$scope.main.Back=true
 		$scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -48,6 +49,8 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
        $scope.Contract.contract_date=new Date()
        $scope.Contract.contract_eov=new Date()
        $scope.Contract.contract_eov.setFullYear($scope.Contract.contract_eov.getFullYear() + 5)
+			 $scope.Contract.value_det=1
+			 $scope.Contract.nature_contract="Polizza Vita"
        break;
        default :
        $scope.main.viewName="Nuovo Contratto"
@@ -97,7 +100,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
 		 $scope.toogle=function(o){
 			 o = o.split(".")
-			 switch (s.length){
+			 switch (o.length){
 				 case 1:
 				 $val= $scope[o[0]]
 				 if ($val==1){
@@ -186,8 +189,8 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 						 				 $(this).parent('div.mdl-textfield').removeClass('is-invalid');
 						 			 }
 						 		 );
-								 if (! $scope.Contract.activity_country>0){
-	 								$scope.Contract.activity_country=194;
+								 if (! $scope.agent.settings.country!==undefined && ($scope.Contract.activity_country==null || $scope.Contract.activity_country.lenght==0) ){
+	 								$scope.Contract.activity_country=$scope.agent.settings.country;
 	 							}
 
 								 $scope.main.loader=false
@@ -195,102 +198,115 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 						    }, 5);
 	            });
 		 $scope.showContractorList=function(){
-       if ((typeof $scope.Contract.fullname !== "undefined" && $scope.Contract.fullname.length>4 && $scope.oldContrator!=$scope.Contract.fullname)){
-        data={ "action":"ACCustomerList", name:$scope.Contract.fullname,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+       if ((typeof $scope.Contract.fullname !== "undefined"  && $scope.oldContrator!=$scope.Contract.fullname)){
+        data={ "action":"ACCustomerList", name:$scope.Contract.fullname,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
          $http.post( SERVICEURL2,  data )
-         .success(function(data) {
-           if(data.RESPONSECODE=='1') 			{
-             $scope.list=data.RESPONSE;
+         .then(function(data) {
+           if(data.data.RESPONSECODE=='1') 			{
+             $scope.list=data.data.RESPONSE;
            }
-		if (responceData.RESPONSECODE=='-1'){
+		if (responceData.data.RESPONSECODE=='-1'){
 		   localstorage('msg','Sessione Scaduta ');
 		   $state.go('login');;;
 		}
 
          })
-         .error(function() {
+         , (function() {
            console.log("error");
          });
        }
        $scope.oldContrator=$scope.searchContractor
      }
      $scope.showCompanyList=function(){
-       if ((typeof $scope.Contract.name !== "undefined" && $scope.Contract.name.length>4 && $scope.oldCompany!=$scope.Contract.name)){
-        data={ "action":"ACCompanyList", name:$scope.Contract.name,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+       if ((typeof $scope.Contract.name !== "undefined"  && $scope.oldCompany!=$scope.Contract.name)){
+        data={ "action":"ACCompanyList", name:$scope.Contract.name,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
          $http.post( SERVICEURL2,  data )
-         .success(function(data) {
-           if(data.RESPONSECODE=='1') 			{
-             $scope.listCompany=data.RESPONSE;
+         .then(function(data) {
+           if(data.data.RESPONSECODE=='1') 			{
+             $scope.listCompany=data.data.RESPONSE;
            }
-		if (data.RESPONSECODE=='-1'){
+		if (data.data.RESPONSECODE=='-1'){
 		   localstorage('msg','Sessione Scaduta ');
 		   $state.go('login');;;
 		}
 
          })
-         .error(function() {
+         , (function() {
            console.log("error");
          });
        }
        $scope.oldCompany=$scope.searchCompany;
      }
      $scope.showOtherList=function(){
-       if ((typeof $scope.Contract.other_name !== "undefined" && $scope.Contract.other_name.length>4 && $scope.Contract.other_name!=$scope.oldOther)){
-        data={ "action":"ACCustomerList", name:$scope.Contract.other_name,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+       if ((typeof $scope.Contract.other_name !== "undefined"  && $scope.Contract.other_name!=$scope.oldOther)){
+        data={ "action":"ACCustomerList", name:$scope.Contract.other_name,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
          $http.post( SERVICEURL2,  data )
-         .success(function(data) {
-           if(data.RESPONSECODE=='1') 			{
-             $scope.listOther=data.RESPONSE;
+         .then(function(data) {
+           if(data.data.RESPONSECODE=='1') 			{
+             $scope.listOther=data.data.RESPONSE;
            }
-		if (data.RESPONSECODE=='-1'){
+		if (data.data.RESPONSECODE=='-1'){
 		   localstorage('msg','Sessione Scaduta ');
 		   $state.go('login');;;
 		}
 
          })
-         .error(function() {
+         , (function() {
            console.log("error");
          });
        }
        $scope.oldOther=$scope.searchOther
      }
-     $scope.showAC=function($search,$table){
-       var id=localStorage.getItem("userId");
-       var usertype = localStorage.getItem('userType');
-       res = $search.split(".")
-       $search=res[1]
-       $word=$scope[res[0]][res[1]]
-       $table=res[0].toLowerCase()
-
-       if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
-
-        data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
-         $http.post( SERVICEURL2,  data )
-         .success(function(data) {
-           if(data.RESPONSECODE=='1') 			{
+     $scope.showAC=function($search,$word, settings){
+			 AutoComplete.showAC($search,$word, settings)
+         .then(function(data) {
+           if(data.data.RESPONSECODE=='1') 			{
              //$word=$($search.currentTarget).attr('id');
-             $scope.word[$search]=data.RESPONSE;
+						 $search=res[1]
+             $scope.word[$search]=data.data.RESPONSE;
            }
-		if (data.RESPONSECODE=='-1'){
-		   localstorage('msg','Sessione Scaduta ');
-		   $state.go('login');;;
-		}
-
+					if (data.data.RESPONSECODE=='-1'){
+					   localstorage('msg','Sessione Scaduta ');
+					   $state.go('login');;;
+					}
          })
-         .error(function() {
+         , (function() {
            console.log("error");
          });
-       }
-       $scope.oldWord= $($search.currentTarget).val()
      }
-     $scope.resetAC=function(){
-       $scope.word={}
-       $scope.list={}
-       $scope.listOther={}
-       $scope.listCompany={}
+		 $scope.resetAC=function(){
+	     $scope.word={}
+	     $scope.list={}
+	     $scope.listOther={}
+	     $scope.listCompany={}
 
 
-     }
+	   }
+	   $scope.addWord=function($search,$word,par){
+	     res = $search.split(".")
+	     switch(res.length){
+	       case 2:
+	       $scope[res[0]][res[1]]=$word
+	       $scope.word[res[1]]=[]
+	       break;
+	       case 3:
+	       $scope[res[0]][res[1]][res[2]]=$word
+	       $scope.word[res[2]]=[]
+	       break;
+
+	     }
+	     if (par.id!==undefined){
+	       $('#'+par.id).parent('div.mdl-textfield').addClass('is-dirty');
+				 $('#'+par.id).parent('div.mdl-textfield').addClass('ng-touched');
+	       $('#'+par.id).parent('div.mdl-textfield').removeClass('is-invalid');
+
+	     }
+
+	     if (par.countries){
+	       $scope.word['countries']=[]
+	     }
+	   }
+
      $scope.addContractorItem=function(id, name){
        $scope.list=[];
        $scope.Contract.fullname=name;
@@ -306,11 +322,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
        $scope.Contract.other_name=other.fullname;
        $scope.Contract.user_id=other.user_id;
      };
-     $scope.addWord=function($search,$word){
-       res = $search.split(".")
-       $scope[res[0]][res[1]]=$word
-       $scope.word[res[1]]=[]
-     }
+
 
 
 
@@ -356,31 +368,31 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
 
     $scope.main.loader=true
-   data={"action":"addcontract",appData:appData,dbData:dbData,aggKyc:$scope.aggKyc,edit:$scope.action,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+   data={"action":"addcontract",appData:appData,dbData:dbData,aggKyc:$scope.aggKyc,edit:$scope.action,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post(SERVICEURL2,data)
-    .success(function(data){
+    .then(function(data){
       $('#loader_img').hide();
-      if(data.RESPONSECODE=='1')
+      if(data.data.RESPONSECODE=='1')
       {
         $scope.contract=[]
-        //swal("",data.RESPONSE);
+        //swal("",data.data.RESPONSE);
         $lastid=data.lastid
 
         $scope.back()
 
       }
       else      {
-		if (data.RESPONSECODE=='-1'){
+				$scope.main.loader=false
+		if (data.data.RESPONSECODE=='-1'){
 		   localstorage('msg','Sessione Scaduta ');
 		   $state.go('login');;;
 		}
-			$scope.main.loader=false
 
-        swal("",data.RESPONSE);
+        swal("",data.data.RESPONSE);
       }
     })
-    .error(function(){
-			$('#loader_img').show();
+    , (function(){
+			$scope.main.loader=false
       console.log('error');
     })
   }
@@ -418,7 +430,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
   }
   $scope.deleteDoc2=function(Doc){
-	data={action:'delete',table:'documents','primary':'id',id:Doc.id ,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+	data={action:'delete',table:'documents','primary':'id',id:Doc.id ,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post(SERVICEURL2,data)
     Doc.deleted=true;
   }
@@ -482,20 +494,20 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
     $('#doc_image').val(review_info.response);
     // var review_selected_image  =  review_info.review_id;
     //$('#review_id_checkin').val(review_selected_image);
-   data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+   data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
-    .success(function(data) {
-      if(data.RESPONSECODE=='1') 			{
+    .then(function(data) {
+      if(data.data.RESPONSECODE=='1') 			{
         //$word=$($search.currentTarget).attr('id');
-        $scope.Contract.Docs[Doc.index].doc_image=data.RESPONSE;
+        $scope.Contract.Docs[Doc.index].doc_image=data.data.RESPONSE;
         $("#loader_img").hide()
       }
-			if (data.RESPONSECODE=='-1'){
+			if (data.data.RESPONSECODE=='-1'){
 				 localstorage('msg','Sessione Scaduta ');
 				 $state.go('login');;;
 			}
     })
-    .error(function() {
+    , (function() {
       $("#loader_img").hide()
       console.log("error");
     });
@@ -534,11 +546,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
     localstorage('Doc',JSON.stringify(Doc))
     $state.go('add_document')    }
 
-    $scope.addWord=function($search,$word){
-      res = $search.split(".")
-      $scope[res[0]][res[1]]=$word
-      $scope.word[res[1]]=[]
-    }
+
 
 		$scope.back=function(){
 	    $state.go($scope.page.location)

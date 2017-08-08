@@ -1,4 +1,3 @@
-
 app2.controller('add_document', function ($scope,$http,$translate,$state,$timeout) {
   $scope.loader=true
 
@@ -32,19 +31,19 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
     $scope.viewName="Modifica Documento"
     dbData=$scope.Doc
     $scope.loaded=true
-   data={ "action":"documentList", dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+   data={ "action":"documentList", dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
-    .success(function(data) {
-      if(data.RESPONSECODE=='1') 			{
+    .then(function(data) {
+      if(data.data.RESPONSECODE=='1') 			{
         //$word=$($search.currentTarget).attr('id');
-        $scope.word[$search]=data.RESPONSE;
+        $scope.word[$search]=data.data.RESPONSE;
       }
-      if (data.RESPONSECODE=='-1'){
+      if (data.data.RESPONSECODE=='-1'){
          localstorage('msg','Sessione Scaduta ');
          $state.go('login');;;
       }
     })
-    .error(function() {
+    , (function() {
       console.log("error");
     });
 
@@ -64,6 +63,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
     Doc=JSON.parse(localStorage.getItem('Doc'))
     convertDateStringsToDates(Doc)
     $scope.Doc=Doc
+    $scope.Doc.per='contract'
     $scope.Doc.doc_date=new Date()
     $scope.action='add'
     $scope.viewName="Aggiungi Documento"
@@ -75,6 +75,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
     convertDateStringsToDates(Doc)
     $scope.loaded=true
     $scope.Doc=Doc
+    //$scope.Doc.doc_per='contract'
     $scope.action='edit'
     $scope.viewName="Modifica Documento"
     break;
@@ -85,6 +86,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
     convertDateStringsToDates(Doc)
     $scope.Doc=Doc
     $scope.Doc.doc_date=new Date()
+    $scope.Doc.doc_per='customer'
     $scope.action='add'
     $scope.viewName="Aggiungi Documento"
     $scope.loaded=false
@@ -95,6 +97,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
     convertDateStringsToDates(Doc)
     $scope.loaded=true
     $scope.Doc=Doc
+    //$scope.Doc.doc_per='customer'
     $scope.action='edit'
     $scope.viewName="Modifica Documento"
     break;
@@ -129,11 +132,23 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
     $scope.action='edit'
     $scope.viewName="Modifica Documento"
     break;
+    case 'add_document_for_company' :
+    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+    Doc=JSON.parse(localStorage.getItem('Doc'))
+    convertDateStringsToDates(Doc)
+    $scope.Doc=Doc
+    $scope.Doc.doc_date=new Date()
+    $scope.Doc.per='company'
+    $scope.action='add'
+    $scope.viewName="Aggiungi Documento"
+    $scope.loaded=false
+    break;
     case 'edit_document_for_company' :
     $scope.Company=JSON.parse(localStorage.getItem('Company'))
     Doc=JSON.parse(localStorage.getItem('Doc'))
     convertDateStringsToDates(Doc)
     $scope.Doc=Doc
+    //$scope.Doc.doc_per='company'
     $scope.loaded=true
     $scope.action='edit'
     $scope.viewName="Modifica Documento"
@@ -145,7 +160,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
     $scope.viewName="Nuovo Documento"
     break;
   }
-  $scope.image_type=['.png','.gif','.png','.tif','.bmp']
+  $scope.image_type=['.png','.gif','.png','.tif','.bmp','.jpg']
   $scope.Doc.isImage=true
   if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
     $scope.Doc.isImage=false
@@ -171,12 +186,12 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
             f={}
             f.data=data
             f.name=$scope.f.name
-            data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, f:f,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+            data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, f:f,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
             $http.post(SERVICEURL2,data,{
             headers: {'Content-Type': undefined}
         })
-            .success(function(data){
-              $scope.Doc.doc_image=data.response;
+            .then(function(data){
+              $scope.Doc.doc_image=data.data.RESPonse;
               $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
               $scope.loaded=true
               $scope.Doc.file_type=data.file_type
@@ -185,13 +200,13 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
                 $scope.Doc.isImage=false
               }
               $("#loader_img_int").hide()
-              if (data.RESPONSECODE=='-1'){
+              if (data.data.RESPONSECODE=='-1'){
                  localstorage('msg','Sessione Scaduta ');
                  $state.go('login');;;
               }
                 console.log('success');
             })
-            .error(function(){
+            , (function(){
                 console.log('error');
             });
         };
@@ -200,7 +215,17 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
   }
 
 
+  $scope.imageurl=function(Doc){
 
+    if (Doc===undefined || Doc.doc_image===undefined ||  Doc.doc_image== null || Doc.doc_image.length==0)
+      imageurl= '../img/customer-listing1.png'
+    else
+      imageurl= BASEURL+ "file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id +"&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+
+    //  Customer.imageurl= Customer.IMAGEURI +Customer.image
+    return   imageurl
+
+  }
 
 
   $scope.showAC=function($search,$table){
@@ -214,19 +239,19 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
 
     if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
 
-     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
       $http.post( SERVICEURL2,  data )
-      .success(function(data) {
-        if(data.RESPONSECODE=='1') 			{
+      .then(function(data) {
+        if(data.data.RESPONSECODE=='1') 			{
           //$word=$($search.currentTarget).attr('id');
-          $scope.word[$search]=data.RESPONSE;
+          $scope.word[$search]=data.data.RESPONSE;
         }
-        if (data.RESPONSECODE=='-1'){
+        if (data.data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
            $state.go('login');;;
         }
       })
-      .error(function() {
+      , (function() {
         console.log("error");
       });
     }
@@ -291,23 +316,23 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
     var id = review_info.id;
     $http.post( LOG,  {r:r,Doc:$scope.Doc})
     //$('#review_id_checkin').val(review_selected_image);
-   data={ "action":"get_document_image_name_multi", id:id,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+   data={ "action":"get_document_image_name_multi", id:id,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
-    .success(function(data) {
-      if(data.RESPONSECODE=='1') 			{
-        $scope.Doc.doc_image=data.RESPONSE;
+    .then(function(data) {
+      if(data.data.RESPONSECODE=='1') 			{
+        $scope.Doc.doc_image=data.data.RESPONSE;
         $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
         $scope.loaded=true
         $("#loader_img_int").hide()
-        //  $http.post( LOG,  {dt:data.RESPONSE ,doc:$scope.Doc})
+        //  $http.post( LOG,  {dt:data.data.RESPONSE ,doc:$scope.Doc})
 
       }
-      if (data.RESPONSECODE=='-1'){
+      if (data.data.RESPONSECODE=='-1'){
          localstorage('msg','Sessione Scaduta ');
          $state.go('login');;;
       }
     })
-    .error(function() {
+    , (function() {
       $("#loader_img_int").hide()
       console.log("error");
     });
@@ -341,27 +366,27 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
     dbData=$scope.Doc
 
     var langfileloginchk = localStorage.getItem("language");
-    data={"action":"savedocument",type:$scope.action, dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    data={"action":"savedocument",type:$scope.action, dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post(SERVICEURL2,data)
-    .success(function(data){
+    .then(function(data){
       $('#loader_img').hide();
-      if(data.RESPONSECODE=='1')
+      if(data.data.RESPONSECODE=='1')
       {
         //$scope.Doc=data
-        //swal("",data.RESPONSE);
+        //swal("",data.data.RESPONSE);
         if (data.lastid !==undefined && data.lastid>0)
         $scope.lastid=data.lastid
         $scope.back()
       }
       else      {
-        if (data.RESPONSECODE=='-1'){
+        if (data.data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
            $state.go('login');;;
         }
-        swal("",data.RESPONSE);
+        swal("",data.data.RESPONSE);
       }
     })
-    .error(function(){
+    , (function(){
       console.log('error');
     })
   }
@@ -370,6 +395,23 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
     $scope[res[0]][res[1]]=$word
     $scope.word[res[1]]=[]
   }
+  $scope.download = function(Doc) {
+     url=BASEURL + "file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+"&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+     $http.get(url, {
+         responseType: "arraybuffer"
+       })
+       .then(function(data) {
+         var anchor = angular.element('<a/>');
+         angular.element(document.body).append(anchor);
+         var ev = document.createEvent("MouseEvents");
+         ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+         anchor.attr({
+           href: url,
+           target: '_blank',
+           download: Doc.doc_image
+         })[0].dispatchEvent(ev);
+       })
+     }
   $scope.back=function(){
     switch ($scope.page.action){
       case 'add_document_for_contract':

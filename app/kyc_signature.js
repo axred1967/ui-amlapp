@@ -26,14 +26,14 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
     var id=localStorage.getItem("CustomerProfileId");
     var email=localStorage.getItem("userEmail");
     appData=$scope.Contract
-    data={"action":"kycAx",appData:appData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    data={"action":"kycAx",appData:appData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $scope.main.loader=true
     $http.post( SERVICEURL2,  data )
-    .success(function(responceData) {
+    .then(function(responceData) {
 
-      if(responceData.RESPONSECODE=='1') 			{
+      if(responceData.data.RESPONSECODE=='1') 			{
 //        $scope.loader=false
-        data=responceData.RESPONSE;
+        data=responceData.data.RESPONSE;
         $scope.Kyc=data;
         $scope.countryList=responceData.countrylist
         if ($scope.Kyc.date_of_identification===undefined || $scope.Kyc.date_of_identification)
@@ -68,14 +68,14 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
       }
       else
       {
-        if (responceData.RESPONSECODE=='-1'){
+        if (responceData.data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
            $state.go('login');;;
         }
         console.log('error');
       }
     })
-    .error(function() {
+    , (function() {
       console.log("error");
     });
 
@@ -163,12 +163,12 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
     dbData.company_data=JSON.stringify(dbData.company_data)
     dbData.owner_data=JSON.stringify(dbData.owner_data)
 
-   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,final:true,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,final:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $scope.main.loader=true
     $http.post( SERVICEURL2,  data )
-    .success(function(data) {
-      if(data.RESPONSECODE=='1') 			{
-        //swal("",data.RESPONSE);
+    .then(function(data) {
+      if(data.data.RESPONSECODE=='1') 			{
+        //swal("",data.data.RESPONSE);
         $scope.lastid=data.lastid
 
         $scope.back(passo)
@@ -176,15 +176,15 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
       }
       else
       {
-        if (data.RESPONSECODE=='-1'){
+        if (data.data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
            $state.go('login');;;
         }
         console.log('error');
-        swal("",data.RESPONSE);
+        swal("",data.data.RESPONSE);
       }
     })
-    .error(function() {
+    , (function() {
       console.log("error");
     });
 

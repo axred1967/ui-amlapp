@@ -36,6 +36,9 @@ ng-init="CustomerIndex=$index">
           <span style="cursor:pointer;" >
             <strong class="blue first_letter_cap">{{Customer.fullname}}</strong>
           </span><br/>
+          <span style="cursor:pointer;" >
+            <span class="orange first_letter_cap">{{decode_priv(Customer.priviledge)}}</span>
+          </span><br/>
           <span class="green" style=" cursor:pointer;"  >
             {{Customer.mobile_number}}
           </span><br/>
@@ -69,7 +72,7 @@ ng-init="CustomerIndex=$index">
 </div>
 </div>
 <center  ng-hide="Customers_inf.loaded<5">
-  <a  ng-click="'Customers_inf.nextPage(true)"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
+  <a  ng-click="'Customers_inf.nextPage(true)''"  class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary">
     Altri>>
   </a>
 </center>

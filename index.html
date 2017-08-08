@@ -1,38 +1,52 @@
 <!DOCTYPE html>
 <html class="no-js">
 <head>
-  <title>Tax</title>
+  <title>AMLAPP</title>
   <meta name="description" content="">
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
-
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon"/>
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
+  <!--
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500" type="text/css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  -->
+  <link rel="stylesheet" href="css/roboto.css" type="text/css">
+  <link rel="stylesheet" href="css/materialIcon.css" type="text/css">
   <link rel="stylesheet" type="text/css" href="font-awesome-4.6.2/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/animsition.min.css">
+
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.5.2/css/animsition.css"> -->
 
   <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
-  <link rel="stylesheet" href="css/material.css">
+  <link rel="stylesheet" href="css/material.min.css">
   <link rel="stylesheet" href="css/swipebox.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/stylesheet.css">
   <link rel="stylesheet" href="css/jquery.fancybox.css">
 
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
   <script src="js/jquery-2.1.4.min.js"></script>
   <script type="text/javascript" src="js/custom.js"></script>
-  <script type="text/javascript" src="cordova.js"> </script>
-  <script type="text/javascript">$(document).ready(function(){app.initialize();});</script>
-  <script src="js/animsition.js"></script>
+  <script>
+  var isapp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+  if ( isapp ) {
+    document.write('<scri' + 'pt src="cordova.js"></' + 'script>');
+    $(document).ready(function(){app.initialize();});
+  }
+  </script>
+  <script src="js/animsition.min.js"></script>
   <script src="js/sweetalert.min.js"></script>
   <script src="js/material.min.js"></script>
   <script src="js/jquery.swipebox.min.js"></script>
   <script src="js/jquery.fancybox.pack.js"></script>
   <script src="js/function.js"></script>
   <script src="js/angular.min.js"></script>
-  <script src="js/angular-ui-route.js"></script>
+  <script src="js/angular-ui-router.js"></script>
   <script src="js/angular-route.min.js"></script>
+  <script src="js/angular-sanitize.js"></script>
   <script src="js/angular-translate.min.js"></script>
   <script src="js/ng-infinite-scroll.min.js"></script>
   <script src="js/ng-currency.js"></script></head>
@@ -53,6 +67,7 @@
   <script src="app/add_customer.js"></script>
   <script src="app/add_company.js"></script>
   <script src="app/add_document.js"></script>
+  <script src="app/add_owners.js"></script>
   <script src="app/kycstep01.js"></script>
   <script src="app/kycstep01.js"></script>
   <script src="app/kycstep02.js"></script>
@@ -67,7 +82,23 @@
   <script src="app/risk_profile05.js"></script>
   <script src="app/risk_final.js"></script>
   <script src="app/my_profile.js"></script>
+  <script src="app/risk_profile01_sm.js"></script>
+  <script src="app/risk_profile02_sm.js"></script>
+  <script src="app/risk_final_sm.js"></script>
 
+<!-- Amministrazione  -->
+<script src="app/email_templates.js"></script>
+<script src="app/add_email_template.js"></script>
+<script src="app/my_agencies.js"></script>
+<script src="app/add_agency.js"></script>
+<!--
+Text angular
+-->
+<link rel='stylesheet' href='/textAngular/dist/textAngular.css'>
+<script src='/textAngular/dist/textAngular-rangy.min.js'></script>
+<script src='/textAngular/dist/textAngular-sanitize.min.js'></script>
+<script src='/textAngular/dist/textAngular.min.js'></script>
+<!-- -->
   <script>
   langfile = localStorage.getItem("language");
   if (langfile == 'en')
@@ -114,9 +145,10 @@
       <div class="mdl-layout mdl-js-layout mdl-layout--overlay-drawer-button">
 
         <!-- Sidebar -->
-        <div  ng-show="main.Sidebar" id="sidebar_agency" class="mdl-layout__drawer">
+        <div  ng-hide="main.login" ng-show="main.Sidebar" id="sidebar_agency" class="mdl-layout__drawer">
           <div class="mdl-card mdl-shadow--2dp mdl-color--primary mdl-color-text--blue-grey-50 drawer-profile">
             <div class="mdl-card__title user dark-blue-bg">
+              <center>AMLAPP Service <br/></center>
               <center><img id="Profileimageagencyuser" ng-src="{{agent.imageurl}}" alt="" />
                 <span  id="Profileimageagencyusername" class="user-name">{{agent.name}}</span>
                 <span  id="Profileimageagencyuseremail" class="user-mail">{{agent.email}}</span>
@@ -124,13 +156,17 @@
             </div>
             <!-- Top-right User -->
             <nav class="mdl-navigation" style="background-color:white">
-              <a class="mdl-navigation__link animsition-link" ui-sref="home"><i style="color:#757575" class="material-icons">reorder</i><span>{{'Contratti'|translate}}</span></a>
-              <a class="mdl-navigation__link animsition-link" ui-sref="my_customer" ><i style="color:#757575" class="material-icons">accessibility</i><span>{{'Persone'||translate}}</span></a>
-              <a class="mdl-navigation__link animsition-link" ui-sref="my_company" ><i style="color:#757575" class="material-icons">business</i><span>{{'Società'|translate}}</span></a>
-              <a class="mdl-navigation__link animsition-link" ui-sref="my_agent"> <i style="color:#757575" class="material-icons">group</i><span>{{'Agenti'|translate}}</span></a>
-              <a class="mdl-navigation__link animsition-link" ui-sref="my_profile" ><i style="color:#757575" class="material-icons tiny" >contacts</i><span>{{'Profilo'|translate}}</span></a>
-              <a class="mdl-navigation__link animsition-link" ui-sref="language" ><i style=";color:#757575" class="material-icons">language</i><span>{{'lingua' |translate}} </span></a>
-              <a class="mdl-navigation__link animsition-link" ui-sref="logout()" ><i style=";color:#757575" class="material-icons">input</i><span>Logout </span></a>
+              <a class="mdl-navigation__link " ui-sref="home"><i style="color:#757575" class="material-icons">reorder</i><span>{{'Contratti'|translate}}</span></a>
+              <a  class="mdl-navigation__link " ui-sref="my_customer" ><i style="color:#757575" class="material-icons">accessibility</i><span>{{'Persone'||translate}}</span></a>
+              <a class="mdl-navigation__link " ui-sref="my_company" ><i style="color:#757575" class="material-icons">business</i><span>{{'Societa\''|translate}}</span></a>
+              <a ng-hide= "agent.user_type==3 " class="mdl-navigation__link " ui-sref="my_agent"> <i style="color:#757575" class="material-icons">group</i><span>{{'Agenti'|translate}}</span></a>
+              <a ng-hide= "agent.user_type!=-1 " class="mdl-navigation__link " ui-sref="my_agencies"> <i style="color:#757575" class="material-icons">local_library</i><span>{{'Agenzie'|translate}}</span></a>
+              <a ng-hide= "agent.user_type!=-1 " class="mdl-navigation__link " ui-sref="email_templates"> <i style="color:#757575" class="material-icons">email</i><span>{{'Mail '|translate}}</span></a>
+              <a ng-hide= "agent.user_type!=-1 " class="mdl-navigation__link " ui-sref="my_plan"> <i style="color:#757575" class="material-icons">cloud</i><span>{{'Piani '|translate}}</span></a>
+
+              <a class="mdl-navigation__link " ui-sref="my_profile" ><i style="color:#757575" class="material-icons tiny" >contacts</i><span>{{'Profilo'|translate}}</span></a>
+              <a class="mdl-navigation__link " ui-sref="language" ><i style=";color:#757575" class="material-icons">language</i><span>{{'lingua' |translate}} </span></a>
+              <a class="mdl-navigation__link " ui-sref="logout()" ><i style=";color:#757575" class="material-icons">input</i><span>Logout </span></a>
 
             </nav>
           </div>          <!-- Top -->
@@ -138,7 +174,6 @@
 
         <!-- Page Content -->
         <main class="mdl-layout__content">
-          <div class=""> <!-- card -->
 
             <div ng-hide="main.login"  class="account-info dark-blue-bg">
 
@@ -171,13 +206,14 @@
             <div class="clr"></div>
           </div>
         </div>
-        <div class="center2" ng-show="main.loader==true" id="loader_img" >&nbsp;
+        <div id="ui-loader" class="center2" ng-show="main.loader==true" id="loader_img" >&nbsp;
           <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
         </div>
-        <div  ui-view ng-hide="main.loader==true" class="account-data add-customer-data content-data-ax" ng-cloak> <!-- text fields -->
+        <div  id="ui-content" ui-view ng-hide="main.loader==true" class="  account-data add-customer-data content-data-ax"
+        ng-cloak> <!-- text fields -->
         </div>
 
-      </div>
+
     </main>
   </div>
 </div>

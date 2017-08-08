@@ -1,130 +1,235 @@
-        <div class="mdl-card mdl-shadow--2dp ">
-          <div class="right">
-            <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" href="javascript:;" ng-click="changepasswordpopup()">
-              {{'ChangePassword'|translate}}
-            </a>
-          </div>
-          <div ng-show="chpassword==true" class="mdl-card mdl-shadow--2dp "  >
-            <div class="mdl-grid">
-              <div class="mdl-cell mdl-cell--12-col">
-                <form action="#">
-                  <fieldset>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                      <input class="mdl-textfield__input" type="password" placeholder="  {{'CurrentPassword'|translate}}" id="current_password" />
-                    </div>
-                  </fieldset>
-                  <fieldset>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                      <input class="mdl-textfield__input" type="password" placeholder=" {{'NewPassword'|translate}}" id="new_password" />
-                    </div>
-                  </fieldset>
-                  <fieldset>
-                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                      <input class="mdl-textfield__input" type="password" placeholder=" {{'ConfirmPassword'|translate}}" id="re_new_password" />
-                    </div>
-                  </fieldset>
-                </form>
-
-                <br><br>
-                <div class="center-align">
-                  <a style="" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="change_password()" href="javascript:;">
-                    {{'Submit'|translate}}
-                  </a>
-                </div>
-              </div>
+<div class="mdl-card mdl-shadow--2dp ">
+  <div class="right">
+    <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" href="javascript:;" ng-click="changepasswordpopup()">
+      {{'ChangePassword'|translate}}
+    </a>
+  </div>
+  <div ng-show="chpassword==true" class="mdl-card mdl-shadow--2dp "  >
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--12-col">
+        <form action="#">
+          <fieldset>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+              <input class="mdl-textfield__input" type="password" placeholder="  {{'CurrentPassword'|translate}}" id="current_password" />
             </div>
-          </div>
-          <div class="clr"></div>
-          <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--12-col">
-
-              <form action="#"name="form" novalidate="">
-                <fieldset>
-                  <div class="mdl-grid">
-                    <div ng-class="{'mdl-cell--3-col-desktop mdl-cell-12-col-phone mdl-cell-6-col-tablet': main.web }">
-
-                  <div class="demo-card-image mdl-card mdl-shadow--2dp">
-                    <div class="mdl-card__title mdl-card--expand">{{'Immagine Profilo'|translate}}</div>
-                    <img  ng-show="Customer.image.length>0" ng-src ="{{imageurl(Customer)}}" ></img>
-                    <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
-
-                    <div class="mdl-card__actions">
-                      <div class="mdl-layout-spacer"></div>
-
-                      <button id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
-                      <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
-                        <span >{{'Scatta una foto'|translate}}.</span>
-                      </span>
-                      <button id="addGallery" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
-                      <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
-                        <span >{{'Scegli da Galleria'|translate}}.</span>
-                      </span>
-
-                      <button ng-hide="DocLoaded==0 " id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
-                      <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
-                        <span >{{'Cancella'|translate}}.</span>
-                      </span>
-                    </div>
-
-                  </div>
-</div>
-</div>
-                </fieldset>
-                <fieldset>
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="Customer_name" name="Customer_name"  pattern="[A-Za-z\s]*"
-                    ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="true"
-                    />
-                    <label class="mdl-textfield__label" for="Customer_name">{{'Name'|translate}} *</label>
-                    <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_name" ng-show="form.Customer_name.$invalid && form.Customer_name.$touched">
-                      <span ng-show="form.Customer_name.$error.required">{{'Richiesto'| translate}}</span>
-                    </span>
-                  </div>
-                </fieldset>
-                <fieldset>
-                  <div ng-hide="Customer.user_type==1" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="Customer_surname" name="Customer_surname"value=" "  pattern="[A-Za-z\s]*"
-                    ng-model="Customer.surname"  ng-change="Customer.surname=(Customer.surname| capitalize)" minlength="3"
-                    ng-required="true" />
-                    <label class="mdl-textfield__label" for=""Customer_surname"">{{'Surname'|translate}} *</label>
-                    <span class="mdl-tooltip mdl-tooltip--validation" for="Custome_surname" ng-show="form.Customer_surname.$invalid && form.Customer_surname.$touched">
-                      <span ng-show="form.Customer_surname.$error.required">{{'Richiesto'| translate}}</span>
-                    </span>
-                  </div>
-                </fieldset>
-                <fieldset>
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="email" id="Customer_email" name="Customer_email" value=" "
-                    ng-model="Customer.email" ng-change="Customer.email=(Customer.email| capitalize)" ng-required="true" />
-                    <label class="mdl-textfield__label" for="email">{{'EmailID' | translate}}*</label>
-                    <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_email" ng-show="form.Customer_email.$invalid && form.Customer_email.$touched">
-                      <span ng-show="form.Customer_email.$error.required">Required.</span>
-                      <span ng-show="form.Customer_email.$error.pattern">{{'mail non valida.'| translate}}</span>
-                    </span>
-                  </div>
-                </fieldset>
-                <fieldset>
-                  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                    <input class="mdl-textfield__input" type="text" id="Customer_mobile"  name="Customer_mobile" value=" "
-                    ng-model="Customer.mobile_number"  />
-                    <label class="mdl-textfield__label" for="mobile">{{'Mobile' | translate}}*</label>
-                    <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_mobile" ng-show="form.Customer_mobile.$invalid && form.Customer_mobile.$touched">
-                      <span ng-show="form.Customer_mobile.$error.required">Required.</span>
-                      <span ng-show="form.Customer_mobile.$error.pattern">{{' numero telefono non valida.'| translate}}</span>
-                    </span>
-                  </div>
-                </fieldset>
-              </div>
+          </fieldset>
+          <fieldset>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+              <input class="mdl-textfield__input" type="password" placeholder=" {{'NewPassword'|translate}}" id="new_password" />
             </div>
-          </form>
+          </fieldset>
+          <fieldset>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+              <input class="mdl-textfield__input" type="password" placeholder=" {{'ConfirmPassword'|translate}}" id="re_new_password" />
+            </div>
+          </fieldset>
+        </form>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" >
+          <img id="sign" ng-src="{{oldSign}}" ng-show="oldSign.length>7" height="20%">
+        </div>
+
+
+        <br><br>
+        <div class="center-align">
+          <a style="" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="change_password()" href="javascript:;">
+            {{'Submit'|translate}}
+          </a>
         </div>
       </div>
-      <br/>
-      <div class="center-align">
-        <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="save_profile()" href="javascript:;">
-          {{'Save'|translate}}
-        </a>
-        <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" click="redirect('index.html')" href="javascript:;">
-          {{'Cancel'|translate}}
-        </a>
+    </div>
+  </div>
+  <div class="clr"></div>
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+
+      <form name="form" novalidate="">
+        <fieldset>
+          <div class="mdl-grid">
+            <div ng-class="{'mdl-cell--3-col-desktop mdl-cell-12-col-phone mdl-cell-6-col-tablet': main.web }">
+
+          <div class="demo-card-image mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title mdl-card--expand">{{'Immagine Profilo'|translate}}</div>
+            <img  ng-show="Customer.image.length>0" ng-src ="{{imageurl(Customer)}}" ></img>
+            <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img" src="img/loader2.gif"  > </center>
+
+            <div class="mdl-card__actions">
+              <div class="mdl-layout-spacer"></div>
+              <input ng-show="main.web"  type="file" id="msds"  name="msds" ng-model="fileweb"/>
+              <button ng-show="main.web" id="addfileweb"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadprofileweb()" ><i class="material-icons">file_upload</i></button>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="fileweb" >
+                <span >{{'Carica da WEB'|translate}}.</span>
+              </span>
+              <button ng-hide="main.web"  id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
+                <span >{{'Scatta una foto'|translate}}.</span>
+              </span>
+              <button ng-hide="main.web" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
+                <span >{{'Scegli da Galleria'|translate}}.</span>
+              </span>
+              <button ng-show="loaded" id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+                <span >{{'Cancella'|translate}}.</span>
+              </span>
+            </div>
+          </div>
+</div>
+</div>
+        </fieldset>
+        <fieldset>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="Customer_name" name="Customer_name"  pattern="[A-Za-z\s]*"
+            ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="true"
+            />
+            <label class="mdl-textfield__label" for="Customer_name">{{'Name'|translate}} *</label>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_name" ng-show="form.Customer_name.$invalid && form.Customer_name.$touched">
+              <span ng-show="form.Customer_name.$error.required">{{'Richiesto'| translate}}</span>
+            </span>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div ng-hide="Customer.user_type==1" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="Customer_surname" name="Customer_surname"value=" "  pattern="[A-Za-z\s]*"
+            ng-model="Customer.surname"  ng-change="Customer.surname=(Customer.surname| capitalize)" minlength="3"
+            ng-required="Customer.user_type!=1" />
+            <label class="mdl-textfield__label" for=""Customer_surname"">{{'Surname'|translate}} *</label>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="Custome_surname" ng-show="form.Customer_surname.$invalid && form.Customer_surname.$touched">
+              <span ng-show="form.Customer_surname.$error.required">{{'Richiesto'| translate}}</span>
+            </span>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="email" id="Customer_email" name="Customer_email" value=" "
+            ng-model="Customer.email" ng-change="Customer.email=(Customer.email| capitalize)" ng-required="true" />
+            <label class="mdl-textfield__label" for="email">{{'EmailID' | translate}}*</label>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_email" ng-show="form.Customer_email.$invalid && form.Customer_email.$touched">
+              <span ng-show="form.Customer_email.$error.required">Required.</span>
+              <span ng-show="form.Customer_email.$error.pattern">{{'mail non valida.'| translate}}</span>
+            </span>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="Customer_mobile"  name="Customer_mobile" value=" "
+            ng-model="Customer.mobile_number"  />
+            <label class="mdl-textfield__label" for="mobile">{{'Mobile' | translate}}*</label>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_mobile" ng-show="form.Customer_mobile.$invalid && form.Customer_mobile.$touched">
+              <span ng-show="form.Customer_mobile.$error.required">Required.</span>
+              <span ng-show="form.Customer_mobile.$error.pattern">{{' numero telefono non valida.'| translate}}</span>
+            </span>
+          </div>
+        </fieldset>
+        <center><h4>Parametri di Configurazione</center>
+
+        <fieldset ng-show="agent.user_type<3">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="country" name="country" minlength="3"  value=" "
+          ng-model="agent.settings.country"   minlength="3"
+          ng-keyup="showAC('users.countries','country');"
+          ng-focus="resetAC()"
+          />
+          <label class="mdl-textfield__label" for="country">{{'Paese predefinito'|translate}} *</label>
+          <table class="mdl-data-table mdl-js-data-table  border-none  ">
+            <tbody style="display:table">
+              <tr ng-click="addWord('Kyc.contractor_data.country',item.word,true)" ng-repeat="item in word.countries">
+                <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <span class="mdl-tooltip mdl-tooltip--validation" for="country" ng-show="form.country.$invalid && form.country.$touched">
+            <span ng-show="form.country.$error.required">{{'Richiesto'| translate}}</span>
+          </span>
+        </div>
+        </fieldset>
+        <fieldset ng-show="agent.user_type<3">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+            <h5 class="kyc01-head">{{'Tipo di Analisi del Rischio'}} </h5>
+
+            <div class="mdl-grid">
+              <div class="mdl-cell ">
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="risk_type-1">
+                  <input  type="radio" id="risk_type-1" ng-model="agent.settings.risk_type" class="mdl-radio__button" name="risk_type" value="1"  >
+                  <span class="mdl-radio__label" >{{'Calcolo del Rishio SM Approvato AIF'| translate}}</span>
+                </label>
+              </div>
+
+              <div class="mdl-cell">
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="risk_type-0">
+                  <input    type="radio" id="risk_type-0" ng-model="agent.settings.risk_type" class="mdl-radio__button" name="risk_type" value="0"  checked>
+                  <span class="mdl-radio__label">{{'Calcolo Rischio 4° direttiva'| translate}}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset ng-show="agent.user_type<3">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+            <h5 class="kyc01-head">{{'Firma digitale  sul Contratto '}} </h5>
+
+            <div class="mdl-grid">
+              <div class="mdl-cell ">
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sign-1">
+                  <input  type="radio" id="sign-1" ng-model="agent.settings.sign" class="mdl-radio__button" name="sign" value="1"  >
+                  <span class="mdl-radio__label" >{{'SI'| translate}}</span>
+                </label>
+              </div>
+
+              <div class="mdl-cell">
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sign-0">
+                  <input    type="radio" id="sign-0" ng-model="agent.settings.sign" class="mdl-radio__button" name="sign" value="0"  checked>
+                  <span class="mdl-radio__label">{{'No'| translate}}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset ng-show="agent.user_type<3">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+            <h5 class="kyc01-head">{{'Invia Kyc e Analisi del Rischio via email '}} </h5>
+
+            <div class="mdl-grid">
+              <div class="mdl-cell ">
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sendKycRisk-1">
+                  <input  type="radio" id="sendKycRisk-1" ng-model="agent.settings.sendKycRisk" class="mdl-radio__button" name="sendKycRisk" value="1"  >
+                  <span class="mdl-radio__label" >{{'SI'| translate}}</span>
+                </label>
+              </div>
+
+              <div class="mdl-cell">
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sendKycRisk-0">
+                  <input    type="radio" id="sendKycRisk-0" ng-model="agent.settings.sendKycRisk" class="mdl-radio__button" name="sendKycRisk" value="0"  checked>
+                  <span class="mdl-radio__label">{{'No'| translate}}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" >
+          <img id="sign" ng-src="{{oldSign}}" ng-show="oldSign.length>7" height="20%">
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+          <div style="padding:16px;" id="signature-pad" class="m-signature-pad" ng-hide="oldSign.length>7" >
+            <canvas id="canvas2" style="border:1px solid #cbcbcb" class="mdl-textfield__input" height="300"> </canvas> <br>
+            <canvas id='blank' style='display:none'></canvas>
+
+            <input style="display:none" type="text" ng-model="Customer.sign" name="sig" id="sig" />
+          </div>
+          <center><a id="clearCanvas" ng-click="showCanvas()" href="javascript:;" data-action="clear" style="color:#1C224B;font-size:18px;">{{'Pulisci'|translate}}</a></center>
+        </div>
+
       </div>
+    </div>
+  </form>
+</div>
+</div>
+<br/>
+<div class="center-align">
+<a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="save_profile()" href="javascript:;">
+  {{'Save'|translate}}
+</a>
+<a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="back()" href="javascript:;">
+  {{'Cancel'|translate}}
+</a>
+</div>

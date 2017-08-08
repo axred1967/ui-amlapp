@@ -22,13 +22,13 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
     var id=localStorage.getItem("userId");
   	var email=localStorage.getItem("userEmail");
     var contract_id = localStorage.getItem("contract_id");
-    data= {"action":"view_Contract_info",id:id,email:email,contract_id:contract_id,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    data= {"action":"view_Contract_info",id:id,email:email,contract_id:contract_id,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
 		$scope.loader=true;
     $http.post( SERVICEURL2,  data )
-        .success(function(responceData) {
+        .then(function(responceData) {
                   $('#loader_img').hide();
-                  if(responceData.RESPONSECODE=='1') 			{
-                    data=responceData.RESPONSE;
+                  if(responceData.data.RESPONSECODE=='1') 			{
+                    data=responceData.data.RESPONSE;
                     data.owner=data.fullname;
                    if (data.name !== null && data.name.length>0)
                       data.owner=data.name
@@ -36,13 +36,17 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
                       data.owner=data.other_name
                       //data=convertDateStringsToDates(data)
                      $scope.Contract=data;
-										 $scope.main.viewName="Contratto " + $scope.Contract.CPU
+										 $scope.main.viewName="CPU:" + $scope.Contract.CPU
+										 if ($scope.Contract.number>0){
+											 $scope.main.viewName+="- N." + $scope.Contract.number
+
+										 }
 										 $scope.loader=false;
 
                    }
                    else
                    {
-										 if (responceData.RESPONSECODE=='-1'){
+										 if (responceData.data.RESPONSECODE=='-1'){
 						           localstorage('msg','Sessione Scaduta ');
 						           $state.go('login');;;
 						         }
@@ -50,7 +54,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
                      console.log('error');
                    }
          })
-        .error(function() {
+        , (function() {
                  console.log("error");
          });
    $scope.risk_analisys = function(id){
@@ -77,24 +81,35 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
    $state.go('kycstep01')
 };
 $scope.edit_risk = function(){
-	localstorage('risk_profile01',JSON.stringify({action:'',location:'view_contract'}))
-	localstorage('Contract',JSON.stringify($scope.Contract))
-	$state.go('risk_profile01')
+	if ($scope.agent.settings.risk_type==1){
+		localstorage('risk_profile01_sm',JSON.stringify({action:'',location:'view_contract'}))
+		localstorage('Contract',JSON.stringify($scope.Contract))
+		$state.go('risk_profile01_sm')
+	}
+	else{
+		localstorage('risk_profile01',JSON.stringify({action:'',location:'view_contract'}))
+		localstorage('Contract',JSON.stringify($scope.Contract))
+		$state.go('risk_profile01')
+	}
 };
+
 $scope.print_kyc=function(){
-	url=BASEURL + 'pdfgeneration/kyc.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+	url=BASEURL + 'pdfgeneration/kyc.php?id='+$scope.Contract.contract_id+"&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie+"&download=Y"
 	if ($scope.main.web){
+
 			$http.get(url, {
 					responseType: "arraybuffer"
 				})
-				.success(function(data) {
+				.then(function(data) {
 					var anchor = angular.element('<a/>');
-					var blob = new Blob([data]);
+					angular.element(document.body).append(anchor);
+					var ev = document.createEvent("MouseEvents");
+					ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
 					anchor.attr({
-						href: window.URL.createObjectURL(blob),
+						href: url,
 						target: '_blank',
-						download: 'kyc'+$scope.Contract.contract_id+ "-"+$scope.agent.id+".pdf"
-					})[0].click();
+						download: 'kyc'+$scope.Contract.contract_id+ '-'+$scope.agent.id+'.pdf'
+					})[0].dispatchEvent(ev);
 				})
 
 	}
@@ -123,20 +138,17 @@ $scope.print_kyc=function(){
 }
 
 $scope.print_risk=function(){
-	url=BASEURL + 'pdfgeneration/risk.php?id='+$scope.Contract.contract_id+"&agent="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+	url=BASEURL + 'pdfgeneration/risk.php?id='+$scope.Contract.contract_id+"&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie+"&download=Y"
 	if ($scope.main.web){
-			$http.get(url, {
-					responseType: "arraybuffer"
-				})
-				.success(function(data) {
-					var anchor = angular.element('<a/>');
-					var blob = new Blob([data]);
-					anchor.attr({
-						href: window.URL.createObjectURL(blob),
-						target: '_blank',
-						download: 'kyc'+$scope.Contract.contract_id+ "-"+$scope.agent.id+".pdf"
-					})[0].click();
-				})
+		var anchor = angular.element('<a/>');
+		angular.element(document.body).append(anchor);
+		var ev = document.createEvent("MouseEvents");
+		ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+		anchor.attr({
+			href: url,
+			target: '_blank',
+			download: 'Risk'+$scope.Contract.contract_id+ '-'+$scope.agent.id+'.pdf'
+		})[0].dispatchEvent(ev);
 
 	}
 	else {
@@ -167,6 +179,12 @@ $scope.owners = function(){
 	localstorage('Contract',JSON.stringify($scope.Contract))
 	$state.go('owners_list')
 };
+$scope.edit_company = function(){
+	localstorage('add_company',JSON.stringify({action:'edit_company',location:'view_contract'}))
+	localstorage('CompanyID',$scope.Contract.company_id)
+	localstorage('Contract',JSON.stringify($scope.Contract))
+	$state.go('add_company')
+};
 $scope.add_contract = function(){
 	localstorage('add_contract',JSON.stringify({action:'add_contract',location:$scope.curr_page}))
 	$state.go('add_contract')
@@ -182,6 +200,7 @@ $scope.add_contract = function(){
  $scope.$on('addButton', function(e) {
 	 $scope.add_contract()
  })
+
  $scope.$on('$viewContentLoaded',
 					function(event){
 						$timeout(function() {
@@ -191,7 +210,6 @@ $scope.add_contract = function(){
 									$(this).parent('div.mdl-textfield').removeClass('is-invalid');
 								})
 							$scope.main.loader=false
-					 }, 5);
+					 }, 50);
  });
-
 })

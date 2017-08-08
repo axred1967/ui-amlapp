@@ -44,6 +44,18 @@
               <span ng-show="form.riskDescription.$error.required">{{'Richiesto'|translate}}.</span>
             </div>
           </fieldset>
+          <fieldset>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+              <textarea  ng-model="Risk.risk_data.notes"
+              class="mdl-textfield__input" type="text" rows= "3"
+              id="notes" name="notes" >
+            </textarea>
+            <label for="notes" class="mdl-textfield__label">{{ 'Note Eventuali' | translate}}</label>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="notes" minlength="3" ng-show="form.notes.$invalid && form.notes.$touched">
+              <span ng-show="form.riskDescription.$error.required">{{'Richiesto'|translate}}.</span>
+            </div>
+          </fieldset>
+
         </form>
       </div>
     </div>

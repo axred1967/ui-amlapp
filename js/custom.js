@@ -6,19 +6,25 @@ document.title = SITE_TITLE;
 //var SERVICEURL = "http://192.168.0.5/Deve02/amlapp/service.php";
 //var SERVICEURL2 = "http://192.168.0.5/Deve02/amlapp/service2.php";
 //test su euriskoformazion
-
+/*
 var BASEURL = "http://www.euriskoformazione.com/amlapp/";
 var SERVICEURL = "http://www.euriskoformazione.com/amlapp/service.php";
 var SERVICEURL2 = "http://www.euriskoformazione.com/amlapp/service.php";
 var LOG = "http://www.euriskoformazione.com/amlapp/log.php";
-
-// su amlapp
-/*
-var BASEURL = "http://amlapp.euriskoformazione.com/";
-var SERVICEURL = "http://amlapp.euriskoformazione.com/service.php";
-var SERVICEURL2 = "http://amlapp.euriskoformazione.com/service.php";
-var LOG = "http://amlapp.euriskoformazione.com/log.php";
 */
+// su amlapp
+/* Ambiente sviluppo
+var BASEURL = "https://amlapp.euriskoformazione.com/dev";
+var SERVICEURL = "https://amlapp.euriskoformazione.com/dev/service.php";
+var SERVICEURL2 = "https://amlapp.euriskoformazione.com/dev/service.php";
+var LOG = "https://amlapp.euriskoformazione.com/dev/log.php";
+*/
+/* Ambiente produzione */
+var BASEURL = "https://amlapp.euriskoformazione.com/";
+var SERVICEURL = "https://amlapp.euriskoformazione.com/service.php";
+var SERVICEURL2 = "https://amlapp.euriskoformazione.com/service.php";
+var LOG = "https://amlapp.euriskoformazione.com/log.php";
+
 
 function chkloggedin()
 {
@@ -277,16 +283,14 @@ function base_name(path) {
 function IsJsonString(str) {
     try {
         js=JSON.parse(str);
+        if (!isObject(js)){
+          IsJsonString(js)
+        }
     } catch (e) {
         return false;
     }
 
-    try {
-      js2=JSON.parse(js)
-    } catch (e) {
-        return js;
-    }
-    return js2;
+    return js;
 }
 function exit( status ) {
     // http://kevin.vanzonneveld.net

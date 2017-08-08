@@ -1,12 +1,12 @@
 app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout) {
   $scope.main.Back=true
-  $scope.main.Add=false
-//		$scope.main.AddPage="add_contract"
+  $scope.main.Add=true
+	$scope.main.AddPage="add_owners"
   $scope.main.Search=false
   $scope.main.Sidebar=false
   $('.mdl-layout__drawer-button').hide()
   $scope.main.loader=true
-
+  $scope.deleted=0
   var id=localStorage.getItem("CustomerProfileId");
   var email=localStorage.getItem("userEmail");
   $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
@@ -55,22 +55,26 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout)
   switch ($scope.action){
     default:
     appData=$scope.Contract
-    data={"action":"kycAx",appData:appData,country:true,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    data={"action":"kycAx",appData:appData,country:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
-    .success(function(responceData) {
+    .then(function(responceData) {
       $scope.loader=true;
-      if(responceData.RESPONSECODE=='1') 			{
-        data=responceData.RESPONSE;
+      if(responceData.data.RESPONSECODE=='1') 			{
+        data=responceData.data.RESPONSE;
         $scope.Kyc=data;
         $scope.countryList=responceData.countrylist
         localstorage('countryList',JSON.stringify($scope.countryList))
         if ($scope.Kyc.date_of_identification===undefined || $scope.Kyc.date_of_identification)
         $scope.Kyc.date_of_identification=new Date()
+        $scope.Kyc.contract_data=IsJsonString($scope.Kyc.contract_data)
+        $scope.Kyc.contract_data.Docs=IsJsonString($scope.Kyc.contract_data.Docs)
         $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         $scope.Kyc.contractor_data.Docs=IsJsonString($scope.Kyc.contractor_data.Docs)
         $scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data)
         $scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
         convertDateStringsToDates($scope.Kyc)
+        convertDateStringsToDates($scope.Kyc.contract_data)
+        convertDateStringsToDates($scope.Kyc.contract_data.Docs)
         convertDateStringsToDates($scope.Kyc.contractor_data)
         convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
         convertDateStringsToDates($scope.Kyc.company_data)
@@ -87,65 +91,64 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout)
       }
       else
       {
-        if (responceData.RESPONSECODE=='-1'){
+        if (responceData.data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
            $state.go('login');;;
         }
         console.log('error');
       }
     })
-    .error(function() {
+    , (function() {
       console.log("error");
     });
     }
 
 
   }
-  $scope.deleteOwn= function (Own,index){
-    owner_id=Own.user_id
-    $scope.loader=true;
-
-   data={ "action":"deleteOwner", appData:$scope.Kyc.contractor_data,user_id:owner_id,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
-    $http.post( SERVICEURL2,  data )
-    .success(function(data) {
-      if(data.RESPONSECODE=='1') 			{
-        //swal("",data.RESPONSE);
-        $scope.Kyc.owner_data.splice(index,index);
-        $scope.loader=false;
-
+  $scope.deleteOwn=function(ob,index )
+  {
+    if ($scope.main.web){
+      r=confirm("Vuoi Cancellare il Titolare Effettivo" + ob.fullname +"?");
+      if (r == true) {
+        $scope.deleteOwn2(ob,index);
       }
-      else
-      {
-        if (data.RESPONSECODE=='-1'){
-           localstorage('msg','Sessione Scaduta ');
-           $state.go('login');;;
-        }
-        console.log('error');
-        swal("",data.RESPONSE);
-        $scope.Kyc.owner_data.splice(index,index);
-      }
-    })
-    .error(function() {
-      console.log("error");
-    });
+    }
+    else{
+      navigator.notification.confirm(
+        "Vuoi Cancellare il Titolare Effettivo" + ob.fullname +"?", // message
+        function(button) {
+          if ( button == 1 ) {
+            $scope.deleteOwn2(ob,index);
+          }
+        },            // callback to invoke with index of button pressed
+        'Sei sicuro?',           // title
+        ['Si','No']     // buttonLabels
+    );
+    }
 
-
+  }
+  $scope.deleteOwn2=function(ob,index){
+    data={action:'delete',table:'company_owners','primary':'id',id:ob.id ,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    $http.post(SERVICEURL2,data)
+    $scope.Kyc.owner_data.splice(index-$scope.deleted,1);
+    $scope.deleted++
   }
 
   $scope.save_kyc= function (passo){
     var langfileloginchk = localStorage.getItem("language");
     dbData=$scope.Kyc
+    dbData.contract_data=JSON.stringify(dbData.contract_data)
     dbData.contractor_data=JSON.stringify(dbData.contractor_data)
     dbData.company_data=JSON.stringify(dbData.company_data)
     dbData.owner_data=JSON.stringify(dbData.owner_data)
 
     $scope.main.loader=true;
 
-   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
-    .success(function(data) {
-      if(data.RESPONSECODE=='1') 			{
-        swal("",data.RESPONSE);
+    .then(function(data) {
+      if(data.data.RESPONSECODE=='1') 			{
+        //swal("",data.data.RESPONSE);
         $scope.lastid=data.lastid
 
         $scope.back(passo)
@@ -153,15 +156,15 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout)
       }
       else
       {
-        if (data.RESPONSECODE=='-1'){
+        if (data.data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
            $state.go('login');;;
         }
         console.log('error');
-        swal("",data.RESPONSE);
+        swal("",data.data.RESPONSE);
       }
     })
-    .error(function() {
+    , (function() {
       console.log("error");
     });
 
@@ -184,19 +187,19 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout)
 
     if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
 
-     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
       $http.post( SERVICEURL2,  data )
-      .success(function(data) {
-        if(data.RESPONSECODE=='1') 			{
+      .then(function(data) {
+        if(data.data.RESPONSECODE=='1') 			{
           //$word=$($search.currentTarget).attr('id');
-          $scope.word[$search]=data.RESPONSE;
+          $scope.word[$search]=data.data.RESPONSE;
         }
-        if (data.RESPONSECODE=='-1'){
+        if (data.data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
            $state.go('login');;;
         }
       })
-      .error(function() {
+      , (function() {
         console.log("error");
       });
     }
@@ -259,6 +262,8 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout)
   });
 
   $scope.$on('addButton', function(e) {
+    localstorage('Contract',JSON.stringify($scope.Kyc.contract_data))
+    $scope.add_owner()
   })
   $scope.$on('$viewContentLoaded',
            function(event){

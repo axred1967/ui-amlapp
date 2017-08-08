@@ -47,12 +47,12 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout) 
       var email=localStorage.getItem("userEmail");
       $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
       appData=$scope.Contract
-      data={"action":"kycAx",appData:appData,country:true,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+      data={"action":"kycAx",appData:appData,country:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
       $scope.main.loader=true
       $http.post( SERVICEURL2,  data )
-      .success(function(responceData) {
-        if(responceData.RESPONSECODE=='1') 			{
-          data=responceData.RESPONSE;
+      .then(function(responceData) {
+        if(responceData.data.RESPONSECODE=='1') 			{
+          data=responceData.data.RESPONSE;
           $scope.Kyc=data;
           if ($scope.Kyc.date_of_identification===undefined || $scope.Kyc.date_of_identification)
           $scope.Kyc.date_of_identification=new Date()
@@ -71,6 +71,13 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout) 
           convertDateStringsToDates($scope.Kyc.owner_data)
           if($scope.Kyc.contractor_data.check_pep===undefined || $scope.Kyc.contractor_data.check_pep==null)
             $scope.Kyc.contractor_data.check_pep=0
+          if (! $scope.agent.settings.country!==undefined && ($scope.Kyc.contractor_data.resi_country==null ||$scope.Kyc.contractor_data.resi_country.length==0) ){
+            $scope.Kyc.contractor_data.resi_country=$scope.agent.settings.country;
+          }
+          if (! $scope.agent.settings.country!==undefined && ($scope.Kyc.contractor_data.main_activity_country==null ||$scope.Kyc.contractor_data.main_activity_country.length==0) ){
+            $scope.Kyc.contractor_data.main_activity_country=$scope.agent.settings.country;
+          }
+
           if ($scope.Kyc.contractor_data.check_residence)
             document.querySelector('#ckres').MaterialCheckbox.check();
           if ($scope.Kyc.contractor_data.check_pep==1)
@@ -95,14 +102,14 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout) 
         }
         else
         {
-          if (responceData.RESPONSECODE=='-1'){
+          if (responceData.data.RESPONSECODE=='-1'){
              localstorage('msg','Sessione Scaduta ');
              $state.go('login');;;
           }
           console.log('error');
         }
       })
-      .error(function() {
+      , (function() {
         console.log("error");
       });
 
@@ -134,11 +141,11 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout) 
     dbData.company_data=JSON.stringify(dbData.company_data)
     dbData.owner_data=JSON.stringify(dbData.owner_data)
     $scope.main.loader=true
-   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
-    .success(function(data) {
-      if(data.RESPONSECODE=='1') 			{
-        //swal("",data.RESPONSE);
+    .then(function(data) {
+      if(data.data.RESPONSECODE=='1') 			{
+        //swal("",data.data.RESPONSE);
         $scope.lastid=data.lastid
 
         $scope.back(passo)
@@ -146,15 +153,15 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout) 
       }
       else
       {
-        if (data.RESPONSECODE=='-1'){
+        if (data.data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
            $state.go('login');;;
         }
         console.log('error');
-        swal("",data.RESPONSE);
+        swal("",data.data.RESPONSE);
       }
     })
-    .error(function() {
+    , (function() {
       console.log("error");
     });
 
@@ -162,7 +169,7 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout) 
   }
 
 
-  $scope.showAC=function($search,$word){
+  $scope.showAC=function($search,$word, settings){
     var id=localStorage.getItem("userId");
     var usertype = localStorage.getItem('userType');
     res = $search.split(".")
@@ -175,21 +182,21 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout) 
     }
     $table=res[0].toLowerCase()
 
-    if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
+    if (( $word  !== "undefined" && $word.length>0 &&  $word!=$scope.oldWord) || settings.zero){
 
-     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
       $http.post( SERVICEURL2,  data )
-      .success(function(data) {
-        if(data.RESPONSECODE=='1') 			{
+      .then(function(data) {
+        if(data.data.RESPONSECODE=='1') 			{
           //$word=$($search.currentTarget).attr('id');
-          $scope.word[$search]=data.RESPONSE;
+          $scope.word[$search]=data.data.RESPONSE;
         }
-        if (data.RESPONSECODE=='-1'){
+        if (data.data.RESPONSECODE=='-1'){
            localstorage('msg','Sessione Scaduta ');
            $state.go('login');;;
         }
       })
-      .error(function() {
+      , (function() {
         console.log("error");
       });
     }
@@ -203,7 +210,7 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout) 
 
 
   }
-  $scope.addWord=function($search,$word){
+  $scope.addWord=function($search,$word,par){
     res = $search.split(".")
     switch(res.length){
       case 2:
@@ -215,6 +222,15 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout) 
       $scope.word[res[2]]=[]
       break;
 
+    }
+    if (par.id!==undefined){
+      $('#'+par.id).parent('div.mdl-textfield').addClass('is-dirty');
+      $('#'+par.id).parent('div.mdl-textfield').removeClass('is-invalid');
+
+    }
+
+    if (par.countries){
+      $scope.word['countries']=[]
     }
   }
 
@@ -247,7 +263,7 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout) 
   }
 
   $scope.back=function(passo){
-    $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
+    $scope.Kyc.contract_data=IsJsonString($scope.Kyc.contract_data)
 
     if (passo>0){
       switch($scope.Kyc.contract_data.act_for_other){
@@ -269,7 +285,7 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout) 
         localstorage('kyc_signature',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
         $state.go('kyc_signature')
         return;
-        
+
       }
     }
     if (passo==-1){
@@ -299,5 +315,6 @@ $scope.$on('$viewContentLoaded',
                })
              $scope.main.loader=false
           }, 5);
+
 });
 })

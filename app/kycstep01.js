@@ -7,7 +7,6 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate,$timeout) 
   $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Dati Cliente"
   $scope.page={}
-
   $scope.curr_page='kycstep01'
  page=localStorage.getItem($scope.curr_page)
  if ( page!= null && page.length >0 ){
@@ -26,13 +25,13 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate,$timeout) 
         	var email=localStorage.getItem("userEmail");
           $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
           appData=$scope.Contract
-          data={"action":"kycAx",appData:appData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+          data={"action":"kycAx",appData:appData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
           $scope.main.loader=true
           $scope.loader=true
           $http.post( SERVICEURL2,  data )
-              .success(function(responceData) {
-                        if(responceData.RESPONSECODE=='1') 			{
-                           data=responceData.RESPONSE;
+              .then(function(responceData) {
+                        if(responceData.data.RESPONSECODE=='1') 			{
+                           data=responceData.data.RESPONSE;
                            $scope.Kyc=data;
                            $scope.Kyc.contract_data=IsJsonString($scope.Kyc.contract_data)
                            $scope.Kyc.contract_data.Docs=IsJsonString($scope.Kyc.contract_data.Docs)
@@ -46,6 +45,10 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate,$timeout) 
                            convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
                            convertDateStringsToDates($scope.Kyc.company_data)
                            convertDateStringsToDates($scope.Kyc.owner_data)
+                           //aggiorno i valori del contratto
+                           $scope.Kyc.contract_data=$scope.Contract
+                           $scope.Kyc.contract_data.agent_id=$scope.agent.id
+
                            $scope.main.loader=false
                              $('input.mdl-textfield__input').each(
                              function(index){
@@ -56,7 +59,7 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate,$timeout) 
                          }
                          else
                          {
-                           if (responceData.RESPONSECODE=='-1'){
+                           if (responceData.data.RESPONSECODE=='-1'){
                               localstorage('msg','Sessione Scaduta ');
                               $state.go('login');;;
                            }
@@ -64,7 +67,7 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate,$timeout) 
                            console.log('error');
                          }
                })
-              .error(function() {
+              , (function() {
                        console.log("error");
                });
 
@@ -89,17 +92,17 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate,$timeout) 
       }
       var langfileloginchk = localStorage.getItem("language");
       dbData=$scope.Kyc
+      $scope.main.loader=true
       dbData.contract_data=JSON.stringify(dbData.contract_data)
       dbData.contractor_data=JSON.stringify(dbData.contractor_data)
       dbData.company_data=JSON.stringify(dbData.company_data)
       dbData.owner_data=JSON.stringify(dbData.owner_data)
-      $scope.loader=true
-     data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+     data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
       $http.post( SERVICEURL2,  data )
-      .success(function(data) {
+      .then(function(data) {
         //$scope.loader=false
-        if(data.RESPONSECODE=='1') 			{
-          //swal("",data.RESPONSE);
+        if(data.data.RESPONSECODE=='1') 			{
+          //swal("",data.data.RESPONSE);
           $scope.lastid=data.lastid
 
           $scope.back(passo)
@@ -107,18 +110,26 @@ app2.controller('kycstep01', function ($scope,$http,$state,$translate,$timeout) 
         }
         else
         {
-          if (data.RESPONSECODE=='-1'){
+          if (data.data.RESPONSECODE=='-1'){
              localstorage('msg','Sessione Scaduta ');
              $state.go('login');;;
           }
           console.log('error');
-          swal("",data.RESPONSE);
-          $scope.loader=false
+          swal("",data.data.RESPONSE);
+          dbData.contract_data=IsJsonString(dbData.contract_data)
+          dbData.contractor_data=IsJsonString(dbData.contractor_data)
+          dbData.company_data=IsJsonString(dbData.company_data)
+          dbData.owner_data=IsJsonString(dbData.owner_data)
+          $scope.main.loader=false
         }
       })
-      .error(function() {
+      , (function() {
         console.log("error");
-        $scope.loader=false
+        dbData.contract_data=IsJsonString(dbData.contract_data)
+        dbData.contractor_data=IsJsonString(dbData.contractor_data)
+        dbData.company_data=IsJsonString(dbData.company_data)
+        dbData.owner_data=IsJsonString(dbData.owner_data)
+        $scope.main.loader=false
       });
 
 
