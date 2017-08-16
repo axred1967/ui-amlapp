@@ -46,7 +46,9 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
   $scope.Owner={};
 
   $scope.Owners_inf=new Customers_inf;
+  $scope.Owners_inf.pInfo=$scope.agent.pInfo
   $scope.Owners_inf.CompanyId=$scope.company_id
+
   if ($scope.Contract!==undefined && isObject($scope.Contract))
   $scope.Owners_inf.Contract=$scope.Contract
   //$scope.Company.name=localStorage.getItem("Company_name");

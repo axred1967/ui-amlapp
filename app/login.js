@@ -1,4 +1,4 @@
-app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$state,$timeout,$window,$stateParams) {
+app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$state,$timeout,$window,$stateParams,tmhDynamicLocale,$translate) {
   $scope.main.Back=false
   $scope.main.Add=false
   $scope.main.Search=false
@@ -20,6 +20,8 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
     $scope.action=$scope.page.action
 
   }
+
+
 
   $scope.inputType = 'password';
    // Hide & show password function
@@ -100,9 +102,12 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
           localstorage("cookie",data.data.cookie);
           //alert(data.agencyId);
           localstorage("Name",data.data.name);
+          localstorage("paese",data.data.paese);
+          localstorage("tipo_cliente",data.data.tipo_cliente);
 
 
-          localstorage("userSettings",data.data.settings);
+          localstorage("userSettings",JSON.stringify(data.data.settings));
+
           $scope.agent.name=data.data.name;
           $scope.agent.email=data.data.email;
           $scope.agent.id=data.data.agentId;
@@ -123,6 +128,9 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
             $scope.agent.imageurl= ''
           else
             $scope.agent.imageurl= BASEURL+ "file_down.php?action=file&file=" + $scope.agent.image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+
+          $scope.agent.paese=data.data.paese
+          $scope.agent.tipo_cliente= data.data.tipo_cliente
 
           if (data.data.RESPONSECODE==3 ){
             if ( $stateParams.action=='signup'){
@@ -176,6 +184,8 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
             }), (function() {
               console.log("error");
             });
+
+
 
 
 

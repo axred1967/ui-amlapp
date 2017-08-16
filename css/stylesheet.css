@@ -332,3 +332,118 @@ padding-left: 10px;
 .green{
 	color:#9CCC65
 }
+.blue-th{
+	background:#1c224b !important;
+	text-transform:capitalize !important;
+	color:white !important;
+	font-size:16px !important;
+	font-weight:bold;
+}
+.yellow-row{
+	color:black;
+	font-weight:bold;
+	background:#ffff85 !important;
+	text-transform:capitalize !important;
+}
+.gray-row{
+	color:black;
+	font-weight:bold;
+	background:#c0c0c0 !important;
+	text-transform:capitalize !important;
+}
+.azure-row{
+	color:black;
+	font-weight:bold;
+	background:#99ccff !important;
+	text-transform:capitalize !important;
+}
+
+@media only screen and (max-width: 480px) {
+
+  table, thead, tbody, th, td, tr {
+      display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  // mdl specifics
+
+  .mdl-data-table tbody tr {
+    height: auto;
+  }
+
+  .mdl-data-table tbody tr:nth-child(even) {
+    background-color: #eee;
+  }
+
+  .mdl-data-table td,
+  .mdl-data-table td:first-of-type {
+    padding-left: 50%;
+  }
+
+  .mdl-data-table td:before {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 45%;
+    padding: 6px 18px 0;
+    white-space: nowrap;
+    content: attr(data-label);
+    text-align: left;
+    color: rgba(0, 0, 0, 0.541176);
+    font-weight: bold;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+  }
+
+  .mdl-data-table td:last-of-type {
+    padding-right: 18px;
+  }
+
+}
+.inline {
+	max-width: 0;
+	    overflow: hidden;
+			/*
+	    text-overflow: ellipsis;
+			*/
+	    white-space: normal;
+}
+.input_in_table_n {
+	font-size:13px;
+	text-align: right;
+}
+#containerf {
+  display: flex;                  /* establish flex container */
+  flex-direction: row;            /* default value; can be omitted */
+  flex-wrap: nowrap;              /* default value; can be omitted */
+  justify-content: space-between; /* switched from default (flex-start, see below) */
+}
+#containerf > div {
+  width: 100%;
+
+	padding:16px;
+
+}
+.gridAx {
+  display: flex;
+  flex-wrap: wrap;
+	width:100%;
+}
+.margin-left-auto{
+	margin-left: auto;
+}
+
+.gridAX-item {
+  flex-grow: 1;
+}
+.gridAX-item-min {
+  flex-grow: 1;
+}
+.gridAx-item70 {
+  flex-grow: 5;
+	max-width:95%
+
+}

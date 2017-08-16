@@ -125,14 +125,16 @@
         <fieldset ng-show="agent.user_type<3">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="text" id="country" name="country" minlength="3"  value=" "
-          ng-model="agent.settings.country"   minlength="3"
-          ng-keyup="showAC('users.countries','country');"
-          ng-focus="resetAC()"
+          ng-model="agent.settings.country"   minlength="3" autocomplete="off"
+          ng-keyup="showAC('users.countries','country', {countries:true,zero:true});"
+          ng-focus="showAC('users.countries','country', {countries:true,zero:true});resetAC()"
           />
           <label class="mdl-textfield__label" for="country">{{'Paese predefinito'|translate}} *</label>
-          <table class="mdl-data-table mdl-js-data-table  border-none  ">
+          <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="country">
             <tbody style="display:table">
-              <tr ng-click="addWord('Kyc.contractor_data.country',item.word,true)" ng-repeat="item in word.countries">
+              <tr ng-click="addWord('agent.settings.country',item.word,{countries:true,id:'country'})"
+                  my-Enter="addWord('agent.settings.country',item.word,{countries:true,id:'country'})"
+                  ng-repeat="item in word.countries" tabindex="30">
                 <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
               </tr>
             </tbody>
@@ -158,6 +160,12 @@
               <div class="mdl-cell">
                 <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="risk_type-0">
                   <input    type="radio" id="risk_type-0" ng-model="agent.settings.risk_type" class="mdl-radio__button" name="risk_type" value="0"  checked>
+                  <span class="mdl-radio__label">{{'Calcolo Rischio 3° direttiva'| translate}}</span>
+                </label>
+              </div>
+              <div class="mdl-cell">
+                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="risk_type-2">
+                  <input    type="radio" id="risk_type-2" ng-model="agent.settings.risk_type" class="mdl-radio__button" name="risk_type" value="2"  >
                   <span class="mdl-radio__label">{{'Calcolo Rischio 4° direttiva'| translate}}</span>
                 </label>
               </div>

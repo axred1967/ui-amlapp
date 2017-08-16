@@ -85,6 +85,13 @@ $scope.edit_risk = function(){
 		localstorage('risk_profile01_sm',JSON.stringify({action:'',location:'view_contract'}))
 		localstorage('Contract',JSON.stringify($scope.Contract))
 		$state.go('risk_profile01_sm')
+		return
+	}
+	if ($scope.agent.settings.risk_type==2){
+		localstorage('risk_profile01_4d',JSON.stringify({action:'',location:'view_contract'}))
+		localstorage('Contract',JSON.stringify($scope.Contract))
+		$state.go('risk_profile01_4d')
+		return
 	}
 	else{
 		localstorage('risk_profile01',JSON.stringify({action:'',location:'view_contract'}))

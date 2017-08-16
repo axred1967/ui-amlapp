@@ -4,6 +4,7 @@ app2.factory('Companies_inf', function($http) {
     this.busy = false;
     this.after = '';
     this.loaded=0;
+    this.pInfo={}
 
   };
 
@@ -22,7 +23,7 @@ app2.factory('Companies_inf', function($http) {
       last=this.Companies[lastkey].company_id;
     }
 
-    data={"action":"CompanyList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"CompanyList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,pInfo:this.pInfo}
     $http.post(SERVICEURL2,  data )
     .then(function(responceData)  {
       if(responceData.data.RESPONSECODE=='1') 			{
@@ -76,6 +77,7 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
    $scope.main.location=$scope.page.location
 
   $scope.Companies_inf=new Companies_inf
+  $scope.Companies_inf.pInfo=$scope.agent.pInfo
 
 
   $scope.imageurl=function(image){
@@ -132,7 +134,7 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
 
   }
   $scope.deleteCompany2=function(Company,index){
-    data={action:'delete',table:'comapny','primary':'id',id:Company.company_id ,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={action:'delete',table:'company','primary':'company_id',id:Company.company_id ,pInfo:$scope.agent.pInfo}
     $http.post(SERVICEURL2,data)
     $state.reload()
   }

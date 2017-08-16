@@ -151,7 +151,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     if (image===undefined ||  image== null || image.length==0)
       imageurl= ''
     else
-    imageurl= BASEURL+ "file_down.php?action=file&file=" + image +"&profile=1&entity=company&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+    imageurl= BASEURL+ "file_down.php?action=file&file=" + image +"&profile=1&entity=company&agent_id="+  $scope.agent.pInfoUrl
   //
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl
@@ -253,7 +253,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     .then(function(data) {
       if(data.data.RESPONSECODE=='1') 			{
         //swal("",data.data.RESPONSE);
-        $scope.lastid=data.lastid
+        $scope.lastid=data.data.lastid
         $scope.back()
       }
       else

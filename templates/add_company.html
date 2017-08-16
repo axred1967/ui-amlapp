@@ -217,8 +217,8 @@
                           <input class="mdl-textfield__input" type="text" id="Company_mainActivity" name="Company_mainActivity"
                           ng-model="Company.mainActivity"  ng-change="Company.mainActivity=(Company.mainActivity| capitalize)"
                           minlength="3" ng-required="page.other_data "
-                          ng-keyup="showAC('company.mainActivity','Company_mainActivity');"
-                          ng-focus="resetAC()"
+                          ng-keyup="showAC('company.mainActivity','Company_mainActivity',{zero:true});"
+                          ng-focus="showAC('company.mainActivity','Company_mainActivity',{zero:true});resetAC()"
                           />
                           <label class="mdl-textfield__label" for="Company_mainActivity">{{'Principale Attività Economica'|translate}} *</label>
                           <table class="mdl-data-table mdl-js-data-table  border-none  ">

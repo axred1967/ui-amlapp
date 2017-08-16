@@ -8,6 +8,7 @@ app2.factory('Docs_inf', function($http,$state) {
     this.user_id=-1
     this.Contract={}
     this.Docload={}
+    this.pInfo={}
   };
 
   Docs_inf.prototype.nextPage = function(agent) {
@@ -19,7 +20,7 @@ app2.factory('Docs_inf', function($http,$state) {
       last=this.Docs[lastkey].id;
     }
     dbData=this.Docload
-   data={ "action":"documentList", dbData:dbData,last:last,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+   data={ "action":"documentList", dbData:dbData,last:last,pInfo:this.pInfo}
     $http.post(SERVICEURL2,  data )
     .then(function(responceData)  {
       $('#loader_img').hide();
@@ -163,6 +164,7 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
   else {
 */
     $scope.Docs_inf=new Docs_inf
+    $scope.Docs_inf.pInfo=$scope.agent.pInfo
     $scope.Docs_inf.Docload=$scope.Docload
 /*
   }
@@ -173,7 +175,7 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
     if (Doc===undefined || Doc.doc_image===undefined ||  Doc.doc_image== null || Doc.doc_image.length==0)
       imageurl= '../img/customer-listing1.png'
     else
-      imageurl= BASEURL+ "file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id +"&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+      imageurl= BASEURL+ "file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
 
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl
@@ -202,7 +204,7 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
 
   }
   $scope.deleteDoc2=function(Doc,index){
-    data={action:'delete',table:'documents','primary':'id',id:Doc.id,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie} }
+    data={action:'delete',table:'documents','primary':'id',id:Doc.id,pInfo:$scope.agent.pInfo}
 
     $http.post(SERVICEURL2,data)
     .then(function(responceData)  {

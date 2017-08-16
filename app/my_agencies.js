@@ -26,10 +26,12 @@ app2.controller('my_agencies', function ($scope,$http,$translate,$rootScope,$sta
 
 
   $scope.ObAmlApp=new ObAmlApp
+  $scope.ObAmlApp.pInfo=$scope.agent.pInfo
   $scope.ObAmlApp.set_settings({table:'agency',id:'agency_id',
   fields:{'address':'uno.address',
   'country':'uno.country',
   'town':'uno.town',
+  'tipo_cliente_app':'uno.tipo_cliente_app',
   'name':'j1.name',
   'email':'j1.email',
   'settings':'j1.settings',
@@ -52,7 +54,7 @@ app2.controller('my_agencies', function ($scope,$http,$translate,$rootScope,$sta
     if (image===undefined || image==null || image.length==0)
       imageurl= '../img/customer-listing1.png'
     else
-      imageurl= BASEURL+ "file_down.php?action=file&file=" + Ob.image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+      imageurl= BASEURL+ "file_down.php?action=file&file=" + Ob.image +"&profile=1"+ $scope.agent.pInfoUrl
   //    Ob.imageurl= Ob.IMAGEURI +Ob.image
     return   imageurl
   }

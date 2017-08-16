@@ -223,6 +223,7 @@ app2.controller('add_agency', function ($scope,$http,$state,$translate,$timeout,
        precPage={}
      switch ($scope.page.action){
        case 'signUp':
+          if ($scope.lastid>0)
           localstorage('msg','Ben trovato '+ $scope.Ob.name +'.\n Controlla la tua email per completare registrazione! ');
           break;
         case 'completeSignUp':

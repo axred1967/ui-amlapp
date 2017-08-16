@@ -31,18 +31,19 @@ app2.controller('risk_profile02_sm', function ($scope,$http,$state,$translate,$t
     .then(function(responceData) {
       $('#loader_img').hide();
       if(responceData.data.RESPONSECODE=='1') 			{
-        $scope.Kyc=responceData.kyc;
+        $scope.Kyc=responceData.data.kyc;
         data=responceData.data.RESPONSE;
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
-        $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
+        if ($scope.Kyc!==undefined)
+          $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         convertDateStringsToDates($scope.Risk)
         convertDateStringsToDates($scope.Risk.risk_data)
         if ($scope.Risk.risk_data.subjectiveProfile===undefined || ! isObject($scope.Risk.risk_data.subjectiveProfile)){
           $scope.Risk.risk_data.subjectiveProfile={}
 
         }
-        if ($scope.Kyc.contractor_data.check_pep!==undefined && $scope.Kyc.contractor_data.check_pep==1  ){
+        if ($scope.Kyc!==undefined && $scope.Kyc.contractor_data.check_pep!==undefined && $scope.Kyc.contractor_data.check_pep==1  ){
           $scope.PEP="il Cliente si è dichiarato PEP"
 
         }
@@ -226,7 +227,7 @@ app2.controller('risk_profile02_sm', function ($scope,$http,$state,$translate,$t
          return;
      }
      if (passo==-1){
-        $state.go($scope.page.location)
+        $state.go($scope.page.prev_page)
         return;
      }
      $state.go($scope.page.location)

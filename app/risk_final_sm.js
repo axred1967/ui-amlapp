@@ -34,8 +34,9 @@ app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeo
       $('#loader_img').hide();
       if(responceData.data.RESPONSECODE=='1') 			{
         data=responceData.data.RESPONSE;
-        $scope.Kyc=responceData.kyc;
-        $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
+        $scope.Kyc=responceData.data.kyc;
+        if ($scope.Kyc!==undefined)
+          $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         convertDateStringsToDates($scope.Risk)
@@ -57,11 +58,11 @@ app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeo
         if ($risk<=2 && $risk>0 ){
           $scope.Risk.risk_data.riskCalculated="Basso";
         }
-        if ($scope.Kyc.contractor_data.check_pep==1){
+        if ($scope.Kyc!==undefined && $scope.Kyc.contractor_data.check_pep==1){
           $scope.Risk.risk_data.riskCalculated="Alto";
           $scope.Risk.risk_data.riskDescription+="Il Cliente o alcuni titolari effettivi sono PEP"
         }
-        if ($scope.Kyc.contractor_data.check_pep!==undefined && $scope.Kyc.contractor_data.check_pep==1  ){
+        if ($scope.Kyc!==undefined && $scope.Kyc.contractor_data.check_pep!==undefined && $scope.Kyc.contractor_data.check_pep==1  ){
           $scope.PEP="il Cliente si è dichiarato PEP"
 
         }

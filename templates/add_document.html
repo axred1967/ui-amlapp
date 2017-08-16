@@ -6,7 +6,7 @@
           <fieldset>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
               <input type="hidden" ng-model="Doc.per" val="contract">
-              <input class="mdl-textfield__input" type="text"
+              <input class="mdl-textfield__input" type="text" autocomplete="off"
               ng-model="Doc.doc_name "
               id="Doc_doc_name" name="Doc_doc_name" />
               <label  for="Doc_doc_name" class="mdl-textfield__label" >{{'Nome documento' | translate }}</label>
@@ -18,20 +18,24 @@
           </fieldset>
           <fieldset>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-              <input class="mdl-textfield__input" type="text"
-              ng-keyup="showAC('Doc.doc_type', 'documents');"
+              <input class="mdl-textfield__input" type="text" autocomplete="off"
+              ng-keyup="showAC('documents.doc_type', 'doc_type',{zero:true});"
+              ng-focus="showAC('documents.doc_type', 'doc_type',{zero:true})"
               ng-model="Doc.doc_type "
-              id="Doc_doc_type" name="Doc_doc_type" />
-              <label  for="Doc_doc_type" class="mdl-textfield__label" >{{'Tipo documento' | translate }}</label>
-              <table class="mdl-data-table mdl-js-data-table  border-none  ">
+              id="doc_type" name="doc_type" />
+              <label  for="doc_type" class="mdl-textfield__label" >{{'Tipo documento' | translate }}</label>
+              <table class="mdl-data-table mdl-js-data-table  border-none  scrolly" tabindex="30" autocomplete="doc_type">
                 <tbody style="display:table">
-                  <tr ng-click="addWord('Doc.doc_type',item.word)" ng-repeat="item in word.doc_type">
+                  <tr tabindex="30"
+                  ng-click="addWord('Doc.doc_type',item.word,{id:'doc_type'})"
+                  my-Enter="addWord('Doc.doc_type',item.word,{id:'doc_type'})"
+                  ng-repeat="item in word.doc_type">
                     <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
                   </tr>
                 </tbody>
               </table>
-              <span class="mdl-tooltip mdl-tooltip--validation" for="Doc_doc_type" ng-show="form.Doc_doc_type.$invalid && form.Doc_doc_type.$touched">
-                <span ng-show="form.Doc_doc_type.$error.required">Required.</span>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="doc_type" ng-show="form.doc_type.$invalid && form.doc_type.$touched">
+                <span ng-show="form.doc_type.$error.required">Required.</span>
               </span>
             </div>
           </fieldset>

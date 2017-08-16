@@ -48,6 +48,9 @@
   <script src="js/angular-route.min.js"></script>
   <script src="js/angular-sanitize.js"></script>
   <script src="js/angular-translate.min.js"></script>
+  <script src="js/angular-translate-loader-static-files.min.js"></script>
+  <script src="js/tmhDynamicLocale.min.js"></script>
+
   <script src="js/ng-infinite-scroll.min.js"></script>
   <script src="js/ng-currency.js"></script></head>
   <script src="js/signature_pad.js"></script></head>
@@ -85,6 +88,11 @@
   <script src="app/risk_profile01_sm.js"></script>
   <script src="app/risk_profile02_sm.js"></script>
   <script src="app/risk_final_sm.js"></script>
+  <script src="app/risk_profile01_4d.js"></script>
+  <script src="app/risk_profile02_4d.js"></script>
+  <script src="app/risk_profile03_4d.js"></script>
+  <script src="app/risk_profile04_4d.js"></script>
+  <script src="app/risk_final_4d.js"></script>
 
 <!-- Amministrazione  -->
 <script src="app/email_templates.js"></script>
@@ -99,21 +107,7 @@ Text angular
 <script src='/textAngular/dist/textAngular-sanitize.min.js'></script>
 <script src='/textAngular/dist/textAngular.min.js'></script>
 <!-- -->
-  <script>
-  langfile = localStorage.getItem("language");
-  if (langfile == 'en')
-  document.write('<scri' + 'pt src="js/enlang_ang.js"></' + 'script>');
-  else
-  document.write('<scri' + 'pt src="js/itlang_ang.js"></' + 'script>');
-  if(langfile ==  "en"){
-    //             $.getScript("js/i18n/angular-locale_en.js");
-    document.write('<scri' + 'pt src="js/i18n/angular-locale_en.js"></' + 'script>');
-  }
-  else{
-    //             $.getScript("js/i18n/angular-locale_it.js");
-    document.write('<scri' + 'pt src="js/i18n/angular-locale_it.js"></' + 'script>');
-  }
-  </script>
+
   <style>
   #heading {
     width:100%;

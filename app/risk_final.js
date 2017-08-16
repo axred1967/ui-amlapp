@@ -34,7 +34,7 @@ app2.controller('risk_final', function ($scope,$http,$state,$translate,$timeout)
       $('#loader_img').hide();
       if(responceData.data.RESPONSECODE=='1') 			{
         data=responceData.data.RESPONSE;
-        $scope.Kyc=responceData.kyc;
+        $scope.Kyc=responceData.data.kyc;
         $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)

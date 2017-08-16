@@ -220,7 +220,7 @@ $scope.add_customer= function (){
   .then(function(data) {
     if(data.data.RESPONSECODE=='1') 			{
       //swal("",data.data.RESPONSE);
-      $scope.lastid=data.lastid
+      $scope.lastid=data.data.lastid
       $scope.back()
     }
     else

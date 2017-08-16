@@ -7,7 +7,7 @@
         <form id="form" name="form" action="#" novalidate="" autocomplete="off" >
           <fieldset>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input class="mdl-textfield__input" type="text" id="Kyc_poi" name="Kyc_poi"  pattern="[A-Za-z\s]*"
+              <input class="mdl-textfield__input" type="text" autocomplete="off" id="Kyc_poi" name="Kyc_poi"  pattern="[A-Za-z\s]*"
               ng-model="Kyc.place_of_identification"  ng-change="Kyc.place_of_identification=(Kyc.place_of_identification| capitalize)"
               minlength="3" ng-required="true" ng-keyup="showAC('Kyc.place_of_identification');"
               ng-focus="resetAC()" autocomplete="off"
@@ -49,7 +49,7 @@
           </fieldset>
           <fieldset>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input class="mdl-textfield__input" type="text" id="Kyc_tob" name="Kyc_tob"  pattern="[A-Za-z\s]*"
+              <input class="mdl-textfield__input" type="text" autocomplete="off" id="Kyc_tob" name="Kyc_tob"  pattern="[A-Za-z\s]*"
               ng-model="Kyc.contractor_data.birth_town"  ng-change="Kyc.contractor_data.birth_town=(Kyc.contractor_data.birth_town| capitalize)"
               minlength="3" ng-required="true" ng-keyup="showAC('Kyc.contractor_data.birth_town','Kyc_tob');"
               ng-focus="resetAC()" autocomplete="off"
@@ -82,15 +82,18 @@
           </div>
 -->
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" id="birth_country" name="birth_country" minlength="3"  value=" "
+          <input class="mdl-textfield__input" type="text" autocomplete="off" id="birth_country" name="birth_country" minlength="3"  value=" "
           ng-model="Kyc.contractor_data.birth_country"   minlength="3" autocomplete="off"
           ng-keyup="showAC('users.birth_country','birth_country',{countries:true,zero:true});"
           ng-focus="showAC('users.birth_country','birth_country',{countries:true,zero:true});resetAC()"
           />
           <label class="mdl-textfield__label" for="birth_country">{{'Paese di Nascita'|translate}} *</label>
-          <table class="mdl-data-table mdl-js-data-table  border-none  scrolly">
+          <table class="mdl-data-table mdl-js-data-table  border-none  scrolly" tabindex="30" autocomlpete="birth_country">
             <tbody style="display:table">
-              <tr ng-click="addWord('Kyc.contractor_data.birth_country',item.word,{countries:true,id:'birth_country'})" ng-repeat="item in word.birth_country">
+              <tr tabindex="30"
+              ng-click="addWord('Kyc.contractor_data.birth_country',item.word,{countries:true,id:'birth_country'})"
+              my-Enter="addWord('Kyc.contractor_data.birth_country',item.word,{countries:true,id:'birth_country'})" 
+              ng-repeat="item in word.birth_country">
                 <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
               </tr>
             </tbody>
@@ -104,7 +107,7 @@
 
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="Kyc_tdi" name="Kyc_tdi"
+            <input class="mdl-textfield__input" type="text" autocomplete="off" id="Kyc_tdi" name="Kyc_tdi"
             ng-model="Kyc.contractor_data.id_type"  ng-change="Kyc.contractor_data.id_type=(Kyc.contractor_data.id_type| capitalize)" minlength="3" ng-required="true"
             ng-keyup="showAC('users.id_type','Kyc_tdi',{zero:true});" autocomplete="off"
             ng-focus="resetAC();showAC('users.id_type','Kyc_tdi',{zero:true});" />
@@ -123,7 +126,7 @@
         </fieldset>
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="Kyc_ard" name="Kyc_ard" autocomplete="off"
+            <input class="mdl-textfield__input" type="text" autocomplete="off" id="Kyc_ard" name="Kyc_ard" autocomplete="off"
             ng-model="Kyc.contractor_data.id_authority_name"  ng-change="Kyc.contractor_data.id_authority_name=(Kyc.contractor_data.id_authority_name| capitalize)"
             minlength="3" ng-required="true"
             ng-focus="resetAC();showAC('users.id_authority_name','Kyc_ard',{zero:true});"
@@ -143,7 +146,7 @@
         </fieldset>
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="Kyc_ndoc" name="Kyc_ndoc"
+            <input class="mdl-textfield__input" type="text" autocomplete="off" id="Kyc_ndoc" name="Kyc_ndoc"
             ng-model="Kyc.contractor_data.id_number"   ng-required="true" autocomplete="off"
             />
             <label class="mdl-textfield__label" for="Kyc_doi">{{'Numero del documento di identità'|translate}} *</label>

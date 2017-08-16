@@ -107,7 +107,54 @@ app2.factory('Contracts_inf', function($http,$state) {
   return Contracts_inf;
 });
 
-app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$state,Contracts_inf,$timeout) {
+app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$state,Contracts_inf,$timeout,tmhDynamicLocale,$translate) {
+  // fisso valori iniziali
+  if ($scope.agent.name===undefined){
+    $scope.agent.name=localStorage.getItem('Name');
+    $scope.agent.email=localStorage.getItem('userEmail');
+    $scope.agent.id=localStorage.getItem('agentId');
+    $scope.agent.user_id=localStorage.getItem('userId');
+    $scope.agent.agency_id=localStorage.getItem('agencyId');
+    $scope.agent.user_type=localStorage.getItem('userType');
+    $scope.agent.cookie=localStorage.getItem('cookie');
+    $scope.agent.image=localStorage.getItem('Profileimageagencyuser');
+    $scope.agent.settings=IsJsonString(localStorage.getItem('userSettings'));
+    $scope.agent.pInfo={user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}
+    $scope.agent.pInfoUrl="&" +jQuery.param({pInfo:$scope.agent.pInfo})
+
+    if ($scope.agent.image===undefined ||  $scope.agent.image== null || $scope.agent.image.length==0)
+      $scope.agent.imageurl= ''
+    else
+      $scope.agent.imageurl= BASEURL+ "file_down.php?file=" + $scope.agent.image +"&action=file&profile=1"
+    $scope.agent.paese= localStorage.getItem("paese");
+    $scope.agent.tipo_cliente= localStorage.getItem("tipo_cliente");
+  }
+  // fisso preferenze nomi
+      paese = $scope.agent.paese;
+      tipo_cliente = $scope.agent.tipo_cliente;
+      switch (paese){
+        case 'italia':
+        case 'san marino':
+        tmhDynamicLocale.set('it');
+        switch (tipo_cliente){
+          case 'agenzia assicurazioni':
+            $translate.use('it-IT'); // translati   ons-en-US.json
+            break;
+          case 'studio commercialisti':
+          $translate.use('it-IT-comm'); // translati   ons-en-US.json
+          break;
+          default:
+            $translate.use('it-IT'); // translati   ons-en-US.json
+
+        }
+        break;
+        case'stati uniti' :
+          break;
+        default:
+        $translate.use('it-IT'); // translati   ons-en-US.json
+        tmhDynamicLocale.set('it');
+
+      }
   //alert(window.location.pathname.replace(/^\//, ''));
   $scope.main.login=false
   $scope.main.Back=false
@@ -267,7 +314,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     if ($scope.main.web){
       r=confirm("Vuoi Cancellare il Contratto?");
       if (r == true) {
-        $scope.deleteContract2(Company,index);
+        $scope.deleteContract2(Contract,index);
       }
     }
     else{
@@ -285,7 +332,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
   }
   $scope.deleteContract2=function(contract,index){
-    data={action:'delete',table:'contract','primary':'id',id:contract.contract_id ,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={action:'delete',table:'contract','primary':'id',id:contract.contract_id ,pInfo:$scope.agent.pInfo}
     $http.post(SERVICEURL2,data)
     $state.reload()
   }

@@ -20,6 +20,7 @@ app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_i
    $scope.main.location=$scope.page.location
 
   $scope.Customers_inf=new Customers_inf
+  $scope.Customers_inf.pInfo=$scope.agent.pInfo
 
   $scope.imageurl=function(Customer){
 
@@ -27,7 +28,7 @@ app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_i
     if (Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
       Customer.imageurl= '../img/customer-listing1.png'
     else
-   Customer.imageurl= BASEURL+ "file_down.php?action=file&file=" + Customer.image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+   Customer.imageurl= BASEURL+ "file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
 //
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   Customer.imageurl

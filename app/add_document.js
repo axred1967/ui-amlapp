@@ -1,4 +1,4 @@
-app2.controller('add_document', function ($scope,$http,$translate,$state,$timeout) {
+app2.controller('add_document', function ($scope,$http,$translate,$state,$timeout,AutoComplete) {
   $scope.loader=true
 
   $scope.main.Back=true
@@ -191,10 +191,10 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
             headers: {'Content-Type': undefined}
         })
             .then(function(data){
-              $scope.Doc.doc_image=data.data.RESPonse;
+              $scope.Doc.doc_image=data.data.response;
               $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
               $scope.loaded=true
-              $scope.Doc.file_type=data.file_type
+              $scope.Doc.file_type=data.data.file_type
               $scope.Doc.isImage=true
               if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
                 $scope.Doc.isImage=false
@@ -220,7 +220,8 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
     if (Doc===undefined || Doc.doc_image===undefined ||  Doc.doc_image== null || Doc.doc_image.length==0)
       imageurl= '../img/customer-listing1.png'
     else
-      imageurl= BASEURL+ "file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id +"&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+      imageurl= BASEURL+ "file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
+      "&user_id="+$scope.agent.user_id+ "&agency_id="+$scope.agent.agency_id+"&user_type="+$scope.agent.user_type
 
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl
@@ -228,34 +229,55 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
   }
 
 
-  $scope.showAC=function($search,$table){
-    var id=localStorage.getItem("userId");
-    var usertype = localStorage.getItem('userType');
-    res = $search.split(".")
-    $search=res[1]
-    $word=$scope[res[0]][res[1]]
-    if ($table===undefined)
-    $table=res[0].toLowerCase()
-
-    if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
-
-     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
-      $http.post( SERVICEURL2,  data )
+  $scope.showAC=function($search,$word, settings){
+    settings.pInfo=$scope.agent.pInfo
+    AutoComplete.showAC($search,$word, settings)
       .then(function(data) {
         if(data.data.RESPONSECODE=='1') 			{
           //$word=$($search.currentTarget).attr('id');
+          $search=res[1]
           $scope.word[$search]=data.data.RESPONSE;
         }
-        if (data.data.RESPONSECODE=='-1'){
-           localstorage('msg','Sessione Scaduta ');
-           $state.go('login');;;
-        }
+       if (data.data.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          $state.go('login');;;
+       }
       })
       , (function() {
         console.log("error");
       });
+  }
+  $scope.resetAC=function(){
+    $scope.word={}
+    $scope.list={}
+    $scope.listOther={}
+    $scope.listCompany={}
+
+
+  }
+  $scope.addWord=function($search,$word,par){
+    res = $search.split(".")
+    switch(res.length){
+      case 2:
+      $scope[res[0]][res[1]]=$word
+      $scope.word[res[1]]=[]
+      break;
+      case 3:
+      $scope[res[0]][res[1]][res[2]]=$word
+      $scope.word[res[2]]=[]
+      break;
+
     }
-    $scope.oldWord= $($search.currentTarget).val()
+    if (par.id!==undefined){
+      $('#'+par.id).parent('div.mdl-textfield').addClass('is-dirty');
+      $('#'+par.id).parent('div.mdl-textfield').addClass('ng-touched');
+      $('#'+par.id).parent('div.mdl-textfield').removeClass('is-invalid');
+
+    }
+
+    if (par.countries){
+      $scope.word['countries']=[]
+    }
   }
   $scope.deleteDoc=function()
   {
@@ -320,7 +342,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       if(data.data.RESPONSECODE=='1') 			{
-        $scope.Doc.doc_image=data.data.RESPONSE;
+        $scope.Doc.doc_image=data.data.response;
         $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
         $scope.loaded=true
         $("#loader_img_int").hide()
@@ -390,11 +412,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
       console.log('error');
     })
   }
-  $scope.addWord=function($search,$word){
-    res = $search.split(".")
-    $scope[res[0]][res[1]]=$word
-    $scope.word[res[1]]=[]
-  }
+
   $scope.download = function(Doc) {
      url=BASEURL + "file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+"&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
      $http.get(url, {

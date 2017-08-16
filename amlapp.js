@@ -24,12 +24,20 @@ var autocomplete_table_focus=''
 var first_autocomplete_table_focus=false
 
 
-var app2 = angular.module('myApp', ['ui.router','pascalprecht.translate','ngSanitize','ng-currency','fieldMatch','infinite-scroll','textAngular']);
+var app2 = angular.module('myApp', ['ui.router','pascalprecht.translate','ngSanitize','ng-currency','fieldMatch','infinite-scroll','textAngular','tmh.dynamicLocale']);
 
-app2.config(['$translateProvider', function ($translateProvider) {
+app2.config(function ($translateProvider, tmhDynamicLocaleProvider) {
   // Enable escaping of HTML
+  $translateProvider.useStaticFilesLoader({
+                    prefix: '/localization/',
+                    suffix: '.json'
+                })
+                .preferredLanguage('it-IT')
+
+  tmhDynamicLocaleProvider.localeLocationPattern('/localization/angular-locale_{{locale}}.js');
+
   $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
-}]);
+});
 
 app2.config(function($stateProvider, $urlRouterProvider) {
 
@@ -40,189 +48,213 @@ app2.config(function($stateProvider, $urlRouterProvider) {
         // HOME STATES AND NESTED VIEWS ========================================
 
         .state('home', {
-            url: '/home?action&agency_id&codeCli',
+            url: 'home?action&agency_id&codeCli',
             templateUrl: 'templates/my_contract.html',
             controller: 'my_contract'
         })
         .state('login', {
-            url: '/login?action&agency_id&codeCli',
+            url: 'login?action&agency_id&codeCli',
             templateUrl: 'templates/login.html',
             controller: 'login'
         })
         .state('language', {
-            url: '/language',
+            url: 'language',
             templateUrl: 'templates/language.html',
             controller: 'language'
         })
         .state('view_contract', {
-            url: '/view_contract',
+            url: 'view_contract/par:=parameter',
             templateUrl: 'templates/view_contract.html',
             controller: 'view_contract'
         })
         .state('add_contract', {
-            url: '/contract',
+            url: 'contract/par:=parameter',
             templateUrl: 'templates/add_contract.html',
-            controller: 'add_contract'
+            controller: 'add_contract',
         })
         .state('add_customer', {
-            url: '/customer',
+            url: 'customer/par:=parameter',
             templateUrl: 'templates/add_customer.html',
-            controller: 'add_customer'
+            controller: 'add_customer',
         })
         .state('my_customer', {
-            url: '/my_customer',
+            url: 'my_customer',
             templateUrl: 'templates/my_customer.html',
             controller: 'my_customer'
         })
         .state('my_company', {
-            url: '/company',
+            url: 'company',
             templateUrl: 'templates/my_company.html',
             controller: 'my_company'
         })
         .state('my_agent', {
-            url: '/agent',
+            url: 'agent',
             templateUrl: 'templates/my_agent.html',
             controller: 'my_agent',
             params: {Company:{},Contract:{}}
         })
         .state('owners_list', {
-            url: '/owners_list',
+            url: 'owners_list',
             templateUrl: 'templates/owners_list.html',
             controller: 'owners_list'
         })
         .state('my_document', {
-            url: '/document',
+            url: 'document',
             templateUrl: 'templates/my_document.html',
             controller: 'my_document'
         })
         .state('add_document', {
-            url: '/add_document',
+            url: 'add_document',
             templateUrl: 'templates/add_document.html',
             controller: 'add_document'
         })
         .state('add_owners', {
-            url: '/add_owners',
+            url: 'add_owners',
             templateUrl: 'templates/add_owners.html',
             controller: 'add_owners'
         })
         .state('add_company', {
-            url: '/add_company',
+            url: 'add_company',
             templateUrl: 'templates/add_company.html',
             controller: 'add_company'
         })
         .state('kycstep01', {
-            url: '/kycstep01',
+            url: 'kycstep01',
             templateUrl: 'templates/kycstep01.html',
             controller: 'kycstep01'
         })
         .state('kycstep02', {
-            url: '/kycstep02',
+            url: 'kycstep02',
             templateUrl: 'templates/kycstep02.html',
             controller: 'kycstep02'
         })
         .state('kycstep03', {
-            url: '/kycstep03',
+            url: 'kycstep03',
             templateUrl: 'templates/kycstep03.html',
             controller: 'kycstep03'
         })
         .state('kyc_company', {
-            url: '/kyc_company',
+            url: 'kyc_company',
             templateUrl: 'templates/kyc_company.html',
             controller: 'kyc_company'
         })
         .state('kyc_owners', {
-            url: '/kyc_owners',
+            url: 'kyc_owners',
             templateUrl: 'templates/kyc_owners.html',
             controller: 'kyc_owners'
         })
         .state('kyc_signature', {
-            url: '/kyc_signature',
+            url: 'kyc_signature',
             templateUrl: 'templates/kyc_signature.html',
             controller: 'kyc_signature'
         })
         .state('risk_profile01', {
-            url: '/risk_profile01',
+            url: 'risk_profile01',
             templateUrl: 'templates/risk_profile01.html',
             controller: 'risk_profile01'
         })
         .state('risk_profile02', {
-            url: '/risk_profile02',
+            url: 'risk_profile02',
             templateUrl: 'templates/risk_profile02.html',
             controller: 'risk_profile02'
         })
         .state('risk_profile03', {
-            url: '/risk_profile03',
+            url: 'risk_profile03',
             templateUrl: 'templates/risk_profile03.html',
             controller: 'risk_profile03'
         })
         .state('risk_profile04', {
-            url: '/risk_profile04',
+            url: 'risk_profile04',
             templateUrl: 'templates/risk_profile04.html',
             controller: 'risk_profile04'
         })
         .state('risk_profile05', {
-            url: '/risk_profile05',
+            url: 'risk_profile05',
             templateUrl: 'templates/risk_profile05.html',
             controller: 'risk_profile05'
         })
         .state('risk_final', {
-            url: '/risk_final',
+            url: 'risk_final',
             templateUrl: 'templates/risk_final.html',
             controller: 'risk_final'
         })
         .state('my_profile', {
-            url: '/my_profile',
+            url: 'my_profile',
             templateUrl: 'templates/my_profile.html',
             controller: 'my_profile'
         })
         .state('risk_profile01_sm', {
-            url: '/risk_profile01_sm',
+            url: 'risk_profile01_sm',
             templateUrl: 'templates/risk_profile01_sm.html',
             controller: 'risk_profile01_sm'
         })
         .state('risk_profile02_sm', {
-            url: '/risk_profile02_sm',
+            url: 'risk_profile02_sm',
             templateUrl: 'templates/risk_profile02_sm.html',
             controller: 'risk_profile02_sm'
         })
         .state('risk_final_sm', {
-            url: '/risk_final_sm',
+            url: 'risk_final_sm',
             templateUrl: 'templates/risk_final_sm.html',
             controller: 'risk_final_sm'
         })
-
+        .state('risk_profile01_4d', {
+            url: 'risk_profile01_4d',
+            templateUrl: 'templates/risk_profile01_4d.html',
+            controller: 'risk_profile01_4d'
+        })
+        .state('risk_profile02_4d', {
+            url: 'risk_profile02_4d',
+            templateUrl: 'templates/risk_profile02_4d.html',
+            controller: 'risk_profile02_4d'
+        })
+        .state('risk_profile03_4d', {
+              url: 'risk_profile03_4d',
+              templateUrl: 'templates/risk_profile03_4d.html',
+              controller: 'risk_profile03_4d'
+          })
+          .state('risk_profile04_4d', {
+                url: 'risk_profile04_4d',
+                templateUrl: 'templates/risk_profile04_4d.html',
+                controller: 'risk_profile04_4d'
+            })
+            .state('risk_final_4d', {
+                  url: 'risk_final_4d',
+                  templateUrl: 'templates/risk_final_4d.html',
+                  controller: 'risk_final_4d'
+              })
         .state('logout', {
-            url: '/logout',
+            url: 'logout',
             controller: 'logout'
         })
 // Amministrazione
         .state('my_agencies', {
-            url: '/my_agency',
+            url: 'my_agency',
             templateUrl: 'templates/my_agencies.html',
             controller: 'my_agencies'
         })
         .state('add_agency', {
-            url: '/add_agency',
+            url: 'add_agency',
             templateUrl: 'templates/add_agency.html',
             controller: 'add_agency'
         })
         .state('my_plan', {
-            url: '/my_plan',
+            url: 'my_plan',
             templateUrl: 'templates/my_plan.html',
             controller: 'my_plan'
         })
         .state('add_plan', {
-            url: '/add_plan',
+            url: 'add_plan',
             templateUrl: 'templates/add_plan.html',
             controller: 'add_plan'
         })
         .state('email_templates', {
-            url: '/email_templates',
+            url: 'email_templates',
             templateUrl: 'templates/email_templates.html',
             controller: 'email_templates'
         })
         .state('add_email_template', {
-            url: '/add_email_template',
+            url: 'add_email_template',
             templateUrl: 'templates/add_email_template.html',
             controller: 'add_email_template'
         })
@@ -230,7 +262,7 @@ app2.config(function($stateProvider, $urlRouterProvider) {
 
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
         .state('about', {
-          url: '/view_contract',
+          url: 'view_contract',
           templateUrl: 'view_contract.html'
         });
 
@@ -319,7 +351,11 @@ app2.run(function($rootScope, $timeout) {
       }
     })
 });
-
+app2.filter('dateToISO', function() {
+  return function(input) {
+    return new Date(input).toISOString();
+  };
+});
 app2.filter('capitalize', function() {
   return function(input, $scope) {
     if ( input !==undefined && input.length>0)
@@ -336,15 +372,10 @@ app2.service('AutoComplete',function($http,$state){
     var usertype = localStorage.getItem('userType');
     res = $search.split(".")
     $search=res[1]
-    if ($word===undefined){
-      $word=$scope[res[0]][res[1]]
-    }
-    else {
-      $word=$('#'+$word).val()
-    }
+    $word=$('#'+$word).val()
     $table=res[0].toLowerCase()
-    if (( $word  !== "undefined" && $word.length>0 &&  $word!=this.oldWord) || settings.zero){
-     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,agent_id:localStorage.getItem("agentId"),cookie:localStorage.getItem("cookie")}
+    if (( $word  !== undefined && $word.length>0 &&  $word!=this.oldWord) || settings.zero){
+     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,pInfo:settings.pInfo}
      return $http.post( SERVICEURL2,  data )
     }
     this.oldWord= $($search.currentTarget).val()
@@ -354,7 +385,54 @@ app2.service('AutoComplete',function($http,$state){
 
 
 
-app2.controller('personCtrl', function ($scope, $state,$stateParams) {
+app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLocale,$translate) {
+  $scope.agent={}
+  if ($scope.agent.name===undefined){
+    $scope.agent.name=localStorage.getItem('Name');
+    $scope.agent.email=localStorage.getItem('userEmail');
+    $scope.agent.id=localStorage.getItem('agentId');
+    $scope.agent.user_id=localStorage.getItem('userId');
+    $scope.agent.agency_id=localStorage.getItem('agencyId');
+    $scope.agent.user_type=localStorage.getItem('userType');
+    $scope.agent.cookie=localStorage.getItem('cookie');
+    $scope.agent.image=localStorage.getItem('Profileimageagencyuser');
+    $scope.agent.settings=IsJsonString(localStorage.getItem('userSettings'));
+    $scope.agent.pInfo={user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}
+    $scope.agent.pInfoUrl="&" +jQuery.param({pInfo:$scope.agent.pInfo})
+    if ($scope.agent.image===undefined ||  $scope.agent.image === null ||  $scope.agent.image == 'null' || $scope.agent.image.length==0)
+      $scope.agent.imageurl= ''
+    else
+      $scope.agent.imageurl= BASEURL+ "file_down.php?file=" + $scope.agent.image +"&action=file&profile=1"+ $scope.agent.pInfoUrl
+    $scope.agent.paese= localStorage.getItem("paese");
+    $scope.agent.tipo_cliente= localStorage.getItem("tipo_cliente");
+  }
+  // fisso preferenze nomi
+      paese = $scope.agent.paese;
+      tipo_cliente = $scope.agent.tipo_cliente;
+      switch (paese){
+        case 'italia':
+        case 'san marino':
+        tmhDynamicLocale.set('it');
+        switch (tipo_cliente){
+          case 'agenzia assicurazioni':
+            $translate.use('it-IT'); // translati   ons-en-US.json
+            break;
+          case 'studio commercialisti':
+          $translate.use('it-IT-comm'); // translati   ons-en-US.json
+          break;
+          default:
+            $translate.use('it-IT'); // translati   ons-en-US.json
+
+        }
+        break;
+        case'stati uniti' :
+          break;
+        default:
+        $translate.use('it-IT'); // translati   ons-en-US.json
+        tmhDynamicLocale.set('it');
+
+      }
+
   $scope.load=false
   $scope.main={}
   $scope.main.Sidebar=true
@@ -379,6 +457,7 @@ app2.controller('personCtrl', function ($scope, $state,$stateParams) {
 
 
   }
+
   if ($stateParams.action=='signup'){
     localstorage('add_agency',JSON.stringify({action:'complete_signup',location:'login'}))
     $state.go("add_agency");
@@ -397,23 +476,9 @@ app2.controller('personCtrl', function ($scope, $state,$stateParams) {
     $state.go("login");
   }
     //checkthesidebarinfouser();
-    $scope.agent={}
-    $scope.agent.name=localStorage.getItem('Name');
-    $scope.agent.email=localStorage.getItem('userEmail');
-    $scope.agent.id=localStorage.getItem('agentId');
-    $scope.agent.user_id=localStorage.getItem('userId');
-    $scope.agent.agency_id=localStorage.getItem('agencyId');
-    $scope.agent.user_type=localStorage.getItem('userType');
-    $scope.agent.cookie=localStorage.getItem('cookie');
-    $scope.agent.image=localStorage.getItem('Profileimageagencyuser');
-    $scope.agent.settings=IsJsonString(localStorage.getItem('userSettings'));
-    $scope.agent.pInfo={user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}
-    if ($scope.agent.image===undefined ||  $scope.agent.image== null || $scope.agent.image.length==0)
-      $scope.agent.imageurl= ''
-    else
-      $scope.agent.imageurl= BASEURL+ "file_down.php?file=" + $scope.agent.image +"&action=file&profile=1"
 
-      $state.go("/");
+
+      $state.go("home");
 })
 window.addEventListener('keydown', function (evt) {
   if ($(evt.target)===undefined && $(evt.target).get(0) ===undefined){

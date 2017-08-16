@@ -1,15 +1,15 @@
-app2.controller('risk_profile03', function ($scope,$http,$state,$translate,$timeout) {
+app2.controller('risk_profile03_4d', function ($scope,$http,$state,$translate,$timeout) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
   $scope.main.Search=false
   $scope.main.Sidebar=false
   $('.mdl-layout__drawer-button').hide()
-  $scope.main.viewName="Comportamento del Cliente"
+  $scope.main.viewName="Aspetti Connessi alla Operazione 1"
   $scope.main.loader=true
-    $scope.page={}
+  $scope.page={}
 
-  $scope.curr_page='risk_profile03'
+  $scope.curr_page='risk_profile03_4d'
   page=localStorage.getItem($scope.curr_page)
   if ( page!= null && page.length >0 ){
     $scope.page=JSON.parse(page)
@@ -19,13 +19,14 @@ app2.controller('risk_profile03', function ($scope,$http,$state,$translate,$time
   $scope.main.location=$scope.page.location
 
 
+
   switch ($scope.action){
     default:
     var id=localStorage.getItem("CustomerProfileId");
     var email=localStorage.getItem("userEmail");
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     appData=$scope.Contract
-   data={"action":"riskAx",appData:appData,country:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"riskAx",appData:appData,kyc:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
       $('#loader_img').hide();
@@ -34,44 +35,25 @@ app2.controller('risk_profile03', function ($scope,$http,$state,$translate,$time
         data=responceData.data.RESPONSE;
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
+        if ($scope.Kyc!== undefined )
+        $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         convertDateStringsToDates($scope.Risk)
         convertDateStringsToDates($scope.Risk.risk_data)
-        if ($scope.Risk.risk_data.mainActivity===undefined || ! isObject($scope.Risk.risk_data.mainActivity))
-          $scope.Risk.risk_data.mainActivity={}
-          if ($scope.Risk.risk_data.Residence===undefined || ! isObject($scope.Risk.risk_data.Residence))
-            $scope.Risk.risk_data.Residence={}
+        if ($scope.Risk.risk_data.aspConnOpe===undefined || ! isObject($scope.Risk.risk_data.aspConnOpe)){
+          $scope.Risk.risk_data.aspConnOpe={}
+          $scope.Risk.risk_data.aspConnOpe.b1={}
+          $scope.Risk.risk_data.aspConnOpe.b2={}
+          $scope.Risk.risk_data.aspConnOpe.b3={}
+          $scope.Risk.risk_data.aspConnOpe.b4={}
 
-//        $scope.Risk.risk_data.partial=IsJsonString($scope.Risk.risk_data.partial)
-$('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
-  function(index){
-    ngm=$(this).attr('ng-model')
-    s = ngm.split(".")
-    switch (s.length){
-      case 1:
-          $val= $scope[s[0]]
-          break;
-          case 2:
-              $val= $scope[s[0]][s[1]]
-              break;
-              case 3:
-                  $val= $scope[s[0]][s[1]][s[2]]
-                  break;
-                  case 4:
-                      $val= $scope[s[0]][s[1]][s[2]][s[3]]
-                      break;
 
-    }
-    if ( $(this).attr('type')=="radio" && $val==$(this).attr('value'))
-      document.getElementById($(this).attr('id')).parentNode.MaterialRadio.check()
-        //$(this).parentNode.MaterialRadio.check()
-      if ($(this).attr('type')=="checkbox" && $val==$(this).attr('value'))
-      document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox.check()
-//                $(this).parentNode.MaterialCheckbox.check()
+        }
+        if ($scope.Kyc!== undefined && $scope.Kyc.contractor_data.check_pep!==undefined && $scope.Kyc.contractor_data.check_pep==1  ){
+          $scope.PEP="il Cliente si è dichiarato PEP"
 
-    $(this).parent('div.mdl-textfield').addClass('is-dirty');
-    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-  }
-);
+        }
+
+
       }
       else
       {
@@ -89,6 +71,27 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
     $scope.action="saveKyc"
 
 
+
+  }
+  $scope.subTotRisk= function (ob){
+    var subt=0;
+    angular.forEach(ob,function(value,key) {
+      if (isObject(value)){
+        subt+=$scope.subTotRisk(value);
+      }
+      else{
+        subt+=value;
+
+      }
+    })
+    return subt
+  }
+
+  $scope.color= function (val){
+    if (val==0){
+      return "Alto"
+    }
+    return "Basso"
   }
   $scope.save_risk= function (passo){
     if ($scope.form.$invalid) {
@@ -107,10 +110,11 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
     }
     var langfileloginchk = localStorage.getItem("language");
     dbData=$scope.Risk
+
     dbData.risk_data=JSON.stringify(dbData.risk_data)
 
     $('#loader_img').show();
-   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       $('#loader_img').hide();
@@ -128,12 +132,10 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
           $state.go('login');;;
         }
         console.log('error');
-        $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         swal("",data.data.RESPONSE);
       }
     })
     , (function() {
-      $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
       console.log("error");
     });
 
@@ -198,35 +200,32 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
   }
 
 
+  $scope.check_risk=function (partial){
+    /*
+  if   ($scope.Risk.risk_data.partial===undefined ||$scope.Risk.risk_data.partial=='false' )
+     $scope.Risk.risk_data.partial={}
+    $scope.Risk.risk_data.partial[partial]="RPI"
 
+    angular.forEach($scope.Risk.risk_data[partial], function(value, key) {
+      if (value==1 || value.length>5){
+         $scope.Risk.risk_data.partial[partial]="RPS"
+         return
 
+      }
 
-   $scope.check_risk=function (partial){
-   if   ($scope.Risk.risk_data.partial===undefined|| $scope.Risk.risk_data.partial==false)
-      $scope.Risk.risk_data.partial={}
-   $scope.Risk.risk_data.partial[partial]="Basso"
+    });
+*/
 
-     angular.forEach($scope.Risk.risk_data[partial], function(value, key) {
-       if (value==1 || value.length>5){
-          $scope.Risk.risk_data.partial[partial]="Alto"
-          return
-
-       }
-
-     });
-
-
-   }
-
+  }
    $scope.back=function(passo){
      if (passo>0){
-         localstorage('risk_profile0'+ passo +'',JSON.stringify({action:'',location:$scope.page.location, prev_page:$state.curr_page}))
-         $state.go('risk_profile0'+ passo )
+         localstorage('risk_profile0'+ passo +'_4d',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
+         $state.go('risk_profile0'+ passo +'_4d' )
          return;
      }
      if (passo==-1){
-       $state.go($scope.page.prev_page)
-         return;
+        $state.go($scope.page.prev_page)
+        return;
      }
      $state.go($scope.page.location)
    }
@@ -239,7 +238,7 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
    $scope.$on('$viewContentLoaded',
             function(event){
               $timeout(function() {
-                $('input.mdl-textfield__input').each(
+                $('input.mdl-textfield,input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
                   function(index){
                     $(this).parent('div.mdl-textfield').addClass('is-dirty');
                     $(this).parent('div.mdl-textfield').removeClass('is-invalid');

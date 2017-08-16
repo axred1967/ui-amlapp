@@ -1,4 +1,4 @@
-app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout) {
+app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,AutoComplete) {
   $scope.loader=true;
   $scope.main.Back=false
   $scope.main.Add=false
@@ -10,7 +10,7 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout)
   var id=localStorage.getItem("userId");
   var agency_id=localStorage.getItem("agencyId");
   var email=localStorage.getItem("userEmail");
-  data={"action":"view_Customer_Profile_info",customer_id:id,email:email,agency_id:agency_id,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+  data={"action":"view_Customer_Profile_info",customer_id:id,email:email,agency_id:agency_id,pInfo:$scope.agent.pInfo}
 
   $http.post( SERVICEURL2,  data )
   .then(function(responceData) {
@@ -21,6 +21,9 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout)
       settings=IsJsonString($scope.Customer.settings)
       if (settings!==false && isObject(settings) ){
         $scope.agent.settings=settings
+      }
+      if (!isObject($scope.agent.settings)){
+        $scope.agent.settings={}
       }
       $scope.Customer.doc_name="Immagine Profilo"
       $scope.Customer.IMAGEURI=BASEURL+"uploads/user/small/"
@@ -268,7 +271,7 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout)
     if (Customer===undefined || Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
     imageurl= '../img/customer-listing1.png'
     else
-    imageurl= BASEURL+ "file_down.php?action=file&file=" + Customer.image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+    imageurl= BASEURL+ "file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
     //
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl
@@ -344,38 +347,23 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout)
     });
   }
 }
-$scope.showAC=function($search,$word){
-  var id=localStorage.getItem("userId");
-  var usertype = localStorage.getItem('userType');
-  res = $search.split(".")
-  $search=res[1]
-  if ($word===undefined){
-    $word=$scope[res[0]][res[1]]
-  }
-  else {
-    $word=$('#'+$word).val()
-  }
-  $table=res[0].toLowerCase()
-
-  if (( $word  !== "undefined" && $word.length>0 &&  $word!=$scope.oldWord)){
-
-   data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
-    $http.post( SERVICEURL2,  data )
+$scope.showAC=function($search,$word, settings){
+  settings.pInfo=$scope.agent.pInfo
+  AutoComplete.showAC($search,$word, settings)
     .then(function(data) {
       if(data.data.RESPONSECODE=='1') 			{
         //$word=$($search.currentTarget).attr('id');
+        $search=res[1]
         $scope.word[$search]=data.data.RESPONSE;
       }
-      if (data.data.RESPONSECODE=='-1'){
-         localstorage('msg','Sessione Scaduta ');
-         $state.go('login');;;
-      }
+     if (data.data.RESPONSECODE=='-1'){
+        localstorage('msg','Sessione Scaduta ');
+        $state.go('login');;;
+     }
     })
     , (function() {
       console.log("error");
     });
-  }
-  $scope.oldWord= $($search.currentTarget).val()
 }
 $scope.resetAC=function(){
   $scope.word={}
@@ -385,7 +373,7 @@ $scope.resetAC=function(){
 
 
 }
-$scope.addWord=function($search,$word,countries){
+$scope.addWord=function($search,$word,par){
   res = $search.split(".")
   switch(res.length){
     case 2:
@@ -398,8 +386,16 @@ $scope.addWord=function($search,$word,countries){
     break;
 
   }
-  if (countries){
+  if (par.id!==undefined){
+    $('#'+par.id).parent('div.mdl-textfield').addClass('is-dirty');
+    $('#'+par.id).parent('div.mdl-textfield').addClass('ng-touched');
+    $('#'+par.id).parent('div.mdl-textfield').removeClass('is-invalid');
+
+  }
+
+  if (par.countries){
     $scope.word['countries']=[]
   }
 }
+
 });

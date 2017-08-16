@@ -6,6 +6,7 @@ app2.factory('Customers_inf', function($http,$state) {
     this.loaded=0;
     this.CompanyId=-1
     this.Contract={}
+    this.pInfo={}
   };
 
   Customers_inf.prototype.nextPage = function(agent) {
@@ -25,9 +26,9 @@ app2.factory('Customers_inf', function($http,$state) {
       if (agent=='Owners')
         last=this.Customers[lastkey].id;
     }
-    data={"action":"CustomerList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"CustomerList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,pInfo:this.pInfo}
     if (agent)
-    data={"action":"AgentList",id:id,email:email,usertype:usertype,priviledge:priviledge,agency_id:agencyId,last:last,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"AgentList",id:id,email:email,usertype:usertype,priviledge:priviledge,agency_id:agencyId,last:last,pInfo:this.pInfo}
     if (agent=='Owners'){
       if (isObject(this.Contract))
         appData=this.Contract
@@ -112,14 +113,14 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
 
 
   $scope.Customers_inf=new Customers_inf  //    $scope.datalang = DATALANG;
-
+  $scope.Customers_inf.pInfo=$scope.agent.pInfo
 
   $scope.imageurl=function(Customer){
 
     if (Customer===undefined || Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
       imageurl= '../img/customer-listing1.png'
     else
-    imageurl= BASEURL+ "file_down.php?action=file&file=" + Customer.image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+    imageurl= BASEURL+ "file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
 //
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl
@@ -166,7 +167,7 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
       }
   }
   $scope.deleteCustomer2=function(Customer,index){
-    data={action:'delete',table:'users','primary':'user_id',id:Customer.user_id ,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={action:'delete',table:'users','primary':'user_id',id:Customer.user_id ,pInfo:$scope.agent.pInfo}
     $http.post(SERVICEURL2,data)
     $state.reload()
   }

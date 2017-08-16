@@ -96,8 +96,6 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
          $scope.newDocs=true;
 
      }
-		 $scope.countryList=JSON.parse(localStorage.getItem('countryList'))
-
 		 $scope.toogle=function(o){
 			 o = o.split(".")
 			 switch (o.length){
@@ -199,16 +197,17 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 	            });
 		 $scope.showContractorList=function(){
        if ((typeof $scope.Contract.fullname !== "undefined"  && $scope.oldContrator!=$scope.Contract.fullname)){
+
         data={ "action":"ACCustomerList", name:$scope.Contract.fullname,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
          $http.post( SERVICEURL2,  data )
          .then(function(data) {
            if(data.data.RESPONSECODE=='1') 			{
              $scope.list=data.data.RESPONSE;
            }
-		if (responceData.data.RESPONSECODE=='-1'){
-		   localstorage('msg','Sessione Scaduta ');
-		   $state.go('login');;;
-		}
+			if (data.data.RESPONSECODE=='-1'){
+			   localstorage('msg','Sessione Scaduta ');
+			   $state.go('login');;;
+			}
 
          })
          , (function() {
@@ -219,6 +218,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
      }
      $scope.showCompanyList=function(){
        if ((typeof $scope.Contract.name !== "undefined"  && $scope.oldCompany!=$scope.Contract.name)){
+
         data={ "action":"ACCompanyList", name:$scope.Contract.name,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
          $http.post( SERVICEURL2,  data )
          .then(function(data) {
@@ -258,6 +258,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
        $scope.oldOther=$scope.searchOther
      }
      $scope.showAC=function($search,$word, settings){
+			 settings.pInfo=$scope.agent.pInfo
 			 AutoComplete.showAC($search,$word, settings)
          .then(function(data) {
            if(data.data.RESPONSECODE=='1') 			{

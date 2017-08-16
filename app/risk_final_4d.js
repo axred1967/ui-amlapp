@@ -1,15 +1,15 @@
-app2.controller('risk_profile03', function ($scope,$http,$state,$translate,$timeout) {
+app2.controller('risk_final_4d', function ($scope,$http,$state,$translate,$timeout,textAngularManager) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
   $scope.main.Search=false
   $scope.main.Sidebar=false
   $('.mdl-layout__drawer-button').hide()
-  $scope.main.viewName="Comportamento del Cliente"
+  $scope.main.viewName="Assegnazione del rischio"
   $scope.main.loader=true
     $scope.page={}
 
-  $scope.curr_page='risk_profile03'
+  $scope.curr_page='risk_final_4d'
   page=localStorage.getItem($scope.curr_page)
   if ( page!= null && page.length >0 ){
     $scope.page=JSON.parse(page)
@@ -18,6 +18,9 @@ app2.controller('risk_profile03', function ($scope,$http,$state,$translate,$time
   }
   $scope.main.location=$scope.page.location
 
+  $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+
+
 
   switch ($scope.action){
     default:
@@ -25,53 +28,47 @@ app2.controller('risk_profile03', function ($scope,$http,$state,$translate,$time
     var email=localStorage.getItem("userEmail");
     $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
     appData=$scope.Contract
-   data={"action":"riskAx",appData:appData,country:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"riskAx",appData:appData,kyc:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
       $('#loader_img').hide();
       if(responceData.data.RESPONSECODE=='1') 			{
-        $scope.Kyc=responceData.data.kyc;
         data=responceData.data.RESPONSE;
+        $scope.Kyc=responceData.data.kyc;
+        if ($scope.Kyc!== undefined && $scope.Kyc.contractor_data!==undefined)
+        $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         convertDateStringsToDates($scope.Risk)
         convertDateStringsToDates($scope.Risk.risk_data)
-        if ($scope.Risk.risk_data.mainActivity===undefined || ! isObject($scope.Risk.risk_data.mainActivity))
-          $scope.Risk.risk_data.mainActivity={}
-          if ($scope.Risk.risk_data.Residence===undefined || ! isObject($scope.Risk.risk_data.Residence))
-            $scope.Risk.risk_data.Residence={}
+        angular.forEach($scope.Risk.risk_data,function(value,key) {
+        if (!(key=="AspConnCli" || key=="aspConnOpe" ||key=="riskCalculated" || key=="riskAssigned" ||  key=="riskDescription" ||  key=="notes"))
+            $scope.Risk.risk_data[key]=null
+        })
 
-//        $scope.Risk.risk_data.partial=IsJsonString($scope.Risk.risk_data.partial)
-$('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
-  function(index){
-    ngm=$(this).attr('ng-model')
-    s = ngm.split(".")
-    switch (s.length){
-      case 1:
-          $val= $scope[s[0]]
-          break;
-          case 2:
-              $val= $scope[s[0]][s[1]]
-              break;
-              case 3:
-                  $val= $scope[s[0]][s[1]][s[2]]
-                  break;
-                  case 4:
-                      $val= $scope[s[0]][s[1]][s[2]][s[3]]
-                      break;
+        var $risk=0
+        $risk=$scope.subTotRisk($scope.Risk.risk_data)
+        $scope.Risk.risk_data.riskCalculated="Limitato";
+        if ($risk>70){
+          $scope.Risk.risk_data.riskCalculated="Alto";
 
-    }
-    if ( $(this).attr('type')=="radio" && $val==$(this).attr('value'))
-      document.getElementById($(this).attr('id')).parentNode.MaterialRadio.check()
-        //$(this).parentNode.MaterialRadio.check()
-      if ($(this).attr('type')=="checkbox" && $val==$(this).attr('value'))
-      document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox.check()
-//                $(this).parentNode.MaterialCheckbox.check()
+        }
+        if ($risk>30 && risk <71){
+          $scope.Risk.risk_data.riskCalculated="Medio";
+        }
+        if ($risk<31 && $risk>10 ){
+          $scope.Risk.risk_data.riskCalculated="Basso";
+        }
+        if ($scope.Kyc !==undefined && $scope.Kyc.contractor_data.check_pep==1){
+          $scope.Risk.risk_data.riskCalculated="Alto";
+          $scope.Risk.risk_data.riskDescription+="Il Cliente o alcuni titolari effettivi sono PEP"
+        }
+        if ($scope.Kyc.contractor_data.check_pep!==undefined && $scope.Kyc.contractor_data.check_pep==1  ){
+          $scope.PEP="il Cliente si è dichiarato PEP"
 
-    $(this).parent('div.mdl-textfield').addClass('is-dirty');
-    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-  }
-);
+        }
+
+
       }
       else
       {
@@ -87,6 +84,7 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
     });
 
     $scope.action="saveKyc"
+    $scope.viewName="Profilo Soggettivo"
 
 
   }
@@ -97,7 +95,7 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
           errorField.$setTouched();
         })
       });
-      swal("riempire form corretamente");
+      swal("","riempire form corretamente");
       console.log("Form is invalid.");
       return
     } else {
@@ -110,25 +108,26 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
     dbData.risk_data=JSON.stringify(dbData.risk_data)
 
     $('#loader_img').show();
-   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,final:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       $('#loader_img').hide();
       if(data.data.RESPONSECODE=='1') 			{
         //swal("",data.data.RESPONSE);
         $scope.lastid=data.lastid
+        $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
 
         $scope.back(passo)
 
       }
       else
       {
-        if (data.data.RESPONSECODE=='-1'){
+        if (responceData.data.RESPONSECODE=='-1'){
           localstorage('msg','Sessione Scaduta ');
           $state.go('login');;;
         }
-        console.log('error');
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
+        console.log('error');
         swal("",data.data.RESPONSE);
       }
     })
@@ -140,6 +139,35 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
 
   }
 
+  $scope.subTotRisk= function (ob){
+    var subt=0;
+    angular.forEach(ob,function(value,key) {
+      if (isObject(value)){
+        subt+=$scope.subTotRisk(value);
+      }
+      else{
+        if (value>0)
+          subt+=value;
+
+      }
+    })
+    return subt
+  }
+  $scope.lastAnalysis= function (){
+    if ($scope.Risk!==undefined && $scope.Risk.status!=1){
+      return "Non Ancora Completata"
+    }
+
+    if ($scope.Risk!==undefined && $scope.Risk.date_of_analisys){
+      return $scope.Risk.date_of_analisys
+    }
+  }
+  $scope.color= function (val){
+    if (val==0){
+      return "Alto"
+    }
+    return "Basso"
+  }
 
   $scope.showAC=function($search,$word){
     var id=localStorage.getItem("userId");
@@ -200,9 +228,8 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
 
 
 
-
    $scope.check_risk=function (partial){
-   if   ($scope.Risk.risk_data.partial===undefined|| $scope.Risk.risk_data.partial==false)
+    if   ($scope.Risk.risk_data.partial===undefined )
       $scope.Risk.risk_data.partial={}
    $scope.Risk.risk_data.partial[partial]="Basso"
 
@@ -217,17 +244,8 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
 
 
    }
-
    $scope.back=function(passo){
-     if (passo>0){
-         localstorage('risk_profile0'+ passo +'',JSON.stringify({action:'',location:$scope.page.location, prev_page:$state.curr_page}))
-         $state.go('risk_profile0'+ passo )
-         return;
-     }
-     if (passo==-1){
-       $state.go($scope.page.prev_page)
-         return;
-     }
+
      $state.go($scope.page.location)
    }
    $scope.$on('backButton', function(e) {
@@ -239,13 +257,12 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
    $scope.$on('$viewContentLoaded',
             function(event){
               $timeout(function() {
-                $('input.mdl-textfield__input').each(
+                $('.mdl-radio,.mdl-textfield,.mdl-checkbox').each(
                   function(index){
-                    $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                    $(this).addClass('is-dirty');
+                    $(this).removeClass('is-invalid');
                   })
                 $scope.main.loader=false
              }, 5);
    });
-
 })

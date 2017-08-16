@@ -1,11 +1,11 @@
-app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout) {
+app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout,AutoComplete) {
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
   $scope.main.Search=false
   $scope.main.Sidebar=false
   $('.mdl-layout__drawer-button').hide()
-  $scope.main.viewName="Residenza e Fisco"
+  $scope.main.viewName="Residenza e Professione"
   $scope.main.loader=true
   $scope.countryList=getCountryList()
    $scope.page={}
@@ -170,37 +170,22 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout) 
 
 
   $scope.showAC=function($search,$word, settings){
-    var id=localStorage.getItem("userId");
-    var usertype = localStorage.getItem('userType');
-    res = $search.split(".")
-    $search=res[1]
-    if ($word===undefined){
-      $word=$scope[res[0]][res[1]]
-    }
-    else {
-      $word=$('#'+$word).val()
-    }
-    $table=res[0].toLowerCase()
-
-    if (( $word  !== "undefined" && $word.length>0 &&  $word!=$scope.oldWord) || settings.zero){
-
-     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
-      $http.post( SERVICEURL2,  data )
+    settings.pInfo=$scope.agent.pInfo
+    AutoComplete.showAC($search,$word, settings)
       .then(function(data) {
         if(data.data.RESPONSECODE=='1') 			{
           //$word=$($search.currentTarget).attr('id');
+          $search=res[1]
           $scope.word[$search]=data.data.RESPONSE;
         }
-        if (data.data.RESPONSECODE=='-1'){
-           localstorage('msg','Sessione Scaduta ');
-           $state.go('login');;;
-        }
+       if (data.data.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          $state.go('login');;;
+       }
       })
       , (function() {
         console.log("error");
       });
-    }
-    $scope.oldWord= $($search.currentTarget).val()
   }
   $scope.resetAC=function(){
     $scope.word={}
@@ -224,9 +209,10 @@ app2.controller('kycstep03', function ($scope,$http,$state,$translate,$timeout) 
 
     }
     if (par.id!==undefined){
-      $('#'+par.id).parent('div.mdl-textfield').addClass('is-dirty');
-      $('#'+par.id).parent('div.mdl-textfield').removeClass('is-invalid');
-
+      $timeout(function() {
+        $('#'+par.id).parent('div.mdl-textfield').addClass('is-dirty');
+        $('#'+par.id).parent('div.mdl-textfield').removeClass('is-invalid');
+        },10)
     }
 
     if (par.countries){

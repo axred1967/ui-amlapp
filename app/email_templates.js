@@ -47,6 +47,7 @@ app2.factory('ObAmlApp', function($http,$state) {
     this.busy = false;
     this.after = '';
     this.loaded=0;
+    this.pInfo={}
 
   };
   ObAmlApp.prototype.set_settings = function(settings) {
@@ -67,7 +68,7 @@ app2.factory('ObAmlApp', function($http,$state) {
       lastkey= Object.keys(this.Ob).pop() ;
       this.settings.last=this.Ob[lastkey][this.settings.id];
     }
-    data= {"action":"ListObjs",settings:this.settings,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data= {"action":"ListObjs",settings:this.settings,pInfo:this.pInfo}
     $http.post(SERVICEURL2,  data )
     .then(function(responceData)  {
       if(responceData.data.RESPONSECODE=='1') 			{
@@ -141,6 +142,7 @@ app2.controller('email_templates', function ($scope,$http,$translate,$rootScope,
 
 
   $scope.ObAmlApp=new ObAmlApp
+  $scope.ObAmlApp.pInfo=$scope.agent.pInfo
   $scope.ObAmlApp.set_settings({table:'emails',id:'emails_id'})
 //  $scope.main.loader=Contracts_inf.busy
 //  $scope.addMoreItems =function(){
@@ -153,7 +155,7 @@ app2.controller('email_templates', function ($scope,$http,$translate,$rootScope,
     if (image===undefined || image==null || image.length==0)
       imageurl= '../img/customer-listing1.png'
     else
-      imageurl= BASEURL+ "file_down.php?action=file&file=" + Ob.image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+      imageurl= BASEURL+ "file_down.php?action=file&file=" + Ob.image +"&profile=1&agent_id="+  $scope.agent.pInfoUrl
 //    Ob.imageurl= Ob.IMAGEURI +Ob.image
     return   imageurl
   }
