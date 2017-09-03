@@ -1,16 +1,20 @@
-app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,AutoComplete) {
-  $scope.loader=true;
-  $scope.main.Back=false
-  $scope.main.Add=false
-  $scope.main.Search=true
-  $scope.main.viewName="il mio profilo"
-  $scope.main.Sidebar=true
-  $('.mdl-layout__drawer-button').show()
+app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,AutoComplete,$stateParams,$interval) {
+  /* gestiote parametri di stato */
+	$scope.curr_page=$state.current.name
+	$scope.pages=$stateParams.pages
+	if ($scope.pages===null || $scope.pages===undefined){
+		$scope.pages=JSON.parse(localStorage.getItem('pages'));
+	}
+	$scope.page=$scope.pages[$state.current.name]
 
-  var id=localStorage.getItem("userId");
-  var agency_id=localStorage.getItem("agencyId");
-  var email=localStorage.getItem("userEmail");
-  data={"action":"view_Customer_Profile_info",customer_id:id,email:email,agency_id:agency_id,pInfo:$scope.agent.pInfo}
+  $scope.loader=true;
+  $scope.main.Back=true
+  $scope.main.Add=false
+  $scope.main.Search=false
+  $scope.main.viewName="il mio profilo"
+  $scope.main.Sidebar=false
+
+  data={"action":"view_Customer_Profile_info",customer_id:$scope.agent.user_id,pInfo:$scope.agent.pInfo}
 
   $http.post( SERVICEURL2,  data )
   .then(function(responceData) {
@@ -195,25 +199,21 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
         $scope.Customer.sign=Canvas2.toDataURL()
 
     $scope.Customer.settings=JSON.stringify($scope.agent.settings);
-    lang=localStorage.getItem('language');
-    var usertype = localStorage.getItem('userType');
-    $('#loader_img').show();
-    data={ "action":'saveProfileAx',id:id, lang:lang, dbData: $scope.Customer,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={ "action":'saveProfileAx', dbData: $scope.Customer,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
-      $('#loader_img').hide();
       if(data.data.RESPONSECODE=='1') 			{
         //swal("",data.data.RESPONSE);
         $scope.lastid=data.lastid
-        localstorage("userType",$scope.Customer.user_type);
         localstorage("userEmail",$scope.Customer.email);
         //alert(data.agencyId);
         localstorage("Name",$scope.Customer.fullname);
         localstorage("Profileimageagencyuser",$scope.Customer.image);
-        $scope.agent.user_type=localStorage.getItem('userType');
-        $scope.agent.name=localStorage.getItem('Name');
-        $scope.agent.email=localStorage.getItem('userEmail');
-        $scope.agent.image=localStorage.getItem('Profileimageagencyuser');
+        localstorage("userSettings",$scope.Customer.settings);
+        $scope.agent.name=$scope.Customer.fullnam;
+        $scope.agent.email=$scope.Customer.email;
+        $scope.agent.image=$scope.Customer.image;
+        $scope.agent.image=$scope.Customer.settings
 
         $state.go('home')
       }
@@ -322,7 +322,7 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
     else if(new_password != re_new_password) swal("",re_new_passwordmsgnotmatch);
     else
     {
-      data={"action":"Password",id:id,email:email,currentPassword:current_password,newPassword:new_password,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}},
+      data={"action":"Password",id:id,email:email,currentPassword:current_password,newPassword:new_password,pInfo:$scope.agent.pInfo},
       $http.post( SERVICEURL2,  data )
       .then(function(data) {
         if(data.data.RESPONSECODE=='1')
@@ -397,5 +397,27 @@ $scope.addWord=function($search,$word,par){
     $scope.word['countries']=[]
   }
 }
+$scope.back=function(){
+  $state.go('home')
+}
+$scope.$on('backButton', function(e) {
+    $scope.back()
+});
+
+$scope.$on('addButton', function(e) {
+})
+$scope.$on('$viewContentLoaded',
+         function(event){
+           $timeout(function() {
+             $('input.mdl-textfield__input').each(
+               function(index){
+                 $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                 $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+               })
+							 $('.mdl-layout__drawer-button').hide()
+             $scope.main.loader=false
+          }, 5);
+});
+
 
 });

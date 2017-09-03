@@ -1,4 +1,25 @@
-app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout) {
+app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout,AutoComplete,$stateParams,$interval) {
+  //gestisco lo state parameter
+	  $scope.curr_page=$state.current.name
+	  $scope.pages=$stateParams.pages
+		if ($scope.pages===null || $scope.pages===undefined){
+			$scope.pages=JSON.parse(localStorage.getItem('pages'));
+		}
+		$scope.page=$scope.pages[$state.current.name]
+    $scope.back=function(passo){
+      if (passo>0){
+        $scope.pages['kyc_owners' ]={action:'',location:$scope.page.location,prev_page:$state.current.name}
+        localstorage('pages', JSON.stringify($scope.pages));
+        $state.go('kyc_owners' ,{pages:$scope.pages})
+        return;
+      }
+      if (passo==-1){
+         $state.go($scope.page.prev_page)
+         return;
+      }
+      $state.go($scope.page.location)
+    }
+
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -7,51 +28,51 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout
   $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Nuova Società"
   $scope.main.loader=true
-  $scope.page={}
-
-  $scope.curr_page='kyc_company'
-  page=localStorage.getItem($scope.curr_page)
-  if ( page!= null && page.length >0 ){
-    $scope.page=JSON.parse(page)
-    $scope.action=$scope.page.action
-
-  }
-  $scope.main.location=$scope.page.location
-
+ $scope.Company={}
   $scope.loadItem=function(){
-    var id=localStorage.getItem("CustomerProfileId");
-    var email=localStorage.getItem("userEmail");
-    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+    $scope.Contract=$scope.pages[$scope.page.location].Contract
     appData=$scope.Contract
-    data={"action":"kycAx",appData:appData,country:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"kycAx",appData:appData,country:true,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
       $('#loader_img').hide();
       if(responceData.data.RESPONSECODE=='1') 			{
-        data=responceData.data.RESPONSE;
-        $scope.Kyc=data;
-        $scope.countryList=responceData.countrylist
-        if ($scope.Kyc.date_of_identification===undefined || $scope.Kyc.date_of_identification)
-        $scope.Kyc.date_of_identification=new Date()
-        $scope.Kyc.contract_data=IsJsonString($scope.Kyc.contract_data)
-        $scope.Kyc.contract_data.Docs=IsJsonString($scope.Kyc.contract_data.Docs)
-        $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
-        $scope.Kyc.Docs=IsJsonString($scope.Docs)
-        $scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data)
-        $scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
-        convertDateStringsToDates($scope.Kyc)
-        convertDateStringsToDates($scope.Kyc.Docs)
-        convertDateStringsToDates($scope.Kyc.contractor_data)
-        convertDateStringsToDates($scope.Kyc.company_data)
-        convertDateStringsToDates($scope.Kyc.owner_data)
-        convertDateStringsToDates($scope.Kyc.contractor_data)
+        var data=responceData.data.RESPONSE;
+				//getione date
 
-        $('input.mdl-textfield__input').each(
-          function(index){
-            $(this).parent('div.mdl-textfield').addClass('is-dirty');
-            $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-          }
-        );
+
+        $scope.Kyc=data;
+				$scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
+				$scope.Company=angular.extend({},$scope.Kyc.company_data);
+				if ($scope.Company.name===undefined || $scope.Company.name===null || $scope.Company.name==null){
+
+				settings={table:'company',id:'company_id',
+									fields:{'name':'uno.name',
+									'company_type':'uno.company_type',
+									'address':'uno.address',
+									'country':'uno.country',
+									'town':'uno.town'
+									},
+									where:{company_id:{valore:$scope.Contract.other_id}}
+									}
+				data= {"action":"ListObjs",settings:settings,pInfo:$scope.agent.pInfo}
+				$http.post(SERVICEURL2,  data )
+				.then(function(responceData)  {
+					if(responceData.data.RESPONSECODE=='1') 			{
+						data=responceData.data.RESPONSE
+						$scope.Company.name=data[0].name
+						$scope.Company.address=data[0].address
+						$scope.Company.country=data[0].country
+						$scope.Company.town=data[0].town
+						$scope.Company.company_type=data[0].company_type
+					}
+					else   {
+						if (responceData.data.RESPONSECODE=='-1'){
+							localstorage('msg','Sessione Scaduta ');
+							$state.go('login');;;
+						}
+					}})
+				}
       }
       else
       {
@@ -67,49 +88,52 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout
     });
 
   }
-  switch ($scope.action){
+  switch ($scope.page.action){
     default:
     $scope.action="saveKyc"
-    $scope.main.viewName="Dati Soggetto Giuridico"
+    $scope.main.viewName="Dati Persona Giuridica"
   }
 
-  if ($scope.page.editDoc) {
-    $scope.countryList=JSON.parse(localStorage.getItem('countryList'))
-    $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
-    convertDateStringsToDates($scope.Kyc)
-    convertDateStringsToDates($scope.Kyc.contract_data)
-    convertDateStringsToDates($scope.Kyc.contractor_data)
-    convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
-    convertDateStringsToDates($scope.Kyc.company_data)
-    convertDateStringsToDates($scope.Kyc.owner_data)
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    $scope.Kyc.contractor_data.Docs[Doc.indice]=Doc
+  $scope.loadItem()
+	$scope.loadCompany=function(){
+		ob={}
+		ob.settings={}
+		ob.settings.table="company"
+		ob.settings.id="company_id"
+		ob.settings.where={'company_id':{opcond:'=',valore:$scope.Contract.other_id}}
+    data={"action":"ListObjs",settings:ob.settings,pInfo:$scope.agent.pInfo}
+    $scope.main.loader=true
+    $http.post( SERVICEURL2,  data )
+    .then(function(responceData) {
+      if(responceData.data.RESPONSECODE=='1') 			{
+        data=responceData.data.RESPONSE;
+        $scope.Company=  data[0];
+				$scope.main.loader=false
+        //convertDateStringsToDates($scope.Customer)
+        $('input.mdl-textfield__input').each(
+          function(index){
+            $(this).parent('div.mdl-textfield').addClass('is-dirty');
+            $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+          }
+        );
+      }
+      else
+      {
+        if (responceData.data.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           $state.go('login');;;
+        }
+				$scope.main.loader=false
+        console.log('error');
+      }
+    })
+    , (function() {
+      console.log("error");
+			$scope.main.loader=false
+    });
 
   }
-  else if ($scope.page.addDoc){
-    $scope.countryList=JSON.parse(localStorage.getItem('countryList'))
-    $scope.Kyc=JSON.parse(localStorage.getItem('Kyc'))
-    convertDateStringsToDates($scope.Kyc)
-    convertDateStringsToDates($scope.Kyc.contract_data)
-    convertDateStringsToDates($scope.Kyc.contractor_data)
-    convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
-    convertDateStringsToDates($scope.Kyc.company_data)
-    convertDateStringsToDates($scope.Kyc.owner_data)
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    if ($scope.Kyc.contractor_data.Docs.length!==undefined|| $scope.Kyc.contractor_data.Docs.length>0 ){
-      $scope.Kyc.contractor_data.Docs[$scope.Kyc.contractor_data.Docs.length]=Doc
-    }
-    else {
-      $scope.Kyc.contractor_data.Docs={}
-      $scope.Kyc.contractor_data.Docs[0]=Doc
-    }
 
-  }
-  else {
-    $scope.loadItem()
-}
   $scope.save_kyc= function (passo){
     if ($scope.form.$invalid) {
       angular.forEach($scope.form.$error, function(field) {
@@ -126,14 +150,11 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout
       console.log($scope.data);
     }
     var langfileloginchk = localStorage.getItem("language");
-    dbData=$scope.Kyc
-    dbData.contract_data=JSON.stringify(dbData.contract_data)
-    dbData.contractor_data=JSON.stringify(dbData.contractor_data)
-    dbData.company_data=JSON.stringify(dbData.company_data)
-    dbData.owner_data=JSON.stringify(dbData.owner_data)
+		dbData={}
+		dbData.company_data=JSON.stringify(angular.extend({},$scope.Kyc_company_data,$scope.Company))
 
     $scope.main.loader=true
-   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       $scope.main.loader=false
@@ -163,70 +184,78 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout
   }
 
 
-  $scope.showAC=function($search,$word, settings){
-    var id=localStorage.getItem("userId");
-    var usertype = localStorage.getItem('userType');
-    res = $search.split(".")
-    $search=res[1]
-    if ($word===undefined){
-      $word=$scope[res[0]][res[1]]
-    }
-    else {
-      $word=$('#'+$word).val()
-    }
-    $table=res[0].toLowerCase()
-
-    if (( $word  !== "undefined" && $word.length>0 &&  $word!=$scope.oldWord) || settings.zero){
-
-     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
-      $http.post( SERVICEURL2,  data )
-      .then(function(data) {
-        if(data.data.RESPONSECODE=='1') 			{
-          //$word=$($search.currentTarget).attr('id');
-          $scope.word[$search]=data.data.RESPONSE;
-        }
-        if (data.data.RESPONSECODE=='-1'){
-           localstorage('msg','Sessione Scaduta ');
-           $state.go('login');;;
-        }
-      })
-      , (function() {
-        console.log("error");
-      });
-    }
-    $scope.oldWord= $($search.currentTarget).val()
-  }
-  $scope.resetAC=function(){
-    $scope.word={}
-    $scope.list={}
-    $scope.listOther={}
-    $scope.listCompany={}
+	$scope.showAC=function($search,$word, settings){
+		if (settings.ob !==undefined && settings.ob.settings!==undefined){
+			settings.ob.settings.where={
+				'name':{ 'valore' :$('#'+$word).val(), 'opcond': 'like', 'pre':'%','post':'%' },
+			}
+		}
+		settings.pInfo=$scope.agent.pInfo
+		AutoComplete.showAC($search,$word, settings)
+		.then(function(data) {
+			if(data.data.RESPONSECODE=='1') 			{
+				//$word=$($search.currentTarget).attr('id');
+				$search=res[1]
+				$scope.word[$search]=data.data.RESPONSE;
+			}
+			if (data.data.RESPONSECODE=='-1'){
+				localstorage('msg','Sessione Scaduta ');
+				$state.go('login');;;
+			}
+		})
+		, (function() {
+			console.log("error");
+		});
+	}
+	$scope.resetAC=function(){
+		$scope.word={}
+		$scope.list={}
+		$scope.listOther={}
+		$scope.listCompany={}
 
 
-  }
-  $scope.addWord=function($search,$word,par){
-    res = $search.split(".")
-    switch(res.length){
-      case 2:
-      $scope[res[0]][res[1]]=$word
-      $scope.word[res[1]]=[]
-      break;
-      case 3:
-      $scope[res[0]][res[1]][res[2]]=$word
-      $scope.word[res[2]]=[]
-      break;
+	}
+	$scope.addWord=function($search,$word,par){
+		angular.forEach(par.other,function(obj,key){
+					res=par.other[key].d.split('.')
+					switch(res.length){
+						case 2:
+						$scope[res[0]][res[1]]=par.other[key].s
+						break;
+						case 3:
+						$scope[res[0]][res[1]][res[2]]=par.other[key].s
+						break;
+					}
+		});
+		res = $search.split(".")
+		switch(res.length){
+			case 2:
+			$scope[res[0]][res[1]]=$word
+			$scope.word[res[1]]=[]
+			break;
+			case 3:
+			$scope[res[0]][res[1]][res[2]]=$word
+			$scope.word[res[2]]=[]
+			break;
 
-    }
-    if (par.id!==undefined){
-      $('#'+par.id).parent('div.mdl-textfield').addClass('is-dirty');
-      $('#'+par.id).parent('div.mdl-textfield').removeClass('is-invalid');
+		}
+		if (par.res!==undefined){
+			$scope.word[par.res]=[]
 
-    }
+		}
 
-    if (par.countries && $scope.word['countries']!==undefined){
-      $scope.word['countries']=[]
-    }
-  }
+		if (par.id!==undefined){
+			$timeout(function() {
+				$('#'+par.id).parent('div.mdl-textfield').addClass('is-dirty');
+				$('#'+par.id).parent('div.mdl-textfield').removeClass('is-invalid');
+			},10)
+		}
+
+		if (par.countries){
+			$scope.word['countries']=[]
+		}
+	}
+
   $scope.uploadfromgallery=function(Doc,index)
   {
     Doc.index=index
@@ -311,37 +340,6 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout
   }
 
 
-  $scope.add_document=function(Doc){
-    if (Doc===undefined){
-      Doc={}
-    }
-    localstorage('add_document',JSON.stringify({action:"add_document_for_kyc_id",location:$scope.curr_page,per_id:$scope.Kyc.company_data.company_id}))
-    Doc.doc_name="Documenti Società"
-    Doc.agency_id=localStorage.getItem('agencyId')
-    Doc.per='contract'
-    if ($scope.Kyc.contract_id===undefined && $scope.Kyc.contract_id>0)
-      Doc.per_id=$scope.Kyc.contract_id;
-    Doc.id=null
-    Doc.image_name=null
-    Doc.showOnlyImage=false
-    Doc.indice=$scope.Kyc.contractor_data.Docs.length
-
-    localstorage('Doc',JSON.stringify(Doc))
-    //localstorage('Contract',JSON.stringify($scope.Contract))
-    $state.go('add_document')
-   }
-   $scope.back=function(passo){
-     if (passo>0){
-         localstorage('kyc_owners',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
-         $state.go('kyc_owners')
-         return;
-     }
-     if (passo==-1){
-       $state.go($scope.page.prev_page)
-         return;
-     }
-     $state.go('view_contract')
-   }
    $scope.$on('backButton', function(e) {
        $scope.back()
    });
@@ -351,13 +349,9 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout
    $scope.$on('$viewContentLoaded',
             function(event){
               $timeout(function() {
-                $('input.mdl-textfield__input').each(
-                  function(index){
-                    $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                  })
+  							setDefaults($scope)
                 $scope.main.loader=false
-             }, 20);
+             }, 200);
    });
 
 })

@@ -1,4 +1,4 @@
-app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,$interval,$stateParams) {
+app2.controller('share', function ($scope,$http,$state,$translate,$timeout,$interval,$stateParams) {
   /* gestiote parametri di stato */
 	$scope.curr_page=$state.current.name
 	$scope.pages=$stateParams.pages
@@ -21,50 +21,6 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
 	$scope.settings={}
   //localstorage("back","view_contract");
 		switch ($scope.page.action){
-    case 'edit_owners' :
-	    $scope.Owner=$scope.page.Owner
-			//convertDateStringsToDates($scope.Owner)
-			$scope.Customer=angular.extend({},$scope.Owner)
-	    $scope.action='edit_owners'
-	    $scope.main.viewName="Modifica TE"
-			$scope.pages['add_customer']={action:'update_customer', user_id:$scope.Owner.user_id,location:$state.current.name,temp:null}
-	    localstorage('pages',JSON.stringify($scope.pages))
-			$scope.add_edit="Modifica i dati del Titolare Effettivo"
-	    break;
-    case 'edit_owner_from_contract' :
-	    $scope.Owner=$scope.page.Owner
-			$scope.Customer=angular.extend({},$scope.Owner)
-	    $scope.Contract=$scope.page.Contract
-	    $scope.action='edit_owners'
-	    $scope.main.viewName="Modifica TE"
-	    $scope.page.type="owners"
-			$scope.add_edit="Modifica i dati del Titolare Effettivo"
-	    break;
-    case 'edit_customer_for_kyc_owner' :
-	    $scope.Owner=$scope.page.Owner
-			$scope.Customer=angular.extend({},$scope.Owner)
-	    $scope.Contract=$scope.page.Contract
-	    $scope.main.viewName="Modifica TE"
-			$scope.add_edit="Modifica i dati del Titolare Effettivo"
-			$scope.add_customer=true
-    	break;
-    case 'add_customer_for_kyc_owner' :
-			$scope.settings.action="add"
-	    $scope.Owner={}
-	    $scope.main.viewName="Nuovo TE"
-	    $scope.Owner.company_id=$scope.page.company_id
-			$scope.add_edit="Inserisci i dati del Titolare Effettivo"
-	    break;
-    case 'add_owner_from_contract' :
-			$scope.settings.action="add"
-	    $scope.Owner={}
-	    $scope.Contract=$scope.page.Contract
-	    $scope.action='add_owners'
-	    $scope.main.viewName="Nuovo TE"
-	    $scope.Owner.company_id=$scope.Contract.company_id
-	    $scope.Owner.contract_id=$scope.Contract.contract_id
-			$scope.add_edit="Inserisci i dati del Titolare Effettivo"
-    break;
     default :
 	    if($scope.page.load!==undefined && $scope.page.load)
 			$scope.settings.action="add"
@@ -76,82 +32,40 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
 	    break;
   }
 
-  $scope.showContractorList=function(){
-    if ((typeof $scope.Owner.fullname !== "undefined" && $scope.oldContrator!=$scope.Owner.fullname)){
-     data={ "action":"ACCustomerList", name:$scope.Owner.fullname,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
-      $http.post( SERVICEURL2,  data )
-      .then(function(data) {
-        if(data.data.RESPONSECODE=='1') 			{
-          $scope.list=data.data.RESPONSE;
-        }
-        if (data.data.RESPONSECODE=='-1'){
-           localstorage('msg','Sessione Scaduta ');
-           $state.go('login');;;
-        }
-      })
-      , (function() {
-        console.log("error");
-      });
-    }
-    $scope.oldContrator=$scope.searchContractor
-  }
-  $scope.addContractorItem=function(id, name){
-    $scope.list=[];
-    $scope.Owner.fullname=name;
-    $scope.Owner.user_id=id;
-		$scope.loadItem()
-  };
+
+
   $scope.add_owner=function(){
 		if ($scope.form.$invalid) {
-			var errof=''
 	    angular.forEach($scope.form.$error, function(field) {
 	      angular.forEach(field, function(errorField) {
 	        errorField.$setTouched();
-					errof+=" " +errorField.$name
 	      })
 	    });
-			if (!((errof==" Percentuale"  && $scope.page.type=='otherPersonTE')|| (errof==" tipote" && $scope.page.type=='companyTE') )){
-				$scope.formStatus = "Dati non Validi." ;
-		    swal('','Dati non validi' + errof)
-		    console.log("Form is invalid.");
-		    return
-
-			}
+	    $scope.formStatus = "Dati non Validi.";
+	    swal('','Dati non validi')
+	    console.log("Form is invalid.");
+	    return
 	  } else {
 	    //$scope.formStatus = "Form is valid.";
 	    console.log("Form is valid.");
 	    console.log($scope.data);
 	  }
 
+    if ($scope.page.type=='owners' ){
+      appData=$scope.Contract
+    }
+    else {
+      var  appData ={
+        id :$scope.agent.id,
+        usertype: $scope.agent.user_type
+      }
+    }
+
+    dbData=angular.extend($scope.Customer,$scope.Owner)
 
 
-    dbData=angular.extend($scope.Owner,$scope.Customer)
-		if ($scope.page.type=='owners' ){
-			appData=$scope.Contract
-		}
-		else {
-			var  appData ={
-				id :$scope.agent.id,
-				usertype: $scope.agent.user_type
-			}
 
-		}
-		dbData.agent_id=$scope.agent.id
-		if ($scope.page.other_data){
-			dbData.state.kyc=true
-		}
-		if ($scope.page.action=="add_customer_for_kyc_owner" || $scope.page.action=="edit_customer_for_kyc_owner"){
-			$scope.pages[$scope.page.location].newOb={}
-			$scope.pages[$scope.page.location].newOb=dbData
-			if ($scope.pages[$scope.page.location].newOb.state===undefined || $scope.pages[$scope.page.location].newOb.state===null )
-				$scope.pages[$scope.page.location].newOb.state={}
-			$scope.pages[$scope.page.location].newOb.state.kyc=true
-			$scope.pages[$scope.page.location].edit=$scope.page.edit
-			$scope.pages[$scope.page.location].indice=$scope.page.indice
-			$scope.back()
-	    return;
-		}
-
+    dbData.agent_id=appData.id
 		if ($scope.action=="add_owners" ){
 			if (!$scope.add_customer){
 				$scope.settings.action="add"
@@ -212,7 +126,12 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
 				$scope.pages[$scope.page.location].Owner=$scope.Owner
 			break;
 			case'add_customer_for_kyc_owner':
+			if ($scope.lastid!==undefined && $scope.lastid>0 ){
+				$scope.Owner.id= $scope.lastid
+				$scope.pages[$scope.page.location].add=true
+				$scope.pages[$scope.page.location].Owner=$scope.Owner
 
+				}
       break;
 
     }
@@ -240,18 +159,11 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
                    $(this).parent('div.mdl-textfield').addClass('is-dirty');
                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
                  })
-								 $('input[type="date"]').each(function(){
-								  d=$(this).attr('ng-model')
-								  res=d.split('.')
-								  if ($scope.Customer[res.slice(-1)[0]]!==undefined)
-								  $scope.Customer[res.slice(-1)[0]]=new Date($scope.Customer[res.slice(-1)[0] ])
-								 })
                $scope.main.loader=false
-            }, 15);
+            }, 5);
   });
 
 // gestisco i dati complessivi del Cliente
-
 
 $scope.loadItem=function(){
 	data={"action":"view_Customer_Profile_info",customer_id:$scope.Owner.user_id,pInfo:$scope.agent.pInfo}
@@ -260,18 +172,12 @@ $scope.loadItem=function(){
 	.then(function(responceData) {
 		$scope.main.loader=false
 		if(responceData.data.RESPONSECODE=='1') 			{
-			var data=responceData.data.RESPONSE;
+			data=responceData.data.RESPONSE;
 			$.each(data, function(key, value){
 				if (value === null){
 					delete data[key];
 				}
 			});
-			$('input[type="date"]').each(function(){
-			 d=$(this).attr('ng-model')
-			 res=d.split('.')
-			 data[res.slice(-1)[0]]=new Date(data[res.slice(-1)[0] ])
-		 })
-
 			$scope.Customer =  data;
 			$scope.Customer.IMAGEURI=BASEURL+"uploads/user/small/"
 			//$rootScope.$broadcast('show')
@@ -306,7 +212,7 @@ $scope.loadItem=function(){
 	});
 
 }
-
+$scope.loadItem()
 $scope.uploadprofileweb=function(){
     $("#loader_img_int").show()
       var f = document.getElementById('msds').files[0],
@@ -436,7 +342,7 @@ $scope.showAC=function($search,$word, settings){
 
   if (( $word  !== "undefined" && $word.length>0 &&  $word!=$scope.oldWord) || settings.zero){
 
-   data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+   data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,settings:settings,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       if(data.data.RESPONSECODE=='1') 			{
@@ -484,14 +390,6 @@ $scope.addWord=function($search,$word,par){
   if (par.countries && $scope.word['countries']!==undefined){
     $scope.word['countries']=[]
   }
-}
-$scope.setEov=function(){
-	if (isObject($scope.Customer.id_release_date)){
-		d=$scope.Customer.id_release_date
-		d.setFullYear(d.getFullYear()+5)
-		$scope.Customer.id_validity=d
-
-	}
 }
 $scope.other=function(){
   if($scope.page.other_data)

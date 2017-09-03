@@ -1,4 +1,4 @@
-app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,$stateParams,$interval) {
+app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeout,$stateParams,$interval) {
   //gestisco lo state parameter
 	  $scope.curr_page=$state.current.name
 	  $scope.pages=$stateParams.pages
@@ -8,9 +8,9 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 		$scope.page=$scope.pages[$state.current.name]
     $scope.back=function(passo){
       if (passo>0){
-        $scope.pages['kyc_document' ]={action:'',location:$scope.page.location,prev_page:$state.current.name}
+        $scope.pages['kyc_signature' ]={action:'',location:$scope.page.location,prev_page:$state.current.name}
         localstorage('pages', JSON.stringify($scope.pages));
-        $state.go('kyc_document' ,{pages:$scope.pages})
+        $state.go('kyc_signature' ,{pages:$scope.pages})
         return;
       }
       if (passo==-1){
@@ -22,13 +22,34 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 
   $scope.main.Back=true
   $scope.main.Add=true
-	$scope.main.AddPage="add_owners"
+	$scope.main.AddPage="add_documents"
+	$scope.main.AddLabel="Nuovo Documento"
   $scope.main.Search=false
   $scope.main.Sidebar=false
-  $('.mdl-layout__drawer-button').hide()
   $scope.main.loader=true
   $scope.deleted=0
 	$scope.Kyc={}
+
+	$scope.imageurl=function(Doc){
+
+    if (Doc===undefined || Doc.doc_image===undefined ||  Doc.doc_image== null || Doc.doc_image.length==0){
+			imageurl= '../img/customer-listing1.png'
+			return imageurl
+			}
+			else if (Doc.isImage){
+			imageurl= BASEURL+ "file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
+
+		}
+		else{
+			imageurl= '/img/'+ Doc.file_type.substr(1)+'.png'
+
+		}
+
+
+    //  Customer.imageurl= Customer.IMAGEURI +Customer.image
+    return   imageurl
+
+  }
 
 
 
@@ -39,11 +60,18 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
     .then(function(responceData) {
       $('#loader_img').hide();
       if(responceData.data.RESPONSECODE=='1') 			{
-        data=responceData.data.RESPONSE;
+        var data=responceData.data.RESPONSE;
+				$('input[type="date"]').each(function(){
+				 d=$(this).attr('ng-model')
+				 res=d.split('.')
+				 data[res.slice(-1)[0]]=new Date(data[res.slice(-1)[0] ])
+			 })
+
+
         $scope.Kyc=data;
-				$scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data,true)
-				if ( $scope.Kyc.owner_data.length===undefined || $scope.Kyc.owner_data.length==0){
-					$scope.Kyc.owner_data=[]
+				$scope.Kyc.Docs=IsJsonString($scope.Kyc.Docs,true)
+				if ( $scope.Kyc.Docs.length===undefined || $scope.Kyc.Docs.lenght==0 ){
+					$scope.Kyc.Docs=[]
 				}
       $('input.mdl-textfield__input').each(
           function(index){
@@ -71,19 +99,12 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
     default:
 		$scope.Contract=$scope.pages[$scope.page.location].Contract
 		$scope.action="saveKyc"
-		if  ($scope.Contract.act_for_other==1){
-			$scope.main.viewName="TE Persona Giuridica"
-
-		}
-		else {
-			$scope.main.viewName="Deleganti"
-
-		}
+	  $scope.main.viewName="Documenti AV"
   }
 
-	$scope.saveOwner= function (passo){
+	$scope.saveDocs= function (passo){
 		dbData={}
-		dbData.owner_data=JSON.stringify($scope.Kyc.owner_data )
+		dbData.Docs=JSON.stringify($scope.Kyc.Docs )
     $scope.main.loader=true;
 
    data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
@@ -110,14 +131,14 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 
   }
 	if (isObject($scope.page.newOb)){
-		$scope.Kyc.owner_data=$scope.page.owner_data
+		$scope.Kyc.Docs=$scope.page.Docs
 		if ($scope.page.edit){
-			$scope.Kyc.owner_data[$scope.page.indice]=$scope.page.newOb
+			$scope.Kyc.Docs[$scope.page.indice]=$scope.page.newOb
 		}
 		else{
-			$scope.Kyc.owner_data[$scope.Kyc.owner_data.length]=$scope.page.newOb
+			$scope.Kyc.Docs[$scope.Kyc.Docs.length]=$scope.page.newOb
 		}
-		$scope.saveOwner()
+		$scope.saveDocs()
 		$scope.pages[$state.current.name].newOb=1
 		localstorage('pages',JSON.stringify($scope.pages))
 	}
@@ -126,20 +147,20 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 	}
 
 
-  $scope.deleteOwn=function(ob,index )
+  $scope.deleteDoc=function(ob,index )
   {
     if ($scope.main.web){
-      r=confirm("Vuoi Cancellare il Titolare Effettivo?");
+      r=confirm("Vuoi Cancellare il Documento?");
       if (r == true) {
-        $scope.deleteOwn2(ob,index);
+        $scope.deleteDocs2(ob,index);
       }
     }
     else{
       navigator.notification.confirm(
-        "Vuoi Cancellare il Titolare Effettivo?", // message
+        "Vuoi Cancellare il Documento?", // message
         function(button) {
           if ( button == 1 ) {
-            $scope.deleteOwn2(ob,index);
+            $scope.deleteDocs2(ob,index);
           }
         },            // callback to invoke with index of button pressed
         'Sei sicuro?',           // title
@@ -148,10 +169,10 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
     }
 
   }
-  $scope.deleteOwn2=function(ob,index){
-		//delete $scope.Kyc['owner_data'][index]
-		$scope.Kyc['owner_data'].splice(index,1)
-		$scope.saveOwner()
+  $scope.deleteDocs2=function(ob,index){
+		//delete $scope.Kyc['Docs'][index]
+		$scope.Kyc['Docs'].splice(index,1)
+		$scope.saveDocs()
 
   }
 
@@ -160,7 +181,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 
   $scope.save_kyc= function (passo){
 		dbData={}
-		dbData.owner_data=JSON.stringify($scope.Kyc.owner_data )
+		dbData.Docs=JSON.stringify($scope.Kyc.Docs )
     $scope.main.loader=true;
 
    data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
@@ -249,33 +270,24 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 
 
 
-  $scope.add_owner=function(Owner){
-		if ($scope.Contract.act_for_other==1){
-			type="companyTE"
-		}
-		else {
-			type="otherPersonTE"
-
-		}
-		$scope.pages['add_owners.kyc']={action:'add_customer_for_kyc_owner',type:type,company_id:$scope.Contract.other_id,location:$state.current.name,other_data:true,owners:true}
-		$scope.pages[$state.current.name].owner_data=$scope.Kyc.owner_data
+  $scope.add_document=function(){
+		$scope.pages['add_document']={action:'add_document_for_kyc',location:$state.current.name,
+		Doc:{agency_id:$scope.agent.agency_id,per_id:$scope.Contract.contract_id,per:'kyc'}}
+		$scope.pages[$state.current.name].Docs=$scope.Kyc.Docs
 		localstorage('pages',JSON.stringify($scope.pages))
-		$state.go('add_owners.kyc',{pages:$scope.pages})
+		$state.go('add_document',{pages:$scope.pages})
 
 
   }
-  $scope.edit_owner=function(Owner,indice){
-		if ($scope.Contract.act_for_other==1){
-			type="companyTE"
+  $scope.edit_document=function(doc,indice){
+		if (!doc.isImage) {
+			download(doc)
+			return
 		}
-		else {
-			type="otherPersonTE"
-
-		}
-		$scope.pages['add_owners.kyc']={action:'edit_customer_for_kyc_owner', location:$state.current.name,other_data:true,owners:true,type:type,kyc:$scope.Kyc,Owner:Owner,edit:true,indice:indice}
-		$scope.pages[$state.current.name].owner_data=$scope.Kyc.owner_data
-		localstorage('pages',JSON.stringify($scope.pages))
-		$state.go('add_owners.kyc',{pages:$scope.pages})
+		$scope.pages['add_document']={action:'edit_document_for_kyc', location:$state.current.name,Doc:doc, edit:true,indice:indice}
+		$scope.pages[$state.current.name].Docs=$scope.Kyc.Docs
+  	localstorage('pages',JSON.stringify($scope.pages))
+		$state.go('add_document',{pages:$scope.pages})
 
 
   }
@@ -287,7 +299,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 
   $scope.$on('addButton', function(e) {
     localstorage('Contract',JSON.stringify($scope.Kyc.contract_data))
-    $scope.add_owner()
+    $scope.add_document()
   })
   $scope.$on('$viewContentLoaded',
            function(event){
@@ -297,8 +309,12 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
                    $(this).parent('div.mdl-textfield').addClass('is-dirty');
                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
                  })
+								 $('.mdl-layout__drawer-button').hide()
                $scope.main.loader=false
-            }, 5);
+							 $timeout(function() {
+							 	resize_img()
+							},400);
+            }, 100);
   });
 
 });

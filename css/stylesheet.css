@@ -76,6 +76,11 @@
 	background:#1c224b !important;
 	text-transform:capitalize !important;
 }
+.red-btn{
+	background:red !important;
+	text-transform:capitalize !important;
+}
+
 .account-data.add-customer-data form {
     margin-bottom: 24px;
 }
@@ -446,4 +451,19 @@ padding-left: 10px;
   flex-grow: 5;
 	max-width:95%
 
+}
+.toright {
+  right: 0px!important;
+	left:auto!important;
+	font-size:10px!important;
+}
+.toright1 {
+  right: 0px!important;
+	top:auto!important;
+	margin-top:35px;
+	left:auto!important;
+	font-size:10px!important;
+}
+.meno30Top{
+	margin-top:35px;
 }

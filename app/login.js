@@ -5,10 +5,9 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
   $scope.main.viewName="\n"
   $scope.main.Sidebar=false
   $scope.main.login=true
-  $('.mdl-layout__drawer-button').hide()
 //  $scope.main.loader=true
 
-  msg=localStorage.getItem('msg');
+  var msg=localStorage.getItem('msg');
   if (msg!==undefined  && msg.length>0){
     swal('',msg)
     localstorage('msg','');
@@ -117,6 +116,7 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
           $scope.agent.priviledge=data.data.priviledge;
           $scope.agent.cookie=data.data.cookie;
           $scope.agent.pInfo={user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}
+          $scope.agent.pInfoUrl="&" +jQuery.param({pInfo:$scope.agent.pInfo})
           settings=IsJsonString(data.data.settings)
           if (settings!==false && isObject(settings) ){
             $scope.agent.settings=settings
@@ -198,7 +198,7 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
             return;
           }
 
-          if(data.usertype == 2)
+          if(data.data.usertype == 2)
           {
             localstorage("priviligetype",data.privilige);
             if(data.privilige == '0' )
@@ -236,8 +236,9 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
           $(this).parent('div.mdl-textfield').removeClass('is-invalid');
         })
         $scope.main.loader=false
+        $('.mdl-layout__drawer-button').hide()
 
 
-      }, 5);
+      }, 100);
     });
   })

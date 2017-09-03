@@ -1,4 +1,12 @@
-app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootScope,$timeout) {
+app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootScope,$timeout,$stateParams, $interval) {
+//gestisco lo state parameter
+  $scope.curr_page=$state.current.name
+  $scope.pages=$stateParams.pages
+	if ($scope.pages===null || $scope.pages===undefined){
+		$scope.pages=JSON.parse(localStorage.getItem('pages'));
+	}
+	$scope.page=$scope.pages[$state.current.name]
+
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -7,19 +15,19 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
   $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Nuovo Persona"
 
-  $scope.page={}
+  // memorizzo i dati
+  		$interval(function(){
+  			if ($scope.Customer!==undefined && $scope.pages[$state.current.name]!==undefined){
+  				$scope.pages[$state.current.name].temp=$scope.Customer
+  				localstorage('pages',JSON.stringify($scope.pages))
 
-   $scope.curr_page='add_customer'
-   page=localStorage.getItem($scope.curr_page)
-   if ( page!= null && page.length >0 ){
-     $scope.page=JSON.parse(page)
-     $scope.action=$scope.page.action
+  			}
 
-   }
-   $scope.main.location=$scope.page.location
+  		},3000)
+
 
   $scope.loadItem=function(){
-    data={"action":"view_Customer_Profile_info",customer_id:$scope.id,email:$scope.email,agency_id:$scope.agencyId,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"view_Customer_Profile_info",customer_id:$scope.page.user_id,email:$scope.email,pInfo:$scope.agent.pInfo}
     $scope.main.loader=true
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
@@ -30,6 +38,16 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
             delete data[key];
           }
         });
+        $('input[type="date"]').each(function(){
+         d=$(this).attr('ng-model')
+         res=d.split('.')
+         if (data[res.slice(-1)[0]]===null){
+           data[res.slice(-1)[0]]=new Date()
+         }
+         else {
+           data[res.slice(-1)[0]]=new Date(data[res.slice(-1)[0] ])
+         }
+        })        
         $scope.Customer =  data;
         $scope.Customer.IMAGEURI=BASEURL+"uploads/user/small/"
         //$rootScope.$broadcast('show')
@@ -40,7 +58,7 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
             $scope.newDocs=true;
 
         }
-        convertDateStringsToDates($scope.Customer)
+        //convertDateStringsToDates($scope.Customer)
 
         $('input.mdl-textfield__input').each(
           function(index){
@@ -64,8 +82,8 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
     });
 
   }
+  $scope.Customer={}
 
-  $scope.countryList=getCountryList()
 
   switch ($scope.page.action){
     case 'add_customer':
@@ -76,9 +94,6 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
     }
     break;
     case 'update_customer':
-    $scope.id=localStorage.getItem("CustomerProfileId");
-    $scope.email=localStorage.getItem("userEmail");
-    $scope.agencyId = localStorage.getItem('agencyId');
 
     $scope.main.viewName="Modifica Cliente"
     if ($scope.page.agent){
@@ -94,6 +109,10 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
     $scope.main.viewName="Inserisci Firmatario contratto"
     $scope.action="addcustomer"
     break;
+    case 'add_other_for_contract':
+    $scope.main.viewName="Inserisci beneficiario contratto"
+    $scope.action="addcustomer"
+    break;
 
     case 'add_customer_for_kyc_owners':
     $scope.main.viewName="Inserisci Titolare Effettivo"
@@ -102,7 +121,7 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
 
     case 'edit_customer_for_kyc_owner':
     Customer=JSON.parse(localStorage.getItem('Owner'))
-    convertDateStringsToDates(Customer)
+    //convertDateStringsToDates(Customer)
     $scope.Customer=Customer
     $scope.id=Customer.user_id
     $scope.email=Customer.email;
@@ -117,19 +136,20 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
 
 
   }
+
   if ($scope.main.editDoc) {
     $scope.Customer=JSON.parse(localStorage.getItem('Customer'))
-    convertDateStringsToDates($scope.Customer)
+    //convertDateStringsToDates($scope.Customer)
     Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
+    //convertDateStringsToDates(Doc)
     $scope.Customer.Docs[Doc.indice]=Doc
 
   }
   else if ($scope.main.addDoc){
     $scope.Customer=JSON.parse(localStorage.getItem('Customer'))
-    convertDateStringsToDates($scope.Customer)
+    //convertDateStringsToDates($scope.Customer)
     Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
+    //convertDateStringsToDates(Doc)
     if ($scope.Customer.Docs.length!==undefined|| $scope.Customer.Docs.length>0 ){
       $scope.Customer.Docs[$scope.Customer.Docs.length]=Doc
     }
@@ -139,10 +159,16 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
     }
 
   }
-  else {
+
+if ($scope.page.temp!==undefined && $scope.page.temp!==null){
+  $scope.Customer=$scope.page.temp
+  //convertDateStringsToDates($scope.Customer)
+}  else {
      if ($scope.action=="saveProfileCustomer")
         $scope.loadItem()
 }
+
+
 $scope.uploadprofileweb=function(){
     $("#loader_img_int").show()
       var f = document.getElementById('msds').files[0],
@@ -205,16 +231,8 @@ $scope.add_customer= function (){
     console.log("Form is valid.");
     console.log($scope.data);
   }
-  lang=localStorage.getItem('language');
-  var email=localStorage.getItem("userEmail");
-
-  var userId = localStorage.getItem('userId');
-  var usertype = localStorage.getItem('userType');
-  var agencyId = localStorage.getItem('agencyId');
   dbData=$scope.Customer
-  if ($scope.page.agent)
-  dbData['user_type']=2
- data={ "action":$scope.action, id:userId,email:email,usertype:usertype,lang:lang, dbData: dbData,agent:$scope.page.agent,agency_id:agencyId,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie},pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+  data={ "action":$scope.action, dbData:dbData,agent:$scope.page.agent,pInfo:$scope.agent.pInfo}
   $scope.main.loader=true
   $http.post( SERVICEURL2,  data )
   .then(function(data) {
@@ -381,40 +399,10 @@ $scope.other=function(){
   $scope.page.other_data=false
   else
   $scope.page.other_data=true
-  $scope.arrow=(page.other_data!== undefined || page.other_data) ? 'arrow_drop_up' : 'arrow_drop_down';
+  $scope.arrow=($scope.page.other_data!== undefined || $scope.page.other_data) ? 'arrow_drop_up' : 'arrow_drop_down';
 
 }
-$scope.add_document=function(Doc,per_id){
-  if (Doc===undefined){
-    Doc={}
-  }
-  localstorage('add_document',JSON.stringify({action:"add_document_for_customer",per_id:$scope.Customer.user_id,location:"add_customer"}))
-  Doc.doc_name=""
-  Doc.doc_type="Documento di Identità"
-  Doc.agency_id=localStorage.getItem('agencyId')
-  Doc.per='customer'
-  if ($scope.Customer.user_id===undefined && $scope.Customer.user_id>0)
-  Doc.per_id=$scope.Customer.user_id;
-  Doc.id=null
-  Doc.image_name=null
-  Doc.indice=$scope.Customer.Docs.length
-  localstorage('Doc',JSON.stringify(Doc))
-  localstorage('Customer',JSON.stringify($scope.Customer))
-  $state.go('add_document')
-  return;
-}
-$scope.edit_doc=function(Doc,indice){
-  localstorage('add_document',JSON.stringify({action:"edit_document_customer",location:"add_customer"}))
-  Doc.agency_id=localStorage.getItem('agencyId')
-  Doc.per='customer'
-  if ($scope.Customer.user_id===undefined && $scope.Customer.user_id>0)
-  Doc.per_id=$scope.Customer.user_id;
-  Doc.indice=indice
-  localstorage('Doc',JSON.stringify(Doc))
-  localstorage('Customer',JSON.stringify($scope.Customer))
-  $state.go('add_document')
-  return;
-}
+
 $scope.back=function(){
   precPage=JSON.parse(localStorage.getItem($scope.page.location))
   if (!isObject(precPage))
@@ -422,46 +410,34 @@ $scope.back=function(){
   switch ($scope.page.action){
     case'add_customer_for_contract':
     if ($scope.lastid!==undefined && $scope.lastid>0 ){
-      $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-      $scope.Contract.fullname=$scope.Customer.name +" "+$scope.Customer.surname
-      $scope.Contract.contractor_id= $scope.lastid
-      precPage.add=true
-      localstorage('Contract', JSON.stringify($scope.Contract));
+      $scope.pages[$scope.page.location].temp.contractor_name=$scope.Customer.name +" "+$scope.Customer.surname
+      $scope.pages[$scope.page.location].temp.contractor_id=$scope.lastid
     }
     break;
     case'add_other_for_contract':
     if ($scope.lastid!==undefined && $scope.lastid>0 ){
-      $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-      $scope.Contract.other_name=$scope.Customer.name +" "+$scope.Customer.surname
-      $scope.Contract.user_id= $scope.lastid
-      precPage.add=true
-      localstorage('Contract', JSON.stringify($scope.Contract));
+      $scope.pages[$scope.page.location].temp.other_name=$scope.Customer.name +" "+$scope.Customer.surname
+      $scope.pages[$scope.page.location].temp.other_id=$scope.lastid
     }
     break;
     case'add_customer_for_owner':
     if ($scope.lastid!==undefined && $scope.lastid>0 ){
-      $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
-      $scope.Owner.fullname=$scope.Customer.name +" "+$scope.Customer.surname
-      $scope.Owner.user_id= $scope.lastid
-      precPage.load=true
-      localstorage('Owner', JSON.stringify($scope.Owner));
+      $scope.pages[$scope.page.location].temp.fullname=$scope.Customer.name +" "+$scope.Customer.surname
+      $scope.pages[$scope.page.location].temp.other_id=$scope.lastid
     }
     break;
     case'edit_customer_for_kyc_owner':
-    localstorage('Owner', JSON.stringify($scope.Customer));
-    precPage.edit=true
+    $scope.pages[$scope.page.location].Owner=$scope.Customer
     break;
     case'add_customer_for_kyc_owner':
     if ($scope.lastid!==undefined && $scope.lastid>0 ){
-      $scope.Owner=JSON.parse(localStorage.getItem('Owner'))
+      $scope.pages[$scope.page.location].Owner=$scope.Customer
       $scope.Owner.fullname=$scope.Customer.name +" "+$scope.Customer.surname
       $scope.Owner.user_id= $scope.lastid
-      precPage.add=true
-      localstorage('Owner', JSON.stringify($scope.Owner));
     }
     break;
   }
-  localstorage($scope.page.location,JSON.stringify(precPage))
+  localstorage('pages', JSON.stringify($scope.pages));
   $state.go($scope.page.location)
 
 }
@@ -482,7 +458,7 @@ $scope.back=function(){
                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
                  })
                $scope.main.loader=false
-            }, 5);
+            }, 200);
   });
 
 

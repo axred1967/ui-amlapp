@@ -1,4 +1,24 @@
-app2.controller('risk_profile02', function ($scope,$http,$state,$translate,$timeout) {
+app2.controller('risk_profile02', function ($scope,$http,$state,$translate,$timeout,$interval,$stateParams) {
+  $scope.curr_page=$state.current.name
+  $scope.pages=$stateParams.pages
+  if ($scope.pages===null || $scope.pages===undefined){
+    $scope.pages=JSON.parse(localStorage.getItem('pages'));
+  }
+  $scope.page=$scope.pages[$state.current.name]
+  $scope.back=function(passo){
+    if (passo>0){
+      $scope.pages['risk_profile0'+ passo ]={action:'',location:$scope.page.location,prev_page:$state.current.name}
+      localstorage('pages', JSON.stringify($scope.pages));
+      $state.go('risk_profile0'+ passo  ,{pages:$scope.pages})
+      return;
+    }
+    if (passo==-1){
+       $state.go($scope.page.location)
+       return;
+    }
+    $state.go($scope.page.location)
+  }
+
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -35,8 +55,8 @@ app2.controller('risk_profile02', function ($scope,$http,$state,$translate,$time
         data=responceData.data.RESPONSE;
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
-        convertDateStringsToDates($scope.Risk)
-        convertDateStringsToDates($scope.Risk.risk_data)
+        //convertDateStringsToDates($scope.Risk)
+        //convertDateStringsToDates($scope.Risk.risk_data)
         if ($scope.Risk.risk_data.mainActivity===undefined || ! isObject($scope.Risk.risk_data.mainActivity))
           $scope.Risk.risk_data.mainActivity={}
           if ($scope.Risk.risk_data.Residence===undefined || ! isObject($scope.Risk.risk_data.Residence))
@@ -239,18 +259,6 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
 
    }
 
-   $scope.back=function(passo){
-     if (passo>0){
-         localstorage('risk_profile0'+ passo +'',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
-         $state.go('risk_profile0'+ passo)
-         return;
-     }
-     if (passo==-1){
-       $state.go($scope.page.prev_page)
-         return;
-     }
-     $state.go($scope.page.location)
-   }
    $scope.$on('backButton', function(e) {
        $scope.back()
    });

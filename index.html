@@ -71,12 +71,10 @@
   <script src="app/add_company.js"></script>
   <script src="app/add_document.js"></script>
   <script src="app/add_owners.js"></script>
-  <script src="app/kycstep01.js"></script>
-  <script src="app/kycstep01.js"></script>
-  <script src="app/kycstep02.js"></script>
-  <script src="app/kycstep03.js"></script>
+  <script src="app/kyc_contractor.js"></script>
   <script src="app/kyc_company.js"></script>
   <script src="app/kyc_owners.js"></script>
+  <script src="app/kyc_document.js"></script>
   <script src="app/kyc_signature.js"></script>
   <script src="app/risk_profile01.js"></script>
   <script src="app/risk_profile02.js"></script>
@@ -93,6 +91,8 @@
   <script src="app/risk_profile03_4d.js"></script>
   <script src="app/risk_profile04_4d.js"></script>
   <script src="app/risk_final_4d.js"></script>
+
+  <script src="app/share.js"></script>
 
 <!-- Amministrazione  -->
 <script src="app/email_templates.js"></script>
@@ -139,11 +139,11 @@ Text angular
       <div class="mdl-layout mdl-js-layout mdl-layout--overlay-drawer-button">
 
         <!-- Sidebar -->
-        <div  ng-hide="main.login" ng-show="main.Sidebar" id="sidebar_agency" class="mdl-layout__drawer">
+        <div   ng-show="main.Sidebar" id="sidebar_agency" class="mdl-layout__drawer">
           <div class="mdl-card mdl-shadow--2dp mdl-color--primary mdl-color-text--blue-grey-50 drawer-profile">
             <div class="mdl-card__title user dark-blue-bg">
               <center>AMLAPP Service <br/></center>
-              <center><img id="Profileimageagencyuser" ng-src="{{agent.imageurl}}" alt="" />
+              <center><img ng-show="agent.imageurl.length>0" id="Profileimageagencyuser" ng-src="{{agent.imageurl}}" alt="" />
                 <span  id="Profileimageagencyusername" class="user-name">{{agent.name}}</span>
                 <span  id="Profileimageagencyuseremail" class="user-mail">{{agent.email}}</span>
               </center>
@@ -151,15 +151,16 @@ Text angular
             <!-- Top-right User -->
             <nav class="mdl-navigation" style="background-color:white">
               <a class="mdl-navigation__link " ui-sref="home"><i style="color:#757575" class="material-icons">reorder</i><span>{{'Contratti'|translate}}</span></a>
-              <a  class="mdl-navigation__link " ui-sref="my_customer" ><i style="color:#757575" class="material-icons">accessibility</i><span>{{'Persone'||translate}}</span></a>
+              <a  class="mdl-navigation__link " ui-sref="my_customer" ><i style="color:#757575" class="material-icons">accessibility</i><span>{{main.Cm||translate}}</span></a>
               <a class="mdl-navigation__link " ui-sref="my_company" ><i style="color:#757575" class="material-icons">business</i><span>{{'Societa\''|translate}}</span></a>
-              <a ng-hide= "agent.user_type==3 " class="mdl-navigation__link " ui-sref="my_agent"> <i style="color:#757575" class="material-icons">group</i><span>{{'Agenti'|translate}}</span></a>
+              <a ng-show= "agent.user_type==1 " class="mdl-navigation__link " ui-sref="my_agent"> <i style="color:#757575" class="material-icons">group</i><span>{{'Agenti'|translate}}</span></a>
               <a ng-hide= "agent.user_type!=-1 " class="mdl-navigation__link " ui-sref="my_agencies"> <i style="color:#757575" class="material-icons">local_library</i><span>{{'Agenzie'|translate}}</span></a>
               <a ng-hide= "agent.user_type!=-1 " class="mdl-navigation__link " ui-sref="email_templates"> <i style="color:#757575" class="material-icons">email</i><span>{{'Mail '|translate}}</span></a>
               <a ng-hide= "agent.user_type!=-1 " class="mdl-navigation__link " ui-sref="my_plan"> <i style="color:#757575" class="material-icons">cloud</i><span>{{'Piani '|translate}}</span></a>
-
               <a class="mdl-navigation__link " ui-sref="my_profile" ><i style="color:#757575" class="material-icons tiny" >contacts</i><span>{{'Profilo'|translate}}</span></a>
-              <a class="mdl-navigation__link " ui-sref="language" ><i style=";color:#757575" class="material-icons">language</i><span>{{'lingua' |translate}} </span></a>
+<!--
+              <a class="mdl-navigation__link " ui-sref="my_document" ><i style=";color:#757575" class="material-icons">paper</i><span>{{'Documenti' |translate}} </span></a>
+-->
               <a class="mdl-navigation__link " ui-sref="logout()" ><i style=";color:#757575" class="material-icons">input</i><span>Logout </span></a>
 
             </nav>
@@ -169,7 +170,7 @@ Text angular
         <!-- Page Content -->
         <main class="mdl-layout__content">
 
-            <div ng-hide="main.login"  class="account-info dark-blue-bg">
+            <div   class="account-info dark-blue-bg">
 
               <div id="heading" class="account-navigation"> <!-- top icons -->
                 <!--  <a class="mdl-button mdl-js-button mdl-button--icon left" onClick="logout()" href="javascript:void(0)">
@@ -179,10 +180,13 @@ Text angular
               <a ng-show="main.Back==true"  class="mdl-button mdl-js-button mdl-button--icon left" href="javascript:;" ng-click="back()">
                 <img src="img/back-button.png">
               </a>
-              <button ng-show="main.Add==true" ng-click="add()" class="mdl-button mdl-js-button mdl-button--icon right" style="border:2px solid #FFF">
+              <button id="add_button" ng-show="main.Add==true" ng-click="add()" class="mdl-button mdl-js-button mdl-button--icon right" style="border:2px solid #FFF">
                 <!--<img src="img/add-search.png">-->
                 <b >+</b>
               </button>
+              <span style="margin-left:-130px;font-size:8px" class="mdl-tooltip mdl-tooltip--validation toright" for="add_button" >
+                <div >{{main.AddLabel|translate}}</div>
+              </span>
               &nbsp;
               <div class="right mdl-layout-spacer"></div>
               &nbsp;
@@ -203,8 +207,7 @@ Text angular
         <div id="ui-loader" class="center2" ng-show="main.loader==true" id="loader_img" >&nbsp;
           <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
         </div>
-        <div  id="ui-content" ui-view ng-hide="main.loader==true" class="  account-data add-customer-data content-data-ax"
-        ng-cloak> <!-- text fields -->
+        <div  id="ui-content" ng-class="(main.login) ? 'meno30Top' :''" ui-view ng-hide="main.loader==true" class="  account-data add-customer-data content-data-ax" ng-cloak> <!-- text fields -->
         </div>
 
 
@@ -213,6 +216,15 @@ Text angular
 </div>
 <script>
 $( document ).ready(function() {
+  $('.tooltip').on('mouseenter',function(){
+      // on mouseenter
+      $('[for=”' +$this.attr('id')+'"]').addClass('is-active');
+      $('[for=”' +$this.attr('id')+'"]').show();
+  })
+  $('.tooltip').on('mouseleave',function(){
+      $('span[for=”' +$this.attr('id')+'"]').removeClass('is-active');
+      $('span[for=”' +$this.attr('id')+'"]').hide();
+  });
   $('.mdl-navigation__link').click(function(){
     $('.mdl-layout__drawer').toggleClass('is-visible');
     $('.mdl-layout__obfuscator').toggleClass('is-visible');

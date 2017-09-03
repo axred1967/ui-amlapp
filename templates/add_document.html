@@ -41,7 +41,7 @@
           </fieldset>
           <fieldset>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-              <input class="mdl-textfield__input" type="date" id="Doc_doc_date" name="Doc_doc_date"
+              <input class="mdl-textfield__input" type="date" date-input id="Doc_doc_date" name="Doc_doc_date"
               value=" "   ng-keyup="showAC($event,'contract');"
               ng-model="Doc.doc_date"   ng-required="true"
               />
@@ -60,10 +60,10 @@
           <div class="demo-card-image mdl-card mdl-shadow--2dp">
             <div class="mdl-card__title mdl-card--expand">Immagine</div>
 
-
-            <img class="toload" ng-show="Doc.isImage && Doc.doc_image.length>0" ng-src ="{{imageurl(Doc) }}" ></img>
+            <div class="mdl-image" ng-click="download(Doc)">
+            <img class="load" ng-show="Doc.doc_image.length>0" ng-src ="{{imageurl(Doc) }}" ></img>
             <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img_int" src="img/loader2.gif"  /> </center>
-            <img ng-click=download(Doc) class="toload" ng-show="! Doc.isImage && Doc.doc_image.length>0" ng-src ="{{'/img/'+ Doc.file_type.substr(1)+'.png' }}" ></img>
+            </div>
 
             <div class="mdl-card__actions">
               <div class="mdl-layout-spacer"></div>

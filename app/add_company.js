@@ -1,4 +1,12 @@
-app2.controller('add_company', function ($scope,$http,$state,$translate,$rootScope,$timeout) {
+app2.controller('add_company', function ($scope,$http,$state,$translate,$rootScope,$timeout,$interval,$stateParams) {
+  /* gestiote parametri di stato */
+	$scope.curr_page=$state.current.name
+	$scope.pages=$stateParams.pages
+	if ($scope.pages===null || $scope.pages===undefined){
+		$scope.pages=JSON.parse(localStorage.getItem('pages'));
+	}
+	$scope.page=$scope.pages[$state.current.name]
+
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -9,30 +17,29 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
   $scope.main.loader=true
 
   $scope.word={};
-  $scope.page={}
   $scope.loader=true
 
- $scope.curr_page='add_company'
- page=localStorage.getItem($scope.curr_page)
- if ( page!= null && page.length >0 ){
-   $scope.page=JSON.parse(page)
-   $scope.action=$scope.page.action
-
- }
- $scope.main.location=$scope.page.location
 
   $scope.loadItem=function(){
-    var CompanyID=localStorage.getItem("CompanyID");
-    var email=localStorage.getItem("userEmail");
-   data={"action":"show_edit_company",company_id:CompanyID,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+   data={"action":"show_edit_company",company_id:$scope.page.company_id,pInfo:$scope.agent.pInfo}
     $scope.loader=true
     $http.post( SERVICEURL2,  data)
     .then(function(responceData)
     {
       if(responceData.data.RESPONSECODE=='1') 			{
-        data=responceData.data.RESPONSE;
+        var data=responceData.data.RESPONSE;
+				$('input[type="date"]').each(function(){
+				 d=$(this).attr('ng-model')
+				 res=d.split('.')
+				 if (data[res.slice(-1)[0]]===null){
+					 data[res.slice(-1)[0]]=new Date()
+				 }
+				 else {
+					 data[res.slice(-1)[0]]=new Date(data[res.slice(-1)[0] ])
+				 }
+			 })
         $scope.Company=data;
-        convertDateStringsToDates($scope.Company)
+        //convertDateStringsToDates($scope.Company)
         if (!isObject($scope.Company.Docs)){
           $scope.Company.Docs=[{}]
           $scope.newDocs=true
@@ -59,14 +66,13 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     })
 
   }
-  switch ($scope.action){
+  switch ($scope.page.action){
     case 'add_company_for_contract':
     $scope.main.viewName="Inserisci Società"
     $scope.action="add_company"
     $scope.Company={}
     $scope.Company.Docs=[{}]
     $scope.Company.IMAGEURI=BASEURL+"uploads/company/small/"
-    $scope.newDocs=true;
     break;
     case 'edit_company':
     $scope.main.viewName="Modifica Società"
@@ -76,39 +82,14 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     $scope.Company={}
     $scope.Company.Docs=[{}]
     $scope.Company.IMAGEURI=BASEURL+"uploads/company/small/"
-    $scope.newDocs=true;
     $scope.action="add_company"
     $scope.main.viewName="Inserisci Società"
   }
 
 
-  if ($scope.page.editDoc) {
-    $scope.Company=JSON.parse(localStorage.getItem('Company'))
-    convertDateStringsToDates($scope.Company)
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    $scope.Company.Docs[Doc.indice]=Doc
-
-  }
-  else if ($scope.page.addDoc){
-    $scope.Company=JSON.parse(localStorage.getItem('Company'))
-    convertDateStringsToDates($scope.Company)
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    if ($scope.Company.Docs.length!==undefined|| $scope.Company.Docs.length>0 ){
-      $scope.Company.Docs[$scope.Company.Docs.length]=Doc
-    }
-    else {
-      $scope.Company.Docs={}
-      $scope.Company.Docs[0]=Doc
-    }
-
-  }
-  else {
-    if ($scope.action=="edit_company")
+  if ($scope.action=="edit_company")
     $scope.loadItem()
-  }
-  $scope.countryList=getCountryList()
+
 
 
   $scope.uploadprofileweb=function(){
@@ -224,7 +205,6 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     }
   }
   $scope.add_company= function (){
-    var langfileloginchk = localStorage.getItem("language");
     if ($scope.form.$invalid) {
       $scope.invalid=""
       angular.forEach($scope.form.$error, function(field) {
@@ -243,12 +223,9 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
       console.log($scope.data);
     }
 
-    var id=localStorage.getItem("userId");
-    var email=localStorage.getItem("userEmail");
-    var usertype = localStorage.getItem('userType');
     $scope.loader=true
     dbData= $scope.Company
-   data={ "action":$scope.action, id:id,email:email,usertype:usertype,lang:langfileloginchk, dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={ "action":$scope.action,  dbData:dbData,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       if(data.data.RESPONSECODE=='1') 			{
@@ -338,40 +315,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     $scope.loader=false
 
   }
-  $scope.add_document=function(Doc,per_id){
-    if (Doc===undefined){
-      Doc={}
-    }
-    localstorage('add_document',JSON.stringify({action:"add_document_for_company",per_id:$scope.Company.company_id,location:$scope.curr_page}))
-    Doc.doc_name=""
-    Doc.doc_type="Documento Società"
-    Doc.agency_id=localStorage.getItem('agencyId')
-    Doc.per='company'
-    if ($scope.Company.company_id===undefined && Company.company_id>0)
-    Doc.per_id=Company.company_id;
-    Doc.id=null
-    Doc.image_name=null
-    Doc.indice=$scope.Company.Docs.length
-    localstorage('Doc',JSON.stringify(Doc))
-    localstorage('Company',JSON.stringify($scope.Company))
 
-    $state.go('add_document')
-    return;
-  }
-  $scope.edit_doc=function(Doc,indice){
-    localstorage('add_document',JSON.stringify({action:"edit_document_for_company",location:$scope.curr_page}))
-    Doc.agency_id=localStorage.getItem('agencyId')
-    Doc.doc_type="Documento Società"
-    Doc.per='customer'
-    if ($scope.Company.company_id===undefined && Company.company_id>0)
-    Doc.per_id=Company.company_id;
-    Doc.indice=indice
-    localstorage('Doc',JSON.stringify(Doc))
-    localstorage('Company',JSON.stringify($scope.Company))
-
-    $state.go('add_document')
-    return;
-  }
   $scope.other=function(){
     if($scope.page.other_data)
     $scope.page.other_data=false
@@ -381,22 +325,18 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
 
   }
   $scope.back=function(){
-    precPage=JSON.parse(localStorage.getItem($scope.page.location))
-    if (!isObject(precPage))
-      precPage={}
+
 
     switch ($scope.page.action){
       case'add_company_for_contract':
       if ($scope.lastid!==undefined && $scope.lastid>0 ){
-        $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-        $scope.Contract.name=$scope.Company.name
-        $scope.Contract.company_id= $scope.lastid
-        localstorage('Contract', JSON.stringify($scope.Contract));
-        precPage.add=true
+				$scope.pages[$scope.page.location].temp.name=$scope.Company.name
+				$scope.pages[$scope.page.location].temp.company_id= $scope.lastid
+				localstorage('pages', JSON.stringify($scope.pages));
       }
       break;
     }
-    localstorage($scope.page.location,JSON.stringify(precPage))
+		localstorage('pages', JSON.stringify($scope.pages));
     $state.go($scope.page.location)
   }
   $scope.$on('backButton', function(e) {

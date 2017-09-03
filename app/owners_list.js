@@ -1,26 +1,26 @@
-app2.controller('owners_list', function ($scope,$http,$translate,$state,Customers_inf,$timeout) {
-  $scope.loader=true;
+app2.controller('owners_list', function ($scope,$http,$translate,$state,Customers_inf,$timeout,$interval,$stateParams) {
+  /* gestiote parametri di stato */
+	$scope.curr_page=$state.current.name
+	$scope.pages=$stateParams.pages
+	if ($scope.pages===null || $scope.pages===undefined){
+		$scope.pages=JSON.parse(localStorage.getItem('pages'));
+	}
+	$scope.page=$scope.pages[$state.current.name]
+
   $scope.main.Back=true
   $scope.main.Add=true
   $scope.main.Search=true
   $scope.main.AddPage="add_owner"
-  $scope.main.action="add_owner"
+  $scope.main.AddLabel="aggiungi Titolare Effettivo"
   $scope.main.Sidebar=false
   $('.mdl-layout__drawer-button').hide()
   $scope.deleted=0
-  $scope.page={}
+  $scope.main.loader=true
 
-  $scope.curr_page="owners_list"
-  page=localStorage.getItem($scope.curr_page)
-  if ( page!= null && page.length >0 ){
-    $scope.page=JSON.parse(page)
-    $scope.action=$scope.page.action
-  }
-  $scope.main.location=$scope.page.location
-
-  switch ($scope.action){
+  switch ($scope.page.action){
     case "owner_from_contract":
-    $scope.Contract=IsJsonString(localStorage.getItem('Contract'))
+
+    $scope.Contract=$scope.page.Contract
     if ($scope.Contract.act_for_other==2){
       $scope.company_id=$scope.Contract.company_id;
       $scope.Company_name="CPU:" + $scope.Contract.CPU + " Deleganti"
@@ -32,15 +32,17 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
     }
     break;
     case "ownwe_from_compnay":
-    $scope.company_id=localStorage.getItem("CompanyID")
-    $scope.Company_name=localStorage.getItem("Company_name")
+		$scope.Company=$scope.page.Company
+    $scope.company_id=$scope.Company.company_id
+    $scope.Company_name=$scope.Company.name
     break;
     default:
-    $scope.company_id=localStorage.getItem("CompanyID")
-    $scope.Company_name=localStorage.getItem("Company_name")
+		$scope.Company=$scope.page.Company
+		$scope.company_id=$scope.Company.company_id
+    $scope.Company_name=$scope.Company.name
 
   }
-  $scope.main.viewName=$scope.company_name
+  $scope.main.viewName=$scope.Company_name
 
   $scope.Company={};
   $scope.Owner={};
@@ -55,31 +57,26 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
 
 
   $scope.add_owner=function(Owner){
+		//guardo se arrivo dal contratto o dalla società owner_from_contract viene chiamato dal contratto
     if ($scope.page.action=='owner_from_contract'){
-      localstorage('Contract',JSON.stringify($scope.Contract))
-      localstorage('add_owners',JSON.stringify({action:'add_owner_from_contract',location:'owners_list'}))
+      $scope.pages['add_owners']={action:'add_owner_from_contract', location:$state.current.name,company_id:$scope.company_id,owners:true,temp:null,Contract:$scope.Contract}
 
     }else {
-      localstorage('add_owners',JSON.stringify({action:'',location:'owners_list'}))
-
+      $scope.pages['add_owners']={action:'', location:$state.current.name,owners:true,temp:null,company_id:$scope.company_id}
     }
-
-    $state.go('add_owners')
-
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go('add_owners',{pages:$scope.pages})
   }
   $scope.edit_owner=function(Owner,indice){
+    Owner.indice=indice
     if ($scope.page.action=='owner_from_contract'){
-      localstorage('Contract',JSON.stringify($scope.Contract))
-      localstorage('add_customer',JSON.stringify({action:'edit_customer_for_kyc_owner',location:$scope.curr_page,owners:true}))
-      localstorage('Owner',JSON.stringify(Owner))
+      $scope.pages['add_owners']={action:'edit_owners', location:$state.current.name,temp:null,Contract:$scope.Contract,owners:true,Owner:Owner}
 
     }else {
-      localstorage('add_customer',JSON.stringify({action:'edit_customer_for_kyc_owner',location:$scope.curr_page}))
-      localstorage('Owner',JSON.stringify(Owner))
+      $scope.pages['add_owners']={action:'edit_owners', location:$state.current.name,temp:null,owners:true,Owner:Owner}
     }
-    Owner.indice=indice
-    localstorage('Owner',JSON.stringify(Owner))
-    $state.go('add_customer')
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go('add_owners',{pages:$scope.pages})
 
   }
   $scope.deleteOwn=function(ob,index )
@@ -140,6 +137,17 @@ app2.controller('owners_list', function ($scope,$http,$translate,$state,Customer
   $scope.$on('addButton', function(e) {
     $scope.add_owner()
   })
+  $scope.$on('$viewContentLoaded',
+           function(event){
+             $timeout(function() {
+               $('input.mdl-textfield__input').each(
+                 function(index){
+                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                 })
+               $scope.main.loader=false
+            }, 5);
+  });
 
   $scope.loader=false
 });

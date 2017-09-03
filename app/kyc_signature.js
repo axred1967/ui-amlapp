@@ -1,32 +1,32 @@
-app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeout) {
+app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeout,$stateParams,$interval) {
+  //gestisco lo state parameter
+  $scope.curr_page=$state.current.name
+  $scope.pages=$stateParams.pages
+  if ($scope.pages===null || $scope.pages===undefined){
+    $scope.pages=JSON.parse(localStorage.getItem('pages'));
+  }
+  $scope.page=$scope.pages[$state.current.name]
+  $scope.back=function(passo){
+    if (passo==-1){
+      $state.go($scope.page.prev_page)
+      return;
+    }
+    $state.go($scope.page.location)
+  }
+
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
   $scope.main.Search=false
   $scope.main.Sidebar=false
   $('.mdl-layout__drawer-button').hide()
-  $scope.main.viewName="Sottoscrizione kyc_company"
+  $scope.main.viewName="Sottoscrizione e Conclusione"
   $scope.main.loader=true
-  $scope.page={}
-  $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-
-  $scope.curr_page='kyc_signature'
-  page=localStorage.getItem($scope.curr_page)
-  if ( page!= null && page.length >0 ){
-    $scope.page=JSON.parse(page)
-    $scope.action=$scope.page.action
-
-  }
-  $scope.main.location=$scope.page.location
-
-
-
-  switch ($scope.action){
+  switch ($scope.page.action){
     default:
-    var id=localStorage.getItem("CustomerProfileId");
-    var email=localStorage.getItem("userEmail");
+    $scope.Contract=$scope.pages[$scope.page.location].Contract
     appData=$scope.Contract
-    data={"action":"kycAx",appData:appData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"kycAx",appData:appData,pInfo:$scope.agent.pInfo}
     $scope.main.loader=true
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
@@ -42,11 +42,11 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
         $scope.Kyc.contractor_data.Docs=IsJsonString($scope.Kyc.contractor_data.Docs)
         $scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data)
         $scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
-        convertDateStringsToDates($scope.Kyc)
-        convertDateStringsToDates($scope.Kyc.contractor_data)
-        convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
-        convertDateStringsToDates($scope.Kyc.company_data)
-        convertDateStringsToDates($scope.Kyc.owner_data)
+        //convertDateStringsToDates($scope.Kyc)
+        //convertDateStringsToDates($scope.Kyc.contractor_data)
+        //convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
+        //convertDateStringsToDates($scope.Kyc.company_data)
+        //convertDateStringsToDates($scope.Kyc.owner_data)
         $scope.oldSign  = $scope.Kyc.contractor_data.sign
 
         if ($scope.Kyc.contractor_data.sign===undefined)
@@ -158,12 +158,12 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
         $scope.Kyc.contractor_data.sign=Canvas2.toDataURL()
 
     var langfileloginchk = localStorage.getItem("language");
-    dbData=$scope.Kyc
+    dbData=angular.extend({},$scope.Kyc)
     dbData.contractor_data=JSON.stringify(dbData.contractor_data)
     dbData.company_data=JSON.stringify(dbData.company_data)
     dbData.owner_data=JSON.stringify(dbData.owner_data)
 
-   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,final:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,final:true,pInfo:$scope.agent.pInfo}
     $scope.main.loader=true
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
@@ -220,14 +220,6 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
     }
   }
 
-   $scope.back=function(passo){
-     if (passo==-1){
-        $state.go($scope.page.prev_page)
-         return;
-     }
-     //$scope.loader=false
-     $state.go('view_contract')
-   }
    $scope.$on('backButton', function(e) {
        $scope.back()
    });

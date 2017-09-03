@@ -1,4 +1,12 @@
-app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$timeout,$state,$timeout,AutoComplete) {
+app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$timeout,$state,$timeout,AutoComplete,$stateParams,$interval) {
+	//gestisco lo state parameter
+	  $scope.curr_page=$state.current.name
+	  $scope.pages=$stateParams.pages
+		if ($scope.pages===null || $scope.pages===undefined){
+			$scope.pages=JSON.parse(localStorage.getItem('pages'));
+		}
+		$scope.page=$scope.pages[$state.current.name]
+
 		console.log($scope.agent)
 		$scope.main.Back=true
 		$scope.main.Add=false
@@ -9,35 +17,22 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 	  $scope.main.viewName="Nuovo  Contratto"
     $scope.main.loader=true
 		$scope.aggKyc=false;
-		$scope.page={}
 
-     $scope.curr_page='add_contract'
-     page=localStorage.getItem($scope.curr_page)
-     if ( page!= null && page.length >0 ){
-       $scope.page=JSON.parse(page)
-       $scope.action=$scope.page.action
+// memorizzo i dati
+		$interval(function(){
+			if ($scope.Contract!==undefined && $scope.pages[$state.current.name]!==undefined){
+				$scope.pages[$state.current.name].temp=$scope.Contract
+				localstorage('pages',JSON.stringify($scope.pages))
 
-     }
-		 $scope.main.location=$scope.page.location
+			}
+
+		},3000)
 
 		 $scope.word={};
 
      //localstorage("back","view_contract");
-     switch ($scope.action){
+     switch ($scope.page.action){
        case 'edit' :
-       Contract=JSON.parse(localStorage.getItem('Contract'))
-       convertDateStringsToDates(Contract)
-       $scope.Contract=Contract
-       switch($scope.Contract.act_for_other){
-         case "1":
-         $scope.Contract.company_id= $scope.Contract.other_id
-         break;
-         case "2":
-         $scope.Contract.user_id= $scope.Contract.other_id
-         break;
-       }
-       convertDateStringsToDates($scope.Contract.Docs)
-
        $scope.action='edit'
        $scope.main.viewName="Modifica Contratto"
        break;
@@ -51,51 +46,31 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
        $scope.Contract.contract_eov.setFullYear($scope.Contract.contract_eov.getFullYear() + 5)
 			 $scope.Contract.value_det=1
 			 $scope.Contract.nature_contract="Polizza Vita"
+
        break;
        default :
        $scope.main.viewName="Nuovo Contratto"
        $scope.action='add'
        break;
      }
-     if ($scope.main.reload){
-       $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-       convertDateStringsToDates($scope.Contract)
-			 $scope.main.reload=false
-     }
-     //gestisco aggiunta Doc
-     if ($scope.page.editDoc) {
-       $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-       convertDateStringsToDates($scope.Contract)
-       Doc=JSON.parse(localStorage.getItem('Doc'))
-       convertDateStringsToDates(Doc)
-       $scope.Customer.Docs[Doc.indice]=Doc
+		 if ($scope.page.temp!==undefined && $scope.page.temp!==null){
+			 $scope.Contract=$scope.page.temp
+			 ////convertDateStringsToDates($scope.Contract)
+		 }
+		 switch($scope.Contract.act_for_other){
+			 case "1":
+			 $scope.Contract.company_id= $scope.Contract.other_id
+			 break;
+			 case "2":
+			 $scope.Contract.user_id= $scope.Contract.other_id
+			 break;
+		 }
+		 $scope.setEoC=function(){
+	     d=$scope.Kyc.contractor_data.id_release_date
+	     d.setFullYear(d.getFullYear()+10)
+	     $scope.Kyc.contractor_data.id_validity=d
+	   }
 
-     }
-     else if ($scope.page.addDoc){
-       $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-       convertDateStringsToDates($scope.Contract)
-       Doc=JSON.parse(localStorage.getItem('Doc'))
-       convertDateStringsToDates(Doc)
-       if ($scope.Contract.Docs.length!==undefined|| $scope.Contract.Docs.length>0 ){
-         $scope.Contract.Docs[$scope.Contract.Docs.length]=Doc
-       }
-       else {
-         $scope.Contract.Docs={}
-         $scope.Contract.Docs[0]=Doc
-       }
-
-     }
-
-     //GESTISCO INSERIMENTO DI UN NUOVO o delegante
-     if ($scope.page.add){
-       $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-       convertDateStringsToDates($scope.Contract)
-     }
-     if ($scope.Contract.Docs===undefined || !isObject($scope.Contract.Docs)){
-         $scope.Contract.Docs=[{}]
-         $scope.newDocs=true;
-
-     }
 		 $scope.toogle=function(o){
 			 o = o.split(".")
 			 switch (o.length){
@@ -196,9 +171,9 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 						    }, 5);
 	            });
 		 $scope.showContractorList=function(){
-       if ((typeof $scope.Contract.fullname !== "undefined"  && $scope.oldContrator!=$scope.Contract.fullname)){
+       if (( $scope.oldContrator!=$scope.Contract.contractor_name)){
 
-        data={ "action":"ACCustomerList", name:$scope.Contract.fullname,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+        data={ "action":"ACCustomerList", name:$scope.Contract.contractor_name,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
          $http.post( SERVICEURL2,  data )
          .then(function(data) {
            if(data.data.RESPONSECODE=='1') 			{
@@ -217,9 +192,9 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
        $scope.oldContrator=$scope.searchContractor
      }
      $scope.showCompanyList=function(){
-       if ((typeof $scope.Contract.name !== "undefined"  && $scope.oldCompany!=$scope.Contract.name)){
+       if (( $scope.oldCompany!=$scope.Contract.name)){
 
-        data={ "action":"ACCompanyList", name:$scope.Contract.name,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+        data={ "action":"ACCompanyList", name:$scope.Contract.name,pInfo:$scope.agent.pInfo}
          $http.post( SERVICEURL2,  data )
          .then(function(data) {
            if(data.data.RESPONSECODE=='1') 			{
@@ -238,8 +213,8 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
        $scope.oldCompany=$scope.searchCompany;
      }
      $scope.showOtherList=function(){
-       if ((typeof $scope.Contract.other_name !== "undefined"  && $scope.Contract.other_name!=$scope.oldOther)){
-        data={ "action":"ACCustomerList", name:$scope.Contract.other_name,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+       if ((   $scope.Contract.other_name!=$scope.oldOther)){
+        data={ "action":"ACCustomerList", name:$scope.Contract.other_name,pInfo:$scope.agent.pInfo}
          $http.post( SERVICEURL2,  data )
          .then(function(data) {
            if(data.data.RESPONSECODE=='1') 			{
@@ -310,7 +285,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
      $scope.addContractorItem=function(id, name){
        $scope.list=[];
-       $scope.Contract.fullname=name;
+       $scope.Contract.contractor_name=name;
        $scope.Contract.contractor_id=id;
      };
      $scope.addCompanyItem=function(company){
@@ -350,8 +325,6 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
       usertype: localStorage.getItem('userType')
     }
     // aggiorno il campo blog per contenere Json
-    if ($scope.Contract.Docs.length>0 )
-    $scope.Contract.Docs=JSON.stringify($scope.Contract.Docs)
 
     dbData=$scope.Contract
     // metto i documenti in json
@@ -359,11 +332,9 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
     switch(dbData.act_for_other){
       case "1":
       dbData.other_id= $scope.Contract.company_id
-      dbData.role_for_other= $.trim($('#Contract_role_for_other').val())
       break;
       case "2":
       dbData.other_id= $scope.Contract.user_id
-      dbData.role_for_other=$.trim( $('#Contract_role_for_other').val())
       break;
     }
 
@@ -398,21 +369,22 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
     })
   }
   $scope.add_customer=function(){
-		localstorage('Contract',JSON.stringify($scope.Contract))
-		localstorage('add_customer',JSON.stringify({action:"add_customer_for_contract",location:$scope.curr_page}))
-    $state.go('add_customer')
+		$scope.pages['add_customer']={action:'add_customer_for_contract', location:$state.current.name,temp:null}
+		localstorage('pages',JSON.stringify($scope.pages))
+		$state.go('add_customer',{pages:$scope.pages})
 
   }
   $scope.add_company=function(){
-    localstorage('add_company',JSON.stringify({action:"add_company_for_contract",location:$scope.curr_page}))
-    localstorage('Contract',JSON.stringify($scope.Contract))
-    $state.go('add_company')
+
+		$scope.pages['add_company']={action:'add_company_for_contract', location:$state.current.name,temp:null}
+		localstorage('pages',JSON.stringify($scope.pages))
+		$state.go('add_company',{pages:$scope.pages})
 
   }
   $scope.add_other=function(){
-    localstorage('add_customer',JSON.stringify({action:"add_other_for_contract",location:$scope.curr_page}))
-    localstorage('Contract',JSON.stringify($scope.Contract))
-    $state.go('add_customer')
+		$scope.pages['add_customer']={action:'add_other_for_contract', location:$state.current.name,temp:null}
+		localstorage('pages',JSON.stringify($scope.pages))
+		$state.go('add_customer',{pages:$scope.pages})
 
   }
 
@@ -436,116 +408,8 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
     Doc.deleted=true;
   }
 
-  $scope.uploadfromgallery=function(Doc,index)
-  {
-    Doc.index=index
-    localstorage('Doc', JSON.stringify(Doc));
-    // alert('cxccx');
-    navigator.camera.getPicture($scope.uploadPhoto,
-      function(message) {
-        alert('get picture failed');
-      },
-      {
-        quality: 50,
-        destinationType: navigator.camera.DestinationType.FILE_URI,
-        sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-      }
-    );
-  }
-  $scope.add_photo=function(Doc, index)
-  {
-    Doc.index=index
-    localstorage('Doc', JSON.stringify(Doc));
-    // alert('cxccx');
-    navigator.camera.getPicture($scope.uploadPhoto,
-      function(message) {
-        alert('get picture failed');
-      },
-      {
-        quality: 50,
-        destinationType: navigator.camera.DestinationType.FILE_URI,
-        sourceType: navigator.camera.PictureSourceType.CAMERA
-      }
-    );
-  }
-
-  $scope.uploadPhoto=function(imageURI){
-    $("#loader_img").show()
-    $scope.Doc=JSON.parse(localStorage.getItem('Doc'))
-
-    var options = new FileUploadOptions();
-    options.fileKey="file";
-    options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
-    options.mimeType="text/plain";
-    options.chunkedMode = false;
-    var params = new Object();
-
-    options.params = params;
-    var ft = new FileTransfer();
-    ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
 
 
-
-  }
-  $scope.winFT=function (r)
-  {
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    var review_info   =JSON.parse(r.response);
-    var id = review_info.id;
-    $('#doc_image').val(review_info.response);
-    // var review_selected_image  =  review_info.review_id;
-    //$('#review_id_checkin').val(review_selected_image);
-   data={ "action":"get_document_image_name_multi", id:id,DocId: $scope.Doc.id,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
-    $http.post( SERVICEURL2,  data )
-    .then(function(data) {
-      if(data.data.RESPONSECODE=='1') 			{
-        //$word=$($search.currentTarget).attr('id');
-        $scope.Contract.Docs[Doc.index].doc_image=data.data.RESPONSE;
-        $("#loader_img").hide()
-      }
-			if (data.data.RESPONSECODE=='-1'){
-				 localstorage('msg','Sessione Scaduta ');
-				 $state.go('login');;;
-			}
-    })
-    , (function() {
-      $("#loader_img").hide()
-      console.log("error");
-    });
-  }
-  $scope.failFT =function (error)
-  {
-    $("#loader_img").hide()
-
-  }
-
-
-  $scope.add_document=function(Doc){
-    if (Doc===undefined){
-      Doc={}
-    }
-    localstorage('add_document',JSON.stringify({action:"add_document_for_contract",location:$scope.curr_page}))
-    Doc.doc_name="Immagine Contratto"
-    Doc.doc_type="Contratto di Servizio"
-    Doc.agency_id=localStorage.getItem('agencyId')
-    Doc.per='contract'
-    if ($scope.Contract.contract_id===undefined && $scope.Contract.contract_id>0)
-    Doc.per_id=$scope.Contract.contract_id;
-    Doc.id=null
-    Doc.image_name=null
-    Doc.showOnlyImage=true
-    Doc.indice=$scope.Contract.Docs.length
-
-    localstorage('Doc',JSON.stringify(Doc))
-    localstorage('Contract',JSON.stringify($scope.Contract))
-    $state.go('add_document')
-  }
-
-  $scope.edit_doc=function(Doc,indice){
-    localstorage('add_document',JSON.stringify({action:"edit_document_for_contract",location:$scope.curr_page}))
-    Doc.indice=indice
-    localstorage('Doc',JSON.stringify(Doc))
-    $state.go('add_document')    }
 
 
 

@@ -54,8 +54,17 @@ app2.factory('Companies_inf', function($http) {
   return Companies_inf;
 
 });
-app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$state, Companies_inf,$timeout) {
-  //$scope.datalang = DATALANG;
+app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$state, Companies_inf,$timeout,$interval,$stateParams) {
+  /* gestiote parametri di stato */
+	$scope.curr_page=$state.current.name
+	$scope.pages=$stateParams.pages
+	if ($scope.pages===null || $scope.pages===undefined){
+		$scope.pages=JSON.parse(localStorage.getItem('pages'));
+	}
+	$scope.page=$scope.pages[$state.current.name]
+
+  $scope.main.loader=true;
+
   $scope.main.Back=false
   $scope.main.Add=true
   $scope.main.Search=true
@@ -64,17 +73,7 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
   $scope.main.viewName="Le mie Società"
   $scope.main.Sidebar=true
   $('.mdl-layout__drawer-button').show()
-  $scope.main.loader=true;
-  $scope.page={}
   $scope.deleted=0
-   $scope.curr_page='my_company'
-   page=localStorage.getItem($scope.curr_page)
-   if ( page!= null && page.length >0 ){
-     $scope.page=JSON.parse(page)
-     $scope.action=$scope.page.action
-
-   }
-   $scope.main.location=$scope.page.location
 
   $scope.Companies_inf=new Companies_inf
   $scope.Companies_inf.pInfo=$scope.agent.pInfo
@@ -91,24 +90,26 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
   }
 
   $scope.tocompany = function(d){
-    localstorage("CompanyID",d.company_id);
-    localstorage('add_company',JSON.stringify({action:'edit_company',location:$scope.curr_page}))
-    $state.go('add_company')
+    $scope.pages['add_company']={action:'edit_company', company_id:d.company_id,location:$state.current.name,temp:null}
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go('add_company',{pages:$scope.pages})
   };
   $scope.add_company = function(){
-    localstorage('add_company',JSON.stringify({action:'add_company',location:$scope.curr_page}))
-    $state.go('add_company')
+    $scope.pages['add_company']={action:'add_company', location:$state.current.name,temp:null}
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go('add_company',{pages:$scope.pages})
   };
   $scope.toowners = function(d){
-    localstorage('owners_list',JSON.stringify({action:'owners_list',location:$scope.curr_page}))
-    localstorage("Company_name",d.name);
-    localstorage("CompanyID",d.company_id);
-    $state.go('owners_list')
+    $scope.pages['owners_list']={action:'owner_list', location:$state.current.name,temp:null,Company:d}
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go('owners_list',{pages:$scope.pages})
+
   };
   $scope.toDocs = function(d){
-    localstorage('my_document',JSON.stringify({action:'list_from_my_company',location:$scope.curr_page}))
-    localstorage("Company",JSON.stringify(d));
-    $state.go('my_document')
+    $scope.pages['my_document']={action:'list_from_my_company', location:$state.current.name,temp:null,Company:d}
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go('my_document',{pages:$scope.pages})
+
   };
   $scope.deleteCompany=function(Company,index )
   {

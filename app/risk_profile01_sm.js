@@ -1,4 +1,25 @@
-app2.controller('risk_profile01_sm', function ($scope,$http,$state,$translate,$timeout) {
+app2.controller('risk_profile01_sm', function ($scope,$http,$state,$translate,$timeout,$interval,$stateParams) {
+  //gestisco lo state parameter
+	  $scope.curr_page=$state.current.name
+	  $scope.pages=$stateParams.pages
+		if ($scope.pages===null || $scope.pages===undefined){
+			$scope.pages=JSON.parse(localStorage.getItem('pages'));
+		}
+		$scope.page=$scope.pages[$state.current.name]
+    $scope.back=function(passo){
+      if (passo>0){
+        $scope.pages['risk_profile0'+ passo +'_sm']={action:'',location:$scope.page.location,prev_page:$state.current.name}
+        localstorage('pages', JSON.stringify($scope.pages));
+        $state.go('risk_profile0'+ passo +'_sm' ,{pages:$scope.pages})
+        return;
+      }
+      if (passo==-1){
+         $state.go($scope.page.location)
+         return;
+      }
+      $state.go($scope.page.location)
+    }
+
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -7,26 +28,14 @@ app2.controller('risk_profile01_sm', function ($scope,$http,$state,$translate,$t
   $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Profilo soggettivo del Cliente"
   $scope.main.loader=true
-  $scope.page={}
-
-  $scope.curr_page='risk_profile01_sm'
-  page=localStorage.getItem($scope.curr_page)
-  if ( page!= null && page.length >0 ){
-    $scope.page=JSON.parse(page)
-    $scope.action=$scope.page.action
-
-  }
-  $scope.main.location=$scope.page.location
 
 
 
-  switch ($scope.action){
+  switch ($scope.page.action){
     default:
-    var id=localStorage.getItem("CustomerProfileId");
-    var email=localStorage.getItem("userEmail");
-    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+    $scope.Contract=$scope.pages[$scope.page.location].Contract
     appData=$scope.Contract
-    data={"action":"riskAx",appData:appData,kyc:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"riskAx",appData:appData,kyc:true,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
       $('#loader_img').hide();
@@ -37,8 +46,8 @@ app2.controller('risk_profile01_sm', function ($scope,$http,$state,$translate,$t
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
         if ($scope.Kyc!==undefined)
           $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
-        convertDateStringsToDates($scope.Risk)
-        convertDateStringsToDates($scope.Risk.risk_data)
+        //convertDateStringsToDates($scope.Risk)
+        //convertDateStringsToDates($scope.Risk.risk_data)
         if ($scope.Risk.risk_data===undefined ||  $scope.Risk.risk_data===false || ! isObject($scope.Risk.risk_data)){
           $scope.Risk.risk_data={}
         }
@@ -124,7 +133,7 @@ app2.controller('risk_profile01_sm', function ($scope,$http,$state,$translate,$t
     dbData.risk_data=JSON.stringify(dbData.risk_data)
 
     $('#loader_img').show();
-   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       $('#loader_img').hide();
@@ -227,21 +236,12 @@ app2.controller('risk_profile01_sm', function ($scope,$http,$state,$translate,$t
 */
 
   }
-   $scope.back=function(passo){
-     if (passo>0){
-         localstorage('risk_profile0'+ passo +'_sm',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
-         $state.go('risk_profile0'+ passo +'_sm' )
-         return;
-     }
-     if (passo==-1){
-        $state.go($scope.page.location)
-        return;
-     }
-     $state.go($scope.page.location)
-   }
-   $scope.$on('backButton', function(e) {
-       $scope.back()
-   });
+  $scope.$on('backButton', function(e) {
+      $scope.back()
+  });
+
+  $scope.$on('addButton', function(e) {
+  })
 
    $scope.$on('addButton', function(e) {
    })

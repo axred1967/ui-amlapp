@@ -19,7 +19,7 @@ app2.factory('Docs_inf', function($http,$state) {
       lastkey= Object.keys(this.Docs).pop() ;
       last=this.Docs[lastkey].id;
     }
-    dbData=this.Docload
+   dbData=this.Docload
    data={ "action":"documentList", dbData:dbData,last:last,pInfo:this.pInfo}
     $http.post(SERVICEURL2,  data )
     .then(function(responceData)  {
@@ -69,34 +69,33 @@ app2.factory('Docs_inf', function($http,$state) {
 
 });
 
-app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_inf,$timeout) {
+app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_inf,$timeout,$stateParams) {
+  //gestisco lo state parameter
+    $scope.curr_page=$state.current.name
+    $scope.pages=$stateParams.pages
+  	if ($scope.pages===null || $scope.pages===undefined){
+  		$scope.pages=JSON.parse(localStorage.getItem('pages'));
+  	}
+  	$scope.page=$scope.pages[$state.current.name]
+
   $scope.loader=true
   $scope.main.Back=true
   $scope.main.Add=true
 	$scope.main.AddPage="add_document"
+  $scope.main.AddLabel="nuovo documento"
   $scope.main.Search=false
   $scope.main.Sidebar=false
   $scope.deleted=0
   $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Documenti"
 
-  $scope.page={}
   $scope.loader=true
-  $scope.curr_page='my_document'
-  page=localStorage.getItem($scope.curr_page)
-  if ( page!= null && page.length >0 ){
-    $scope.page=JSON.parse(page)
-    $scope.action=$scope.page.action
 
-  }
-  $scope.main.location=$scope.curr_page
-
-  console.log('action'+$scope.action);
   $scope.Docload={}
-  switch ($scope.action){
+  switch ($scope.page.action){
     case 'list_from_view_contract' :
-    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-    convertDateStringsToDates($scope.Contract)
+    $scope.Contract=$scope.page.Contract
+    //convertDateStringsToDates($scope.Contract)
     $scope.DocFor="CPU Contratto: " + $scope.Contract.CPU
     $scope.main.viewName="Documenti Contratto"
     $scope.Docload.per_id=$scope.Contract.contract_id
@@ -105,8 +104,8 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
 
     break;
     case 'list_from_my_company' :
-    $scope.Company=JSON.parse(localStorage.getItem('Company'))
-    convertDateStringsToDates($scope.Company)
+    $scope.Company=$scope.page.Company
+    //convertDateStringsToDates($scope.Company)
     $scope.DocFor=$scope.Company.name;
     $scope.Docload.per_id=$scope.Company.company_id
     $scope.Docload.per="company"
@@ -116,8 +115,8 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
 
     break;
     case 'list_from_my_customer' :
-    $scope.Customer=JSON.parse(localStorage.getItem('Customer'))
-    convertDateStringsToDates($scope.Customer)
+    $scope.Customer=$scope.page.Customer
+    //convertDateStringsToDates($scope.Customer)
     $scope.DocFor=$scope.Customer.fullname;
     $scope.main.viewName="Documenti persona"
     $scope.Docload.per_id=$scope.Customer.user_id
@@ -133,9 +132,9 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
 
 /*  if ($scope.page.editDoc) {
     $scope.Docs_inf.Docs=JSON.parse(localStorage.getItem('Docs'))
-    convertDateStringsToDates($scope.Docs_inf.Docs)
+    //convertDateStringsToDates($scope.Docs_inf.Docs)
     Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
+    //convertDateStringsToDates(Doc)
     $scope.Docs_inf.Docs[Doc.indice]=Doc
 //    $scope.Kyc.contractor_data.Docs[Doc.indice]=Doc
 
@@ -143,9 +142,9 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
 
   else if ($scope.page.addDoc){
     $scope.Docs_inf.Docs=JSON.parse(localStorage.getItem('Docs'))
-    convertDateStringsToDates($scope.Docs_inf.Docs)
+    //convertDateStringsToDates($scope.Docs_inf.Docs)
     Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
+    //convertDateStringsToDates(Doc)
 
     if ($scope.Docs_inf.Docs.length!==undefined|| $scope.Docs_inf.Docs.length>0 ){
         $scope.Docs_inf.Docs[Doc.indice]=Doc
@@ -217,7 +216,7 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
     $state.reload();
   }
   $scope.download = function(Doc) {
-     url=BASEURL + "file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+"&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+     url=BASEURL + "file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
      $http.get(url, {
          responseType: "arraybuffer"
        })
@@ -238,22 +237,21 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
   $scope.edit_doc=function(Doc,Index){
     switch($scope.page.action){
       case 'list_from_my_customer':
-      localstorage('add_document',JSON.stringify({action:"edit_document_for_customer",location:$scope.curr_page}))
-      localstorage('Doc',JSON.stringify(Doc))
+      $scope.pages['add_document']={action:'edit_document_for_customer', location:$state.current.name,Doc:Doc}
+      localstorage('pages',JSON.stringify($scope.pages))
+
       break
       case 'list_from_my_company':
-      localstorage('add_document',JSON.stringify({action:"edit_document_for_customer",location:$scope.curr_page}))
-      localstorage('Doc',JSON.stringify(Doc))
+      $scope.pages['add_document']={action:'edit_document_for_company', location:$state.current.name,Doc:Doc}
+      localstorage('pages',JSON.stringify($scope.pages))
       break
       case 'list_from_view_contract' :
-      localstorage('add_document',JSON.stringify({action:"edit_document_for_contract",location:$scope.curr_page}))
-      localstorage('Doc',JSON.stringify(Doc))
+      $scope.pages['add_document']={action:'edit_document_for_contract', location:$state.current.name,Doc:Doc}
+      localstorage('pages',JSON.stringify($scope.pages))
       break;
       default:
     }
-    Doc.indice=Index
-    localstorage('Doc',JSON.stringify(Doc))
-    $state.go('add_document')
+    $state.go('add_document',{pages:$scope.pages})
 
 
   }
@@ -268,24 +266,40 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
   $scope.$on('addButton', function(e) {
      switch($scope.page.action){
        case 'list_from_my_customer':
-       localstorage('add_document',JSON.stringify({action:"add_document_for_customer",location:$scope.curr_page}))
-       Doc={agency_id:localStorage.getItem('agencyId'),per_id:$scope.Customer.user_id,per:'customer'}
-       localstorage('Doc',JSON.stringify(Doc))
+       $scope.pages['add_document']={action:'add_document_for_customer',location:$state.current.name,
+                          Doc:{agency_id:localStorage.getItem('agencyId'),per_id:$scope.Customer.user_id,per:'customer'}  }
+       localstorage('pages',JSON.stringify($scope.pages))
        break
        case 'list_from_my_company':
-       localstorage('add_document',JSON.stringify({action:"add_document_for_company",location:$scope.curr_page}))
-       Doc={agency_id:localStorage.getItem('agencyId'),per_id:$scope.Company.company_id,per:'company'}
-       localstorage('Doc',JSON.stringify(Doc))
+       $scope.pages['add_document']={action:'add_document_for_company', location:$state.current.name,
+                          Doc:{agency_id:localStorage.getItem('agencyId'),per_id:$scope.Company.company_id,per:'company'}  }
+       localstorage('pages',JSON.stringify($scope.pages))
+
        break
        case 'list_from_view_contract' :
-       localstorage('add_document',JSON.stringify({action:"add_document_for_contract",location:$scope.curr_page}))
-       Doc={agency_id:localStorage.getItem('agencyId'),per_id:$scope.Contract.contract_id,per:'contract'}
-       localstorage('Doc',JSON.stringify(Doc))
+       $scope.pages['add_document']={action:'add_document_for_contract',location:$state.current.name,
+                          Doc:{agency_id:localStorage.getItem('agencyId'),per_id:$scope.Contract.contract_id,per:'contract'}  }
+       localstorage('pages',JSON.stringify($scope.pages))
        break;
        default:
      }
-     $state.go('add_document')
+     $state.go('add_document',{pages:$scope.pages})
   })
+  $scope.$on('$viewContentLoaded',
+           function(event){
+             $timeout(function() {
+               $('input.mdl-textfield__input').each(
+                 function(index){
+                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                 })
+								 $('.mdl-layout__drawer-button').hide()
+               $scope.main.loader=false
+							 $timeout(function() {
+							 	resize_img()
+							 },300);
+            }, 100);
+  });
 
   $scope.loader=false;
 })

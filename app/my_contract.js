@@ -52,29 +52,32 @@ app2.factory('Contracts_inf', function($http,$state) {
     if (this.busy || this.loaded==-1) return;
     this.busy = true;
 
-    var id=localStorage.getItem("userId");
-    var email=localStorage.getItem("userEmail");
-    var usertype = localStorage.getItem('userType');
-
-    var priviledge = localStorage.getItem("priviligetype");
     last=99999999999
     if ( this.Contracts!==undefined && this.Contracts.length>0){
       lastkey= Object.keys(this.Contracts).pop() ;
       last=this.Contracts[lastkey].contract_id;
 
     }
-    data= {"action":"ContractList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,pInfo:this.pInfo}
+    data= {"action":"ContractList",last:last,pInfo:this.pInfo}
     $http.post(SERVICEURL2,  data )
     .then(function(responceData)  {
       if(responceData.data.RESPONSECODE=='1') 			{
         data=responceData.data.RESPONSE;
         //$http.post( LOG,  {r:"dopo caricamento",data:data})
-        if (usertype<3)
+        if (this.pInfo.user_type<3)
         angular.forEach(data,function(value,key) {
-          if (data[key].act_for_other==1)
+          data[key].Owner=data[key].fullname
+
+          if (data[key].act_for_other==1){
+            data[key].contractor_name=data[key].fullname
             data[key].fullname=data[key].name
-          if (data[key].act_for_other==2)
-              data[key].fullname=data[key].other_name
+            data[key].Owner=data[key].name
+          }
+          if (data[key].act_for_other==2){
+            data[key].contractor_name=data[key].fullname
+            data[key].fullname=data[key].other_name
+            data[key].Owner=data[key].other_name
+          }
         })
         if (data.length==0){
           this.loaded=-1
@@ -90,7 +93,7 @@ app2.factory('Contracts_inf', function($http,$state) {
       }
       else   {
         if (responceData.data.RESPONSECODE=='-1'){
-          localstorage('msg','Sessione Scaduta ');
+          localstorage('msg','Sessione Scaduta ' +responceData.data.RESPONSE);
           $state.go('login');;;
         }
         this.busy = false;
@@ -116,9 +119,12 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     $scope.agent.user_id=localStorage.getItem('userId');
     $scope.agent.agency_id=localStorage.getItem('agencyId');
     $scope.agent.user_type=localStorage.getItem('userType');
+    $scope.agent.priviledge=localStorage.getItem('priviledge');
+
     $scope.agent.cookie=localStorage.getItem('cookie');
     $scope.agent.image=localStorage.getItem('Profileimageagencyuser');
     $scope.agent.settings=IsJsonString(localStorage.getItem('userSettings'));
+
     $scope.agent.pInfo={user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}
     $scope.agent.pInfoUrl="&" +jQuery.param({pInfo:$scope.agent.pInfo})
 
@@ -155,6 +161,10 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
         tmhDynamicLocale.set('it');
 
       }
+      if ($scope.agent.user_type==3)
+      $scope.main.Cm="Dati personali"
+      else
+      $scope.main.Cm="Le mie Persone"
   //alert(window.location.pathname.replace(/^\//, ''));
   $scope.main.login=false
   $scope.main.Back=false
@@ -170,16 +180,10 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   $scope.main.Sidebar=true
   $('.mdl-layout__drawer-button').show()
   $scope.main.loader=true
-  $scope.page={}
+  localstorage('pages',JSON.stringify({}))
 
-   $scope.curr_page='home'
-   page=localStorage.getItem($scope.curr_page)
-   if ( page!= null && page.length >0 ){
-     $scope.page=JSON.parse(page)
-     $scope.action=$scope.page.action
 
-   }
-   $scope.main.location=$scope.page.location
+
 
 
   $scope.Contracts_inf=new Contracts_inf
@@ -194,14 +198,14 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   $scope.imageurl=function(Contract){
     if (Contract.act_for_other==1 && Contract.company_image!==undefined && Contract.company_image !=null && Contract.company_image.length>0){
       //Contract.imageurl= Contract.IMAGEURI +Contract.company_image
-      Contract.imageurl= BASEURL + "file_down.php?action=file&file=" + Contract.company_image +"&profile=1&entity=company&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+      Contract.imageurl= BASEURL + "file_down.php?action=file&file=" + Contract.company_image +"&profile=1&entity=company"+$scope.agent.pInfoUrl
 
       return   Contract.imageurl
 
     }
     if (Contract.act_for_other==2 && Contract.owner_image!==undefined && Contract.owner_image  !=null && Contract.owner_image.length>0){
 //      Contract.imageurl= Contract.IMAGEURI +Contract.owner_image
-      Contract.imageurl= BASEURL + "file_down.php?action=file&file=" + Contract.owner_image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+      Contract.imageurl= BASEURL + "file_down.php?action=file&file=" + Contract.owner_image +"&profile=1"+$scope.agent.pInfoUrl
       return   Contract.imageurl
 
     }
@@ -209,19 +213,15 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     if (Contract.image===undefined || Contract.image==null || Contract.image.length==0)
     Contract.imageurl= '../img/customer-listing1.png'
     else
-    Contract.imageurl= BASEURL+ "file_down.php?action=file&file=" + Contract.image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+    Contract.imageurl= BASEURL+ "file_down.php?action=file&file=" + Contract.image +"&profile=1"+$scope.agent.pInfoUrl
 //    Contract.imageurl= Contract.IMAGEURI +Contract.image
     return   Contract.imageurl
 
   }
-  $scope.toDocs = function(Contract){
-    localstorage('my_document',JSON.stringify({action:'list_from_view_contract',location:$scope.curr_page}))
-    localstorage('Contract', JSON.stringify(Contract));
-    $state.go('my_document')
-  };
+
 
   $scope.print_kyc=function(Contract){
-  	url=BASEURL + 'pdfgeneration/kyc.php?id='+Contract.contract_id+"&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie+"&download=Y"
+  	url=BASEURL + 'pdfgeneration/kyc.php?id='+Contract.contract_id+"&download=Y"+$scope.agent.pInfoUrl
   	if ($scope.main.web){
       var anchor = angular.element('<a/>');
     	angular.element(document.body).append(anchor);
@@ -230,8 +230,9 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     	anchor.attr({
     		href: url,
     		target: '_blank',
-    		download: 'kyc'+$scope.Contract.contract_id+ '-'+$scope.agent.id+'.pdf'
+    		download: 'kyc'+Contract.contract_id+ '-'+$scope.agent.id+'.pdf'
     	})[0].dispatchEvent(ev);
+      anchor.remove()
 
   	}
   	else {
@@ -258,7 +259,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
   }
   $scope.print_risk=function(Contract,index){
-  	url=BASEURL + 'pdfgeneration/risk.php?id='+Contract.contract_id+"&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie+"&download=Y"
+  	url=BASEURL + 'pdfgeneration/risk.php?id='+Contract.contract_id+"&download=Y"+$scope.agent.pInfoUrl
   	if ($scope.main.web){
       var anchor = angular.element('<a/>');
     	angular.element(document.body).append(anchor);
@@ -267,8 +268,9 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     	anchor.attr({
     		href: url,
     		target: '_blank',
-    		download: 'Risk'+$scope.Contract.contract_id+ '-'+$scope.agent.id+'.pdf'
+    		download: 'Risk'+Contract.contract_id+ '-'+$scope.agent.id+'.pdf'
     	})[0].dispatchEvent(ev);
+      anchor.remove()
 
   	}
   	else {
@@ -294,21 +296,117 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   	}
 
   }
+  $scope.toDocs = function(Contract){
+    pages['kyc_document']={action:'', location:$state.current.name,Contract:Contract,view:true}
+    localstorage('pages',JSON.stringify(pages))
+    $state.go('kyc_document',{pages:pages})
 
+
+  };
   $scope.tocontract = function(d){
     if ($scope.agent.user_type==3)
       return
+    /*
     localstorage('view_contract',JSON.stringify({action:'view',location:$scope.curr_page}))
     localstorage("contract_id",d.contract_id);
     localstorage("customer_id",d.contractor_id);
     localstorage("Customertype",1);
     localstorage('Contract', JSON.stringify(d));
-    $state.go('view_contract')
+    */
+
+    pages={'view_contract':{action:'view', location:$state.current.name,Contract:d}}
+    localstorage('pages',JSON.stringify(pages))
+    $state.go('view_contract',{pages:pages})
   };
   $scope.add_contract = function(){
-    localstorage('add_contract',JSON.stringify({action:'add_contract',location:$scope.curr_page}))
-    $state.go('add_contract')
+    pages={'add_contract':{action:'add_contract', location:$state.current.name}}
+    localstorage('pages',JSON.stringify(pages))
+    $state.go('add_contract',{pages:pages})
   };
+  $scope.share = function(d){
+    if ($scope.main.web){
+      r=confirm("Acconsenti di Condividere i tuoi dati personali e dei soggetti a te delegati al Contraente ai fini AML?");
+      if (r == true) {
+        $scope.share2(d);
+      }
+    }
+    else{
+      navigator.notification.confirm(
+        'Acconsenti di Condividere i tuoi dati personali e dei soggetti a te delegati al Contraente ai fini AML?', // message
+        function(button) {
+          if ( button == 1 ) {
+            $scope.share2(d);
+          }
+        },            // callback to invoke with index of button pressed
+        'Sei sicuro?',           // title
+        ['Si','No']     // buttonLabels
+    );
+    }
+
+  }
+  $scope.share2 = function(d){
+    data={"action":"addShare",appData:d,pInfo:$scope.agent.pInfo}
+    $http.post(SERVICEURL2,data)
+    .then(function(data){
+      if(data.data.RESPONSECODE=='1')
+      {
+        $state.reload()
+      }
+      else      {
+        if (data.data.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           $state.go('login');;;
+        }
+        swal("",data.data.RESPONSE);
+      }
+    })
+    , (function(){
+      console.log('error');
+    })
+  }
+  $scope.removeShare = function(d){
+    if ($scope.main.web){
+      r=confirm("Vuoi che l'aggiornamento dei tuoi dati non sarà più visibile al Contraente?");
+      if (r == true) {
+        $scope.removeShare2(d);
+      }
+    }
+    else{
+      navigator.notification.confirm(
+        'Vuoi che l\'aggiornamento dei tuoi dati non sarà più visibile al Contraente?', // message
+        function(button) {
+          if ( button == 1 ) {
+            $scope.removeShare2(d);
+          }
+        },            // callback to invoke with index of button pressed
+        'Sei sicuro?',           // title
+        ['Si','No']     // buttonLabels
+    );
+    }
+
+  }
+  $scope.removeShare2 = function(d){
+    data={"action":"removeShare",appData:d,pInfo:$scope.agent.pInfo}
+    $http.post(SERVICEURL2,data)
+    .then(function(data){
+      if(data.data.RESPONSECODE=='1')
+      {
+        $state.reload()
+      }
+      else      {
+        if (data.data.RESPONSECODE=='-1'){
+           localstorage('msg','Sessione Scaduta ');
+           $state.go('login');;;
+        }
+        swal("",data.data.RESPONSE);
+      }
+    })
+    , (function(){
+      console.log('error');
+    })
+  }
+
+
   $scope.deleteContract=function(Contract,index )
   {
     if ($scope.main.web){
@@ -337,7 +435,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     $state.reload()
   }
   $scope.back = function(d){
-    $state.go($scope.page.locatio)
+    $state.go($scope.page.location)
   }
   $scope.$on('backButton', function(e) {
       $scope.back()

@@ -13,11 +13,7 @@ app2.factory('Customers_inf', function($http,$state) {
     if (this.busy || this.loaded==-1) return;
     this.busy = true;
 
-    var id=localStorage.getItem("userId");
-    var email=localStorage.getItem("userEmail");
-    var usertype = localStorage.getItem('userType');
-    var priviledge = localStorage.getItem("priviligetype");
-    var agencyId = localStorage.getItem('agencyId');
+
 
     last=99999999999
     if ( this.Customers!==undefined && this.Customers.length>0){
@@ -26,15 +22,15 @@ app2.factory('Customers_inf', function($http,$state) {
       if (agent=='Owners')
         last=this.Customers[lastkey].id;
     }
-    data={"action":"CustomerList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,pInfo:this.pInfo}
+    data={"action":"CustomerList",last:last,pInfo:this.pInfo}
     if (agent)
-    data={"action":"AgentList",id:id,email:email,usertype:usertype,priviledge:priviledge,agency_id:agencyId,last:last,pInfo:this.pInfo}
+    data={"action":"AgentList",last:last,pInfo:this.pInfo}
     if (agent=='Owners'){
       if (isObject(this.Contract))
         appData=this.Contract
       else
         appData=[]
-      data={"action":"OwnersList",company_id:this.CompanyId,last:last,appData:appData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+      data={"action":"OwnersList",company_id:this.CompanyId,last:last,appData:appData,pInfo:this.pInfo}
     }
     $('#ui-content').hide()
     $('#ui-loader').show()
@@ -79,7 +75,16 @@ app2.factory('Customers_inf', function($http,$state) {
 
 });
 
-app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $state, Customers_inf,$timeout) {
+app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $state, Customers_inf,$timeout, $interval, $stateParams) {
+  /* gestiote parametri di stato */
+	$scope.curr_page=$state.current.name
+	$scope.pages=$stateParams.pages
+	if ($scope.pages===null || $scope.pages===undefined){
+		$scope.pages=JSON.parse(localStorage.getItem('pages'));
+	}
+	$scope.page=$scope.pages[$state.current.name]
+
+
   if ($scope.agent===undefined || !$scope.agent.id>0  ){
     localstorage('msg','Autenticati per favore ');
     $state.go('login');;;
@@ -95,21 +100,13 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
   $scope.main.Search=true
   $scope.main.AddPage="add_customer"
   $scope.main.action="add_customer"
+  if ($scope.agent.user_type==3)
+  $scope.main.viewName="i miei dati personali"
+  else
   $scope.main.viewName="Le mie Persone"
   $scope.main.Sidebar=true
   $('.mdl-layout__drawer-button').show()
   $scope.main.loader=true
-  $scope.page={}
-
-   $scope.curr_page="my_customer"
-   page=localStorage.getItem($scope.curr_page)
-   if ( page!= null && page.length >0 ){
-     $scope.page=JSON.parse(page)
-     $scope.action=$scope.page.action
-
-   }
-   $scope.main.location=$scope.page.location
-
 
 
   $scope.Customers_inf=new Customers_inf  //    $scope.datalang = DATALANG;
@@ -129,20 +126,21 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
 
 
   $scope.tocustomer = function(d){
-    localstorage('add_customer',JSON.stringify({action:'update_customer',location:$scope.curr_page}))
-    localstorage("CustomerProfileId",d.user_id);
-    localstorage("Customertype",1);
-    $state.go('add_customer')
+    $scope.pages['add_customer']={action:'update_customer', user_id:d.user_id,location:$state.current.name,temp:null,Customer:d}
+    localstorage('pages',JSON.stringify($scope.pages))
+
+    $state.go('add_customer',{pages:$scope.pages})
   };
 
   $scope.add_customer = function(){
-    localstorage('add_customer',JSON.stringify({action:'add_customer',location:'my_customer'}))
-    $state.go('add_customer')
+    $scope.pages['add_customer']={action:'add_customer', location:$state.current.name,temp:null}
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go('add_customer',{pages:$scope.pages})
   };
   $scope.toDocs = function(d){
-    localstorage('my_document',JSON.stringify({action:'list_from_my_customer',location:$scope.curr_page}))
-    localstorage('Customer',JSON.stringify(d))
-    $state.go('my_document')
+    $scope.pages['my_document']={action:'list_from_my_customer', location:$state.current.name,Customer:d}
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go('my_document',{pages:$scope.pages})
   };
   $scope.deleteCustomer=function(Customer,index )
   {

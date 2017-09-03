@@ -1,165 +1,100 @@
-app2.controller('add_document', function ($scope,$http,$translate,$state,$timeout,AutoComplete) {
+app2.controller('add_document', function ($scope,$http,$translate,$state,$timeout,AutoComplete,$stateParams) {
   $scope.loader=true
+  /* gestiote parametri di stato */
+	$scope.curr_page=$state.current.name
+	$scope.pages=$stateParams.pages
+	if ($scope.pages===null || $scope.pages===undefined){
+		$scope.pages=IsJsonString(localStorage.getItem('pages'));
+	}
+	$scope.page=$scope.pages[$state.current.name]
 
   $scope.main.Back=true
   $scope.main.Add=false
 	$scope.main.AddPage="add_document"
   $scope.main.Search=false
   $scope.main.Sidebar=false
-  $('.mdl-layout__drawer-button').hide()
-  $scope.main.viewName="Nuovo Documento"
   $scope.Doc={}
   $scope.word={};
-  $scope.page={}
-  $scope.curr_page='add_document'
-  page=localStorage.getItem($scope.curr_page)
-
-  if (page.length >0 ){
-    $scope.page=JSON.parse(page)
-    $scope.action=$scope.page.action
-
-  }
-  $scope.main.location=$scope.page.location
 
   //localstorage("back","view_contract");
-  switch ($scope.action){
-    case 'edit' :
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    $scope.Doc=Doc
-    $scope.action='edit'
-    $scope.viewName="Modifica Documento"
-    dbData=$scope.Doc
-    $scope.loaded=true
-   data={ "action":"documentList", dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
-    $http.post( SERVICEURL2,  data )
-    .then(function(data) {
-      if(data.data.RESPONSECODE=='1') 			{
-        //$word=$($search.currentTarget).attr('id');
-        $scope.word[$search]=data.data.RESPONSE;
-      }
-      if (data.data.RESPONSECODE=='-1'){
-         localstorage('msg','Sessione Scaduta ');
-         $state.go('login');;;
-      }
-    })
-    , (function() {
-      console.log("error");
-    });
-
-
-    break;
-    case 'edit_document_for_contract' :
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    $scope.loaded=true
-    $scope.Doc=Doc
-    $scope.action='edit'
-    $scope.viewName="Modifica Documento"
-    break;
+  switch ($scope.page.action){
 
     case 'add_document_for_contract' :
-    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    $scope.Doc=Doc
-    $scope.Doc.per='contract'
+    $scope.Doc=$scope.page.Doc
+    //convertDateStringsToDates($scope.Doc)
     $scope.Doc.doc_date=new Date()
     $scope.action='add'
-    $scope.viewName="Aggiungi Documento"
     $scope.loaded=false
 
-    break;
-    case 'edit_document_for_contract' :
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    $scope.loaded=true
-    $scope.Doc=Doc
-    //$scope.Doc.doc_per='contract'
-    $scope.action='edit'
-    $scope.viewName="Modifica Documento"
     break;
 
     case 'add_document_for_customer' :
-    $scope.Customer=JSON.parse(localStorage.getItem('Customer'))
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    $scope.Doc=Doc
-    $scope.Doc.doc_date=new Date()
-    $scope.Doc.doc_per='customer'
-    $scope.action='add'
-    $scope.viewName="Aggiungi Documento"
-    $scope.loaded=false
-
-    break;
-    case 'edit_document_for_customer' :
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    $scope.loaded=true
-    $scope.Doc=Doc
-    //$scope.Doc.doc_per='customer'
-    $scope.action='edit'
-    $scope.viewName="Modifica Documento"
-    break;
-
-    case 'add_document_for_company' :
-    $scope.Company=JSON.parse(localStorage.getItem('Company'))
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    $scope.Doc=Doc
+    $scope.Doc=$scope.page.Doc
+    //convertDateStringsToDates($scope.Doc)
     $scope.Doc.doc_date=new Date()
     $scope.action='add'
-    $scope.viewName="Aggiungi Documento"
     $scope.loaded=false
 
-    break;
-
-    case 'add_document_for_kyc_id' :
-    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    $scope.Doc=Doc
-    $scope.Doc.doc_date=new Date()
-    $scope.action='add'
-    $scope.viewName="Aggiungi Documento"
-    $scope.loaded=false
-    break;
-    case 'edit_document_for_kyc_id' :
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    $scope.loaded=true
-    $scope.Doc=Doc
-    $scope.action='edit'
-    $scope.viewName="Modifica Documento"
     break;
     case 'add_document_for_company' :
-    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    $scope.Doc=Doc
+    $scope.Doc=$scope.page.Doc
+    //convertDateStringsToDates($scope.Doc)
     $scope.Doc.doc_date=new Date()
-    $scope.Doc.per='company'
     $scope.action='add'
-    $scope.viewName="Aggiungi Documento"
     $scope.loaded=false
     break;
-    case 'edit_document_for_company' :
-    $scope.Company=JSON.parse(localStorage.getItem('Company'))
-    Doc=JSON.parse(localStorage.getItem('Doc'))
-    convertDateStringsToDates(Doc)
-    $scope.Doc=Doc
-    //$scope.Doc.doc_per='company'
-    $scope.loaded=true
-    $scope.action='edit'
-    $scope.viewName="Modifica Documento"
+
+    case 'add_document_for_kyc' :
+    $scope.Doc=$scope.page.Doc
+    //convertDateStringsToDates($scope.Doc)
+    $scope.Doc.doc_date=new Date()
+    $scope.action='add'
+    $scope.loaded=false
     break;
+
 
     default :
-    $scope.Doc.image_name=""
-    $scope.Doc.doc_date=new Date()
-    $scope.viewName="Nuovo Documento"
-    break;
+    $scope.Doc=$scope.page.Doc
+    //convertDateStringsToDates($scope.Doc)
+    $scope.loaded=true
+    //$scope.Doc.doc_per='contract'
+    $scope.action='edit'
+    $scope.main.viewName="Modifica Documento"
+
   }
+  $('input[type="date"]').each(function(){
+   d=$(this).attr('ng-model')
+   var res=d.split('.')
+   if ($scope.Doc[res.slice(-1)[0]]!=undefined ){
+     $scope.Doc[res.slice(-1)[0]]=new Date($scope.Doc[res.slice(-1)[0] ])
+
+   }
+    if ($scope.Doc[res.slice(-1)[0]]!=null ){
+      $scope.Doc[res.slice(-1)[0]]=new Date()
+    }
+
+
+ })
+
+$scope.loadItem=function(){
+  dbData=$scope.Doc
+  data={ "action":"documentList", dbData:dbData,pInfo:$scope.agent.pInfo}
+  $http.post( SERVICEURL2,  data )
+  .then(function(data) {
+    if(data.data.RESPONSECODE=='1') 			{
+      //$word=$($search.currentTarget).attr('id');
+      $scope.word[$search]=data.data.RESPONSE;
+    }
+    if (data.data.RESPONSECODE=='-1'){
+       localstorage('msg','Sessione Scaduta ');
+       $state.go('login');;;
+    }
+  })
+  , (function() {
+    console.log("error");
+  });
+
+}
   $scope.image_type=['.png','.gif','.png','.tif','.bmp','.jpg']
   $scope.Doc.isImage=true
   if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
@@ -216,17 +151,22 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
 
 
   $scope.imageurl=function(Doc){
+    if (Doc===undefined || Doc.doc_image===undefined ||  Doc.doc_image== null || Doc.doc_image.length==0){
+			imageurl= '../img/customer-listing1.png'
+			return imageurl
+			}
+			else if (Doc.isImage){
+			imageurl= BASEURL+ "file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
+		}
+		else{
+			imageurl= '/img/'+ Doc.file_type.substr(1)+'.png'
 
-    if (Doc===undefined || Doc.doc_image===undefined ||  Doc.doc_image== null || Doc.doc_image.length==0)
-      imageurl= '../img/customer-listing1.png'
-    else
-      imageurl= BASEURL+ "file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
-      "&user_id="+$scope.agent.user_id+ "&agency_id="+$scope.agent.agency_id+"&user_type="+$scope.agent.user_type
+		}
 
-    //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl
 
   }
+
 
 
   $scope.showAC=function($search,$word, settings){
@@ -385,7 +325,24 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
       id :localStorage.getItem("userId"),
       usertype: localStorage.getItem('userType')
     }
-    dbData=$scope.Doc
+    dbData=angular.extend({},$scope.Doc)
+    if ($scope.page.action=="add_document_for_kyc" || $scope.page.action=="edit_document_for_kyc"){
+			$scope.pages[$scope.page.location].newOb={}
+			$scope.pages[$scope.page.location].newOb=dbData
+			$scope.pages[$scope.page.location].edit=$scope.page.edit
+			$scope.pages[$scope.page.location].indice=$scope.page.indice
+			$scope.back()
+	    return;
+		}
+
+    if ($scope.page.action=="add_document_for_kyc_owner" || $scope.page.action=="edit_document_for_kyc_owner"){
+			$scope.pages[$scope.page.location].newOb={}
+			$scope.pages[$scope.page.location].newOb=dbData
+			$scope.pages[$scope.page.location].edit=$scope.page.edit
+			$scope.pages[$scope.page.location].indice=$scope.page.indice
+			$scope.back()
+	    return;
+		}
 
     var langfileloginchk = localStorage.getItem("language");
     data={"action":"savedocument",type:$scope.action, dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
@@ -414,7 +371,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
   }
 
   $scope.download = function(Doc) {
-     url=BASEURL + "file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+"&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+     url=BASEURL + "file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
      $http.get(url, {
          responseType: "arraybuffer"
        })
@@ -430,97 +387,15 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
          })[0].dispatchEvent(ev);
        })
      }
+
   $scope.back=function(){
     switch ($scope.page.action){
-      case 'add_document_for_contract':
-      if ($scope.lastid!== undefined && $scope.lastid>0){
-        $scope.Doc.id=$scope.lastid
-        $scope.Doc.per="contract"
-        $scope.Doc.per_id=$scope.Contract.contract_id
 
-        localstorage('Doc',JSON.stringify($scope.Doc))
-        precPage=JSON.parse(localStorage.getItem($scope.page.location))
-        precPage.addDoc=true
-        localstorage($scope.page.location,JSON.stringify(precPage))
-
-      }
-      break;
-      case 'add_document_for_kyc_id':
-      if ($scope.lastid!== undefined && $scope.lastid>0){
-        $scope.Doc.id=$scope.lastid
-        $scope.Doc.per="contract"
-        if ($scope.page.per_id!== undefined && $scope.page.per_id>0)
-          $scope.Doc.per_id=$scope.page.per_id
-        else
-          $scope.Doc.per_id=$scope.Contract.contract_id
-        localstorage('Doc',JSON.stringify($scope.Doc))
-        precPage=JSON.parse(localStorage.getItem($scope.page.location))
-        precPage.addDoc=true
-        localstorage($scope.page.location,JSON.stringify(precPage))
-        break;
-
-      }
-      case 'add_document_for_customer':
-      if ($scope.lastid!== undefined && $scope.lastid>0){
-        $scope.Doc.id=$scope.lastid
-        $scope.Doc.per="customer"
-        $scope.Doc.per_id=$scope.Customer.user_id
-        localstorage('Doc',JSON.stringify($scope.Doc))
-        precPage=JSON.parse(localStorage.getItem($scope.page.location))
-        precPage.addDoc=true
-        localstorage($scope.page.location,JSON.stringify(precPage))
-
-      }
-      break;
-      case 'add_document_for_company':
-      if ($scope.lastid!== undefined && $scope.lastid>0){
-        $scope.Doc.id=$scope.lastid
-        $scope.Doc.per="company"
-        $scope.Doc.per_id=$scope.Company.company_id
-        localstorage('Doc',JSON.stringify($scope.Doc))
-        precPage=JSON.parse(localStorage.getItem($scope.page.location))
-        precPage.addDoc=true
-        localstorage($scope.page.location,JSON.stringify(precPage))
-        break;
-
-      }
-
-      case 'edit_document_for_kyc_id':
-      if ($scope.lastid!== undefined && $scope.lastid>0){
-        localstorage('Doc',JSON.stringify($scope.Doc))
-        precPage=JSON.parse(localStorage.getItem($scope.page.location))
-        precPage.editDoc=true
-        localstorage($scope.page.location,JSON.stringify(precPage))
-        break;
-      }
-      case 'edit_document_for_customer':
-      if ($scope.lastid!== undefined && $scope.lastid>0){
-        localstorage('Doc',JSON.stringify($scope.Doc))
-        precPage=JSON.parse(localStorage.getItem($scope.page.location))
-        precPage.editDoc=true
-        localstorage($scope.page.location,JSON.stringify(precPage))
-        break;
-      }
-      case 'edit_document_for_company':
-      if ($scope.lastid!== undefined && $scope.lastid>0){
-        localstorage('Doc',JSON.stringify($scope.Doc))
-        precPage=JSON.parse(localStorage.getItem($scope.page.location))
-        precPage.editDoc=true
-        localstorage($scope.page.location,JSON.stringify(precPage))
-        break;
-      }
-      case 'edit_document_for_contract':
-      if ($scope.lastid!== undefined && $scope.lastid>0){
-        localstorage('Doc',JSON.stringify($scope.Doc))
-        precPage=JSON.parse(localStorage.getItem($scope.page.location))
-        precPage.editDoc=true
-        localstorage($scope.page.location,JSON.stringify(precPage))
-        break;
-      }
 
     }
-    history.back()
-  }
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go($scope.page.location,{pages:$scope.pages})
+    }
   $scope.$on('backButton', function(e) {
       $scope.back()
   });
@@ -530,5 +405,20 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
   })
 
   $scope.loader=false
-
+  $scope.$on('$viewContentLoaded',
+           function(event){
+             $timeout(function() {
+               $('input.mdl-textfield__input').each(
+                 function(index){
+                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
+                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+                 })
+               //nascondo menu sx
+               $('.mdl-layout__drawer-button').hide()
+               $scope.main.loader=false
+               $timeout(function() {
+                 resize_img()
+               },200);
+            }, 200);
+  });
 })

@@ -38,22 +38,22 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
         </div>
         <div class="mdl-card__actions mdl-card--border " style="font-size:12px">
           <div class="mdl-cell--12-col">
-            <button  name="deleteCompany" class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteCompany(Company,CompanyIndex)" >
+            <button  tooltip id="{{'deleteCompany'+CompanyIndex}}" name="deleteCompany" class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteCompany(Company,CompanyIndex)" >
               <i class="material-icons">delete</i>
             </button>
-            <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+            <span class="mdl-tooltip mdl-tooltip--validation" for="{{'deleteCompany'+CompanyIndex}}" >
               <span >{{'Cancella'|translate}}.</span>
             </span>
-            <button  name="document" class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="toDocs(Company)" >
+            <button tooltip  id="{{'document'+CompanyIndex}}" name="document" class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="toDocs(Company)" >
               <i class="material-icons">attachment</i>
             </button>
-            <span class="mdl-tooltip mdl-tooltip--validation" for="document" >
+            <span class="mdl-tooltip mdl-tooltip--validation" for="{{'document'+CompanyIndex}}" >
               <span >{{'Documenti Cliente'|translate}}.</span>
             </span>
-            <button  name="owner" class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="toowners(Company)" >
+            <button tooltip  name="{{'owner'+CompanyIndex}}" id="{{'owner'+CompanyIndex}}" class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="toowners(Company)" >
               <i class="material-icons">accessibility</i>
             </button>
-            <span class="mdl-tooltip mdl-tooltip--validation" for="owner" >
+            <span class="mdl-tooltip mdl-tooltip--validation" for="{{'owner'+CompanyIndex}}" >
               <span >{{'titolari effettifi  '|translate}}.</span>
             </span>
           </div>

@@ -1,5 +1,5 @@
           <div style="text-align:center" class="mdl-card mdl-shadow--2dp about">
-            <h5 class="orange" id="name_agent"> {{Contract.owner}}</h5>
+            <h5 class="orange" id="name_agent"> {{Contract.Owner}}</h5>
             <div class="mdl-card amazing mdl-shadow--2dp">
               <br/>
               <table align="center" class="viewContract mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
@@ -7,7 +7,7 @@
 
                   <tr>
                     <td  >{{'Firmatario' | translate}} :</td>
-                    <td class="blue">{{Contract.fullname}}</td>
+                    <td class="blue">{{Contract.contractor_name}}</td>
 
                   </tr>
                   <tr ng-show="Contract.act_for_other>0">
@@ -123,22 +123,28 @@
                     <i class="material-icons">accessibility</i>
                   </button>
                   <span class="mdl-tooltip mdl-tooltip--validation" for="owner" >
-                    <span >{{'Dati Contraente'|translate}}.</span>
+                    <span >{{'Titolari Effettivi'|translate}}.</span>
                   </span>
                 </div>
               </div>
+
               <div ng-show="Contract.act_for_other==2"  class=" mdl-card__actions mdl-card--border">
                 <div class="mdl-cell--6-col">
                   <button  id="delegante" ng-click="owners()" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
-                    <i class="material-icons">accessibility</i>
+                    <i class="material-icons">account_circle</i>
                   </button>
                   <span class="mdl-tooltip mdl-tooltip--validation" for="delegante" >
-                    <span >{{'Dati Delegante'|translate}}.</span>
+                    <span >{{'Dati Deleganti'|translate}}.</span>
                   </span>
 
                 </div>
-                <div class="mdl-cell--6-col">
-                  &nbsp;
+                <div class=" hide mdl-cell--6-col">
+                  <button  id="owner" ng-click="owners()" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
+                    <i class="material-icons">accessibility</i>
+                  </button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="owner" >
+                    <span >{{'Titolari Effettivi'|translate}}.</span>
+                  </span>
                 </div>
               </div>
 

@@ -120,8 +120,7 @@
             </span>
           </div>
         </fieldset>
-        <center><h4>Parametri di Configurazione</center>
-
+        <h5>Parametri di Configurazione</h5>
         <fieldset ng-show="agent.user_type<3">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="text" id="country" name="country" minlength="3"  value=" "
@@ -145,6 +144,30 @@
           </span>
         </div>
         </fieldset>
+        <fieldset ng-show="agent.user_type<3">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="luogoID" name="luogoID" minlength="3"  value=" "
+          ng-model="agent.settings.luogoIdentificazione"   minlength="3" autocomplete="off"
+          ng-keyup="showAC('users.resi_town','luogoID', {zero:true});"
+          ng-focus="showAC('users.resi_town','luogoID', {zero:true});resetAC()"
+          />
+          <label class="mdl-textfield__label" for="luogoID">{{'Luogo Identificazione predefinito'|translate}} *</label>
+          <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="luogoID">
+            <tbody style="display:table">
+              <tr ng-click="addWord('agent.settings.luogoID',item.word,{id:'luogoID'})"
+                  my-Enter="addWord('agent.settings.luogoID',item.word,{id:'luogoID'})"
+                  ng-repeat="item in word.countries" tabindex="30">
+                <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <span class="mdl-tooltip mdl-tooltip--validation" for="luogoID" ng-show="form.luogoID.$invalid && form.luogoID.$touched">
+            <span ng-show="form.luogoID.$error.required">{{'Richiesto'| translate}}</span>
+          </span>
+        </div>
+        </fieldset>
+
         <fieldset ng-show="agent.user_type<3">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
             <h5 class="kyc01-head">{{'Tipo di Analisi del Rischio'}} </h5>

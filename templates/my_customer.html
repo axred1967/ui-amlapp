@@ -16,7 +16,8 @@
 </div>
 
 <div infinite-scroll='Customers_inf.nextPage()' infinite-scroll-disabled='Customers_inf.busy' infinite-scroll-distance='0'
-infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-scroll-container="'.add-customer-data'">
+infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-scroll-container="'.add-customer-data'"
+>
 
 <div   ng-hide="Customers_inf.Customers.length == 0 " class="ng-hide"  class="mdl-grid hidden" >
   <div id="list_customer"  ng-repeat="Customer in Customers_inf.Customers | filter:searchText "
@@ -47,16 +48,16 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
 
 
           <div class="mdl-cell--12-col">
-            <button  name="deleteOwn" class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteCustomer(Customer,CustomerIndex)" >
+            <button tooltip  name="{{'delete'+CustomerIndex}}" id="{{'delete'+CustomerIndex}}"  class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteCustomer(Customer,CustomerIndex)" >
               <i class="material-icons">delete</i>
             </button>
-            <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+            <span class="mdl-tooltip mdl-tooltip--validation" for="{{'delete'+CustomerIndex}}" >
               <span >{{'Cancella'|translate}}.</span>
             </span>
-            <button  name="document" class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="toDocs(Customer)" >
+            <button  tooltip name="{{'document'+CustomerIndex}}" id="{{'document'+CustomerIndex}}" class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="toDocs(Customer)" >
               <i class="material-icons">attachment</i>
             </button>
-            <span class="mdl-tooltip mdl-tooltip--validation" for="document" >
+            <span class="mdl-tooltip mdl-tooltip--validation" for="{{'document'+CustomerIndex}}" >
               <span >{{'Documenti Cliente'|translate}}.</span>
             </span>
           </div>

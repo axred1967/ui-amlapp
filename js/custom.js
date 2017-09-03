@@ -236,7 +236,7 @@ function convertDateStringsToDates(input) {
             }
         } else if (typeof value === "object") {
             // Recurse into object
-            convertDateStringsToDates(value);
+            //convertDateStringsToDates(value);
         }
     }
     return input
@@ -252,8 +252,12 @@ function convertDatestoStrings(input) {
         var value = input[key];
         var match;
         // Check for string properties which look like dates.
-        if ((toString.call(value)) == 'Date') {
+        if ((toString.call(value)) == '[object Date]') {
             input[key]=(new Date()).toISOString().substring(0, 19)
+        }
+        else if (typeof value === "object") {
+            // Recurse into object
+            convertDatestoStrings(value);
         }
     }
     return input
@@ -280,15 +284,34 @@ function base_name(path) {
    url=String(window.location).split('/').reverse()[0]
    return url.split('?')[0];
 }
-function IsJsonString(str) {
+function IsJsonString(str,isa) {
     try {
-        js=JSON.parse(str);
+        var js=JSON.parse(str);
+        $('input[type="date"]').each(function(){
+         d=$(this).attr('ng-model')
+         var res=d.split('.')
+         if (js[res.slice(-1)[0]]!=undefined ){
+           js[res.slice(-1)[0]]=new Date(js[res.slice(-1)[0] ])
+
+         }
+          if (js[res.slice(-1)[0]]!=null ){
+            js[res.slice(-1)[0]]=new Date()
+          }
+
+
+
+       })
         if (!isObject(js)){
-          IsJsonString(js)
+          js=IsJsonString(js)
         }
     } catch (e) {
-        return false;
-    }
+      if (isa)
+        x=[]
+      else
+        x={}
+        return x;
+      };
+
 
     return js;
 }
@@ -355,5 +378,76 @@ function getCountryList(){
   });
   countryList=IsJsonString(localStorage.getItem('countryList'))
   return countryList
+
+}
+function resize_img(){
+
+    $('.demo-card-image img.load').each(function() {
+
+      var maxWidth = $('.demo-card-image').width(); // Max width for the image
+      var maxHeight = $('.demo-card-image').width();    // Max height for the image
+      var ratio = 1/1;  // Used for aspect ratio
+			var maxHeight = $('.demo-card-image').width()*1/1;    // Max height for the image
+      var width = $(this).width();    // Current image width
+      var height = $(this).height();  // Current image height
+      $(this).show()
+
+      // Check if the current width is larger than the max
+      if(width > maxWidth){
+        ratio = maxWidth / width;   // get ratio for scaling image
+        $(this).css("width", maxWidth); // Set new width
+        $(this).css("height", height * ratio);  // Scale height based on ratio
+        $(this).css("backgroud-size",  maxWidth +'px' + height*ratio+'px' );  // Scale height based on ratio
+        height = height * ratio;    // Reset height to match scaled image
+        width = width * ratio;    // Reset width to match scaled image
+      }else {
+				$('.demo-card-image .mdl-card__title').css("width", maxWidth);
+
+			}
+
+      // Check if current height is larger than max
+      if(height > maxHeight){
+        ratio = maxHeight / height; // get ratio for scaling image
+        $(this).css("height", maxHeight);   // Set new height
+        $(this).css("width", width * ratio);    // Scale width based on ratio
+        $(this).css("backgroud-size",  width * ratio +'px' + maxheight+'px' );  // Scale height based on ratio
+        $(this).css("backgroud-size",  width * ratio +'px' + maxheight+'px' );  // Scale height based on ratio
+        width = width * ratio;    // Reset width to match scaled image
+        height = height * ratio;    // Reset height to match scaled image
+      }
+			else {
+				$('.demo-card-image .mdl-image').css("height", maxHeight);
+			}      //$(this).parent( ".demo-card-image").css('background-image','url('+$(this).attr('src')+')')
+      //$(this).parent( ".demo-card-image").attr('width',$(this).width())
+      //$(this).parent( ".demo-card-image").attr('height',$(this).height())
+      //$(this).parent( ".demo-card-image").css('background-size',$(this).width()  +'px' + $(this).height()  +'px')
+      //$(this).hide()
+
+
+    });
+}
+function setDefaults($scope){
+  $('input.mdl-textfield__input').each(
+    function(index){
+      $(this).parent('div.mdl-textfield').addClass('is-dirty');
+      $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+    })
+      
+  $('input[type="date"]').each(function(){
+   d=$(this).attr('ng-model')
+   res=d.split('.')
+   dom=$scope[res[0]][res.slice(-1)[0]]
+   if (dom===undefined || dom===null || dom=="" || ! (dom instanceof Date && !isNaN(dom.valueOf())) )
+     $scope[res[0]][res.slice(-1)[0]]=new Date()
+   else if (!isObject($scope[res[0]][res.slice(-1)[0]]))
+     $scope[res[0]][res.slice(-1)[0]]=new Date($scope[res[0]][res.slice(-1)[0]])
+  })
+  $('input[def-setting]').each(function(){
+   d=$(this).attr('ng-model')
+   res=d.split('.')
+   if ($scope[res[0]][res.slice(-1)[0]]===undefined || $scope[res[0]][res.slice(-1)[0]]===null || $scope[res[0]][res.slice(-1)[0]]=="" )
+     $scope[res[0]][res.slice(-1)[0]]=$scope.agent.settings[$(this).attr('def-setting')]
+
+  })
 
 }

@@ -1,4 +1,20 @@
-app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeout) {
+app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeout,$stateParams,$interval) {
+  //gestisco lo state parameter
+	  $scope.curr_page=$state.current.name
+	  $scope.pages=$stateParams.pages
+		if ($scope.pages===null || $scope.pages===undefined){
+			$scope.pages=JSON.parse(localStorage.getItem('pages'));
+		}
+		$scope.page=$scope.pages[$state.current.name]
+    $scope.back=function(passo){
+
+      if (passo==-1){
+         $state.go($scope.page.prev_page)
+         return;
+      }
+      $state.go($scope.page.location)
+    }
+
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -7,26 +23,15 @@ app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeo
   $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Assegnazione del rischio"
   $scope.main.loader=true
-    $scope.page={}
 
-  $scope.curr_page='risk_final_sm'
-  page=localStorage.getItem($scope.curr_page)
-  if ( page!= null && page.length >0 ){
-    $scope.page=JSON.parse(page)
-    $scope.action=$scope.page.action
-
-  }
-  $scope.main.location=$scope.page.location
 
   $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
 
 
 
-  switch ($scope.action){
+  switch ($scope.page.action){
     default:
-    var id=localStorage.getItem("CustomerProfileId");
-    var email=localStorage.getItem("userEmail");
-    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+    $scope.Contract=$scope.pages[$scope.page.location].Contract
     appData=$scope.Contract
     data={"action":"riskAx",appData:appData,kyc:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
@@ -39,8 +44,8 @@ app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeo
           $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
-        convertDateStringsToDates($scope.Risk)
-        convertDateStringsToDates($scope.Risk.risk_data)
+        //convertDateStringsToDates($scope.Risk)
+        //convertDateStringsToDates($scope.Risk.risk_data)
         var $risk=0
         angular.forEach($scope.Risk.risk_data.oldRiskSm, function(value, key) {
           if (value=="RPS")
@@ -250,10 +255,6 @@ app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeo
      });
 
 
-   }
-   $scope.back=function(passo){
-
-     $state.go($scope.page.location)
    }
    $scope.$on('backButton', function(e) {
        $scope.back()

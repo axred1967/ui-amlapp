@@ -1,5 +1,34 @@
+app2.controller('risk_profile04', function ($scope,$http,$state,$translate,$timeout,$interval,$stateParams) {
+  $scope.curr_page=$state.current.name
+  $scope.pages=$stateParams.pages
+  if ($scope.pages===null || $scope.pages===undefined){
+    $scope.pages=JSON.parse(localStorage.getItem('pages'));
+  }
+  $scope.page=$scope.pages[$state.current.name]
+  $scope.back=function(passo){
 
-app2.controller('risk_profile04', function ($scope,$http,$state,$translate,$timeout) {
+    if (passo>0){
+      if ($scope.Contract.act_for_other==1){
+        $scope.pages['risk_profile05']={action:'',location:$scope.page.location,prev_page:$state.current.name}
+        localstorage('pages', JSON.stringify($scope.pages));
+        $state.go('risk_profile05' ,{pages:$scope.pages})
+
+      }
+      else {
+        $scope.pages['risk_final']={action:'',location:$scope.page.location,prev_page:$state.current.name}
+        localstorage('pages', JSON.stringify($scope.pages));
+        $state.go('risk_final' ,{pages:$scope.pages})
+
+      }
+
+      return;
+    }
+    if (passo==-1){
+       $state.go($scope.page.location)
+       return;
+    }
+    $state.go($scope.page.location)
+  }
   $scope.main.Back=true
   $scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
@@ -8,26 +37,13 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate,$time
   $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Frequenza e Consistenza"
   $scope.main.loader=true
-    $scope.page={}
 
-  $scope.curr_page='risk_profile04'
-  page=localStorage.getItem($scope.curr_page)
-  if ( page!= null && page.length >0 ){
-    $scope.page=JSON.parse(page)
-    $scope.action=$scope.page.action
-
-  }
-  $scope.main.location=$scope.page.location
-
-  $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
 
 
 
   switch ($scope.action){
     default:
-    var id=localStorage.getItem("CustomerProfileId");
-    var email=localStorage.getItem("userEmail");
-    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+    $scope.Contract=$scope.pages[$scope.page.location].Contract
     appData=$scope.Contract
    data={"action":"riskAx",appData:appData,country:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
@@ -37,8 +53,8 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate,$time
         data=responceData.data.RESPONSE;
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
-        convertDateStringsToDates($scope.Risk)
-        convertDateStringsToDates($scope.Risk.risk_data)
+        //convertDateStringsToDates($scope.Risk)
+        //convertDateStringsToDates($scope.Risk.risk_data)
         $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
           function(index){
             ngm=$(this).attr('ng-model')
@@ -233,26 +249,6 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate,$time
      });
 
 
-   }
-   $scope.back=function(passo){
-     if (passo>0){
-         if ($scope.Contract.act_for_other==1){
-           localstorage('risk_profile05',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
-          $state.go('risk_profile05')
-
-         }
-         else {
-           localstorage('risk_final',JSON.stringify({action:'',location:$scope.page.location, prev_page:$scope.curr_page}))
-           $state.go('risk_final')
-
-         }
-         return;
-     }
-     if (passo==-1){
-       $state.go($scope.page.prev_page)
-         return;
-     }
-     $state.go($scope.page.location)
    }
    $scope.$on('backButton', function(e) {
        $scope.back()

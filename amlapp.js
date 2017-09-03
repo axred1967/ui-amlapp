@@ -48,221 +48,328 @@ app2.config(function($stateProvider, $urlRouterProvider) {
         // HOME STATES AND NESTED VIEWS ========================================
 
         .state('home', {
-            url: 'home?action&agency_id&codeCli',
+            url: '/home?action&agency_id&codeCli',
             templateUrl: 'templates/my_contract.html',
             controller: 'my_contract'
         })
         .state('login', {
-            url: 'login?action&agency_id&codeCli',
+            url: '/login?action&agency_id&codeCli',
             templateUrl: 'templates/login.html',
             controller: 'login'
         })
         .state('language', {
-            url: 'language',
+            url: '/language',
             templateUrl: 'templates/language.html',
             controller: 'language'
         })
         .state('view_contract', {
-            url: 'view_contract/par:=parameter',
+            url: '/view_contract',
             templateUrl: 'templates/view_contract.html',
-            controller: 'view_contract'
+            controller: 'view_contract',
+            params: {pages: null}
         })
         .state('add_contract', {
-            url: 'contract/par:=parameter',
+            url: '/contract',
             templateUrl: 'templates/add_contract.html',
             controller: 'add_contract',
+            params: {pages: null}
         })
         .state('add_customer', {
-            url: 'customer/par:=parameter',
-            templateUrl: 'templates/add_customer.html',
-            controller: 'add_customer',
+            url: '/customer',
+            params: {pages: null},
+            views: {
+                '': {
+                      templateUrl: 'templates/add_customer.html',
+                      controller: 'add_customer',
+                    },
+                'customer_fields@add_customer':   {
+                  templateUrl: 'templates/add_customer_field.html',
+                  },
+                }
+
+
         })
         .state('my_customer', {
-            url: 'my_customer',
+            url: '/my_customer',
             templateUrl: 'templates/my_customer.html',
-            controller: 'my_customer'
+            controller: 'my_customer',
+            params: {pages: null}
         })
         .state('my_company', {
-            url: 'company',
+            url: '/company',
             templateUrl: 'templates/my_company.html',
-            controller: 'my_company'
+            controller: 'my_company',
+            params: {pages: null}
         })
         .state('my_agent', {
-            url: 'agent',
+            url: '/agent',
             templateUrl: 'templates/my_agent.html',
             controller: 'my_agent',
-            params: {Company:{},Contract:{}}
+            params: {pages: null}
         })
         .state('owners_list', {
-            url: 'owners_list',
+            url: '/owners_list',
             templateUrl: 'templates/owners_list.html',
-            controller: 'owners_list'
+            controller: 'owners_list',
+            params: {pages: null}
+
         })
         .state('my_document', {
-            url: 'document',
+            url: '/document',
             templateUrl: 'templates/my_document.html',
-            controller: 'my_document'
+            controller: 'my_document',
+            params: {pages: null}
         })
         .state('add_document', {
-            url: 'add_document',
+            url: '/add_document',
             templateUrl: 'templates/add_document.html',
-            controller: 'add_document'
+            controller: 'add_document',
+            params: {pages: null}
         })
         .state('add_owners', {
-            url: 'add_owners',
-            templateUrl: 'templates/add_owners.html',
-            controller: 'add_owners'
+            url: '/add_owners',
+            params: {pages: null},
+            views: {
+                '': {
+                  templateUrl: 'templates/add_owners.html',
+                  controller: 'add_owners',
+                    },
+                'customer_fields@add_owners':   {
+                  templateUrl: 'templates/owner_field.html',
+                  },
+                }
+        })
+        .state('add_owners.kyc', {
+            url: '/add_owners_kyc',
+            params: {pages: null},
+            views: {
+                '': {
+                  templateUrl: 'templates/add_owners.html',
+                  controller: 'add_owners',
+                    },
+                'customer_fields@add_owners':   {
+                  templateUrl: 'templates/add_TEField.html',
+                  },
+                }
         })
         .state('add_company', {
-            url: 'add_company',
+            url: '/add_company',
             templateUrl: 'templates/add_company.html',
-            controller: 'add_company'
+            controller: 'add_company',
+            params: {pages: null}
         })
-        .state('kycstep01', {
-            url: 'kycstep01',
-            templateUrl: 'templates/kycstep01.html',
-            controller: 'kycstep01'
-        })
-        .state('kycstep02', {
-            url: 'kycstep02',
-            templateUrl: 'templates/kycstep02.html',
-            controller: 'kycstep02'
-        })
-        .state('kycstep03', {
-            url: 'kycstep03',
-            templateUrl: 'templates/kycstep03.html',
-            controller: 'kycstep03'
-        })
+        .state('kyc_contractor', {
+            url: '/contractorData',
+            params: {pages: null},
+            views: {
+                '': {
+                  templateUrl: 'templates/kyc_contractor.html',
+                  controller: 'kyc_contractor',
+                  },
+                }
+            })
+            .state('kyc_contractor.01', {
+              url: '/contractorData1',
+              views: {
+                 '01@kyc_contractor':   {
+                     templateUrl: 'templates/kyc_contractor01.html',
+                     },
+                 }
+            })
+             .state('kyc_contractor.02', {
+               url: '/contractorData2',
+               views: {
+                  '02@kyc_contractor':   {
+                      templateUrl: 'templates/kyc_contractor02.html',
+                      },
+                  }
+             })
+
         .state('kyc_company', {
-            url: 'kyc_company',
-            templateUrl: 'templates/kyc_company.html',
-            controller: 'kyc_company'
+          url: '/kyc_company',
+          params: {pages: null},
+          views: {
+            '': {
+              templateUrl: 'templates/kyc_company.html',
+              controller: 'kyc_company',
+            },
+            '01@kyc_company':   {
+              templateUrl: 'templates/kyc_company_field.html',
+
+            }
+
+          },
         })
+
         .state('kyc_owners', {
-            url: 'kyc_owners',
+            url: '/kyc_owners',
             templateUrl: 'templates/kyc_owners.html',
-            controller: 'kyc_owners'
+            controller: 'kyc_owners',
+            params: {pages: null}
+        })
+        .state('kyc_document', {
+            url: '/kyc_document',
+            templateUrl: 'templates/kyc_document.html',
+            controller: 'kyc_document',
+            params: {pages: null}
         })
         .state('kyc_signature', {
-            url: 'kyc_signature',
+            url: '/kyc_signature',
             templateUrl: 'templates/kyc_signature.html',
-            controller: 'kyc_signature'
+            controller: 'kyc_signature',
+            params: {pages: null}
         })
         .state('risk_profile01', {
-            url: 'risk_profile01',
+            url: '/risk_profile01',
             templateUrl: 'templates/risk_profile01.html',
-            controller: 'risk_profile01'
+            controller: 'risk_profile01',
+            params: {pages: null}
         })
         .state('risk_profile02', {
-            url: 'risk_profile02',
+            url: '/risk_profile02',
             templateUrl: 'templates/risk_profile02.html',
-            controller: 'risk_profile02'
+            controller: 'risk_profile02',
+            params: {pages: null}
         })
         .state('risk_profile03', {
-            url: 'risk_profile03',
+            url: '/risk_profile03',
             templateUrl: 'templates/risk_profile03.html',
-            controller: 'risk_profile03'
+            controller: 'risk_profile03',
+            params: {pages: null}
         })
         .state('risk_profile04', {
-            url: 'risk_profile04',
+            url: '/risk_profile04',
             templateUrl: 'templates/risk_profile04.html',
-            controller: 'risk_profile04'
+            controller: 'risk_profile04',
+            params: {pages: null}
         })
         .state('risk_profile05', {
-            url: 'risk_profile05',
+            url: '/risk_profile05',
             templateUrl: 'templates/risk_profile05.html',
-            controller: 'risk_profile05'
+            controller: 'risk_profile05',
+            params: {pages: null}
         })
         .state('risk_final', {
-            url: 'risk_final',
+            url: '/risk_final',
             templateUrl: 'templates/risk_final.html',
-            controller: 'risk_final'
+            controller: 'risk_final',
+            params: {pages: null}
         })
         .state('my_profile', {
-            url: 'my_profile',
+            url: '/my_profile',
             templateUrl: 'templates/my_profile.html',
-            controller: 'my_profile'
+            controller: 'my_profile',
+            params: {pages: null}
         })
         .state('risk_profile01_sm', {
-            url: 'risk_profile01_sm',
+            url: '/risk_profile01_sm',
             templateUrl: 'templates/risk_profile01_sm.html',
-            controller: 'risk_profile01_sm'
+            controller: 'risk_profile01_sm',
+            params: {pages: null}
         })
         .state('risk_profile02_sm', {
-            url: 'risk_profile02_sm',
+            url: '/risk_profile02_sm',
             templateUrl: 'templates/risk_profile02_sm.html',
-            controller: 'risk_profile02_sm'
+            controller: 'risk_profile02_sm',
+            params: {pages: null}
         })
         .state('risk_final_sm', {
-            url: 'risk_final_sm',
+            url: '/risk_final_sm',
             templateUrl: 'templates/risk_final_sm.html',
-            controller: 'risk_final_sm'
+            controller: 'risk_final_sm',
+            params: {pages: null}
         })
         .state('risk_profile01_4d', {
-            url: 'risk_profile01_4d',
+            url: '/risk_profile01_4d',
             templateUrl: 'templates/risk_profile01_4d.html',
-            controller: 'risk_profile01_4d'
+            controller: 'risk_profile01_4d',
+            params: {pages: null}
         })
         .state('risk_profile02_4d', {
-            url: 'risk_profile02_4d',
+            url: '/risk_profile02_4d',
             templateUrl: 'templates/risk_profile02_4d.html',
-            controller: 'risk_profile02_4d'
+            controller: 'risk_profile02_4d',
+            params: {pages: null}
         })
         .state('risk_profile03_4d', {
-              url: 'risk_profile03_4d',
+              url: '/risk_profile03_4d',
               templateUrl: 'templates/risk_profile03_4d.html',
-              controller: 'risk_profile03_4d'
+              controller: 'risk_profile03_4d',
+              params: {pages: null}
           })
           .state('risk_profile04_4d', {
-                url: 'risk_profile04_4d',
+                url: '/risk_profile04_4d',
                 templateUrl: 'templates/risk_profile04_4d.html',
-                controller: 'risk_profile04_4d'
+                controller: 'risk_profile04_4d',
+                params: {pages: null}
             })
             .state('risk_final_4d', {
-                  url: 'risk_final_4d',
+                  url: '/risk_final_4d',
                   templateUrl: 'templates/risk_final_4d.html',
-                  controller: 'risk_final_4d'
+                  controller: 'risk_final_4d',
+                  params: {pages: null}
               })
+// share
+          .state('share', {
+              url: '/share',
+              params: {pages: null},
+              views: {
+                  '': {
+                    templateUrl: 'templates/share.html',
+                    controller: 'share',
+                      },
+                  'agency_list@share':   {
+                    templateUrl: 'templates/agency_list.html',
+                    },
+                  }
+          })
         .state('logout', {
-            url: 'logout',
-            controller: 'logout'
+            url: '/logout',
+            controller: 'logout',
+            params: {pages: null}
         })
 // Amministrazione
         .state('my_agencies', {
-            url: 'my_agency',
+            url: '/my_agency',
             templateUrl: 'templates/my_agencies.html',
-            controller: 'my_agencies'
+            controller: 'my_agencies',
+            params: {pages: null}
         })
         .state('add_agency', {
-            url: 'add_agency',
+            url: '/add_agency',
             templateUrl: 'templates/add_agency.html',
-            controller: 'add_agency'
+            controller: 'add_agency',
+            params: {pages: null}
         })
         .state('my_plan', {
-            url: 'my_plan',
+            url: '/my_plan',
             templateUrl: 'templates/my_plan.html',
-            controller: 'my_plan'
+            controller: 'my_plan',
+            params: {pages: null}
         })
         .state('add_plan', {
-            url: 'add_plan',
+            url: '/add_plan',
             templateUrl: 'templates/add_plan.html',
-            controller: 'add_plan'
+            controller: 'add_plan',
+            params: {pages: null}
         })
         .state('email_templates', {
-            url: 'email_templates',
+            url: '/email_templates',
             templateUrl: 'templates/email_templates.html',
-            controller: 'email_templates'
+            controller: 'email_templates',
+            params: {pages: null}
         })
         .state('add_email_template', {
-            url: 'add_email_template',
+            url: '/add_email_template',
             templateUrl: 'templates/add_email_template.html',
-            controller: 'add_email_template'
+            controller: 'add_email_template',
+            params: {pages: null}
         })
 
 
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
         .state('about', {
-          url: 'view_contract',
+          url: '/view_contract',
           templateUrl: 'view_contract.html'
         });
 
@@ -300,6 +407,29 @@ app2.directive('myEnter', function () {
         });
     };
 });
+app2.directive('tooltip', function(){
+    return {
+        restrict: 'A',
+        scope : {
+            id : '@',
+        },
+        link: function(scope, element, attrs){
+            $(element).on('mouseenter',function(){
+                // on mouseenter
+                o=$("span[for='" +scope.id+"']")
+                o.addClass('is-active');
+                o.show();
+                offset=$(element).offset()
+                o.offset({top:offset.top+30, left:offset.left});
+              })
+            $(element).on('mouseleave', function(){
+                // on mouseleave
+                $("span[for='" +scope.id+"']").removeClass('is-active');
+                $("span[for='" +scope.id+"']").hide();
+            });
+        }
+    };
+});
 //Field Match directive
 angular.module('fieldMatch', [])
 .directive('fieldMatch', ["$parse", function($parse) {
@@ -314,6 +444,54 @@ angular.module('fieldMatch', [])
     }
   }
 }]);
+//direttiva per il valore di default
+/*
+app2.directive('defSetting', function(){
+  return {
+      restrict : 'A',
+      scope : {
+          ngModel : '=',
+          defSetting : '='
+      },
+      link: function (scope) {
+
+          if ( scope.ngModel===undefined || scope.ngModel===null  )
+          scope.ngModel = scope.defSetting
+
+
+      }
+  }
+});
+*/
+//direttiva per trasformare stringe in oggetti data
+/*
+app2.directive('dateInput', function(){
+    return {
+        restrict : 'A',
+        scope : {
+            ngModel : '=',
+            id : '@'
+        },
+        link: function (scope) {
+          scope.$watch('ngModel', function(newValue, oldValue) {
+                          if (newValue===undefined && oldValue!==undefined){
+                                scope.ngModel =oldValue
+                            return
+                          }
+                          if (newValue && ! isObject(newValue)){
+                            scope.ngModel = new Date(newValue);
+                            return
+
+                          }
+                          if (!isObject(newValue)){
+                            scope.ngModel = new Date()
+                            return
+                          }
+                      });
+        }
+    }
+});
+*/
 //Run material design lite
 app2.directive("ngModel",["$timeout", function($timeout){
   return {
@@ -350,9 +528,25 @@ app2.run(function($rootScope, $timeout) {
           $state.go("notAuthorizedPage");
       }
     })
+    $rootScope.convertDateStringsToDates=function(input) {
+
+
+          var value = input;
+          var match;
+          // Check for string properties which look like dates.
+          if (typeof value === "string" && (match = value.match(regexIso8601))) {
+              var milliseconds = Date.parse(match[0])
+              if (!isNaN(milliseconds)) {
+                  input = new Date(milliseconds);
+              }
+          }
+      return input
+
+    }
 });
 app2.filter('dateToISO', function() {
   return function(input) {
+    if (isObject(input) || input===undefined) return input
     return new Date(input).toISOString();
   };
 });
@@ -368,6 +562,7 @@ app2.filter('capitalize', function() {
 
 app2.service('AutoComplete',function($http,$state){
   this.showAC=function($search,$word, settings) {
+
     var id=localStorage.getItem("userId");
     var usertype = localStorage.getItem('userType');
     res = $search.split(".")
@@ -375,7 +570,7 @@ app2.service('AutoComplete',function($http,$state){
     $word=$('#'+$word).val()
     $table=res[0].toLowerCase()
     if (( $word  !== undefined && $word.length>0 &&  $word!=this.oldWord) || settings.zero){
-     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,pInfo:settings.pInfo}
+     data={ "action":"ACWord",   word:res[1] ,settings:settings,search:$word ,table:$table,pInfo:settings.pInfo}
      return $http.post( SERVICEURL2,  data )
     }
     this.oldWord= $($search.currentTarget).val()
@@ -394,6 +589,8 @@ app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLo
     $scope.agent.user_id=localStorage.getItem('userId');
     $scope.agent.agency_id=localStorage.getItem('agencyId');
     $scope.agent.user_type=localStorage.getItem('userType');
+    $scope.agent.priviledge=localStorage.getItem('priviledge');
+
     $scope.agent.cookie=localStorage.getItem('cookie');
     $scope.agent.image=localStorage.getItem('Profileimageagencyuser');
     $scope.agent.settings=IsJsonString(localStorage.getItem('userSettings'));
@@ -406,6 +603,7 @@ app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLo
     $scope.agent.paese= localStorage.getItem("paese");
     $scope.agent.tipo_cliente= localStorage.getItem("tipo_cliente");
   }
+
   // fisso preferenze nomi
       paese = $scope.agent.paese;
       tipo_cliente = $scope.agent.tipo_cliente;
@@ -435,6 +633,10 @@ app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLo
 
   $scope.load=false
   $scope.main={}
+  if ($scope.agent.user_type==3)
+  $scope.main.Cm="dati personali"
+  else
+  $scope.main.Cm="Le mie Persone"
   $scope.main.Sidebar=true
   $scope.main.Add=true
   $scope.main.Back=true
@@ -509,47 +711,12 @@ window.addEventListener('keydown', function (evt) {
   }
 
 })
+
+
 $(document).ready(function() {
-  function resize_img(){
-    $('.demo-card-image img.load').each(function() {
-
-      var maxWidth = $('.demo-card-image').width(); // Max width for the image
-      var maxHeight = $('.demo-card-image').width();    // Max height for the image
-      var ratio = 16/9;  // Used for aspect ratio
-      var width = $(this).width();    // Current image width
-      var height = $(this).height();  // Current image height
-      $(this).show()
-
-      // Check if the current width is larger than the max
-      if(width > maxWidth){
-        ratio = maxWidth / width;   // get ratio for scaling image
-        $(this).css("width", maxWidth); // Set new width
-        $(this).css("height", height * ratio);  // Scale height based on ratio
-        $(this).css("backgroud-size",  maxWidth +'px' + height*ratio+'px' );  // Scale height based on ratio
-        height = height * ratio;    // Reset height to match scaled image
-        width = width * ratio;    // Reset width to match scaled image
-      }
-
-      // Check if current height is larger than max
-      if(height > maxHeight){
-        ratio = maxHeight / height; // get ratio for scaling image
-        $(this).css("height", maxHeight);   // Set new height
-        $(this).css("width", width * ratio);    // Scale width based on ratio
-        $(this).css("backgroud-size",  width * ratio +'px' + maxheight+'px' );  // Scale height based on ratio
-        $(this).css("backgroud-size",  width * ratio +'px' + maxheight+'px' );  // Scale height based on ratio
-        width = width * ratio;    // Reset width to match scaled image
-        height = height * ratio;    // Reset height to match scaled image
-      }
-      //$(this).parent( ".demo-card-image").css('background-image','url('+$(this).attr('src')+')')
-      //$(this).parent( ".demo-card-image").attr('width',$(this).width())
-      //$(this).parent( ".demo-card-image").attr('height',$(this).height())
-      //$(this).parent( ".demo-card-image").css('background-size',$(this).width()  +'px' + $(this).height()  +'px')
-      //$(this).hide()
-
-
-    });
-  }
   resize_img();
+
+
 });
 app2.controller('logout', function ($scope, $state) {
   $scope.agent={}

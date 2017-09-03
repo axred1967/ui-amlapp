@@ -1,4 +1,4 @@
-app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_inf,$timeout) {
+app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_inf,$timeout,$stateParams,$interval) {
   $scope.loader=true;
   $scope.main.Back=false
   $scope.main.Add=true
@@ -50,18 +50,17 @@ app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_i
 
     }
   }
+  $scope.tocustomer = function(d){
+    pages={'add_customer':{action:'update_customer',user_id:d.user_id,location:$scope.curr_page ,agent:true}}
+    localstorage('pages',JSON.stringify(pages))
+    $state.go('add_customer',{pages:pages})
+  };
 
   $scope.add_customer = function(){
-    localstorage('add_customer',JSON.stringify({action:'add_customer',location:$scope.curr_page ,agent:true}))
-    $state.go('add_customer')
+    pages={'add_customer':{action:'add_customer',location:$scope.curr_page ,agent:true}}
+    $state.go('add_customer',{pages:pages})
   };
-  $scope.toDocs = function(d){
-    localstorage('Customer',JSON.stringify(d))
-    localstorage('my_document',JSON.stringify({action:'list_from_my_customer',location:$scope.curr_page}))
-    localstorage("customerId",d.user_id);
-    localstorage("customer_name",d.fullname);
-    $state.go('my_document')
-  };
+
   $scope.deleteCustomer=function(Customer,index )
   {
     if ($scope.main.web){

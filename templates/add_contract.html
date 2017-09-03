@@ -72,7 +72,7 @@
         </fieldset>
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" autocomplete="off" id="Contract_number" name="number" minlength="3"  value=" "
+            <input class="mdl-textfield__input" type="text" autocomplete="off" id="number" name="number" minlength="3"  value=" "
             ng-model="Contract.number "   minlength="3" autocomplete="off"
 
             />
@@ -85,7 +85,7 @@
         </fieldset>
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="date" id="Contract_contract_date"  name="Contract_contract_date"  minlength="3"  value=" "
+            <input class="mdl-textfield__input" type="date" date-input id="Contract_contract_date"  name="Contract_contract_date"  minlength="3"  value=" "
             ng-model="Contract.contract_date"   minlength="3" autocomplete="off"
             />
             <label class="mdl-textfield__label" for="Contract_contract_date">{{'ContractDate' | translate }}*</label>
@@ -96,10 +96,10 @@
           </div>
         </fieldset>
 
-        <fieldset>
+        <fieldset ng-show="Contract.tipo_contratto==0">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="date" id="Contract_contract_eov" name="Contract_contract_eov" minlength="3"  value=" "
-            ng-model="Contract.contract_eov"   minlength="3" autocomplete="off"
+            <input class="mdl-textfield__input" type="date" date-input id="Contract_contract_eov" name="Contract_contract_eov" minlength="3"  value=" "
+            ng-model="Contract.contract_eov"   minlength="3" autocomplete="off"  ng-blur="setEov()"
             />
             <label class="mdl-textfield__label" for="Contract_contract_value_eov">{{'ContractEOV' | translate }}*</label>
             <span class="mdl-tooltip mdl-tooltip--validation" for="Contract_contract_eov" ng-show="form.Contract_contract_eov.$invalid && form.Contract_contract_eov.$touched">
@@ -239,7 +239,7 @@
           <div class="gridAx-item70">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
               <input class="mdl-textfield__input" ng-keyup="showContractorList();"
-              ng-model="Contract.fullname"  type="text" autocomplete="off"
+              ng-model="Contract.contractor_name"  type="text" autocomplete="off"
               ng-focus="showContractorList();resetAC()"
               id="searchContractor" name="searchContractor" ng-required="true" />
               <input type="text" autocomplete="off" ng-model="Contract.contractor_id" style="display:none" ng-required="true" id="Contractor" name="Contractor" />
