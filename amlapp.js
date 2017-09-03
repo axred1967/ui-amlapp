@@ -29,12 +29,12 @@ var app2 = angular.module('myApp', ['ui.router','pascalprecht.translate','ngSani
 app2.config(function ($translateProvider, tmhDynamicLocaleProvider) {
   // Enable escaping of HTML
   $translateProvider.useStaticFilesLoader({
-                    prefix: '/localization/',
+                    prefix: BASEURL+ '/localization/',
                     suffix: '.json'
                 })
                 .preferredLanguage('it-IT')
 
-  tmhDynamicLocaleProvider.localeLocationPattern('/localization/angular-locale_{{locale}}.js');
+  tmhDynamicLocaleProvider.localeLocationPattern(BASEURL+'/localization/angular-locale_{{locale}}.js');
 
   $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
 });
