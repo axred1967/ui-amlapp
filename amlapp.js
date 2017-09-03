@@ -49,28 +49,28 @@ app2.config(function($stateProvider, $urlRouterProvider) {
 
         .state('home', {
             url: '/home?action&agency_id&codeCli',
-            templateUrl: 'templates/my_contract.html',
+            templateUrl: BASEURL+ 'templates/my_contract.html',
             controller: 'my_contract'
         })
         .state('login', {
             url: '/login?action&agency_id&codeCli',
-            templateUrl: 'templates/login.html',
+            templateUrl: BASEURL+ 'templates/login.html',
             controller: 'login'
         })
         .state('language', {
             url: '/language',
-            templateUrl: 'templates/language.html',
+            templateUrl: BASEURL+ 'templates/language.html',
             controller: 'language'
         })
         .state('view_contract', {
             url: '/view_contract',
-            templateUrl: 'templates/view_contract.html',
+            templateUrl: BASEURL+ 'templates/view_contract.html',
             controller: 'view_contract',
             params: {pages: null}
         })
         .state('add_contract', {
             url: '/contract',
-            templateUrl: 'templates/add_contract.html',
+            templateUrl: BASEURL+ 'templates/add_contract.html',
             controller: 'add_contract',
             params: {pages: null}
         })
@@ -79,11 +79,11 @@ app2.config(function($stateProvider, $urlRouterProvider) {
             params: {pages: null},
             views: {
                 '': {
-                      templateUrl: 'templates/add_customer.html',
+                      templateUrl: BASEURL+ 'templates/add_customer.html',
                       controller: 'add_customer',
                     },
                 'customer_fields@add_customer':   {
-                  templateUrl: 'templates/add_customer_field.html',
+                  templateUrl: BASEURL+ 'templates/add_customer_field.html',
                   },
                 }
 
@@ -91,38 +91,38 @@ app2.config(function($stateProvider, $urlRouterProvider) {
         })
         .state('my_customer', {
             url: '/my_customer',
-            templateUrl: 'templates/my_customer.html',
+            templateUrl: BASEURL+ 'templates/my_customer.html',
             controller: 'my_customer',
             params: {pages: null}
         })
         .state('my_company', {
             url: '/company',
-            templateUrl: 'templates/my_company.html',
+            templateUrl: BASEURL+ 'templates/my_company.html',
             controller: 'my_company',
             params: {pages: null}
         })
         .state('my_agent', {
             url: '/agent',
-            templateUrl: 'templates/my_agent.html',
+            templateUrl: BASEURL+ 'templates/my_agent.html',
             controller: 'my_agent',
             params: {pages: null}
         })
         .state('owners_list', {
             url: '/owners_list',
-            templateUrl: 'templates/owners_list.html',
+            templateUrl: BASEURL+ 'templates/owners_list.html',
             controller: 'owners_list',
             params: {pages: null}
 
         })
         .state('my_document', {
             url: '/document',
-            templateUrl: 'templates/my_document.html',
+            templateUrl: BASEURL+ 'templates/my_document.html',
             controller: 'my_document',
             params: {pages: null}
         })
         .state('add_document', {
             url: '/add_document',
-            templateUrl: 'templates/add_document.html',
+            templateUrl: BASEURL+ 'templates/add_document.html',
             controller: 'add_document',
             params: {pages: null}
         })
@@ -131,11 +131,11 @@ app2.config(function($stateProvider, $urlRouterProvider) {
             params: {pages: null},
             views: {
                 '': {
-                  templateUrl: 'templates/add_owners.html',
+                  templateUrl: BASEURL+ 'templates/add_owners.html',
                   controller: 'add_owners',
                     },
                 'customer_fields@add_owners':   {
-                  templateUrl: 'templates/owner_field.html',
+                  templateUrl: BASEURL+ 'templates/owner_field.html',
                   },
                 }
         })
@@ -144,17 +144,17 @@ app2.config(function($stateProvider, $urlRouterProvider) {
             params: {pages: null},
             views: {
                 '': {
-                  templateUrl: 'templates/add_owners.html',
+                  templateUrl: BASEURL+ 'templates/add_owners.html',
                   controller: 'add_owners',
                     },
                 'customer_fields@add_owners':   {
-                  templateUrl: 'templates/add_TEField.html',
+                  templateUrl: BASEURL+ 'templates/add_TEField.html',
                   },
                 }
         })
         .state('add_company', {
             url: '/add_company',
-            templateUrl: 'templates/add_company.html',
+            templateUrl: BASEURL+ 'templates/add_company.html',
             controller: 'add_company',
             params: {pages: null}
         })
@@ -163,7 +163,7 @@ app2.config(function($stateProvider, $urlRouterProvider) {
             params: {pages: null},
             views: {
                 '': {
-                  templateUrl: 'templates/kyc_contractor.html',
+                  templateUrl: BASEURL+ 'templates/kyc_contractor.html',
                   controller: 'kyc_contractor',
                   },
                 }
@@ -172,7 +172,7 @@ app2.config(function($stateProvider, $urlRouterProvider) {
               url: '/contractorData1',
               views: {
                  '01@kyc_contractor':   {
-                     templateUrl: 'templates/kyc_contractor01.html',
+                     templateUrl: BASEURL+ 'templates/kyc_contractor01.html',
                      },
                  }
             })
@@ -180,7 +180,7 @@ app2.config(function($stateProvider, $urlRouterProvider) {
                url: '/contractorData2',
                views: {
                   '02@kyc_contractor':   {
-                      templateUrl: 'templates/kyc_contractor02.html',
+                      templateUrl: BASEURL+ 'templates/kyc_contractor02.html',
                       },
                   }
              })
@@ -190,11 +190,11 @@ app2.config(function($stateProvider, $urlRouterProvider) {
           params: {pages: null},
           views: {
             '': {
-              templateUrl: 'templates/kyc_company.html',
+              templateUrl: BASEURL+ 'templates/kyc_company.html',
               controller: 'kyc_company',
             },
             '01@kyc_company':   {
-              templateUrl: 'templates/kyc_company_field.html',
+              templateUrl: BASEURL+ 'templates/kyc_company_field.html',
 
             }
 
@@ -203,109 +203,109 @@ app2.config(function($stateProvider, $urlRouterProvider) {
 
         .state('kyc_owners', {
             url: '/kyc_owners',
-            templateUrl: 'templates/kyc_owners.html',
+            templateUrl: BASEURL+ 'templates/kyc_owners.html',
             controller: 'kyc_owners',
             params: {pages: null}
         })
         .state('kyc_document', {
             url: '/kyc_document',
-            templateUrl: 'templates/kyc_document.html',
+            templateUrl: BASEURL+ 'templates/kyc_document.html',
             controller: 'kyc_document',
             params: {pages: null}
         })
         .state('kyc_signature', {
             url: '/kyc_signature',
-            templateUrl: 'templates/kyc_signature.html',
+            templateUrl: BASEURL+ 'templates/kyc_signature.html',
             controller: 'kyc_signature',
             params: {pages: null}
         })
         .state('risk_profile01', {
             url: '/risk_profile01',
-            templateUrl: 'templates/risk_profile01.html',
+            templateUrl: BASEURL+ 'templates/risk_profile01.html',
             controller: 'risk_profile01',
             params: {pages: null}
         })
         .state('risk_profile02', {
             url: '/risk_profile02',
-            templateUrl: 'templates/risk_profile02.html',
+            templateUrl: BASEURL+ 'templates/risk_profile02.html',
             controller: 'risk_profile02',
             params: {pages: null}
         })
         .state('risk_profile03', {
             url: '/risk_profile03',
-            templateUrl: 'templates/risk_profile03.html',
+            templateUrl: BASEURL+ 'templates/risk_profile03.html',
             controller: 'risk_profile03',
             params: {pages: null}
         })
         .state('risk_profile04', {
             url: '/risk_profile04',
-            templateUrl: 'templates/risk_profile04.html',
+            templateUrl: BASEURL+ 'templates/risk_profile04.html',
             controller: 'risk_profile04',
             params: {pages: null}
         })
         .state('risk_profile05', {
             url: '/risk_profile05',
-            templateUrl: 'templates/risk_profile05.html',
+            templateUrl: BASEURL+ 'templates/risk_profile05.html',
             controller: 'risk_profile05',
             params: {pages: null}
         })
         .state('risk_final', {
             url: '/risk_final',
-            templateUrl: 'templates/risk_final.html',
+            templateUrl: BASEURL+ 'templates/risk_final.html',
             controller: 'risk_final',
             params: {pages: null}
         })
         .state('my_profile', {
             url: '/my_profile',
-            templateUrl: 'templates/my_profile.html',
+            templateUrl: BASEURL+ 'templates/my_profile.html',
             controller: 'my_profile',
             params: {pages: null}
         })
         .state('risk_profile01_sm', {
             url: '/risk_profile01_sm',
-            templateUrl: 'templates/risk_profile01_sm.html',
+            templateUrl: BASEURL+ 'templates/risk_profile01_sm.html',
             controller: 'risk_profile01_sm',
             params: {pages: null}
         })
         .state('risk_profile02_sm', {
             url: '/risk_profile02_sm',
-            templateUrl: 'templates/risk_profile02_sm.html',
+            templateUrl: BASEURL+ 'templates/risk_profile02_sm.html',
             controller: 'risk_profile02_sm',
             params: {pages: null}
         })
         .state('risk_final_sm', {
             url: '/risk_final_sm',
-            templateUrl: 'templates/risk_final_sm.html',
+            templateUrl: BASEURL+ 'templates/risk_final_sm.html',
             controller: 'risk_final_sm',
             params: {pages: null}
         })
         .state('risk_profile01_4d', {
             url: '/risk_profile01_4d',
-            templateUrl: 'templates/risk_profile01_4d.html',
+            templateUrl: BASEURL+ 'templates/risk_profile01_4d.html',
             controller: 'risk_profile01_4d',
             params: {pages: null}
         })
         .state('risk_profile02_4d', {
             url: '/risk_profile02_4d',
-            templateUrl: 'templates/risk_profile02_4d.html',
+            templateUrl: BASEURL+ 'templates/risk_profile02_4d.html',
             controller: 'risk_profile02_4d',
             params: {pages: null}
         })
         .state('risk_profile03_4d', {
               url: '/risk_profile03_4d',
-              templateUrl: 'templates/risk_profile03_4d.html',
+              templateUrl: BASEURL+ 'templates/risk_profile03_4d.html',
               controller: 'risk_profile03_4d',
               params: {pages: null}
           })
           .state('risk_profile04_4d', {
                 url: '/risk_profile04_4d',
-                templateUrl: 'templates/risk_profile04_4d.html',
+                templateUrl: BASEURL+ 'templates/risk_profile04_4d.html',
                 controller: 'risk_profile04_4d',
                 params: {pages: null}
             })
             .state('risk_final_4d', {
                   url: '/risk_final_4d',
-                  templateUrl: 'templates/risk_final_4d.html',
+                  templateUrl: BASEURL+ 'templates/risk_final_4d.html',
                   controller: 'risk_final_4d',
                   params: {pages: null}
               })
@@ -315,11 +315,11 @@ app2.config(function($stateProvider, $urlRouterProvider) {
               params: {pages: null},
               views: {
                   '': {
-                    templateUrl: 'templates/share.html',
+                    templateUrl: BASEURL+ 'templates/share.html',
                     controller: 'share',
                       },
                   'agency_list@share':   {
-                    templateUrl: 'templates/agency_list.html',
+                    templateUrl: BASEURL+ 'templates/agency_list.html',
                     },
                   }
           })
@@ -331,37 +331,37 @@ app2.config(function($stateProvider, $urlRouterProvider) {
 // Amministrazione
         .state('my_agencies', {
             url: '/my_agency',
-            templateUrl: 'templates/my_agencies.html',
+            templateUrl: BASEURL+ 'templates/my_agencies.html',
             controller: 'my_agencies',
             params: {pages: null}
         })
         .state('add_agency', {
             url: '/add_agency',
-            templateUrl: 'templates/add_agency.html',
+            templateUrl: BASEURL+ 'templates/add_agency.html',
             controller: 'add_agency',
             params: {pages: null}
         })
         .state('my_plan', {
             url: '/my_plan',
-            templateUrl: 'templates/my_plan.html',
+            templateUrl: BASEURL+ 'templates/my_plan.html',
             controller: 'my_plan',
             params: {pages: null}
         })
         .state('add_plan', {
             url: '/add_plan',
-            templateUrl: 'templates/add_plan.html',
+            templateUrl: BASEURL+ 'templates/add_plan.html',
             controller: 'add_plan',
             params: {pages: null}
         })
         .state('email_templates', {
             url: '/email_templates',
-            templateUrl: 'templates/email_templates.html',
+            templateUrl: BASEURL+ 'templates/email_templates.html',
             controller: 'email_templates',
             params: {pages: null}
         })
         .state('add_email_template', {
             url: '/add_email_template',
-            templateUrl: 'templates/add_email_template.html',
+            templateUrl: BASEURL+ 'templates/add_email_template.html',
             controller: 'add_email_template',
             params: {pages: null}
         })
@@ -370,7 +370,7 @@ app2.config(function($stateProvider, $urlRouterProvider) {
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
         .state('about', {
           url: '/view_contract',
-          templateUrl: 'view_contract.html'
+          templateUrl: BASEURL+ 'view_contract.html'
         });
 
 });
