@@ -467,3 +467,28 @@ padding-left: 10px;
 .meno30Top{
 	margin-top:35px;
 }
+
+#heading {
+	width:100%;
+	text-align:center;
+
+}
+
+#left {
+	float:left;
+	width:100px;
+}
+
+#center {
+	display: inline-block;
+	margin:0 auto;
+
+}
+
+#right {
+	float:right;
+	width:100px;
+}
+main{
+	overflow-y:hidden !important
+}
