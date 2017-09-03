@@ -97,7 +97,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 
   switch ($scope.page.action){
     default:
-		$scope.Contract=$scope.pages[$scope.page.location].Contract
+		$scope.Contract=$scope.page.Contract
 		$scope.action="saveKyc"
 	  $scope.main.viewName="Documenti AV"
   }
