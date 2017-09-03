@@ -432,21 +432,26 @@ function setDefaults($scope){
       $(this).parent('div.mdl-textfield').addClass('is-dirty');
       $(this).parent('div.mdl-textfield').removeClass('is-invalid');
     })
-      
+
   $('input[type="date"]').each(function(){
    d=$(this).attr('ng-model')
    res=d.split('.')
-   dom=$scope[res[0]][res.slice(-1)[0]]
-   if (dom===undefined || dom===null || dom=="" || ! (dom instanceof Date && !isNaN(dom.valueOf())) )
-     $scope[res[0]][res.slice(-1)[0]]=new Date()
-   else if (!isObject($scope[res[0]][res.slice(-1)[0]]))
-     $scope[res[0]][res.slice(-1)[0]]=new Date($scope[res[0]][res.slice(-1)[0]])
+   if ($scope[res[0]]!==undefined  ){
+     dom=$scope[res[0]][res.slice(-1)[0]]
+     if (dom===undefined || dom===null || dom=="" || ! (dom instanceof Date && !isNaN(dom.valueOf())) )
+       $scope[res[0]][res.slice(-1)[0]]=new Date()
+     else if (!isObject($scope[res[0]][res.slice(-1)[0]]))
+       $scope[res[0]][res.slice(-1)[0]]=new Date($scope[res[0]][res.slice(-1)[0]])
+
+   }
   })
   $('input[def-setting]').each(function(){
    d=$(this).attr('ng-model')
    res=d.split('.')
+   if ($scope[res[0]]!==undefined ){
    if ($scope[res[0]][res.slice(-1)[0]]===undefined || $scope[res[0]][res.slice(-1)[0]]===null || $scope[res[0]][res.slice(-1)[0]]=="" )
      $scope[res[0]][res.slice(-1)[0]]=$scope.agent.settings[$(this).attr('def-setting')]
+   }
 
   })
 
