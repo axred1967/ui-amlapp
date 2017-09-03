@@ -8,7 +8,7 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
 //  $scope.main.loader=true
 
   var msg=localStorage.getItem('msg');
-  if (msg!==undefined  && msg.length>0){
+  if (msg!==undefined && msg!==null && msg.length>0){
     swal('',msg)
     localstorage('msg','');
   }
