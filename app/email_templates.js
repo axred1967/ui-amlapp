@@ -83,6 +83,7 @@ app2.factory('ObAmlApp', function($http,$state) {
             data[key].settings={}
           }
         })
+        this.loaded=1
 
         if (data.length==0){
           this.loaded=-1

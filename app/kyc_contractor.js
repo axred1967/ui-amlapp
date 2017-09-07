@@ -55,7 +55,6 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 //		$scope.main.AddPage="add_contract"
   $scope.main.Search=false
   $scope.main.Sidebar=false
-  $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Dati Firmatario " + $scope.passo
  $scope.searchContractor={}
  $scope.searchContractor.settings={}
@@ -373,6 +372,7 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 									 $(this).parent('div.mdl-textfield').removeClass('is-invalid');
 								 })
 								 setDefaults($scope)
+								 $('.mdl-layout__drawer-button').hide()
 
 
 						}, 300);

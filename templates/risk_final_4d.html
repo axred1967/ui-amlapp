@@ -17,18 +17,18 @@
       <div class="mdl-cell mdl-cell--12-col">
         <form id="form" name="form" novalidate>
           <fieldset>
-            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
+            <table class="riskTable mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
               <tbody>
                 <tr>
-                  <td colspan="2" class="inline azure-row mdl-data-table__cell--non-numeric">Sub Totale A. Rischio connesso al cliente</td>
-                  <td colspan="" class="inline azure-row ">{{ subTotRisk(Risk.risk_data.AspConnCli) }}</td>
+                  <td colspan="2" class=" azure-row mdl-data-table__cell--non-numeric">Sub Totale A. Rischio connesso al cliente</td>
+                  <td colspan="" class=" azure-row ">{{ subTotRisk(Risk.risk_data.AspConnCli) }}</td>
                 </tr>
                 <tr>
-                  <td colspan="2" class="inline azure-row mdl-data-table__cell--non-numeric">Sub Totale B. Rischio connesso alla operazione</td>
-                  <td colspan="" class="inline azure-row ">{{ subTotRisk(Risk.risk_data.aspConnOpe) }}</td>
+                  <td colspan="2" class=" azure-row mdl-data-table__cell--non-numeric">Sub Totale B. Rischio connesso alla operazione</td>
+                  <td colspan="" class=" azure-row ">{{ subTotRisk(Risk.risk_data.aspConnOpe) }}</td>
                 </tr>
                 <tr>
-                  <th  colspan="2" class="inline blue-th mdl-data-table__cell--non-numeric" >Totale Rischio AML</td>
+                  <th  colspan="2" class=" blue-th mdl-data-table__cell--non-numeric" >Totale Rischio AML</td>
                   <td colspan="" class=" blue-th ">{{ subTotRisk(Risk.risk_data) }}</td>
                 </tr>
               </tbody>

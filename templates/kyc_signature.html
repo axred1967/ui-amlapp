@@ -1,19 +1,50 @@
+<center>
+<span style="font-size:18px;font-weight:bold" class="orange" id="name_agent">{{'Adeguata Verifica'|translate}}</span><br/>
+<span style="font-size:18px;font-weight:bold" class="blue" id="name_agent">{{Contract.CPU}} - {{Contract.fullname}}</span>
+</center>
+
 <div id="containerf">
-  <div></div>
   <div>
-    <center>
-    <span style="font-size:18px;font-weight:bold" class="orange" id="name_agent">{{'Adeguata Verifica'|translate}}</span><br/>
-    <span style="font-size:18px;font-weight:bold" class="blue" id="name_agent">{{Contract.CPU}} - {{Contract.Owner}}</span>
-  </center>
+    <div ng-hide="Contract.shared>0">
+
+
+    </div>
+    <div ng-show="Contract.shared>0" >
+        <button  id="add_customer" ng-click="loadCustomer()" class=" mdl-button mdl-js-button mdl-button--fab   mdl-button--mini-fab mdl-button--colored orange-btn">
+          <i class="material-icons">replay</i>
+        </button>
+        <span class="mdl-tooltip mdl-tooltip--validation" for="add_customer" >
+          <span >{{'Ricarica dati dal Firmatario'|translate}}.</span>
+        </span>
+
+
+    </div>
+
+  </div>
+  <div>
   </div>
   <div ng-class="(Kyc.kyc_status==0) ? 'Alto' : 'Basso'" style="text-align:right!important">
-    <span ng-show="Kyc.kyc_status==1" >Ultima AV eseguita il: {{Kyc.kyc_date | dateToISO | date:'M/d/yyyy  HH:mm:ss'}} </span>
-    <span ng-show="Kyc.kyc_status==0" >AV non ancora completata </span>
+    <i ng-show="Kyc.kyc_status==1" class="Basso material-icons" id="AVOK">done</i>
+    <span class="mdl-tooltip mdl-tooltip--validation" for="AVOK" >
+      <span >{{'Ultima AV eseguita il:  '|translate}}{{Kyc.kyc_date | dateToISO | date:'d/M/yyyy  HH:mm:ss'}}</span>
+    </span>
+
+
+    <i ng-show="Kyc.kyc_status==0" class="Alto material-icons" id="AVNO">warning</i>
+    <span class="mdl-tooltip mdl-tooltip--validation" for="AVNO" >
+      <span >{{'AV non ancora completata '|translate}}.</span>
+    </span>
+
 
   </div>
 </div>
+
 <div class="mdl-card mdl-shadow--2dp ">
   <form name="form" id= "form" action="javascript:;" novalidate>
+    <br/>
+    <center>
+    <span style="font-size:14px;font-weight:bold" class="orange" id="name_agent">{{'Fai inserire  la Firma del sottoscrittore '|translate}}</span><br/>
+    </center>
 
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" >
       <img id="sign" ng-src="{{oldSign}}" ng-show="oldSign.length>7" height="20%">

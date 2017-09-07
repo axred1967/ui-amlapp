@@ -60,7 +60,7 @@
           <div class="demo-card-image mdl-card mdl-shadow--2dp">
             <div class="mdl-card__title mdl-card--expand">Immagine</div>
 
-            <div class="mdl-image" ng-click="download(Doc)">
+            <div class="center-cropped mdl-image" ng-click="download(Doc)" >
             <img class="load" ng-show="Doc.doc_image.length>0" ng-src ="{{imageurl(Doc) }}" ></img>
             <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img_int" src="img/loader2.gif"  /> </center>
             </div>

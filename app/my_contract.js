@@ -237,7 +237,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   	}
   	else {
   		var fileTransfer = new FileTransfer();
-  	    var uri = encodeURI(url);
+  	    var uri = url;
 
   	    fileTransfer.download(
   	          uri,
@@ -275,7 +275,8 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   	}
   	else {
   		var fileTransfer = new FileTransfer();
-  	    var uri = encodeURI(url);
+//  	    var uri = encodeURI(url);
+				  var uri = url;
 
   	    fileTransfer.download(
   	          uri,

@@ -84,7 +84,7 @@ app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_i
 
   }
   $scope.deleteCustomer2=function(Customer,index){
-    data={action:'delete',table:'users','primary':'id',id:Customer.user_id, agent:true ,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={action:'delete',table:'users','primary':'user_id',id:Customer.user_id, agent:true ,pInfo:$scope.agent.pInfo}
     $http.post(SERVICEURL2,data)
     $state.reload();
   }

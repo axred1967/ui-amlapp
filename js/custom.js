@@ -26,6 +26,7 @@ var SERVICEURL2 = "https://amlapp.euriskoformazione.com/service.php";
 var LOG = "https://amlapp.euriskoformazione.com/log.php";
 
 
+
 function chkloggedin()
 {
      var chksession = localStorage.getItem('userId');
@@ -356,7 +357,7 @@ function exit( status ) {
     throw '';
 }
 function isObject (item) {
-  return (typeof item === "object" && !Array.isArray(item) && item !== null);
+  return ((typeof item === "object" || Array.isArray(item)) && item !== null);
 }
 function getCountryList(){
 
@@ -381,7 +382,7 @@ function getCountryList(){
 
 }
 function resize_img(){
-
+/*
     $('.demo-card-image img.load').each(function() {
 
       var maxWidth = $('.demo-card-image').width(); // Max width for the image
@@ -401,7 +402,7 @@ function resize_img(){
         height = height * ratio;    // Reset height to match scaled image
         width = width * ratio;    // Reset width to match scaled image
       }else {
-				$('.demo-card-image .mdl-card__title').css("width", maxWidth);
+				$(this).css("width", maxWidth);
 
 			}
 
@@ -416,15 +417,12 @@ function resize_img(){
         height = height * ratio;    // Reset height to match scaled image
       }
 			else {
-				$('.demo-card-image .mdl-image').css("height", maxHeight);
-			}      //$(this).parent( ".demo-card-image").css('background-image','url('+$(this).attr('src')+')')
-      //$(this).parent( ".demo-card-image").attr('width',$(this).width())
-      //$(this).parent( ".demo-card-image").attr('height',$(this).height())
-      //$(this).parent( ".demo-card-image").css('background-size',$(this).width()  +'px' + $(this).height()  +'px')
-      //$(this).hide()
+				$(this).css("height", maxHeight);
+			}
 
 
     });
+*/
 }
 function setDefaults($scope){
   $('input.mdl-textfield__input').each(

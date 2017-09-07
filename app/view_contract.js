@@ -106,6 +106,11 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 		localstorage('pages',JSON.stringify($scope.pages))
 		$state.go('kyc_contractor.01',{pages:$scope.pages})
 	};
+	$scope.agg_kyc = function(){
+		$scope.pages['agg_kyc']={action:'',location:$state.current.name,Contract:$scope.Contract}
+		localstorage('pages',JSON.stringify($scope.pages))
+		$state.go('agg_kyc',{pages:$scope.pages})
+	};
 	$scope.owners = function(){
 		$scope.pages['kyc_owners']={action:'', company_id:$scope.Contract.company_id,location:$state.current.name,Contract:$scope.Contract,view:true}
 		localstorage('pages',JSON.stringify($scope.pages))
@@ -166,7 +171,8 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 		}
 		else {
 			var fileTransfer = new FileTransfer();
-			var uri = encodeURI(url);
+	//		var uri = encodeURI(url);
+	  		var uri = url;
 
 			fileTransfer.download(
 				uri,
@@ -204,7 +210,8 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 			}
 			else {
 				var fileTransfer = new FileTransfer();
-				var uri = encodeURI(url);
+//				var uri = encodeURI(url);
+	  			var uri = url;
 
 				fileTransfer.download(
 					uri,

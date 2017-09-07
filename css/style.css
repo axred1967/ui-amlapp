@@ -1241,6 +1241,12 @@ svg {
 .scrolly{
 	max-height:15em;
 	overflow-y:auto;
+	width:100%;
+
+}
+.scrolly>tbody{
+	max-height:15em;
+	width:100%;
 
 }
 
@@ -1468,4 +1474,31 @@ td.wordwrap{
 }
 .material_row_selected{
 	background-color:#eee;
+}
+.riskTable{
+	width:100%
+}
+.triskTable> thead >tr>th{
+	max-width: 0;
+	overflow: hidden;
+	white-space: normal;
+
+}
+.riskTable >tbody>tr> td:nth-child(1){
+	width:65%;
+	max-width: 0;
+	overflow: hidden;
+	white-space: normal;
+}
+.riskTable> tbody>tr> td:nth-child(2){
+	width:20%;
+	max-width: 0;
+	overflow: hidden;
+	white-space: normal;
+}
+.riskTable> tbody>tr> td:nth-child(3){
+	width:15%;
+	max-width: 0;
+	overflow: hidden;
+	white-space: normal;
 }

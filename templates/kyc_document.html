@@ -1,31 +1,47 @@
+<<center>
+<span style="font-size:18px;font-weight:bold" class="orange" id="name_agent">{{'Adeguata Verifica'|translate}}</span><br/>
+<span style="font-size:18px;font-weight:bold" class="blue" id="name_agent">{{Contract.CPU}} - {{Contract.fullname}}</span>
+</center>
+
 <div id="containerf">
   <div>
     <div ng-hide="Contract.shared>0">
-      <div class="orange left">Il firmatario non ha ancora autorizzato la condivisione dei dati</div>
-    </div>
-
-    <div ng-show="Contract.shared>0" >
-      <button ng-focus="resetAC()"  id="add_document" ng-click="add_document()" class="orange-btn mdl-button mdl-js-button mdl-button--fab   mdl-button--mini-fab mdl-button--colored ">
-        <i class="material-icons">replay</i>
-      </button>
-      <span class="mdl-tooltip mdl-tooltip--validation" for="add_document" >
-        <span >{{'Ricarica dati dal Cliente'|translate}}.</span>
+      <i class="orange material-icons" id="auth">warning</i>
+      <span class="mdl-tooltip mdl-tooltip--validation" for="auth" >
+        <span >{{'Il firmatario non ha ancora autorizzato condivisione dati'|translate}}.</span>
       </span>
 
     </div>
+    <div ng-show="Contract.shared>0" >
+        <button  id="add_customer" ng-click="loadCustomer()" class=" mdl-button mdl-js-button mdl-button--fab   mdl-button--mini-fab mdl-button--colored orange-btn">
+          <i class="material-icons">replay</i>
+        </button>
+        <span class="mdl-tooltip mdl-tooltip--validation" for="add_customer" >
+          <span >{{'Ricarica dati dal Firmatario'|translate}}.</span>
+        </span>
+
+
+    </div>
+
   </div>
   <div>
-    <center>
-    <span style="font-size:18px;font-weight:bold" class="orange" id="name_agent">{{'Adeguata Verifica'|translate}}</span><br/>
-    <span style="font-size:18px;font-weight:bold" class="blue" id="name_agent">{{Contract.CPU}} - {{Contract.fullname}}</span>
-  </center>
   </div>
   <div ng-class="(Kyc.kyc_status==0) ? 'Alto' : 'Basso'" style="text-align:right!important">
-    <span ng-show="Kyc.kyc_status==1" >Ultima AV eseguita il: {{Kyc.kyc_date | dateToISO | date:'d/M/yyyy  HH:mm:ss'}} </span>
-    <span ng-show="Kyc.kyc_status==0" >AV non ancora completata </span>
+    <i ng-show="Kyc.kyc_status==1" class="Basso material-icons" id="AVOK">done</i>
+    <span class="mdl-tooltip mdl-tooltip--validation" for="AVOK" >
+      <span >{{'Ultima AV eseguita il:  '|translate}}{{Kyc.kyc_date | dateToISO | date:'d/M/yyyy  HH:mm:ss'}}</span>
+    </span>
+
+
+    <i ng-show="Kyc.kyc_status==0" class="Alto material-icons" id="AVNO">warning</i>
+    <span class="mdl-tooltip mdl-tooltip--validation" for="AVNO" >
+      <span >{{'AV non ancora completata '|translate}}.</span>
+    </span>
+
 
   </div>
 </div>
+
 
 <div  class="mdl-grid"       >
 
@@ -36,8 +52,8 @@
 
       <div class="demo-card-image mdl-card mdl-shadow--2dp">
         <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
-        <div class="mdl-image" ng-click="edit_document(Doc,DocIndex)">
-        <img  class="load" ng-show="Doc.doc_image.length>0" ng-src ="{{imageurl(Doc)}}" ></img>
+        <div class="mdl-image center-cropped" ng-click="edit_document(Doc,DocIndex)">
+        <img  class="loadImg" ng-show="Doc.doc_image.length>0" ng-src ="{{imageurl(Doc)}}" ></img>
         <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img_int" src="img/loader2.gif"  /> </center>
       </div>
         <div class="mdl-card__actions">

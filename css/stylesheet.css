@@ -364,9 +364,9 @@ padding-left: 10px;
 }
 
 @media only screen and (max-width: 480px) {
-
+/*
   table, thead, tbody, th, td, tr {
-      display: block;
+      display: table;
   }
 
   thead {
@@ -406,7 +406,7 @@ padding-left: 10px;
   .mdl-data-table td:last-of-type {
     padding-right: 18px;
   }
-
+*/
 }
 .inline {
 	max-width: 0;
@@ -491,4 +491,15 @@ padding-left: 10px;
 }
 main{
 	overflow-y:hidden !important
+}
+.center-cropped {
+    overflow:hidden;
+		max-height:300px;
+}
+.center-cropped img {
+    height: 100%;
+    min-width: 100%;
+    left: 50%;
+    position: relative;
+    transform: translateX(-50%);
 }

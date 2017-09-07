@@ -5,7 +5,6 @@ app2.controller('add_agency', function ($scope,$http,$state,$translate,$timeout,
 //		$scope.main.AddPage="add_contract"
   $scope.main.Search=false
   $scope.main.Sidebar=false
-  $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Iscrivito ad AmlAPP"
   $scope.Ob={}
   $scope.page={}
@@ -98,8 +97,14 @@ app2.controller('add_agency', function ($scope,$http,$state,$translate,$timeout,
     $scope.main.loader=true
     other_actions=[]
     dest_email=$scope.Ob.email
+
+    other_actions[0]={ action:'saveOb',
+      dbData:$scope.Ob,
+      settings:$scope.settings
+    }
     if ($scope.action=='signUp'){
-      other_actions[0]={ action:'mail_template',
+
+      other_actions[1]={ action:'mail_template',
         email:dest_email,
         template:'agency_added',
         vars:{
@@ -108,7 +113,7 @@ app2.controller('add_agency', function ($scope,$http,$state,$translate,$timeout,
           password:$scope.Ob.password,
           codeCli:$scope.Ob.settings.codeCli
       }}
-      other_actions[1]={ action:'mail_template', email:"axred1967@gmail.com,info@euriskoformazione.it",
+      other_actions[2]={ action:'mail_template', email:"axred1967@gmail.com,info@euriskoformazione.it",
         template:'nuovo_cliente',
         vars:{
           client_name:$scope.Ob.name,
@@ -118,12 +123,19 @@ app2.controller('add_agency', function ($scope,$http,$state,$translate,$timeout,
         }
     }
     $scope.Ob.settings=JSON.stringify($scope.Ob.settings);
-    data={ "action":"saveOb", settings:$scope.settings,dbData:$scope.Ob,other_actions:other_actions,pInfo:{action:$scope.page.action,user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    if ($scope.action=='signUp'){
+      data={ "action":"signUp", other_actions:other_actions,pInfo:$scope.agent.pInfo}
+    }
+    else {
+      data={action:'saveOb', dbData:$scope.Ob, settings:$scope.settings,pInfo:$scope.agent.pInfo}
+    }
+    
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
         if(data.data.RESPONSECODE=='1') 			{
         //swal("",data.data.RESPONSE);
         $scope.lastid=data.lastid;
+        localstorage('msg','ti arrivaerà la mail con le credenziali ed il link di verifica, cliccalo per accedere alla APP in prova ');
 
 
         $scope.main.loader=false
@@ -248,6 +260,7 @@ app2.controller('add_agency', function ($scope,$http,$state,$translate,$timeout,
                     $(this).parent('div.mdl-textfield').addClass('is-dirty');
                     $(this).parent('div.mdl-textfield').removeClass('is-invalid');
                   })
+                  $('.mdl-layout__drawer-button').hide()
                 $scope.main.loader=false
              }, 100);
    });

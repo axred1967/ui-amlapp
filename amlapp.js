@@ -26,7 +26,13 @@ var first_autocomplete_table_focus=false
 
 var app2 = angular.module('myApp', ['ui.router','pascalprecht.translate','ngSanitize','ng-currency','fieldMatch','infinite-scroll','textAngular','tmh.dynamicLocale']);
 
-app2.config(function ($translateProvider, tmhDynamicLocaleProvider) {
+app2.config(function ($translateProvider, tmhDynamicLocaleProvider,$sceDelegateProvider) {
+  $sceDelegateProvider.resourceUrlWhitelist([
+    // Allow same origin resource loads.
+    'self',
+    // Allow loading from our assets domain.  Notice the difference between * and **.
+    'https://amlapp.euriskoformazione.com/**'
+  ]);
   // Enable escaping of HTML
   $translateProvider.useStaticFilesLoader({
                     prefix: BASEURL+ '/localization/',
@@ -41,7 +47,7 @@ app2.config(function ($translateProvider, tmhDynamicLocaleProvider) {
 
 app2.config(function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise('login');
+    $urlRouterProvider.otherwise('home');
 
     $stateProvider
 
@@ -309,6 +315,18 @@ app2.config(function($stateProvider, $urlRouterProvider) {
                   controller: 'risk_final_4d',
                   params: {pages: null}
               })
+              .state('agg_kyc', {
+                    url: '/agg_kyc',
+                    templateUrl: BASEURL+ 'templates/agg_kyc.html',
+                    controller: 'agg_kyc',
+                    params: {pages: null}
+                })
+                .state('agg_risk', {
+                      url: '/agg_risk',
+                      templateUrl: BASEURL+ 'templates/agg_risk.html',
+                      controller: 'agg_risk',
+                      params: {pages: null}
+                  })
 // share
           .state('share', {
               url: '/share',
@@ -580,7 +598,16 @@ app2.service('AutoComplete',function($http,$state){
 
 
 
-app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLocale,$translate) {
+app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLocale,$translate,$sce,$timeout,$location,$window) {
+  var isapp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+  var forceSSL = function () {
+      if ( $location.protocol() !== 'https') {
+          $window.location.href = $location.absUrl().replace('http', 'https');
+      }
+  };
+  if (!isapp)
+    forceSSL();
+  $sce.trustAsResourceUrl('https://amlapp.euriskoformazione.com')
   $scope.agent={}
   if ($scope.agent.name===undefined){
     $scope.agent.name=localStorage.getItem('Name');
@@ -665,22 +692,18 @@ app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLo
     $state.go("add_agency");
 
   }
-  var langchkvarlang = localStorage.getItem("language");
-  if(langchkvarlang == null)
-  {
-    $state.go("language");
-  }
+
   var chksession = localStorage.getItem('userId');
   var typesi = localStorage.getItem('userType');
   var langfile = localStorage.getItem("language");
   if (!chksession)
   {
-    $state.go("login");
+      $state.go('login')
   }
     //checkthesidebarinfouser();
 
 
-      $state.go("home");
+
 })
 window.addEventListener('keydown', function (evt) {
   if ($(evt.target)===undefined && $(evt.target).get(0) ===undefined){

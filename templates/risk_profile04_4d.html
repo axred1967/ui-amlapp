@@ -19,7 +19,7 @@
       <div class="mdl-cell mdl-cell--12-col">
         <form id="form" name="form" novalidate>
           <fieldset>
-            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
+            <table class="riskTable mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
               <thead>
               <tr  >
                 <th  class="blue-th mdl-data-table__cell--non-numeric" >Descrizione</td>
@@ -29,10 +29,10 @@
             </thead>
               <tbody>
                 <tr>
-                  <td colspan="3" class="inline yellow-row mdl-data-table__cell--non-numeric">b.4. Frequenza dell'operazione e durata del rapporto continuativo o prestazione professionale</td>
+                  <td colspan="3" class=" yellow-row mdl-data-table__cell--non-numeric">b.4. Frequenza dell'operazione e durata del rapporto continuativo o prestazione professionale</td>
                 </tr>
                 <tr >
-                  <td  width="200px"  class="inline mdl-data-table__cell--non-numeric" >
+                  <td  width="200px"  class=" mdl-data-table__cell--non-numeric" >
                     Congruità della frequenza dell'operazione rispetto all'attività esercitata
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">
@@ -48,14 +48,14 @@
                   </td>
                 </tr>
                 </tr>
-                  <td colspan="2" class="inline gray-row mdl-data-table__cell--non-numeric">SubTotale b.4. Frequenza dell'operazione e durata del rapporto continuativo o prestazione prof.le</td>
+                  <td colspan="2" class=" gray-row mdl-data-table__cell--non-numeric">SubTotale b.4. Frequenza dell'operazione e durata del rapporto continuativo o prestazione prof.le</td>
                   <td colspan="1" class="gray-row">{{ subTotRisk(Risk.risk_data.aspConnOpe.b4) }}</td>
                 </tr>
 
                   <tr>
-                    <td colspan="3" class="inline yellow-row mdl-data-table__cell--non-numeric">b.5. Ragionevolezza dell'operazione, rapporto continuativo o prestazione professionale</td>
+                    <td colspan="3" class=" yellow-row mdl-data-table__cell--non-numeric">b.5. Ragionevolezza dell'operazione, rapporto continuativo o prestazione professionale</td>
                   </tr>
-                  <td class="inline mdl-data-table__cell--non-numeric" >
+                  <td class=" mdl-data-table__cell--non-numeric" >
                     Ragionevolezza dell'operazione rispetto alle caratteristiche soggettive del cliente
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">6</td>
@@ -69,7 +69,7 @@
                   </td>
                 </tr>
                 <tr >
-                  <td class="inline mdl-data-table__cell--non-numeric " >
+                  <td class=" mdl-data-table__cell--non-numeric " >
                  Congruità dell'operazione rispetto alle finalità dichiarate
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">4</td>
@@ -83,7 +83,7 @@
                   </td>
                 </tr>
                 <tr >
-                  <td class="inline mdl-data-table__cell--non-numeric " >
+                  <td class=" mdl-data-table__cell--non-numeric " >
                  Ragionevolezza dell'operazione sotto il profilo economico finanziario
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">4</td>
@@ -98,14 +98,14 @@
                 </tr>
 
                 <tr>
-                  <td colspan="2" class="inline gray-row mdl-data-table__cell--non-numeric">SubTotale b.5. Ragionevolezza dell'operazione, rapporto continuativo o prestazione professionale</td>
+                  <td colspan="2" class=" gray-row mdl-data-table__cell--non-numeric">SubTotale b.5. Ragionevolezza dell'operazione, rapporto continuativo o prestazione professionale</td>
                   <td class="gray-row">{{ subTotRisk(Risk.risk_data.aspConnOpe.b5) }}</td>
                 </tr>
                   <tr>
-                    <td colspan="3" class="inline yellow-row mdl-data-table__cell--non-numeric">
+                    <td colspan="3" class=" yellow-row mdl-data-table__cell--non-numeric">
                       b.6. Area geografica di destinazione del prodotto, oggetto dell'operazione o del rapporto
                   </tr>
-                  <td class="inline mdl-data-table__cell--non-numeric" >
+                  <td class=" mdl-data-table__cell--non-numeric" >
                     Comune a rischio a causa dell'utilizzo eccessivo di contante - Stati extra UE con regime antiriciclaggio non equivalente o territori offshore- Stati extra UE o territori stranieri che impongono obblighi equivalenti
 
                   </td>
@@ -120,7 +120,7 @@
                   </td>
                 </tr>
                 <tr >
-                  <td class="inline mdl-data-table__cell--non-numeric " >
+                  <td class=" mdl-data-table__cell--non-numeric " >
                   Ragionevolezza e congruità della ricerca di interazione con altre aree geografiche
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">3</td>
@@ -138,7 +138,7 @@
                   <td colspan="1" class="gray-row">{{ subTotRisk(Risk.risk_data.aspConnOpe.b6) }}</td>
                 </tr>
                 <tr>
-                <td colspan="2" class="inline azure-row mdl-data-table__cell--non-numeric">SubTotale A Rischi Connessi alla Operazione</td>
+                <td colspan="2" class=" azure-row mdl-data-table__cell--non-numeric">SubTotale A Rischi Connessi alla Operazione</td>
                 <td colspan="1" class="azure-row">{{ subTotRisk(Risk.risk_data.aspConnOpe) }}</td>
               </tr>
               </tbody>

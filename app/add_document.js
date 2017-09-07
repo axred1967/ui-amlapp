@@ -152,7 +152,7 @@ $scope.loadItem=function(){
 
   $scope.imageurl=function(Doc){
     if (Doc===undefined || Doc.doc_image===undefined ||  Doc.doc_image== null || Doc.doc_image.length==0){
-			imageurl= '../img/customer-listing1.png'
+			imageurl= '/img/customer-listing1.png'
 			return imageurl
 			}
 			else if (Doc.isImage){
@@ -241,6 +241,7 @@ $scope.loadItem=function(){
   $scope.add_photo=function()
   {
     $("#loader_img").show()
+
     // alert('cxccx');
     navigator.camera.getPicture($scope.uploadPhoto,
       function(message) {
@@ -255,8 +256,12 @@ $scope.loadItem=function(){
   }
 
   $scope.uploadPhoto=function(imageURI){
+    $scope.$apply(function () {
+      $scope.main.loader=true
 
+    });
     var options = new FileUploadOptions();
+
     options.fileKey="file";
     options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
     options.mimeType="text/plain";
@@ -266,42 +271,35 @@ $scope.loadItem=function(){
     options.params = params;
     var ft = new FileTransfer();
     //$http.post( LOG,  {data:BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per})
-
-    ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
+    var url=BASEURL+"service.php?action=upload_document_ax&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per+$scope.agent.pInfoUrl
+    ft.upload(imageURI, url, $scope.winFT, $scope.failFT, options,true);
 
 
 
   }
   $scope.winFT=function (r)
   {
-    var review_info   =JSON.parse(r.response);
-    var id = review_info.id;
-    $http.post( LOG,  {r:r,Doc:$scope.Doc})
-    //$('#review_id_checkin').val(review_selected_image);
-   data={ "action":"get_document_image_name_multi", id:id,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
-    $http.post( SERVICEURL2,  data )
-    .then(function(data) {
-      if(data.data.RESPONSECODE=='1') 			{
-        $scope.Doc.doc_image=data.data.response;
-        $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
-        $scope.loaded=true
-        $("#loader_img_int").hide()
-        //  $http.post( LOG,  {dt:data.data.RESPONSE ,doc:$scope.Doc})
+    var  r=IsJsonString(r.response)
 
+    $scope.$apply(function () {
+      $scope.Doc.doc_image=r.response;
+      $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
+      $scope.loaded=true
+      $scope.Doc.file_type=r.file_type
+      $scope.Doc.isImage=true
+      if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
+        $scope.Doc.isImage=false
       }
-      if (data.data.RESPONSECODE=='-1'){
-         localstorage('msg','Sessione Scaduta ');
-         $state.go('login');;;
-      }
-    })
-    , (function() {
-      $("#loader_img_int").hide()
-      console.log("error");
+      $scope.main.loader=false
+
     });
+    $("#loader_img_int").hide()
   }
   $scope.failFT =function (error)
   {
     $("#loader_img_int").hide()
+    $scope.Docs.doc_image=$scope.prev_image
+    $scope.main.loader=false
 
   }
 

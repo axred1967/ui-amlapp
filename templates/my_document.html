@@ -13,8 +13,8 @@
 
         <div class="demo-card-image mdl-card mdl-shadow--2dp">
           <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
-          <div class="mdl-image">
-          <img ng-click="edit_doc(Doc,DocIndex)" ng-show="Doc.isImage && Doc.doc_image.length>0" ng-src ="{{imageurl(Doc)}}" ></img>
+          <div class="mdl-image center-cropped">
+          <img class="loadImg" ng-click="edit_doc(Doc,DocIndex)" ng-show="Doc.isImage && Doc.doc_image.length>0" ng-src ="{{imageurl(Doc)}}" ></img>
           <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img_int" src="img/loader2.gif"  /> </center>
           <img ng-click=download(Doc) class="toload" ng-show="! Doc.isImage && Doc.doc_image.length>0" ng-src ="{{'/img/'+ Doc.file_type.substr(1)+'.png' }}" ></img>
           </div>

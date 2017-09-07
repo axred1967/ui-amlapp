@@ -18,20 +18,20 @@
       <div class="mdl-cell mdl-cell--12-col">
         <form id="form" name="form" novalidate>
           <fieldset>
-            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
+            <table class="riskTable mdl-data-table mdl-js-data-table mdl-shadow--2dp" >
               <thead>
               <tr  >
-                <th  class="blue-th mdl-data-table__cell--non-numeric" >Descrizione</td>
-                <th class="blue-th mdl-data-table__cell--non-numeric">Max</td>
+                <th  class=" blue-th mdl-data-table__cell--non-numeric" >Descrizione</td>
+                <th class=" blue-th mdl-data-table__cell--non-numeric">Max</td>
                 <th class="blue-th ">Assegnato</td>
               </tr>
             </thead>
               <tbody>
                 <tr>
-                  <td colspan="3" class="inline yellow-row mdl-data-table__cell--non-numeric">b.1. Tipologia dell'operazione, rapporto continuativo o prestazione professionale</td>
+                  <td colspan="3" class=" yellow-row mdl-data-table__cell--non-numeric">b.1. Tipologia dell'operazione, rapporto continuativo o prestazione professionale</td>
                 </tr>
                 <tr >
-                  <td  width="200px"  class="inline mdl-data-table__cell--non-numeric" >
+                  <td    class=" mdl-data-table__cell--non-numeric" >
                     Ordinaria rispetto al profilo soggettivo del cliente
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">2</td>
@@ -45,7 +45,7 @@
                   </td>
                 </tr>
                 <tr >
-                  <td class="inline mdl-data-table__cell--non-numeric" >
+                  <td class=" mdl-data-table__cell--non-numeric" >
                     Straordinaria rispetto al profilo soggettivo del cliente
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">2</td>
@@ -59,7 +59,7 @@
                   </td>
                 </tr>
                 <tr >
-                  <td class="inline mdl-data-table__cell--non-numeric" >
+                  <td class=" mdl-data-table__cell--non-numeric" >
                     Operazione che prevede schemi negoziali che possono agevolare l'opacità delle relazioni economiche e finanziarie intercorrenti tra il cliente e la controparte
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">6</td>
@@ -73,7 +73,7 @@
                   </td>
                 </tr>
                 <tr >
-                  <td class="inline mdl-data-table__cell--non-numeric" >
+                  <td class=" mdl-data-table__cell--non-numeric" >
                     Articolazione contrattuale ingiustificata
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">6</td>
@@ -86,13 +86,13 @@
 
                   </td>
                 </tr>                <tr>
-                  <td colspan="2" class="inline gray-row mdl-data-table__cell--non-numeric">SubTotale b.1. Tipologia dell'operazione, rapporto continuativo o prestazione professionale</td>
+                  <td colspan="2" class=" gray-row mdl-data-table__cell--non-numeric">SubTotale b.1. Tipologia dell'operazione, rapporto continuativo o prestazione professionale</td>
                   <td colspan="1" class="gray-row">{{ subTotRisk(Risk.risk_data.aspConnOpe.b1) }}</td>
                 </tr>
                   <tr>
-                    <td colspan="3" class="inline yellow-row mdl-data-table__cell--non-numeric">b.2. Modalità di svolgimento dell'operazione, rapporto continuativo o prestazione professionale </td>
+                    <td colspan="3" class=" yellow-row mdl-data-table__cell--non-numeric">b.2. Modalità di svolgimento dell'operazione, rapporto continuativo o prestazione professionale </td>
                   </tr>
-                  <td class="inline mdl-data-table__cell--non-numeric" >
+                  <td class=" mdl-data-table__cell--non-numeric" >
                     Utilizzo di mezzi di pagamento non tracciati
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">1</td>
@@ -106,7 +106,7 @@
                   </td>
                 </tr>
                 <tr >
-                  <td class="inline mdl-data-table__cell--non-numeric " >
+                  <td class=" mdl-data-table__cell--non-numeric " >
                  Utilizzo di conti non propri per trasferire/ricevere fondi
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">1</td>
@@ -120,7 +120,7 @@
                   </td>
                 </tr>
                 <tr >
-                  <td class="inline mdl-data-table__cell--non-numeric " >
+                  <td class=" mdl-data-table__cell--non-numeric " >
                  Ricorso reiterato a procure
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">1</td>
@@ -134,7 +134,7 @@
                   </td>
                 </tr>
                 <tr >
-                  <td class="inline mdl-data-table__cell--non-numeric " >
+                  <td class=" mdl-data-table__cell--non-numeric " >
                 Ricorso a domiciliazioni di comodo
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">1</td>
@@ -148,14 +148,14 @@
                   </td>
                 </tr>
                 <tr>
-                  <td colspan="2" class="inline gray-row mdl-data-table__cell--non-numeric">SubTotale b.2 Modalità di svolgimento dell'operazione, rapporto continuativo o prestazione professionale</td>
+                  <td colspan="2" class=" gray-row mdl-data-table__cell--non-numeric">SubTotale b.2 Modalità di svolgimento dell'operazione, rapporto continuativo o prestazione professionale</td>
                   <td class="gray-row">{{ subTotRisk(Risk.risk_data.aspConnOpe.b2) }}</td>
                 </tr>
                   <tr>
-                    <td colspan="3" class="inline yellow-row mdl-data-table__cell--non-numeric">
+                    <td colspan="3" class=" yellow-row mdl-data-table__cell--non-numeric">
                       b.3. Ammontare dell'operazione
                   </tr>
-                  <td class="inline mdl-data-table__cell--non-numeric" >
+                  <td class=" mdl-data-table__cell--non-numeric" >
                     Coerenza dell'ammontare rispetto al profilo economico e finanziario del cliente
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">4</td>
@@ -169,7 +169,7 @@
                   </td>
                 </tr>
                 <tr >
-                  <td class="inline mdl-data-table__cell--non-numeric " >
+                  <td class=" mdl-data-table__cell--non-numeric " >
                     Presenza di frazionamenti artificiosi
                   </td>
                   <td class="mdl-data-table__cell--non-numeric">2</td>
