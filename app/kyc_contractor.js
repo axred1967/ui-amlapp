@@ -1,4 +1,4 @@
-app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$timeout,$interval,$stateParams,AutoComplete) {
+app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$timeout,$interval,$stateParams,AutoComplete,textAngularManager) {
   //gestisco lo state parameter
 
 	  $scope.curr_page=$state.current.name
@@ -24,7 +24,7 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
         return;
       }
 			if ($scope.passo==2 && passo>0){
-				next="kyc_signature"
+				next="kyc_document"
 				switch($scope.Kyc.contract_data.act_for_other){
 					case '1':
 					next="kyc_company"
@@ -33,7 +33,7 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 					next="kyc_owners"
 					default:
 				}
-				$scope.pages[next]={action:'',location:$scope.page.location,prev_page:$state.current.name}
+				$scope.pages[next]={action:'',location:$scope.page.location,prev_page:$state.current.name,agg:$scope.page.agg}
 				localstorage('pages', JSON.stringify($scope.pages));
 				$state.go(next  ,{pages:$scope.pages})
 				return;
@@ -49,6 +49,7 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
       $state.go($scope.page.location,{pages:$scope.pages})
     }
 		$scope.Customer={}
+		$scope.kyc_data={}
 
   $scope.main.Back=true
   $scope.main.Add=false
@@ -69,14 +70,18 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 
  switch ($scope.page.action){
       default:
-      $scope.Contract=$scope.pages[$scope.page.location].Contract
-      $scope.action="saveKyc"
+			$scope.Contract=$scope.page.Contract
+			if ($scope.Contract===undefined){
+				$scope.Contract=$scope.pages[$scope.page.location].Contract
+
+			}
+			    $scope.action="saveKyc"
 
 
     }
     $scope.loadItem=function(){
       appData=$scope.Contract
-      data={"action":"kycAx",appData:appData,pInfo:$scope.agent.pInfo}
+      data={"action":"kycAx",appData:appData,agg:$scope.page.agg,pInfo:$scope.agent.pInfo}
       $scope.main.loader=true
       $scope.loader=true
       $http.post( SERVICEURL2,  data )
@@ -93,6 +98,7 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 
 								 			 	 })
                        $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
+											 $scope.Kyc.kyc_update=IsJsonString($scope.Kyc.kyc_update)
 
 											 $scope.Kyc.contract_data=IsJsonString($scope.Kyc.contract_data)
 
@@ -180,6 +186,41 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 
     }
 */
+$scope.fillKycData=function(){
+	$scope.Customer=$scope.kyc_data;
+	setDefaults($scope);
+
+}
+
+ $scope.loadKydData=function(){
+	 if ($scope.Customer!==undefined && $scope.Customer.fiscal_number!==undefined && $scope.Customer.fiscal_number.length>0){
+		 settings={table:'kyc_person',id:'id',
+							 where: {
+								 fiscal_id: {valore:$scope.Customer.fiscal_number},
+								 agency_id: {valore:$scope.agent.agency_id}}
+							 }
+		 data= {"action":"ListObjs",settings:settings,pInfo:$scope.agent.pInfo}
+		 $http.post(SERVICEURL2,  data )
+		 .then(function(responceData)  {
+			 if(responceData.data.RESPONSECODE=='1') 			{
+				 data=responceData.data.RESPONSE
+				 $scope.kyc_data=IsJsonString(data[0].kyc_data);
+			 }
+			 else   {
+				 if (responceData.data.RESPONSECODE=='-1'){
+					 localstorage('msg','Sessione Scaduta ');
+					 $state.go('login');;;
+				 }
+			 }})
+			 , (function() {
+				 console.log("error");
+			 });
+
+	 }
+
+ }
+
+
 		$scope.loadItem()
 		$scope.loadCustomer=function(){
 			ob={}
@@ -348,10 +389,16 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 	    }
 	  }
 		$scope.setEov=function(){
+				$scope.dataChange=true
+		}
+
+
+		$scope.setEov=function(){
 			if (isObject($scope.Customer.id_release_date)){
 				d=$scope.Customer.id_release_date
 		    d.setFullYear(d.getFullYear()+5)
-		    $scope.Customer.id_validity=d
+				if ($scope.dataChange)
+		    	$scope.Customer.id_validity=d
 
 			}
 	  }
@@ -375,7 +422,7 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 								 $('.mdl-layout__drawer-button').hide()
 
 
-						}, 300);
+						}, 800);
 	});
   $scope.main.loader=false
 	$('.mdl-layout__drawer-button').hide()

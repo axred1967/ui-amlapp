@@ -23,7 +23,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 	$scope.main.Sidebar=false
 	$scope.main.loader=true
 	$scope.curr_page="view_contract"
-
+  $scope.Contract=$scope.page.Contract
 
 	$scope.loadItem=function(){
 
@@ -47,12 +47,8 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 					data.fullname=data.other_name
 					data.Owner=data.other_name
 				}
-				$('input[type="date"]').each(function(){
-				 d=$(this).attr('ng-model')
-				 res=d.split('.')
-				 data[res.slice(-1)[0]]=new Date(data[res.slice(-1)[0] ])
-			 })
-
+        data.kyc_update=IsJsonString(data.kyc_update)
+				data.risk_update=IsJsonString(data.risk_update)
 				$scope.Contract=data;
 				$scope.main.viewName="CPU:" + $scope.Contract.CPU
 				if ($scope.Contract.number>0){
@@ -148,7 +144,11 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 			$state.go('risk_profile01',{pages:$scope.pages})
 		}
 	};
-
+	$scope.agg_risk = function(){
+		$scope.pages['agg_risk']={action:'',location:$state.current.name,Contract:$scope.Contract}
+		localstorage('pages',JSON.stringify($scope.pages))
+		$state.go('agg_risk',{pages:$scope.pages})
+	};
 	$scope.print_kyc=function(){
 		url=BASEURL + 'pdfgeneration/kyc.php?id='+$scope.Contract.contract_id+"&download=Y"+$scope.agent.pInfoUrl
 		if ($scope.main.web){

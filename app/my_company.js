@@ -75,6 +75,7 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
   $('.mdl-layout__drawer-button').show()
   $scope.deleted=0
 
+
   $scope.Companies_inf=new Companies_inf
   $scope.Companies_inf.pInfo=$scope.agent.pInfo
 

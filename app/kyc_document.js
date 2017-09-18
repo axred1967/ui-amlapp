@@ -8,7 +8,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 		$scope.page=$scope.pages[$state.current.name]
     $scope.back=function(passo){
       if (passo>0){
-        $scope.pages['kyc_signature' ]={action:'',location:$scope.page.location,prev_page:$state.current.name}
+        $scope.pages['kyc_signature' ]={action:'',location:$scope.page.location,prev_page:$state.current.name,agg:$scope.page.agg}
         localstorage('pages', JSON.stringify($scope.pages));
         $state.go('kyc_signature' ,{pages:$scope.pages})
         return;
@@ -44,6 +44,12 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 			imageurl= '/img/'+ Doc.file_type.substr(1)+'.png'
 
 		}
+		if (!Doc.loaded){
+			imageurl='/img/loading_image.gif'
+
+		}
+
+
 
 
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
@@ -55,7 +61,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 
 	$scope.loadItem=function(){
     appData=$scope.Contract
-    data={"action":"kycAx",appData:appData,country:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"kycAx",appData:appData,agg:$scope.page.agg,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
       $('#loader_img').hide();
@@ -70,9 +76,8 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 
         $scope.Kyc=data;
 				$scope.Kyc.Docs=IsJsonString($scope.Kyc.Docs,true)
-				if ( $scope.Kyc.Docs.length===undefined || $scope.Kyc.Docs.lenght==0 ){
-					$scope.Kyc.Docs=[]
-				}
+
+
       $('input.mdl-textfield__input').each(
           function(index){
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -97,7 +102,12 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 
   switch ($scope.page.action){
     default:
-		$scope.Contract=$scope.page.Contract
+		if ($scope.pages[$scope.page.location]!==undefined)
+		$scope.Contract=$scope.pages[$scope.page.location].Contract
+		if ($scope.Contract===undefined){
+			$scope.Contract=$scope.page.Contract
+
+		}
 		$scope.action="saveKyc"
 	  $scope.main.viewName="Documenti AV"
   }
@@ -138,6 +148,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 		else{
 			$scope.Kyc.Docs[$scope.Kyc.Docs.length]=$scope.page.newOb
 		}
+		$scope.page.newOb=1
 		$scope.saveDocs()
 		$scope.pages[$state.current.name].newOb=1
 		localstorage('pages',JSON.stringify($scope.pages))
@@ -284,6 +295,9 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 			download(doc)
 			return
 		}
+		$scope.edit_documentb(doc,indice)
+	}
+  $scope.edit_documentb=function(doc,indice){
 		$scope.pages['add_document']={action:'edit_document_for_kyc', location:$state.current.name,Doc:doc, edit:true,indice:indice}
 		$scope.pages[$state.current.name].Docs=$scope.Kyc.Docs
   	localstorage('pages',JSON.stringify($scope.pages))
@@ -313,7 +327,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
                $scope.main.loader=false
 							 $timeout(function() {
 							 	resize_img()
-							},400);
+							},1000);
             }, 100);
   });
 

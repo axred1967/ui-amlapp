@@ -23,8 +23,18 @@
 
     </div>
 
+
   </div>
   <div>
+    <center>
+    <button  ng-show="Customer.fiscal_number.length >0 && kyc_data.fiscal_number.length >0"  id="fillData" ng-click="fillKycData()"
+       class=" mdl-button mdl-js-button mdl-button--fab   mdl-button--mini-fab mdl-button--colored blue-btn">
+      <i class="material-icons">replay</i>
+    </button>
+    <span class="mdl-tooltip mdl-tooltip--validation" for="fillData" >
+      <span >{{'Carica -dati firmatari da precedente AV'|translate}}.</span>
+    </span>
+  </center>
   </div>
   <div ng-class="(Kyc.kyc_status==0) ? 'Alto' : 'Basso'" style="text-align:right!important">
     <i ng-show="Kyc.kyc_status==1" class="Basso material-icons" id="AVOK">done</i>

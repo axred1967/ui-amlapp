@@ -7,16 +7,16 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 		}
 		$scope.page=$scope.pages[$state.current.name]
 
-		console.log($scope.agent)
+		//console.log($scope.agent)
 		$scope.main.Back=true
 		$scope.main.Add=false
 //		$scope.main.AddPage="add_contract"
 		$scope.main.Search=false
 		$scope.main.Sidebar=false
-		$('.mdl-layout__drawer-button').hide()
 	  $scope.main.viewName="Nuovo  Contratto"
     $scope.main.loader=true
 		$scope.aggKyc=false;
+		$scope.showContOcc=true
 
 // memorizzo i dati
 		$interval(function(){
@@ -41,11 +41,8 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
        $scope.action='add'
        $scope.main.viewName="Nuovo Contratto"
        $scope.Contract={}
-       $scope.Contract.contract_date=new Date()
-       $scope.Contract.contract_eov=new Date()
-       $scope.Contract.contract_eov.setFullYear($scope.Contract.contract_eov.getFullYear() + 5)
 			 $scope.Contract.value_det=1
-			 $scope.Contract.nature_contract="Polizza Vita"
+			 $scope.Contract.end_det=1
 
        break;
        default :
@@ -53,10 +50,18 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
        $scope.action='add'
        break;
      }
+
 		 if ($scope.page.temp!==undefined && $scope.page.temp!==null){
 			 $scope.Contract=$scope.page.temp
+			 setDefaults($scope)
 			 ////convertDateStringsToDates($scope.Contract)
 		 }
+		 if ($scope.agent.tipo_cliente.toLowerCase()=='agenzia assicurazioni'){
+ 			$scope.showContOcc=false
+			$scope.Contract.tipo_contratto=0
+
+
+ 		}
 		 switch($scope.Contract.act_for_other){
 			 case "1":
 			 $scope.Contract.company_id= $scope.Contract.other_id
@@ -66,9 +71,12 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 			 break;
 		 }
 		 $scope.setEoC=function(){
-	     d=$scope.Kyc.contractor_data.id_release_date
-	     d.setFullYear(d.getFullYear()+10)
-	     $scope.Kyc.contractor_data.id_validity=d
+			 if ($scope.Contract!==undefined && $scope.Contract.contract_date!==undefined){
+				 d=$scope.Contract.contract_date
+		     d.setFullYear(d.getFullYear()+10)
+		     $scope.Contract.contract_eov=d
+			 }
+
 	   }
 
 		 $scope.toogle=function(o){
@@ -123,6 +131,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
 
 		 }
+		 /*
 		 $scope.$on('$viewContentLoaded',
 	            function(event){
 								$timeout(function() {
@@ -170,6 +179,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
 						    }, 5);
 	            });
+							*/
 		 $scope.showContractorList=function(){
        if (( $scope.oldContrator!=$scope.Contract.contractor_name)){
 
@@ -317,7 +327,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
     } else {
       //$scope.formStatus = "Form is valid.";
       console.log("Form is valid.");
-      console.log($scope.data);
+      //console.log($scope.data);
     }
 
     var  appData ={
@@ -368,6 +378,8 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
       console.log('error');
     })
   }
+
+
   $scope.add_customer=function(){
 		$scope.pages['add_customer']={action:'add_customer_for_contract', location:$state.current.name,temp:null}
 		localstorage('pages',JSON.stringify($scope.pages))
@@ -425,13 +437,12 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 		$scope.$on('$viewContentLoaded',
 	           function(event){
 	             $timeout(function() {
-	               $('input.mdl-textfield__input').each(
-	                 function(index){
-	                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
-	                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-	                 })
-	               $scope.main.loader=false
-	            }, 5);
+								 setDefaults($scope)
+
+								 $scope.main.loader=false
+								 $('.mdl-layout__drawer-button').hide()
+
+	            }, 905);
 	  });
 
   	})

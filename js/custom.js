@@ -170,6 +170,13 @@ function checkthesidebarinfouser()
 
 
 }
+function baseName(str)
+{
+   var base = new String(str).substring(str.lastIndexOf('/') + 1);
+    if(base.lastIndexOf(".") != -1)
+        base = base.substring(0, base.lastIndexOf("."));
+   return base;
+}
 
 
 function isValidEmailAddress(emailAddress)
@@ -222,7 +229,16 @@ var regexIso8601 = /^(\d{4}|\+\d{6})(?:-(\d{2})(?:-(\d{2})(?:T(\d{2}):(\d{2}):(\
 
 function convertDateStringsToDates(input) {
     // Ignore things that aren't objects.
-    if (typeof input !== "object") return input;
+    if (typeof input !== "object") {
+      if (typeof input === "string" && (match = value.match(regexIso8601))) {
+          var milliseconds = Date.parse(match[0])
+          if (!isNaN(milliseconds)) {
+              input = new Date(milliseconds);
+          }
+      }
+      return input;
+
+    }
 
     for (var key in input) {
         if (!input.hasOwnProperty(key)) continue;
@@ -245,7 +261,12 @@ function convertDateStringsToDates(input) {
 
 function convertDatestoStrings(input) {
     // Ignore things that aren't objects.
-    if (typeof input !== "object") return input;
+    if (typeof input !== "object" || toString.call(input) == '[object Date]') {
+      if (toString.call(input) == '[object Date]') {
+          input=(new Date()).toISOString().substring(0, 19)
+      }
+      return input;
+    }
 
     for (var key in input) {
         if (!input.hasOwnProperty(key)) continue;
@@ -291,11 +312,11 @@ function IsJsonString(str,isa) {
         $('input[type="date"]').each(function(){
          d=$(this).attr('ng-model')
          var res=d.split('.')
-         if (js[res.slice(-1)[0]]!=undefined ){
+         if (js[res.slice(-1)[0]]!=undefined  && js[res.slice(-1)[0]]!==null){
            js[res.slice(-1)[0]]=new Date(js[res.slice(-1)[0] ])
 
          }
-          if (js[res.slice(-1)[0]]!=null ){
+          if (js[res.slice(-1)[0]]===null ){
             js[res.slice(-1)[0]]=new Date()
           }
 
@@ -382,9 +403,30 @@ function getCountryList(){
 
 }
 function resize_img(){
-/*
-    $('.demo-card-image img.load').each(function() {
+    $('.demo-card-image img.loadImg').each(function() {
+      var maxHeight = $(this).parent().height();    // Max height for the image
+      var maxWidth = $(this).parent().width();    // Max height for the image
+      var height = $(this).height();  // Current image height
+      var width = $(this).width();    // Current image width
+      var height = $(this).height();  // Current image height
+      var ratio_ori = width/height;  // Used for aspect ratio
+      var ratio_height = height/maxHeight;  // Used for aspect ratio
+      var ratio_width = width/maxWidth;  // Used for aspect ratio
+      //$(this).show()
 
+      // Check if the current width is larger than the max
+
+      // Check if current height is larger than max
+      if(height > maxHeight){
+        $(this).css("height", maxHeight);   // Set new height
+        $(this).css("width", width*1/ratio_height );   // Set new height
+      }
+
+      if(width > maxWidth){
+        $(this).css("width", maxWidth);   // Set new height
+        $(this).css("height", height*1/ratio_width);   // Set new height
+      }
+/*
       var maxWidth = $('.demo-card-image').width(); // Max width for the image
       var maxHeight = $('.demo-card-image').width();    // Max height for the image
       var ratio = 1/1;  // Used for aspect ratio
@@ -419,38 +461,97 @@ function resize_img(){
 			else {
 				$(this).css("height", maxHeight);
 			}
-
+*/
 
     });
-*/
 }
 function setDefaults($scope){
-  $('input.mdl-textfield__input').each(
+  $('input').each(
     function(index){
-      $(this).parent('div.mdl-textfield').addClass('is-dirty');
-      $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-    })
+      if ($(this).hasClass('mdl-textfield__input')){
+        $(this).parent('div.mdl-textfield').addClass('is-dirty');
+        $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+      }
 
-  $('input[type="date"]').each(function(){
-   d=$(this).attr('ng-model')
-   res=d.split('.')
-   if ($scope[res[0]]!==undefined  ){
-     dom=$scope[res[0]][res.slice(-1)[0]]
-     if (dom===undefined || dom===null || dom=="" || ! (dom instanceof Date && !isNaN(dom.valueOf())) )
-       $scope[res[0]][res.slice(-1)[0]]=new Date()
-     else if (!isObject($scope[res[0]][res.slice(-1)[0]]))
-       $scope[res[0]][res.slice(-1)[0]]=new Date($scope[res[0]][res.slice(-1)[0]])
+      ngm=$(this).attr('ng-model')
+      if (ngm===undefined){
+        ngm=$(this).attr('modelAx')
+      }
+      if (typeof ngm !== typeof undefined && ngm !== false){
+        var $val
+        s = ngm.split(".")
+        switch (s.length){
+          case 1:
+          if ( $scope[s[0]]!==undefined)
+          $val= $scope[s[0]]
+          break;
+          case 2:
+          if ( $scope[s[0]]!==undefined)
+          if ( $scope[s[0]][s[1]]!==undefined)
+          $val= $scope[s[0]][s[1]]
+          break;
+          case 3:
+          if ( $scope[s[0]]!==undefined)
+          if ( $scope[s[0]]!==undefined)
+          if ( $scope[s[0]][s[1]][s[2]]!==undefined)
+          $val= $scope[s[0]][s[1]][s[2]]
+          break;
+          case 4:
+          if ( $scope[s[0]]!==undefined)
+          if ( $scope[s[0]]!==undefined)
+          if ( $scope[s[0]][s[1]][s[2]]!==undefined)
+          if ( $scope[s[0]][s[1]][s[2]][s[3]]!==undefined)
+          $val= $scope[s[0]][s[1]][s[2]][s[3]]
+          break;
+       }
+       if ($(this).hasClass('mdl-radio__button') && $val!==undefined){
+         if ( $(this).attr('type')=="radio" && $val==$(this).attr('value') && document.getElementById($(this).attr('id')).parentNode.MaterialRadio!==undefined)
+           document.getElementById($(this).attr('id')).parentNode.MaterialRadio.check()
 
-   }
+       }
+       if ($(this).hasClass('mdl-checkbox__input') && $val!==undefined){
+            //$(this).parentNode.MaterialRadio.check()
+          if ($(this).attr('type')=="checkbox" && $val==$(this).attr('value') && document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox!==undefined)
+           document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox.check()
+      }
+      attr=$(this).attr('ng-model')
+      if (typeof attr !== typeof undefined && attr !== false){
+        d=$(this).attr('ng-model')
+        res=d.split('.')
+
+      }
+
+      if ($(this).attr('type')=="date"){
+        if ($scope[res[0]]!==undefined  ){
+          dom=$scope[res[0]][res.slice(-1)[0]]
+          if (dom===undefined || dom===null || dom=="" ||  (dom instanceof Date && isNaN(dom.valueOf())) )
+            $scope[res[0]][res.slice(-1)[0]]=new Date()
+          else if (!isObject($scope[res[0]][res.slice(-1)[0]]))
+            $scope[res[0]][res.slice(-1)[0]]=new Date($scope[res[0]][res.slice(-1)[0]])
+
+      }
+      }
+      attr=$(this).attr('def-setting')
+      if (typeof attr !== typeof undefined && attr !== false){
+        if ($scope[res[0]]!==undefined ){
+        if ($scope[res[0]][res.slice(-1)[0]]===undefined || $scope[res[0]][res.slice(-1)[0]]===null || $scope[res[0]][res.slice(-1)[0]]=="" )
+          $scope[res[0]][res.slice(-1)[0]]=$scope.agent.settings[$(this).attr('def-setting')]
+        }
+      }
+    }
+
+
+
+  //                $(this).parentNode.MaterialCheckbox.check()
+
+
+
   })
-  $('input[def-setting]').each(function(){
-   d=$(this).attr('ng-model')
-   res=d.split('.')
-   if ($scope[res[0]]!==undefined ){
-   if ($scope[res[0]][res.slice(-1)[0]]===undefined || $scope[res[0]][res.slice(-1)[0]]===null || $scope[res[0]][res.slice(-1)[0]]=="" )
-     $scope[res[0]][res.slice(-1)[0]]=$scope.agent.settings[$(this).attr('def-setting')]
-   }
 
-  })
-
+}
+function checkImage(imageSrc, good, bad) {
+    var img = new Image();
+    img.onload = good;
+    img.onerror = bad;
+    img.src = imageSrc;
 }

@@ -9,13 +9,13 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate,$time
 
     if (passo>0){
       if ($scope.Contract.act_for_other==1){
-        $scope.pages['risk_profile05']={action:'',location:$scope.page.location,prev_page:$state.current.name}
+        $scope.pages['risk_profile05']={action:'',location:$scope.page.location,prev_page:$state.current.name,agg:scope.page.agg}
         localstorage('pages', JSON.stringify($scope.pages));
         $state.go('risk_profile05' ,{pages:$scope.pages})
 
       }
       else {
-        $scope.pages['risk_final']={action:'',location:$scope.page.location,prev_page:$state.current.name}
+        $scope.pages['risk_final']={action:'',location:$scope.page.location,prev_page:$state.current.name,agg:$scope.page.agg}
         localstorage('pages', JSON.stringify($scope.pages));
         $state.go('risk_final' ,{pages:$scope.pages})
 
@@ -45,7 +45,7 @@ app2.controller('risk_profile04', function ($scope,$http,$state,$translate,$time
     default:
     $scope.Contract=$scope.pages[$scope.page.location].Contract
     appData=$scope.Contract
-   data={"action":"riskAx",appData:appData,country:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+   data={"action":"riskAx",appData:appData,agg:$scope.page.agg,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
       $('#loader_img').hide();

@@ -1,3 +1,52 @@
+
+<fieldset>
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+  <input class="mdl-textfield__input" type="text" autocomplete="off" id="customer_address_resi" name="customer_address_resi"
+  ng-model="Customer.address_resi"  ng-change="Customer.address_resi=(Customer.address_resi| capitalize)" minlength="3"
+  ng-required="page.other_data "
+  ng-keyup="showAC('users.address_resi','address_resi',{zero:true});"
+  ng-focus="showAC('users.address_resi','address_resi',{zero:true});resetAC()"
+  />
+  <label class="mdl-textfield__label" for="customer_address_resi">{{'Addressofresidence'|translate}} *</label>
+  <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="customer_address_resi">
+    <tbody style="display:table">
+      <tr tabindex="30"
+      ng-click="addWord('Customer.address_resi',item.word,{id:'address_resi'})"
+      my-Enter="addWord('Customer.address_resi',item.word,{id:'address_resi'})"
+      ng-repeat="item in word.address_resi">
+        <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="mdl-tooltip mdl-tooltip--validation" for="customer_address_resi" ng-show="form.customer_address_resi.$invalid && form.customer_address_resi.$touched">
+    <span ng-show="form.customer_address_resi.$error.required">{{'Richiesto'| translate}}</span>
+  </span>
+</div>
+</fieldset>
+<fieldset>
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+  <input class="mdl-textfield__input" type="text" autocomplete="off" id="resi_town" name="resi_town"
+  ng-model="Customer.resi_town"  ng-change="Customer.resi_town=(Customer.resi_town| capitalize)"
+  minlength="3" ng-required="page.other_data "
+  ng-keyup="showAC('users.resi_town','resi_town',{zero:true});"
+  ng-focus="showAC('users.resi_town','resi_town',{zero:true});resetAC()"
+  />
+  <label class="mdl-textfield__label" for="resi_town">{{'Città di residenza'|translate}} *</label>
+  <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="resi_town">
+    <tbody style="display:table">
+      <tr tabindex="30"
+      ng-click="addWord('Customer.resi_town',item.word,{id:'resi_town'})"
+      my-Enter="addWord('Customer.resi_town',item.word,{id:'resi_town'})"
+      ng-repeat="item in word.resi_town">
+        <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="mdl-tooltip mdl-tooltip--validation" for="resi_town" ng-show="form.resi_town.$invalid && form.resi_town.$touched">
+    <span ng-show="form.resi_town.$error.required">{{'Richiesto'| translate}}</span>
+  </span>
+
+</fieldset>
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="text" autocomplete="off" id="resi_country" name="resi_country" minlength="3"  value=" "
@@ -24,42 +73,6 @@
 </fieldset>
 <fieldset>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-  <input class="mdl-textfield__input" type="text" autocomplete="off" id="customer_address_resi" name="customer_address_resi"
-  ng-model="Customer.address_resi"  ng-change="Customer.address_resi=(Customer.address_resi| capitalize)" minlength="3" ng-required="page.other_data "
-  />
-  <label class="mdl-textfield__label" for="customer_address_resi">{{'Addressofresidence'|translate}} *</label>
-  <span class="mdl-tooltip mdl-tooltip--validation" for="customer_address_resi" ng-show="form.customer_address_resi.$invalid && form.customer_address_resi.$touched">
-    <span ng-show="form.customer_address_resi.$error.required">{{'Richiesto'| translate}}</span>
-  </span>
-</div>
-</fieldset>
-<fieldset>
-<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-  <input class="mdl-textfield__input" type="text" autocomplete="off" id="resi_town" name="resi_town"
-  ng-model="Customer.resi_town"  ng-change="Customer.resi_town=(Customer.resi_town| capitalize)"
-  minlength="3" ng-required="page.other_data "
-  ng-keyup="showAC('users.resi_town','resi_town',{zero:true});"
-  ng-focus="showAC('users.resi_town','resi_town',{zero:true});resetAC()"
-  />
-  <label class="mdl-textfield__label" for="resi_town">{{'Città di residenza'|translate}} *</label>
-  <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="resi_town">
-    <tbody style="display:table">
-      <tr tabindex="30"
-      ng-click="addWord('Customer.resi_town',item.word,{id:'resi_town'})"
-      my-Enter="addWord('Customer.resi_town',item.word,{id:'resi_town'})"
-      ng-repeat="item in word.town_resi">
-        <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="mdl-tooltip mdl-tooltip--validation" for="resi_town" ng-show="form.resi_town.$invalid && form.resi_town.$touched">
-    <span ng-show="form.resi_town.$error.required">{{'Richiesto'| translate}}</span>
-  </span>
-
-</fieldset>
-
-<fieldset>
-<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
   <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="check_residence">
     <input id="check_residence" name="check_residence" ng-true-value="1"  type="checkbox" class="mdl-checkbox__input"
     ng-model="Customer.check_residence"
@@ -74,7 +87,7 @@
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
   <input class="mdl-textfield__input" type="text" autocomplete="off" id="domi_country" name="domi_country" minlength="3"  value=" "
   ng-model="Customer.domi_country"   minlength="3"  ng-required="passo==2 && Customer.check_residence==1"
-  ng-keyup="showAC('users.domi_country','domi_country',{countries:true,zero:true});" 
+  ng-keyup="showAC('users.domi_country','domi_country',{countries:true,zero:true});"
   ng-focus="showAC('users.domi_country','domi_country',{countries:true,zero:true});resetAC()"
   />
   <label class="mdl-textfield__label" for="domi_country">{{'Paese di Domicilio'|translate}} *</label>
@@ -122,7 +135,7 @@
       <tr tabindex="30"
       ng-click="addWord('Customer.town_domi',item.word,{id:'domi_town'})"
       my-Enter="addWord('Customer.town_domi',item.word,{id:'domi_town'})"
-      ng-repeat="item in word.town_domi">
+      ng-repeat="item in word.domi_town">
         <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
       </tr>
     </tbody>
@@ -149,7 +162,7 @@ ng-focus="showAC('users.main_nationality','main_nationality',{zero:true});resetA
     <tr tabindex="30"
     ng-click="addWord('Customer.main_nationality',item.word,{id:'main_nationality'})"
     my-Enter="addWord('Customer.main_nationality',item.word,{id:'main_nationality'})"
-    ng-repeat="item in word.town_domi">
+    ng-repeat="item in word.main_nationality">
       <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
     </tr>
   </tbody>
@@ -335,6 +348,7 @@ ng-focus="showAC('users.main_activity_country','main_activity_country',{countrie
 </div>
 
 </fieldset>
+<!--
 <fieldset>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 <input class="mdl-textfield__input" type="text" autocomplete="off" id="customer_fiscal_number" name="customer_fiscal_number"
@@ -349,6 +363,7 @@ ng-focus="resetAC()"
 </span>
 </div>
 </fieldset>
+-->
 <fieldset>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 <input class="mdl-textfield__input" type="text" autocomplete="off" id="annual_income" name="annual_income" minlength="3"  value=" "
@@ -421,4 +436,14 @@ ng-focus="resetAC();showAC('users.found_source','found_source',{order:1,zero:tru
 </span>
 
 </div>
+</fieldset>
+<fieldset>
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+    <text-angular   class="textwidth100" style="width: 100% !important;" ng-model="Customer.notes"
+    type="text" rows= "3" id="notes" name="notes" ></text-angular>
+    <label for="notes"  class="mdl-textfield__label   " style="margin-top:-10px;color: #3f51b5;font-size: 12px;top: 4px;visibility: visible;">{{ 'Note' | translate}}</label>
+    <span class="mdl-tooltip mdl-tooltip--validation" for="notes" minlength="3" ng-show="form.notes.$invalid && form.notes.$touched">
+      <span ng-show="form.notes.$error.required">{{'Richiesto'|translate}}.</span>
+    </div>
+
 </fieldset>

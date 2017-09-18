@@ -45,6 +45,7 @@ app2.factory('Contracts_inf', function($http,$state) {
     this.after = '';
     this.loaded=0;
     this.pInfo={}
+    this.search=''
 
   };
 
@@ -58,7 +59,7 @@ app2.factory('Contracts_inf', function($http,$state) {
       last=this.Contracts[lastkey].contract_id;
 
     }
-    data= {"action":"ContractList",last:last,pInfo:this.pInfo}
+    data= {"action":"ContractList",last:last,search:this.search,pInfo:this.pInfo}
     $http.post(SERVICEURL2,  data )
     .then(function(responceData)  {
       if(responceData.data.RESPONSECODE=='1') 			{
@@ -78,7 +79,14 @@ app2.factory('Contracts_inf', function($http,$state) {
             data[key].fullname=data[key].other_name
             data[key].Owner=data[key].other_name
           }
+          if (data[key].fullname===null){
+            data[key].contractor_name=data[key].nometemp
+            data[key].fullname=data[key].nometemp
+            data[key].Owner=data[key].nometemp
+
+          }
         })
+
         if (data.length==0){
           this.loaded=-1
         }
@@ -110,7 +118,7 @@ app2.factory('Contracts_inf', function($http,$state) {
   return Contracts_inf;
 });
 
-app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$state,Contracts_inf,$timeout,tmhDynamicLocale,$translate) {
+app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$state,Contracts_inf,$timeout,tmhDynamicLocale,$translate,$filter) {
   // fisso valori iniziali
   if ($scope.agent.name===undefined){
     $scope.agent.name=localStorage.getItem('Name');
@@ -166,6 +174,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
       else
       $scope.main.Cm="Le mie Persone"
   //alert(window.location.pathname.replace(/^\//, ''));
+
   $scope.main.login=false
   $scope.main.Back=false
   if ($scope.agent.user_type == 3)
@@ -188,6 +197,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
   $scope.Contracts_inf=new Contracts_inf
   $scope.Contracts_inf.pInfo=$scope.agent.pInfo
+  $scope.Contracts_inf.search=$scope.searchText
 //  $scope.main.loader=Contracts_inf.busy
 //  $scope.addMoreItems =function(){
 
@@ -298,7 +308,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
   }
   $scope.toDocs = function(Contract){
-    pages['kyc_document']={action:'', location:$state.current.name,Contract:Contract,view:true}
+    pages={'kyc_document':{action:'', location:$state.current.name,Contract:Contract,view:true}}
     localstorage('pages',JSON.stringify(pages))
     $state.go('kyc_document',{pages:pages})
 
@@ -410,6 +420,29 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
   $scope.deleteContract=function(Contract,index )
   {
+    swal({
+      title: $filter('translate')("Sei Sicuro?"),
+      text: $filter('translate')("la Cancelazione del Contratto sarà non reversibile!"),
+      icon: "warning",
+      buttons: {
+      'procedi':{text:$filter('translate')('Procedi'),value:true},
+      'annulla':{text:$filter('translate')('Annulla'),value:false},
+
+      },
+
+    })
+    .then((Value) => {
+      if (Value) {
+        data={action:'delete',table:'contract','primary':'id',id:Contract.contract_id ,pInfo:$scope.agent.pInfo}
+        $http.post(SERVICEURL2,data)
+        $state.reload()
+        swal($filter('translate')('Cancellazione effettuata'), {
+          icon: "success",
+        });
+      } else {
+        swal($filter('translate')('Cancellazione Annulata'));
+      }
+    });/*
     if ($scope.main.web){
       r=confirm("Vuoi Cancellare il Contratto?");
       if (r == true) {
@@ -428,7 +461,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
         ['Si','No']     // buttonLabels
     );
     }
-
+*/
   }
   $scope.deleteContract2=function(contract,index){
     data={action:'delete',table:'contract','primary':'id',id:contract.contract_id ,pInfo:$scope.agent.pInfo}
@@ -444,6 +477,15 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
   $scope.$on('addButton', function(e) {
     $scope.add_contract()
+  })
+  $scope.$on('searchButton', function(e) {
+    $scope.Contracts_inf.search=$scope.searchText
+    $scope.Contracts_inf.last=99999999999
+    $scope.Contracts_inf.Contracts=[]
+    $scope.Contracts_inf.loaded=0
+    $scope.Contracts_inf.nextPage()
+
+
   })
   $scope.$on('$viewContentLoaded',
            function(event){

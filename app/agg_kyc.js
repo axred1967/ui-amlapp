@@ -9,13 +9,13 @@ app2.controller('agg_kyc', function ($scope,$http,$translate,$rootScope,$state,O
   $scope.page=$scope.pages[$state.current.name]
 
   $scope.main.login=false
-  $scope.main.Back=false
+  $scope.main.Back=true
   $scope.deleted=0
   $scope.main.Search=true
   $scope.main.AddPage="add_ob"
   $scope.main.AddLabel="aggiuggi aggiornamento adeguata verifica"
   $scope.main.viewName="Aggiornamenti AV"
-  $scope.main.Sidebar=true
+  $scope.main.Sidebar=false
   $scope.main.loader=true
   $scope.Contract=$scope.page.Contract
   $scope.co=$filter('translate')('Contract');
@@ -23,6 +23,7 @@ app2.controller('agg_kyc', function ($scope,$http,$translate,$rootScope,$state,O
   $scope.ObAmlApp.pInfo=$scope.agent.pInfo
   $scope.ObAmlApp.set_settings(
   {table:'kyc_log',id:'id',
+  fields:{'uno.*':''},
   join:{
     'j1':{'table':'kyc',
           'condition':'uno.kyc_id=j1.id '
@@ -36,6 +37,44 @@ app2.controller('agg_kyc', function ($scope,$http,$translate,$rootScope,$state,O
 
 //  }
 //  $scope.addMoreItems()
+$scope.print_kyc=function(Contract){
+  url=BASEURL + 'pdfgeneration/kyc.php?agg='+Contract.kyc_id+"&download=Y"+$scope.agent.pInfoUrl
+  if ($scope.main.web){
+    var anchor = angular.element('<a/>');
+    angular.element(document.body).append(anchor);
+    var ev = document.createEvent("MouseEvents");
+    ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    anchor.attr({
+      href: url,
+      target: '_blank',
+      download: 'kyc'+Contract.contract_id+ '-'+$scope.agent.id+'.pdf'
+    })[0].dispatchEvent(ev);
+    anchor.remove()
+
+  }
+  else {
+    var fileTransfer = new FileTransfer();
+      var uri = url;
+
+      fileTransfer.download(
+            uri,
+            cordova.file.externalApplicationStorageDirectory+'download/MyPdf.pdf',
+            function(entry) {
+              cordova.plugins.SitewaertsDocumentViewer.viewDocument(
+                  cordova.file.externalApplicationStorageDirectory+'download/MyPdf.pdf', 'application/pdf');
+
+              console.log("download complete: " + entry.fullPath);
+            },
+            function(error) {
+                  console.log("download error source " + error.source);
+                  console.log("download error target " + error.target);
+                  console.log("upload error code" + error.code);
+            }
+        );
+
+  }
+
+}
 
   $scope.imageurl=function(image){
     if (image===undefined || image==null || image.length==0)
@@ -49,7 +88,7 @@ app2.controller('agg_kyc', function ($scope,$http,$translate,$rootScope,$state,O
 
     swal({
       title: $filter('translate')("Sei Sicuro?"),
-      text: $filter('translate')("L'inserimento di un aggiornamento creerà una copia dello stato attuale di adeguata verifica!"),
+      text: $filter('translate')("L'aggiornamento storicizza l'attuale AV e da la possibilità di competare aggiornamento!"),
       icon: "warning",
       buttons: {
       'procedi':{text:$filter('translate')('Procedi'),value:true},
@@ -60,20 +99,35 @@ app2.controller('agg_kyc', function ($scope,$http,$translate,$rootScope,$state,O
     })
     .then((Value) => {
       if (Value) {
-        swal("Storicizzazione Eseguita!", {
+        data={action:'addAggKyc',contract_id:$scope.Contract.contract_id,pInfo:$scope.agent.pInfo}
+        $http.post(SERVICEURL2,data)
+        $state.reload()
+        $scope.back()
+        swal($filter('translate')("Storicizzazione Eseguita!"), {
           icon: "success",
         });
       } else {
-        swal("Operazione Annullata!");
+        swal($filter('translate')("Operazione Annullata!"));
       }
     });
   };
   $scope.toOb = function(Ob,index){
-    localstorage('add_agency',JSON.stringify({action:'edit',location:$scope.curr_page}))
-    localstorage('Ob',JSON.stringify(Ob))
-    $state.go('add_agency',null,{ reload: true })
+    $scope.pages['kyc_contractor.01']={action:'', location:$state.current.name,temp:$scope.Contract,agg:Ob.id}
+    $scope.pages[$state.current.name].Contract=$scope.Contract
+		localstorage('pages',JSON.stringify($scope.pages))
+		$state.go('kyc_contractor.01',{pages:$scope.pages})
   };
-
+  $scope.stato=function(Ob,index ){
+    if (!isObject(Ob.kyc_update)){
+      kyc_update=IsJsonString(Ob.kyc_update)
+    }
+    if (kyc_update.state=="aggiornamento"){
+      return "Aggionamento"
+    }
+    else {
+      return "Adeguata verifica iniziale"
+    }
+  }
   $scope.deleteOb=function(Ob,index )
   {
     if ($scope.main.web){
@@ -126,7 +180,7 @@ app2.controller('agg_kyc', function ($scope,$http,$translate,$rootScope,$state,O
                    $(this).parent('div.mdl-textfield').addClass('is-dirty');
                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
                  })
-                 $('.mdl-layout__drawer-button').show()
+                 $('.mdl-layout__drawer-button').hide()
                $scope.main.loader=false
             }, 5);
   });

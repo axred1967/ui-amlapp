@@ -221,7 +221,7 @@
                           ng-focus="showAC('company.mainActivity','Company_mainActivity',{zero:true});resetAC()"
                           />
                           <label class="mdl-textfield__label" for="Company_mainActivity">{{'Principale Attività Economica'|translate}} *</label>
-                          <table class="mdl-data-table mdl-js-data-table  border-none  ">
+                          <table class="mdl-data-table mdl-js-data-table  border-none scrolly ">
                             <tbody style="display:table">
                               <tr ng-click="addWord('Company.mainActivity',item.word)" ng-repeat="item in word.mainActivity">
                                 <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>

@@ -402,7 +402,96 @@ app2.directive('backImg', function(){
         });
     };
 });
+app2.directive('uploadmfiles', ['$http', function($http) {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+          dirAgent: '=dirAgent',
+          docs: '=docs',
+          docPer: '=docPer',
+          docId: '=docId',
+          dirText: '@'
+        },
+        require: '?ngModel',
+        template: '<div class="asset-upload"></div>',
+        link: function(scope, element, attrs, ngModel) {
+          element.html(scope.dirText);
+          element.on('dragover', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+          });
+          element.on('dragenter', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+          });
+          var uploadmfiles = function(files) {
+              var data = new FormData();
+              var $i=0;
+              var image_type=['.png','.gif','.png','.tif','.bmp','.jpg']
+              angular.forEach(files, function(value){
 
+                var extn = "." +value.name.split(".").pop();
+                filename=baseName(value.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+                //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+                if (scope.docs[$i]===undefined){
+                  scope.docs[$i]={}
+                }
+                scope.docs[$i].doc_name=filename;
+                scope.docs[$i].loaded=false
+                scope.docs[$i].doc_image=filename
+                scope.docs[$i].IMAGEURI=BASEURL+'uploads/document/'+scope.docPer+'_'+scope.docId +'/resize/'
+                scope.docs[$i].file_type=extn;
+                if(image_type.indexOf(scope.docs[$i].file_type) === -1) {
+                  scope.docs[$i].isImage=false
+                }
+                else {
+                  scope.docs[$i].isImage=true
+                }
+
+                  value.filename=filename
+                  data.append("files[]", value);
+                  $i++;
+              });
+              scope.$broadcast('filespreUploaded')
+
+//              data.append("objectId", ngModel.$viewValue);
+              data={action:"upload_multi_document_ax",userid:scope.docId,for:scope.docPer, files:data,pInfo:scope.dirAgent}
+              $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+              .then(function(data){
+
+                $timeout(function() {
+                  angular.forEach(scope.Docs, function(value,key){
+                    scope.Docs[key].loaded=true;
+                  })
+                  scope.$broadcast('filesUploaded')
+                },2);
+                if (data.data.RESPONSECODE=='-1'){
+                   localstorage('msg','Sessione Scaduta ');
+                   $state.go('login');;;
+                }
+                  console.log('success');
+              })
+              , (function(){
+                  console.log('error');
+              });
+
+          };
+
+          element.on('drop', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (e.originalEvent.dataTransfer){
+                if (e.originalEvent.dataTransfer.files.length > 0) {
+                    uploadmfiles(e.originalEvent.dataTransfer.files);
+                }
+            }
+            return false;
+        });          // Code goes here
+
+        }
+    };
+}]);
 /*
 app2.directive('focusOn', function() {
    return function(scope, elem, attr) {
@@ -598,7 +687,7 @@ app2.service('AutoComplete',function($http,$state){
 
 
 
-app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLocale,$translate,$sce,$timeout,$location,$window) {
+app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLocale,$translate,$sce,$timeout,$location,$window,$http) {
   var isapp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
   var forceSSL = function () {
       if ( $location.protocol() !== 'https') {
@@ -609,6 +698,7 @@ app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLo
     forceSSL();
   $sce.trustAsResourceUrl('https://amlapp.euriskoformazione.com')
   $scope.agent={}
+  $scope.agentList={}
   if ($scope.agent.name===undefined){
     $scope.agent.name=localStorage.getItem('Name');
     $scope.agent.email=localStorage.getItem('userEmail');
@@ -630,6 +720,47 @@ app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLo
     $scope.agent.paese= localStorage.getItem("paese");
     $scope.agent.tipo_cliente= localStorage.getItem("tipo_cliente");
   }
+// Carico Lista agentdi
+$scope.loadAgentList=function(){
+    settings={table:'agent',id:'agent_id',
+              fields:{
+                'name':'j1.name',
+                'surname':'j1.surname',
+              'agent_id':'uno.agent_id'
+              },
+              join:{
+                'j1':{'table':'users',
+                      'condition':'uno.user_id=j1.user_id '
+                    }
+              },
+                  where: {
+                'uno.agency_id':$scope.agent.agency_id
+
+              }, limit:100
+            }
+    data= {"action":"ListObjs",settings:settings,pInfo:$scope.agent.pInfo}
+    $http.post(SERVICEURL2,  data )
+    .then(function(responceData)  {
+      if(responceData.data.RESPONSECODE=='1') 			{
+        data=responceData.data.RESPONSE
+        $scope.agentList=data;
+      }
+      else   {
+        if (responceData.data.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          $state.go('login');;;
+        }
+      }})
+      , (function() {
+        console.log("error");
+      });
+
+
+}
+
+$scope.loadAgentList();
+
+
 
   // fisso preferenze nomi
       paese = $scope.agent.paese;
@@ -686,7 +817,11 @@ app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLo
 
 
   }
+  $scope.search=function(){
+    $scope.$broadcast('searchButton')
 
+
+  }
   if ($stateParams.action=='signup'){
     localstorage('add_agency',JSON.stringify({action:'complete_signup',location:'login'}))
     $state.go("add_agency");

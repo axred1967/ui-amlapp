@@ -8,7 +8,7 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout
 		$scope.page=$scope.pages[$state.current.name]
     $scope.back=function(passo){
       if (passo>0){
-        $scope.pages['kyc_owners' ]={action:'',location:$scope.page.location,prev_page:$state.current.name}
+        $scope.pages['kyc_owners' ]={action:'',location:$scope.page.location,prev_page:$state.current.name,agg:$scope.page.agg}
         localstorage('pages', JSON.stringify($scope.pages));
         $state.go('kyc_owners' ,{pages:$scope.pages})
         return;
@@ -29,10 +29,12 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout
   $scope.main.viewName="Nuova Società"
   $scope.main.loader=true
  $scope.Company={}
+ $scope.kyc_data={}
+
   $scope.loadItem=function(){
     $scope.Contract=$scope.pages[$scope.page.location].Contract
     appData=$scope.Contract
-    data={"action":"kycAx",appData:appData,country:true,pInfo:$scope.agent.pInfo}
+    data={"action":"kycAx",appData:appData,agg:$scope.page.agg,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
       $('#loader_img').hide();
@@ -92,9 +94,49 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout
     default:
     $scope.action="saveKyc"
     $scope.main.viewName="Dati Persona Giuridica"
+		$scope.Contract=$scope.page.Contract
+		if ($scope.Contract===undefined){
+			$scope.Contract=$scope.pages[$scope.page.location].Contract
+
+		}
+
   }
 
+
   $scope.loadItem()
+	$scope.fillKydData=function(){
+		$scope.Company=$scope.kyc_data;
+		setDefaults($scope);
+
+	}
+	$scope.loadKydData=function(){
+		if ($scope.Company!==undefined && $scope.Company.fiscal_id!==undefined && $scope.Company.fiscal_id.length>0){
+			settings={table:'kyc_company',id:'id',
+								where: {
+									fiscal_id: {valore:$scope.Company.fiscal_id},
+									agency_id: {valore:$scope.agent.agency_id}}
+								}
+			data= {"action":"ListObjs",settings:settings,pInfo:$scope.agent.pInfo}
+			$http.post(SERVICEURL2,  data )
+			.then(function(responceData)  {
+				if(responceData.data.RESPONSECODE=='1') 			{
+					data=responceData.data.RESPONSE
+					$scope.kyc_data=IsJsonString(data[0].kyc_data);
+				}
+				else   {
+					if (responceData.data.RESPONSECODE=='-1'){
+						localstorage('msg','Sessione Scaduta ');
+						$state.go('login');;;
+					}
+				}})
+				, (function() {
+					console.log("error");
+				});
+
+		}
+
+	}
+
 	$scope.loadCompany=function(){
 		ob={}
 		ob.settings={}

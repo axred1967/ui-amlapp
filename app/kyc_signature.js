@@ -19,7 +19,6 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
 //		$scope.main.AddPage="add_contract"
   $scope.main.Search=false
   $scope.main.Sidebar=false
-  $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Sottoscrizione e Conclusione"
   $scope.main.loader=true
   switch ($scope.page.action){
@@ -36,8 +35,7 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
         data=responceData.data.RESPONSE;
         $scope.Kyc=data;
         $scope.countryList=responceData.countrylist
-        if ($scope.Kyc.date_of_identification===undefined || $scope.Kyc.date_of_identification)
-        $scope.Kyc.date_of_identification=new Date()
+
         $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         $scope.Kyc.contractor_data.Docs=IsJsonString($scope.Kyc.contractor_data.Docs)
         $scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data)
@@ -162,8 +160,9 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
     dbData.contractor_data=JSON.stringify(dbData.contractor_data)
     dbData.company_data=JSON.stringify(dbData.company_data)
     dbData.owner_data=JSON.stringify(dbData.owner_data)
-
-   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,final:true,pInfo:$scope.agent.pInfo}
+    dbData.kyc_status=1
+    dbData.kyc_date=convertDatestoStrings(new Date())
+   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,final:true,agg:$scope.page.agg,pInfo:$scope.agent.pInfo}
     $scope.main.loader=true
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
@@ -234,6 +233,7 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
                     $(this).parent('div.mdl-textfield').addClass('is-dirty');
                     $(this).parent('div.mdl-textfield').removeClass('is-invalid');
                   })
+                  $('.mdl-layout__drawer-button').hide()
                 $scope.main.loader=false
              }, 5);
    });

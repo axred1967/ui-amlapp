@@ -120,6 +120,7 @@
             </span>
           </div>
         </fieldset>
+<div ng-show="agent.agency_id==-1"
         <h5>Parametri di Configurazione</h5>
         <fieldset ng-show="agent.user_type<3">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -164,6 +165,20 @@
 
           <span class="mdl-tooltip mdl-tooltip--validation" for="luogoID" ng-show="form.luogoID.$invalid && form.luogoID.$touched">
             <span ng-show="form.luogoID.$error.required">{{'Richiesto'| translate}}</span>
+          </span>
+        </div>
+        </fieldset>
+        <fieldset ng-show="agent.user_type<3">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="natura_contratto" name="natura_contratto" minlength="3"  value=" "
+          ng-model="agent.settings.naturaContratto"   minlength="3" autocomplete="off"
+
+          />
+          <label class="mdl-textfield__label" for="natura_contratto">{{'Natura Contratto predefinita'|translate}} *</label>
+
+
+          <span class="mdl-tooltip mdl-tooltip--validation" for="natura_contratto" ng-show="form.natura_contratto.$invalid && form.natura_contratto.$touched">
+            <span ng-show="form.natura_contratto.$error.required">{{'Richiesto'| translate}}</span>
           </span>
         </div>
         </fieldset>
@@ -237,6 +252,8 @@
             </div>
           </div>
         </fieldset>
+      </div>
+      <span class="blue">{{'inserisci firma agente'| translate}}</span>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" >
           <img id="sign" ng-src="{{oldSign}}" ng-show="oldSign.length>7" height="20%">
         </div>

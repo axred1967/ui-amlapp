@@ -33,7 +33,7 @@ app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeo
     default:
     $scope.Contract=$scope.pages[$scope.page.location].Contract
     appData=$scope.Contract
-    data={"action":"riskAx",appData:appData,kyc:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"riskAx",appData:appData,kyc:true,agg:$scope.page.agg,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
       $('#loader_img').hide();
@@ -48,7 +48,7 @@ app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeo
         //convertDateStringsToDates($scope.Risk.risk_data)
         var $risk=0
         angular.forEach($scope.Risk.risk_data.oldRiskSm, function(value, key) {
-          if (value=="RPS")
+          if (value=="1")
             $risk++
         })
         $scope.Risk.risk_data.riskCalculated="Limitato";
@@ -56,7 +56,7 @@ app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeo
           $scope.Risk.risk_data.riskCalculated="Alto";
 
         }
-        if ($risk<=4){
+        if ($risk<=4 && $risk>2){
           $scope.Risk.risk_data.riskCalculated="Medio";
 
         }

@@ -6,6 +6,9 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
 		$scope.pages=JSON.parse(localStorage.getItem('pages'));
 	}
 	$scope.page=$scope.pages[$state.current.name]
+	if ($scope.page.location.substr(0,3)=='kyc')
+		$scope.searchKyc=true;
+
   $scope.main.loader=true
   $scope.main.Back=true
   $scope.main.Add=false
@@ -78,7 +81,7 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
 
   $scope.showContractorList=function(){
     if ((typeof $scope.Owner.fullname !== "undefined" && $scope.oldContrator!=$scope.Owner.fullname)){
-     data={ "action":"ACCustomerList", name:$scope.Owner.fullname,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+     data={ "action":"ACCustomerList", name:$scope.Owner.fullname,kyc:$scope.searchKyc,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
       $http.post( SERVICEURL2,  data )
       .then(function(data) {
         if(data.data.RESPONSECODE=='1') 			{
@@ -137,7 +140,7 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
 
 		}
 		dbData.agent_id=$scope.agent.id
-		if ($scope.page.other_data){
+		if ($scope.page.other_data && dbData.state!==undefined){
 			dbData.state.kyc=true
 		}
 		if ($scope.page.action=="add_customer_for_kyc_owner" || $scope.page.action=="edit_customer_for_kyc_owner"){
@@ -254,7 +257,7 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
 
 
 $scope.loadItem=function(){
-	data={"action":"view_Customer_Profile_info",customer_id:$scope.Owner.user_id,pInfo:$scope.agent.pInfo}
+	data={"action":"view_Customer_Profile_info",customer_id:$scope.Owner.user_id,kyc:$scope.searchKyc,pInfo:$scope.agent.pInfo}
 	$scope.main.loader=true
 	$http.post( SERVICEURL2,  data )
 	.then(function(responceData) {

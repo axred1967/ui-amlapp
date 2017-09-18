@@ -8,7 +8,7 @@ app2.controller('risk_profile03_4d', function ($scope,$http,$state,$translate,$t
 		$scope.page=$scope.pages[$state.current.name]
     $scope.back=function(passo){
       if (passo>0){
-        $scope.pages['risk_profile0'+ passo +'_4d']={action:'',location:$scope.page.location,prev_page:$state.current.name}
+        $scope.pages['risk_profile0'+ passo +'_4d']={action:'',location:$scope.page.location,prev_page:$state.current.name,agg:$scope.page.agg}
         localstorage('pages', JSON.stringify($scope.pages));
         $state.go('risk_profile0'+ passo +'_4d' ,{pages:$scope.pages})
         return;
@@ -34,7 +34,7 @@ app2.controller('risk_profile03_4d', function ($scope,$http,$state,$translate,$t
     default:
     $scope.Contract=$scope.pages[$scope.page.location].Contract
     appData=$scope.Contract
-    data={"action":"riskAx",appData:appData,kyc:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"riskAx",appData:appData,kyc:true,agg:$scope.page.agg,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
       $('#loader_img').hide();

@@ -8,7 +8,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 		$scope.page=$scope.pages[$state.current.name]
     $scope.back=function(passo){
       if (passo>0){
-        $scope.pages['kyc_document' ]={action:'',location:$scope.page.location,prev_page:$state.current.name}
+        $scope.pages['kyc_document' ]={action:'',location:$scope.page.location,prev_page:$state.current.name,agg:$scope.page.agg}
         localstorage('pages', JSON.stringify($scope.pages));
         $state.go('kyc_document' ,{pages:$scope.pages})
         return;
@@ -34,7 +34,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 
 	$scope.loadItem=function(){
     appData=$scope.Contract
-    data={"action":"kycAx",appData:appData,country:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"kycAx",appData:appData,agg:$scope.page.agg,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
       $('#loader_img').hide();

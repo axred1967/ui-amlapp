@@ -15,15 +15,6 @@ app2.controller('my_agencies', function ($scope,$http,$translate,$rootScope,$sta
   $scope.main.loader=true
   $scope.page={}
 
-   $scope.curr_page='my_agencies'
-   page=localStorage.getItem($scope.curr_page)
-   if ( page!= null && page.length >0 ){
-     $scope.page=JSON.parse(page)
-     $scope.action=$scope.page.action
-
-   }
-   $scope.main.location=$scope.page.location
-
 
   $scope.ObAmlApp=new ObAmlApp
   $scope.ObAmlApp.pInfo=$scope.agent.pInfo

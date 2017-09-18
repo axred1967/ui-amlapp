@@ -50,7 +50,7 @@
   <script src="https://amlapp.euriskoformazione.com/js/angular-translate.min.js"></script>
   <script src="https://amlapp.euriskoformazione.com/js/angular-translate-loader-static-files.min.js"></script>
   <script src="https://amlapp.euriskoformazione.com/js/tmhDynamicLocale.min.js"></script>
-
+ 
   <script src="https://amlapp.euriskoformazione.com/js/ng-infinite-scroll.min.js"></script>
   <script src="https://amlapp.euriskoformazione.com/js/ng-currency.js"></script></head>
   <script src="https://amlapp.euriskoformazione.com/js/signature_pad.js"></script></head>
@@ -172,7 +172,7 @@ Text angular
                 <i class="material-icons">search</i>
               </label>
               <div class="mdl-textfield__expandable-holder">
-                <input ng-model="searchText" class="mdl-textfield__input" type="text" name="sample"
+                <input ng-model="searchText" class="mdl-textfield__input" type="text" name="sample" ng-keyup="search()"
                 id="waterfall-exp" />
               </div>
             </div>

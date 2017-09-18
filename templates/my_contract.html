@@ -1,7 +1,13 @@
 <!-- cards grid -->
 <div  infinite-scroll='Contracts_inf.nextPage()' infinite-scroll-disabled='Contracts_inf.busy' infinite-scroll-distance='0'
 infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-scroll-container="'.add-customer-data'" ng-cloack>
-<div id="list_contract"   ng-repeat="Contract in Contracts_inf.Contracts |filterMultiple: {fullname:searchText,contractor_name:searchText,email:searchText,CPU:searchText,number:searchText} " ng-show="Contracts_inf.Contracts.length>0"
+<!--
+  ng-repeat="Contract in Contracts_inf.Contracts |filterMultiple: {fullname:searchText,contractor_name:searchText,email:searchText,CPU:searchText,number:searchText} "
+-->
+<div id="list_contract"
+
+  ng-repeat="Contract in Contracts_inf.Contracts "
+  ng-show="Contracts_inf.Contracts.length>0"
   ng-init="ContractIndex=$index">
 
   <div  class="mdl-cell mdl-cell--12-col">
@@ -73,17 +79,17 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
         </div>
         <div class="mdl-card__actions mdl-card--border " style="font-size:12px">
           <div class="mdl-cell">
-            <span class="orange">Adeguata Verifica </span><br/>
-            <span ng-show="Contract.kyc_status==1">Approved<span class="green-checkbox"><img src="img/green-check.png"></span></span>
-            <span ng-show="Contract.kyc_status==0">In Process</span>
+            <span class="orange">{{'Adeguata Verifica'|translate}}</span><br/>
+            <span ng-show="Contract.kyc_status==1">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="img/green-check.png"></span></span>
+            <span ng-show="Contract.kyc_status!=1">{{'in esecuzione'|translate}}</span>
           </div>
           <div class="mdl-cell">
             <div ng-hide="agent.user_type==3 ">
-            &nbsp;
-            <span class="blue">Risk Analysis </span><br/>
-            <span ng-show="Contract.status ==1">Approved<span class="green-checkbox"><img src="img/green-check.png"></span></span>
-            <span ng-show="Contract.status ==0">In Process</span>
-            <span ng-show="Contract.status ==1" ng-class="Contract.risk_defined">{{Contract.risk_defined}}</span>
+
+            <span class="blue">{{'Analisi del Rischio'|translate}} </span><br/>
+            <span ng-show="Contract.risk_status ==1">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="img/green-check.png"></span></span>
+            <span ng-show="Contract.risk_status !=1">{{'in esecuzione'|translate}}</span>
+            <span ng-class="Contract.riskAssigned">{{ Contract.riskAssigned |translate}} </span>
           </div>
           </div>
           <div class="mdl-cell">

@@ -13,7 +13,7 @@
   "Signup" :  "Registrazione",
   "Forgotpassword" :  "Ha dimenticato la password?",
   "Username" :  "Nome utente",
-  "Password" : "Parola d'ordine",
+  "Password" : "Password",
   "Addnewagent" : "Aggiungi nuovo agente",
   "Name" : "Nome",
   "EmailID" : "Indirizzo email",
@@ -167,5 +167,6 @@
   "Upload_contract" : " Carica documento contratto/conferimento ",
   "NewCustomer" :"Nuovo Cliente",
   "EditContract" :"Modifica Contratto",
-  "Cerca Firmatario":"Cerca Esecutore"
+  "Cerca Firmatario":"Cerca Esecutore",
+  "Show Password":"mostra password"
 }

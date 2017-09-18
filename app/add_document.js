@@ -7,6 +7,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
 		$scope.pages=IsJsonString(localStorage.getItem('pages'));
 	}
 	$scope.page=$scope.pages[$state.current.name]
+  var currentState=$state.current.name
 
   $scope.main.Back=true
   $scope.main.Add=false
@@ -14,6 +15,7 @@ app2.controller('add_document', function ($scope,$http,$translate,$state,$timeou
   $scope.main.Search=false
   $scope.main.Sidebar=false
   $scope.Doc={}
+  $scope.Docs=[]
   $scope.word={};
 
   //localstorage("back","view_contract");
@@ -111,30 +113,41 @@ $scope.loadItem=function(){
 
   */
   $scope.uploadfileweb=function(){
-      $("#loader_img_int").show()
+
+
         var f = document.getElementById('msds').files[0],
             r = new FileReader();
             $scope.f=f
         r.onloadend = function(e) {
             var data = e.target.result;
-            console.log(data);
             f={}
             f.data=data
             f.name=$scope.f.name
-            data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, f:f,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
-            $http.post(SERVICEURL2,data,{
-            headers: {'Content-Type': undefined}
-        })
-            .then(function(data){
-              $scope.Doc.doc_image=data.data.response;
-              $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
-              $scope.loaded=true
-              $scope.Doc.file_type=data.data.file_type
+            var extn = "." +f.name.split(".").pop();
+            filename=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+            //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+            $scope.Doc.loaded=false
+            $scope.Doc.doc_image=filename
+             $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
+            $scope.Doc.file_type=extn;
+            if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
+              $scope.Doc.isImage=false
+            }
+            else {
               $scope.Doc.isImage=true
-              if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
-                $scope.Doc.isImage=false
-              }
-              $("#loader_img_int").hide()
+
+            }
+            data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, f:f,filename:filename,pInfo:$scope.agent.pInfo}
+            $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+            .then(function(data){
+
+              $timeout(function() {
+                $scope.Doc.doc_image=data.data.response;
+                $scope.Doc.loaded=true
+                $scope.$broadcast('fileUploaded',$scope.Doc)
+
+                }
+                ,200)
               if (data.data.RESPONSECODE=='-1'){
                  localstorage('msg','Sessione Scaduta ');
                  $state.go('login');;;
@@ -149,7 +162,6 @@ $scope.loadItem=function(){
 
   }
 
-
   $scope.imageurl=function(Doc){
     if (Doc===undefined || Doc.doc_image===undefined ||  Doc.doc_image== null || Doc.doc_image.length==0){
 			imageurl= '/img/customer-listing1.png'
@@ -162,6 +174,9 @@ $scope.loadItem=function(){
 			imageurl= '/img/'+ Doc.file_type.substr(1)+'.png'
 
 		}
+    if (!Doc.loaded)
+      imageurl='/img/loading_image.gif'
+
 
     return   imageurl
 
@@ -226,7 +241,6 @@ $scope.loadItem=function(){
 
   $scope.uploadfromgallery=function()
   {
-    $("#loader_img_int").show()
     navigator.camera.getPicture($scope.uploadPhoto,
       function(message) {
         alert('get picture failed');
@@ -240,7 +254,6 @@ $scope.loadItem=function(){
   }
   $scope.add_photo=function()
   {
-    $("#loader_img").show()
 
     // alert('cxccx');
     navigator.camera.getPicture($scope.uploadPhoto,
@@ -256,16 +269,29 @@ $scope.loadItem=function(){
   }
 
   $scope.uploadPhoto=function(imageURI){
-    $scope.$apply(function () {
-      $scope.main.loader=true
-
-    });
     var options = new FileUploadOptions();
 
     options.fileKey="file";
     options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
     options.mimeType="text/plain";
     options.chunkedMode = false;
+    $scope.$apply(function () {
+      var extn = "." +options.fileName.split(".").pop();
+      filename=baseName(options.fileName).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+      //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+      $scope.Doc.loaded=false
+      $scope.Doc.doc_image=filename
+      $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
+      $scope.Doc.file_type=extn;
+      if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
+        $scope.Doc.isImage=false
+      }
+      else {
+        $scope.Doc.isImage=true
+      }
+    });
+
+
     var params = new Object();
 
     options.params = params;
@@ -282,22 +308,15 @@ $scope.loadItem=function(){
     var  r=IsJsonString(r.response)
 
     $scope.$apply(function () {
-      $scope.Doc.doc_image=r.response;
-      $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
-      $scope.loaded=true
-      $scope.Doc.file_type=r.file_type
-      $scope.Doc.isImage=true
-      if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
-        $scope.Doc.isImage=false
-      }
-      $scope.main.loader=false
-
+      $timeout(function() {
+        $scope.Doc.loaded=true
+        if ($state.current.name!=currentState)
+          $state.go($state.current, {} , {reload: true, inherit: false});              }
+        ,200)
     });
-    $("#loader_img_int").hide()
   }
   $scope.failFT =function (error)
   {
-    $("#loader_img_int").hide()
     $scope.Docs.doc_image=$scope.prev_image
     $scope.main.loader=false
 
@@ -416,7 +435,7 @@ $scope.loadItem=function(){
                $scope.main.loader=false
                $timeout(function() {
                  resize_img()
-               },200);
+               },1000);
             }, 200);
   });
 })
