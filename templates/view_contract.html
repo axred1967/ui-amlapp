@@ -53,7 +53,7 @@
                   <div class="left" style="text-align:left">
                     <span ng-show="Contract.kyc_update.state=='aggiornamento'" class="blue" >{{'Aggiornamento'|translate}}</span><br/>
                     <span class="orange">{{'Adeguata Verifica'|translate}} </span><br/>
-                    <span ng-show="Contract.kyc_status==1">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="img/green-check.png"></span><br/>
+                    <span ng-show="Contract.kyc_status==1">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="ui-amlapp/img/green-check.png"></span><br/>
                     <span >{{'il:  '|translate}}{{Contract.kyc_date | dateToISO | date:'d/M/yyyy  HH:mm:ss'}}</span>
 
                   </span>
@@ -74,7 +74,7 @@
                   <div class="right" style="text-align:right">
                     <span ng-show="Contract.risk_update.state=='aggiornamento'" class="blue" >{{'Aggiornamento'|translate}}</span><br/>
                     <span class="orange">{{'Analisi del Rischio'|translate}} </span><br/>
-                    <span ng-show="Contract.risk_status==1">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="img/green-check.png"></span><br/>
+                    <span ng-show="Contract.risk_status==1">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="ui-amlapp/img/green-check.png"></span><br/>
                     <span >{{'il:  '|translate}}{{Contract.risk_date | dateToISO | date:'d/M/yyyy  HH:mm:ss'}}</span>
                     <span ng-class="Contract.riskAssigned">{{ Contract.riskAssigned |translate}} </span><br/>
 

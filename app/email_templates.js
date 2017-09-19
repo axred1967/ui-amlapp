@@ -156,7 +156,7 @@ app2.controller('email_templates', function ($scope,$http,$translate,$rootScope,
     if (image===undefined || image==null || image.length==0)
       imageurl= '../img/customer-listing1.png'
     else
-      imageurl= BASEURL+ "file_down.php?action=file&file=" + Ob.image +"&profile=1&agent_id="+  $scope.agent.pInfoUrl
+      imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Ob.image +"&profile=1&agent_id="+  $scope.agent.pInfoUrl
 //    Ob.imageurl= Ob.IMAGEURI +Ob.image
     return   imageurl
   }

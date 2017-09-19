@@ -38,7 +38,7 @@ app2.controller('agg_risk', function ($scope,$http,$translate,$rootScope,$state,
 //  }
 //  $scope.addMoreItems()
 $scope.print_risk=function(Contract){
-  url=BASEURL + 'pdfgeneration/risk.php?agg='+Contract.risk_id+"&download=Y"+$scope.agent.pInfoUrl
+  url=PDFURL +'risk.php?agg='+Contract.risk_id+"&download=Y"+$scope.agent.pInfoUrl
   if ($scope.main.web){
     var anchor = angular.element('<a/>');
     angular.element(document.body).append(anchor);
@@ -80,7 +80,7 @@ $scope.print_risk=function(Contract){
     if (image===undefined || image==null || image.length==0)
       imageurl= '../img/customer-listing1.png'
     else
-      imageurl= BASEURL+ "file_down.php?action=file&file=" + Ob.image +"&profile=1"+ $scope.agent.pInfoUrl
+      imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Ob.image +"&profile=1"+ $scope.agent.pInfoUrl
   //    Ob.imageurl= Ob.IMAGEURI +Ob.image
     return   imageurl
   }

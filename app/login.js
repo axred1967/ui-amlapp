@@ -127,7 +127,7 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
           if ($scope.agent.image===undefined ||  $scope.agent.image== null || $scope.agent.image.length==0)
             $scope.agent.imageurl= ''
           else
-            $scope.agent.imageurl= BASEURL+ "file_down.php?action=file&file=" + $scope.agent.image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+            $scope.agent.imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + $scope.agent.image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
 
           $scope.agent.paese=data.data.paese
           $scope.agent.tipo_cliente= data.data.tipo_cliente

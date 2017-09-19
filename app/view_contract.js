@@ -150,7 +150,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 		$state.go('agg_risk',{pages:$scope.pages})
 	};
 	$scope.print_kyc=function(){
-		url=BASEURL + 'pdfgeneration/kyc.php?id='+$scope.Contract.contract_id+"&download=Y"+$scope.agent.pInfoUrl
+		url=PDFURL +'kyc.php?id='+$scope.Contract.contract_id+"&download=Y"+$scope.agent.pInfoUrl
 		if ($scope.main.web){
 
 			$http.get(url, {
@@ -195,7 +195,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 		}
 
 		$scope.print_risk=function(){
-			url=BASEURL + 'pdfgeneration/risk.php?id='+$scope.Contract.contract_id+$scope.agent.pInfoUrl
+			url=PDFURL +'risk.php?id='+$scope.Contract.contract_id+$scope.agent.pInfoUrl
 			if ($scope.main.web){
 				var anchor = angular.element('<a/>');
 				angular.element(document.body).append(anchor);

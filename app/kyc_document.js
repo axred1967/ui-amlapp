@@ -37,7 +37,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 			return imageurl
 			}
 			else if (Doc.isImage){
-			imageurl= BASEURL+ "file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
+			imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
 
 		}
 		else{

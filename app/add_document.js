@@ -128,7 +128,7 @@ $scope.loadItem=function(){
             //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
             $scope.Doc.loaded=false
             $scope.Doc.doc_image=filename
-             $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
+             $scope.Doc.IMAGEURI=UPLOADSURL +'document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
             $scope.Doc.file_type=extn;
             if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
               $scope.Doc.isImage=false
@@ -168,7 +168,7 @@ $scope.loadItem=function(){
 			return imageurl
 			}
 			else if (Doc.isImage){
-			imageurl= BASEURL+ "file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
+			imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
 		}
 		else{
 			imageurl= '/img/'+ Doc.file_type.substr(1)+'.png'
@@ -281,7 +281,7 @@ $scope.loadItem=function(){
       //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
       $scope.Doc.loaded=false
       $scope.Doc.doc_image=filename
-      $scope.Doc.IMAGEURI=BASEURL+'uploads/document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
+      $scope.Doc.IMAGEURI=UPLOADSURL +'document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
       $scope.Doc.file_type=extn;
       if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
         $scope.Doc.isImage=false
@@ -296,8 +296,8 @@ $scope.loadItem=function(){
 
     options.params = params;
     var ft = new FileTransfer();
-    //$http.post( LOG,  {data:BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per})
-    var url=BASEURL+"service.php?action=upload_document_ax&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per+$scope.agent.pInfoUrl
+    //$http.post( LOG,  {data:SERVICEURL +"?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per})
+    var url=SERVICEURL +"?action=upload_document_ax&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per+$scope.agent.pInfoUrl
     ft.upload(imageURI, url, $scope.winFT, $scope.failFT, options,true);
 
 
@@ -388,7 +388,7 @@ $scope.loadItem=function(){
   }
 
   $scope.download = function(Doc) {
-     url=BASEURL + "file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
+     url=SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
      $http.get(url, {
          responseType: "arraybuffer"
        })

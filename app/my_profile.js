@@ -30,7 +30,7 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
         $scope.agent.settings={}
       }
       $scope.Customer.doc_name="Immagine Profilo"
-      $scope.Customer.IMAGEURI=BASEURL+"uploads/user/small/"
+      $scope.Customer.IMAGEURI=UPLOADSURL +'user/small/"
       $scope.oldSign  = $scope.Customer.sign
 
       $('input.mdl-textfield__input').each(
@@ -100,10 +100,10 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
 
     options.params = params;
     var ft = new FileTransfer();
-    $http.post( LOG,  {data:BASEURL+"service.php?action=upload_user_image&userid="+userid})
-    ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_user_image&userid="+userid), $scope.winFT, $scope.failFT, options);
+    $http.post( LOG,  {data:SERVICEURL +"?action=upload_user_image&userid="+userid})
+    ft.upload(imageURI, encodeURI(SERVICEURL +"?action=upload_user_image&userid="+userid), $scope.winFT, $scope.failFT, options);
 
-    //          ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
+    //          ft.upload(imageURI, encodeURI(SERVICEURL +"?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
 
 
 
@@ -271,7 +271,7 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
     if (Customer===undefined || Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
     imageurl= '../img/customer-listing1.png'
     else
-    imageurl= BASEURL+ "file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
+    imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
     //
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl

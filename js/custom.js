@@ -1,29 +1,3 @@
-var SITE_TITLE = 'Amlapp';
-var SITE_KEYWORD = 'Amlapp';
-var SITE_DESCRIPTION = 'Amlapp';
-document.title = SITE_TITLE;
-//var BASEURL = "http://192.168.0.5/Deve02/amlapp/";
-//var SERVICEURL = "http://192.168.0.5/Deve02/amlapp/service.php";
-//var SERVICEURL2 = "http://192.168.0.5/Deve02/amlapp/service2.php";
-//test su euriskoformazion
-/*
-var BASEURL = "http://www.euriskoformazione.com/amlapp/";
-var SERVICEURL = "http://www.euriskoformazione.com/amlapp/service.php";
-var SERVICEURL2 = "http://www.euriskoformazione.com/amlapp/service.php";
-var LOG = "http://www.euriskoformazione.com/amlapp/log.php";
-*/
-// su amlapp
-/* Ambiente sviluppo
-var BASEURL = "https://amlapp.euriskoformazione.com/dev";
-var SERVICEURL = "https://amlapp.euriskoformazione.com/dev/service.php";
-var SERVICEURL2 = "https://amlapp.euriskoformazione.com/dev/service.php";
-var LOG = "https://amlapp.euriskoformazione.com/dev/log.php";
-*/
-/* Ambiente produzione */
-var BASEURL = "https://amlapp.euriskoformazione.com/";
-var SERVICEURL = "https://amlapp.euriskoformazione.com/service.php";
-var SERVICEURL2 = "https://amlapp.euriskoformazione.com/service.php";
-var LOG = "https://amlapp.euriskoformazione.com/log.php";
 
 
 
@@ -153,8 +127,8 @@ function checkthesidebarinfouser()
                             if(image !='null')
                             {
 
-                                //$('#Profileimageagencyuser').attr("src",BASEURL+"uploads/user/small/"+image);
-                                //$('#view_profile_image').attr("src",BASEURL+"uploads/user/small/"+image);
+                                //$('#Profileimageagencyuser').attr("src",UPLOADSURL +'user/small/"+image);
+                                //$('#view_profile_image').attr("src",UPLOADSURL +'user/small/"+image);
                                 //$('#Profileimageagencyuseremail').html(email);
                             }
                         }

@@ -80,14 +80,14 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
         <div class="mdl-card__actions mdl-card--border " style="font-size:12px">
           <div class="mdl-cell">
             <span class="orange">{{'Adeguata Verifica'|translate}}</span><br/>
-            <span ng-show="Contract.kyc_status==1">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="img/green-check.png"></span></span>
+            <span ng-show="Contract.kyc_status==1">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="ui-amlapp/img/green-check.png"></span></span>
             <span ng-show="Contract.kyc_status!=1">{{'in esecuzione'|translate}}</span>
           </div>
           <div class="mdl-cell">
             <div ng-hide="agent.user_type==3 ">
 
             <span class="blue">{{'Analisi del Rischio'|translate}} </span><br/>
-            <span ng-show="Contract.risk_status ==1">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="img/green-check.png"></span></span>
+            <span ng-show="Contract.risk_status ==1">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="ui-amlapp/img/green-check.png"></span></span>
             <span ng-show="Contract.risk_status !=1">{{'in esecuzione'|translate}}</span>
             <span ng-class="Contract.riskAssigned">{{ Contract.riskAssigned |translate}} </span>
           </div>

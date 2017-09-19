@@ -49,7 +49,7 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
          }
         })        
         $scope.Customer =  data;
-        $scope.Customer.IMAGEURI=BASEURL+"uploads/user/small/"
+        $scope.Customer.IMAGEURI=UPLOADSURL +'user/small/"
         //$rootScope.$broadcast('show')
         $scope.loader=false
         $scope.Customer.Docs=IsJsonString($scope.Customer.Docs)
@@ -208,7 +208,7 @@ $scope.imageurl=function(image){
   if (image===undefined ||  image== null || image.length==0)
     imageurl= ''
   else
-  imageurl= BASEURL+ "file_down.php?action=file&file=" + image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+  imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
 //
   //  Customer.imageurl= Customer.IMAGEURI +Customer.image
   return   imageurl
@@ -308,10 +308,10 @@ $scope.uploadPhoto=function(imageURI){
   options.params = params;
   var ft = new FileTransfer();
   $scope.loader=true
-  //$http.post( LOG,  {data:BASEURL+"service.php?action=upload_user_image&userid="+userid})
-  ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_user_image&userid="+userid), $scope.winFT, $scope.failFT, options);
+  //$http.post( LOG,  {data:SERVICEURL +"?action=upload_user_image&userid="+userid})
+  ft.upload(imageURI, encodeURI(SERVICEURL +"?action=upload_user_image&userid="+userid), $scope.winFT, $scope.failFT, options);
 
-  //          ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
+  //          ft.upload(imageURI, encodeURI(SERVICEURL +"?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
 
 
 

@@ -117,7 +117,7 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
     if (Customer===undefined || Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
       imageurl= '../img/customer-listing1.png'
     else
-    imageurl= BASEURL+ "file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
+    imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
 //
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl

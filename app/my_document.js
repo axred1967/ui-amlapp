@@ -28,7 +28,7 @@ app2.factory('Docs_inf', function($http,$state) {
         data=responceData.data.RESPONSE;
         angular.forEach(data,function(value,key) {
           image_type=['.png','.gif','.png','.tif','.bmp','.jpg']
-          data[key].IMAGEURI=BASEURL+'uploads/document/'+data[key].per+'_'+data[key].per_id +'/resize/'
+          data[key].IMAGEURI=UPLOADSURL +'document/'+data[key].per+'_'+data[key].per_id +'/resize/'
           data[key]['isImage']=false
           if(image_type.indexOf(data[key]['file_type']) !== -1) {
             data[key]['isImage']=true
@@ -174,7 +174,7 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
     if (Doc===undefined || Doc.doc_image===undefined ||  Doc.doc_image== null || Doc.doc_image.length==0)
       imageurl= '../img/customer-listing1.png'
     else
-      imageurl= BASEURL+ "file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
+      imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
 
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl
@@ -216,7 +216,7 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
     $state.reload();
   }
   $scope.download = function(Doc) {
-     url=BASEURL + "file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
+     url=SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
      $http.get(url, {
          responseType: "arraybuffer"
        })

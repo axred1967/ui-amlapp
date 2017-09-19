@@ -84,7 +84,7 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
     if (image===undefined || image.length==0)
       imageurl= '../img/customer-listing1.png'
     else
-        imageurl= BASEURL+ "file_down.php?file=" + image +"&profile=1&entity=company&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+        imageurl= SERVICEDIRURL +"file_down.php?file=" + image +"&profile=1&entity=company&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
     return   imageurl
 
 

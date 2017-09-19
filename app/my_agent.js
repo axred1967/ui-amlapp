@@ -24,11 +24,11 @@ app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_i
 
   $scope.imageurl=function(Customer){
 
-    Customer.IMAGEURI=BASEURL+"uploads/user/small/"
+    Customer.IMAGEURI=UPLOADSURL +'user/small/"
     if (Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
       Customer.imageurl= '../img/customer-listing1.png'
     else
-   Customer.imageurl= BASEURL+ "file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
+   Customer.imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
 //
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   Customer.imageurl

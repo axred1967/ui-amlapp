@@ -38,7 +38,7 @@ app2.controller('agg_kyc', function ($scope,$http,$translate,$rootScope,$state,O
 //  }
 //  $scope.addMoreItems()
 $scope.print_kyc=function(Contract){
-  url=BASEURL + 'pdfgeneration/kyc.php?agg='+Contract.kyc_id+"&download=Y"+$scope.agent.pInfoUrl
+  url=PDFURL +'kyc.php?agg='+Contract.kyc_id+"&download=Y"+$scope.agent.pInfoUrl
   if ($scope.main.web){
     var anchor = angular.element('<a/>');
     angular.element(document.body).append(anchor);
@@ -80,7 +80,7 @@ $scope.print_kyc=function(Contract){
     if (image===undefined || image==null || image.length==0)
       imageurl= '../img/customer-listing1.png'
     else
-      imageurl= BASEURL+ "file_down.php?action=file&file=" + Ob.image +"&profile=1"+ $scope.agent.pInfoUrl
+      imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Ob.image +"&profile=1"+ $scope.agent.pInfoUrl
   //    Ob.imageurl= Ob.IMAGEURI +Ob.image
     return   imageurl
   }

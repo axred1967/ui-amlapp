@@ -139,7 +139,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     if ($scope.agent.image===undefined ||  $scope.agent.image== null || $scope.agent.image.length==0)
       $scope.agent.imageurl= ''
     else
-      $scope.agent.imageurl= BASEURL+ "file_down.php?file=" + $scope.agent.image +"&action=file&profile=1"
+      $scope.agent.imageurl= SERVICEDIRURL +"file_down.php?file=" + $scope.agent.image +"&action=file&profile=1"
     $scope.agent.paese= localStorage.getItem("paese");
     $scope.agent.tipo_cliente= localStorage.getItem("tipo_cliente");
   }
@@ -208,22 +208,22 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   $scope.imageurl=function(Contract){
     if (Contract.act_for_other==1 && Contract.company_image!==undefined && Contract.company_image !=null && Contract.company_image.length>0){
       //Contract.imageurl= Contract.IMAGEURI +Contract.company_image
-      Contract.imageurl= BASEURL + "file_down.php?action=file&file=" + Contract.company_image +"&profile=1&entity=company"+$scope.agent.pInfoUrl
+      Contract.imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Contract.company_image +"&profile=1&entity=company"+$scope.agent.pInfoUrl
 
       return   Contract.imageurl
 
     }
     if (Contract.act_for_other==2 && Contract.owner_image!==undefined && Contract.owner_image  !=null && Contract.owner_image.length>0){
 //      Contract.imageurl= Contract.IMAGEURI +Contract.owner_image
-      Contract.imageurl= BASEURL + "file_down.php?action=file&file=" + Contract.owner_image +"&profile=1"+$scope.agent.pInfoUrl
+      Contract.imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Contract.owner_image +"&profile=1"+$scope.agent.pInfoUrl
       return   Contract.imageurl
 
     }
-    Contract.IMAGEURI=BASEURL+"uploads/user/small/"
+    Contract.IMAGEURI=UPLOADSURL +"user/small/"
     if (Contract.image===undefined || Contract.image==null || Contract.image.length==0)
     Contract.imageurl= '../img/customer-listing1.png'
     else
-    Contract.imageurl= BASEURL+ "file_down.php?action=file&file=" + Contract.image +"&profile=1"+$scope.agent.pInfoUrl
+    Contract.imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Contract.image +"&profile=1"+$scope.agent.pInfoUrl
 //    Contract.imageurl= Contract.IMAGEURI +Contract.image
     return   Contract.imageurl
 
@@ -231,7 +231,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
 
   $scope.print_kyc=function(Contract){
-  	url=BASEURL + 'pdfgeneration/kyc.php?id='+Contract.contract_id+"&download=Y"+$scope.agent.pInfoUrl
+  	url=PDFURL +'kyc.php?id='+Contract.contract_id+"&download=Y"+$scope.agent.pInfoUrl
   	if ($scope.main.web){
       var anchor = angular.element('<a/>');
     	angular.element(document.body).append(anchor);
@@ -269,7 +269,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
   }
   $scope.print_risk=function(Contract,index){
-  	url=BASEURL + 'pdfgeneration/risk.php?id='+Contract.contract_id+"&download=Y"+$scope.agent.pInfoUrl
+  	url=PDFURL +'risk.php?id='+Contract.contract_id+"&download=Y"+$scope.agent.pInfoUrl
   	if ($scope.main.web){
       var anchor = angular.element('<a/>');
     	angular.element(document.body).append(anchor);

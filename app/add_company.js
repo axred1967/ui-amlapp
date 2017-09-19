@@ -45,7 +45,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
           $scope.newDocs=true
         }
         $scope.loader=false
-        $scope.Company.IMAGEURI=BASEURL+"uploads/company/small/"
+        $scope.Company.IMAGEURI=UPLOADSURL +'company/small/"
         $('input.mdl-textfield__input').each(
           function(index){
             $(this).parent('div.mdl-textfield').addClass('is-dirty');
@@ -72,7 +72,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     $scope.action="add_company"
     $scope.Company={}
     $scope.Company.Docs=[{}]
-    $scope.Company.IMAGEURI=BASEURL+"uploads/company/small/"
+    $scope.Company.IMAGEURI=UPLOADSURL +'company/small/"
     break;
     case 'edit_company':
     $scope.main.viewName="Modifica Società"
@@ -81,7 +81,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     default:
     $scope.Company={}
     $scope.Company.Docs=[{}]
-    $scope.Company.IMAGEURI=BASEURL+"uploads/company/small/"
+    $scope.Company.IMAGEURI=UPLOADSURL +'company/small/"
     $scope.action="add_company"
     $scope.main.viewName="Inserisci Società"
   }
@@ -132,7 +132,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     if (image===undefined ||  image== null || image.length==0)
       imageurl= ''
     else
-    imageurl= BASEURL+ "file_down.php?action=file&file=" + image +"&profile=1&entity=company&agent_id="+  $scope.agent.pInfoUrl
+    imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + image +"&profile=1&entity=company&agent_id="+  $scope.agent.pInfoUrl
   //
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl
@@ -293,10 +293,10 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     options.params = params;
     var ft = new FileTransfer();
     $scope.loader=true
-    //$http.post( LOG,  {data:BASEURL+"service.php?action=upload_user_image&userid="+userid})
-    ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_company_image&company_id="+company_id), $scope.winFT, $scope.failFT, options);
+    //$http.post( LOG,  {data:SERVICEURL +"?action=upload_user_image&userid="+userid})
+    ft.upload(imageURI, encodeURI(SERVICEURL +"?action=upload_company_image&company_id="+company_id), $scope.winFT, $scope.failFT, options);
 
-    //          ft.upload(imageURI, encodeURI(BASEURL+"service.php?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
+    //          ft.upload(imageURI, encodeURI(SERVICEURL +"?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
 
 
 
