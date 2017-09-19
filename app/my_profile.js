@@ -30,7 +30,7 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
         $scope.agent.settings={}
       }
       $scope.Customer.doc_name="Immagine Profilo"
-      $scope.Customer.IMAGEURI=UPLOADSURL +'user/small/"
+      $scope.Customer.IMAGEURI=UPLOADSURL +"user/small/"
       $scope.oldSign  = $scope.Customer.sign
 
       $('input.mdl-textfield__input').each(

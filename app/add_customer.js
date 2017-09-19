@@ -49,7 +49,7 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
          }
         })        
         $scope.Customer =  data;
-        $scope.Customer.IMAGEURI=UPLOADSURL +'user/small/"
+        $scope.Customer.IMAGEURI=UPLOADSURL +"user/small/"
         //$rootScope.$broadcast('show')
         $scope.loader=false
         $scope.Customer.Docs=IsJsonString($scope.Customer.Docs)

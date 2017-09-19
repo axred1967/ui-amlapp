@@ -28,7 +28,7 @@ app2.factory('Docs_inf', function($http,$state) {
         data=responceData.data.RESPONSE;
         angular.forEach(data,function(value,key) {
           image_type=['.png','.gif','.png','.tif','.bmp','.jpg']
-          data[key].IMAGEURI=UPLOADSURL +'document/'+data[key].per+'_'+data[key].per_id +'/resize/'
+          data[key].IMAGEURI=UPLOADSURL +"document/'+data[key].per+'_'+data[key].per_id +'/resize/'
           data[key]['isImage']=false
           if(image_type.indexOf(data[key]['file_type']) !== -1) {
             data[key]['isImage']=true

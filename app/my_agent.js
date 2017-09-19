@@ -24,7 +24,7 @@ app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_i
 
   $scope.imageurl=function(Customer){
 
-    Customer.IMAGEURI=UPLOADSURL +'user/small/"
+    Customer.IMAGEURI=UPLOADSURL +"user/small/"
     if (Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
       Customer.imageurl= '../img/customer-listing1.png'
     else

@@ -128,7 +128,7 @@ $scope.loadItem=function(){
             //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
             $scope.Doc.loaded=false
             $scope.Doc.doc_image=filename
-             $scope.Doc.IMAGEURI=UPLOADSURL +'document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
+             $scope.Doc.IMAGEURI=UPLOADSURL +"document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
             $scope.Doc.file_type=extn;
             if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
               $scope.Doc.isImage=false
@@ -281,7 +281,7 @@ $scope.loadItem=function(){
       //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
       $scope.Doc.loaded=false
       $scope.Doc.doc_image=filename
-      $scope.Doc.IMAGEURI=UPLOADSURL +'document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
+      $scope.Doc.IMAGEURI=UPLOADSURL +"document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
       $scope.Doc.file_type=extn;
       if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
         $scope.Doc.isImage=false
