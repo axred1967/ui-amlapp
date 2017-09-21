@@ -99,6 +99,7 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
           localstorage("userEmail",data.data.email);
           localstorage("agentId",data.data.agentId);
           localstorage("cookie",data.data.cookie);
+          localstorage("image",data.data.image_name);
           //alert(data.agencyId);
           localstorage("Name",data.data.name);
           localstorage("paese",data.data.paese);
@@ -115,6 +116,7 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
           $scope.agent.user_type=data.data.usertype;
           $scope.agent.priviledge=data.data.priviledge;
           $scope.agent.cookie=data.data.cookie;
+          $scope.agent.image=data.data.image_name
           $scope.agent.pInfo={user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}
           $scope.agent.pInfoUrl="&" +jQuery.param({pInfo:$scope.agent.pInfo})
           settings=IsJsonString(data.data.settings)
@@ -127,7 +129,7 @@ app2.controller('login', function ($scope,$http,$translate,$rootScope,$timeout,$
           if ($scope.agent.image===undefined ||  $scope.agent.image== null || $scope.agent.image.length==0)
             $scope.agent.imageurl= ''
           else
-            $scope.agent.imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + $scope.agent.image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+            $scope.agent.imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + $scope.agent.image +"&profile=1"+$scope.agent.pInfoUrl
 
           $scope.agent.paese=data.data.paese
           $scope.agent.tipo_cliente= data.data.tipo_cliente

@@ -48,13 +48,12 @@
   <div ng-hide="Kyc.Docs.length == 0 " ng-class="{'mdl-cell--3-col-desktop mdl-cell-12-col-phone mdl-cell-6-col-tablet': main.web }"   id="list_doc"
   ng-hide="Kyc.Docs.length == 0 " class="ng-hide" ng-repeat="Doc in Kyc.Docs track by $index  "   ng-init="DocIndex=$index">
 
-    <div ng-hide="Doc.deleted" style="padding-left:10px" >
+    <div ng-hide="Doc.deleted" style="padding:16px" >
 
-      <div class="demo-card-image mdl-card mdl-shadow--2dp">
+      <div class="demo-card-image mdl-card mdl-shadow--2dp" >
         <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
         <div class="mdl-image center-cropped" ng-click="edit_document(Doc,DocIndex)">
-        <img  class="loadImg" ng-show="Doc.doc_image.length>0" ng-src ="{{imageurl(Doc)}}" ></img>
-        <center>  <img style="display:none;height:50px;width:50px;margin-top:20px;" id="loader_img_int" src="ui-amlapp/img/loader2.gif"  /> </center>
+        <img  class="loadImg"  ng-src ="{{imageurl(Doc)}}" ></img>
       </div>
         <div class="mdl-card__actions">
 

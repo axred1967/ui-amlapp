@@ -1,4 +1,4 @@
-app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeout,$stateParams,$interval) {
+app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeout,$stateParams,$interval,$rootScope,$filter) {
   //gestisco lo state parameter
 	  $scope.curr_page=$state.current.name
 	  $scope.pages=$stateParams.pages
@@ -142,11 +142,20 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
   }
 	if (isObject($scope.page.newOb)){
 		$scope.Kyc.Docs=$scope.page.Docs
+
 		if ($scope.page.edit){
 			$scope.Kyc.Docs[$scope.page.indice]=$scope.page.newOb
 		}
 		else{
-			$scope.Kyc.Docs[$scope.Kyc.Docs.length]=$scope.page.newOb
+			if (Array.isArray($scope.page.newOb)){
+				angular.forEach($scope.page.newOb, function(value){
+					 $scope.Kyc.Docs.push(value);
+				})
+
+
+			}	else {
+				$scope.Kyc.Docs[$scope.Kyc.Docs.length]=$scope.page.newOb
+			}
 		}
 		$scope.page.newOb=1
 		$scope.saveDocs()
@@ -158,34 +167,30 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 	}
 
 
-  $scope.deleteDoc=function(ob,index )
-  {
-    if ($scope.main.web){
-      r=confirm("Vuoi Cancellare il Documento?");
-      if (r == true) {
-        $scope.deleteDocs2(ob,index);
-      }
-    }
-    else{
-      navigator.notification.confirm(
-        "Vuoi Cancellare il Documento?", // message
-        function(button) {
-          if ( button == 1 ) {
-            $scope.deleteDocs2(ob,index);
-          }
-        },            // callback to invoke with index of button pressed
-        'Sei sicuro?',           // title
-        ['Si','No']     // buttonLabels
-    );
-    }
+  $scope.deleteDoc=function(ob,index ){
+	swal({
+		title: $filter('translate')("Sei Sicuro?"),
+		text: $filter('translate')("la Cancelazione del documento sarà non reversibile"),
+		icon: "warning",
+		buttons: {
+		'procedi':{text:$filter('translate')('Procedi'),value:true},
+		'annulla':{text:$filter('translate')('Annulla'),value:false},
 
-  }
-  $scope.deleteDocs2=function(ob,index){
-		//delete $scope.Kyc['Docs'][index]
-		$scope.Kyc['Docs'].splice(index,1)
-		$scope.saveDocs()
+		},
 
-  }
+	})
+	.then((Value) => {
+		if (Value) {
+			$scope.Kyc['Docs'].splice(index,1)
+			$scope.saveDocs()
+			swal($filter('translate')('Cancellazione effettuata'), {
+				icon: "success",
+			});
+		} else {
+			swal($filter('translate')('Cancellazione Annulata'));
+		}
+  })
+}
 
 
 
@@ -278,12 +283,28 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 
     }
   }
-
+	$scope.download = function(Doc) {
+     url=SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
+     $http.get(url, {
+         responseType: "arraybuffer"
+       })
+       .then(function(data) {
+         var anchor = angular.element('<a/>');
+         angular.element(document.body).append(anchor);
+         var ev = document.createEvent("MouseEvents");
+         ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+         anchor.attr({
+           href: url,
+           target: '_blank',
+           download: Doc.doc_image
+         })[0].dispatchEvent(ev);
+       })
+     }
 
 
   $scope.add_document=function(){
 		$scope.pages['add_document']={action:'add_document_for_kyc',location:$state.current.name,
-		Doc:{agency_id:$scope.agent.agency_id,per_id:$scope.Contract.contract_id,per:'kyc'}}
+		Doc:{agency_id:$scope.agent.agency_id,per_id:$scope.Contract.contract_id,per:'kyc',edit:false, indice:$scope.Kyc.Docs.length}}
 		$scope.pages[$state.current.name].Docs=$scope.Kyc.Docs
 		localstorage('pages',JSON.stringify($scope.pages))
 		$state.go('add_document',{pages:$scope.pages})
@@ -305,14 +326,26 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 
 
   }
+	$scope.$on('fileUploaded', function(e,filename) {
+		if ($scope.Kyc.Docs!==undefined && $scope.Kyc.Docs.length>0){
+			angular.forEach($scope.Kyc.Docs, function(doc,key){
+				if (filename==$scope.Kyc.Docs[key].doc_name){
+					$scope.Kyc.Docs[key].loaded=true
+					$timeout(function() {
+						resize_img()
+					},500);
+				}
 
+			})
+		}
+
+	});
 
   $scope.$on('backButton', function(e) {
       $scope.back()
   });
 
   $scope.$on('addButton', function(e) {
-    localstorage('Contract',JSON.stringify($scope.Kyc.contract_data))
     $scope.add_document()
   })
   $scope.$on('$viewContentLoaded',
@@ -327,8 +360,8 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
                $scope.main.loader=false
 							 $timeout(function() {
 							 	resize_img()
-							},1000);
-            }, 100);
+							},500);
+            }, 200);
   });
 
 });

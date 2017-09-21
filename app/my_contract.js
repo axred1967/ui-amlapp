@@ -130,6 +130,8 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     $scope.agent.priviledge=localStorage.getItem('priviledge');
 
     $scope.agent.cookie=localStorage.getItem('cookie');
+    $scope.agent.image=data.localStorage.getItem('image');
+
     $scope.agent.image=localStorage.getItem('Profileimageagencyuser');
     $scope.agent.settings=IsJsonString(localStorage.getItem('userSettings'));
 
@@ -422,7 +424,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   {
     swal({
       title: $filter('translate')("Sei Sicuro?"),
-      text: $filter('translate')("la Cancelazione del Contratto sarà non reversibile!"),
+      text: $filter('translate')("la Cancelazione del Contratto sarà non reversibile e si perderà continuità CPU!"),
       icon: "warning",
       buttons: {
       'procedi':{text:$filter('translate')('Procedi'),value:true},

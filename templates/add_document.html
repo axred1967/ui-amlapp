@@ -61,7 +61,7 @@
             <div class="mdl-card__title mdl-card--expand">Immagine</div>
 
             <div class="center-cropped mdl-image" ng-click="download(Doc)" >
-            <img class="loadImg" ng-show="Doc.doc_image.length>0" ng-src ="{{imageurl(Doc) }}" ></img>
+            <img class="loadImg"  ng-src ="{{imageurl(Doc) }}" ></img>
             </div>
 
             <div class="mdl-card__actions">
@@ -88,10 +88,31 @@
         </fieldset>
       </div>
     </div>
-    <uploadmfiles ng-show="main.web" style=""
-    ng-model="Doc" docs="Docs" dir-Agent="agent.pInfo" doc-per="Doc.per" doc-id="Doc.per_id" dir-text="{{ 'Se vuoi caricare più file Trascinali qui ' | translate }}"
-    ></uploadmfiles>
 
+    <fieldset ng-show="main.web && ! page.edit " class="asset-upload"
+    uploadmfiles onload="" ng-model="Doc" docs="Docs" dir-Agent="agent.pInfo" doc="Doc"
+    dir-text="" pre-uploaded="preUploaded(args)" uploaded-m-file="uploadedMFile(args)">
+
+{{ 'Se vuoi caricare più file Trascinali qui ' | translate }}
+<div ng-class="{'mdl-grid': main.web }" >
+      <div ng-class="{'mdl-cell--4-col': main.web }" ng-repeat="Doc in Docs" style="padding:20px">
+        <div class="demo-card-image mdl-card mdl-shadow--2dp">
+          <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
+
+          <div class="center-cropped mdl-image" ng-click="download(Doc)" >
+          <img class="loadImg"  ng-src ="{{imageurl(Doc) }}" ></img>
+          </div>
+
+          <div class="mdl-card__actions">
+            <button ng-show="loaded" id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+              <span >{{'Cancella'|translate}}.</span>
+            </span>
+          </div>
+        </div>
+      </div>
+</div>
+    </fieldset>
         <fieldset>
           <div class="center-align" style="margin-top:20px">
             <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_document()" href="javascript:;">

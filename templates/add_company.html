@@ -96,12 +96,13 @@
 
                     <div class="demo-card-image mdl-card mdl-shadow--2dp">
                       <div class="mdl-card__title mdl-card--expand">{{'Logo Società'|translate}}</div>
-                      <img  ng-show="Company.image.length>0" ng-src ="{{imageurl(Company.image)}}" ></img>
-                      <center>   </center>
+                      <div class="center-cropped mdl-image" >
+                      <img  class="loadImg"  ng-src ="{{imageurl(Company)}}" ></img>
+                      </div>
 
                       <div class="mdl-card__actions">
                         <div class="mdl-layout-spacer"></div>
-                        <input ng-show="main.web"  type="file" id="msds"  name="msds" ng-model="fileweb"/>
+                        <input ng-show="main.web"  type="file" id="msds"  name="msds" ng-model="fileweb" accept='image/*'/>
                         <button ng-show="main.web" id="addfileweb"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadprofileweb()" ><i class="material-icons">file_upload</i></button>
                         <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
                           <span >{{'Carica da WEB'|translate}}.</span>

@@ -18,7 +18,6 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
 
   $http.post( SERVICEURL2,  data )
   .then(function(responceData) {
-    $('#loader_img').hide();
     if(responceData.data.RESPONSECODE=='1') 			{
       data=responceData.data.RESPONSE;
       $scope.Customer =  data;
@@ -32,13 +31,8 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
       $scope.Customer.doc_name="Immagine Profilo"
       $scope.Customer.IMAGEURI=UPLOADSURL +"user/small/"
       $scope.oldSign  = $scope.Customer.sign
+			$scope.Customer.imageLoaded=true;
 
-      $('input.mdl-textfield__input').each(
-        function(index){
-          $(this).parent('div.mdl-textfield').addClass('is-dirty');
-          $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-        }
-      );
 
     }
     else
@@ -96,29 +90,30 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
     options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
     options.mimeType="text/plain";
     options.chunkedMode = false;
+		$scope.$apply(function () {
+      var extn = "." +options.fileName.split(".").pop();
+      filename=baseName(options.fileName).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+      //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+      $scope.Customer.image=filename
+			$scope.Customer.imageLoaded=false
+    });
+
     var params = new Object();
 
     options.params = params;
     var ft = new FileTransfer();
-    $http.post( LOG,  {data:SERVICEURL +"?action=upload_user_image&userid="+userid})
-    ft.upload(imageURI, encodeURI(SERVICEURL +"?action=upload_user_image&userid="+userid), $scope.winFT, $scope.failFT, options);
-
-    //          ft.upload(imageURI, encodeURI(SERVICEURL +"?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
-
-
-
+		var url=SERVICEURL +"?action=upload_document_ax&profile=1"+$scope.agent.pInfoUrl
+    ft.upload(imageURI, url, $scope.winFT, $scope.failFT, options,true);
   }
   $scope.winFT=function (r)
   {
-    var review_info   =JSON.parse(r.response);
-    $scope.Customer.image=review_info.response
-    $scope.$apply()
-
+		$scope.$apply(function () {
+			$scope.Customer.imageLoaded=true
+		});
   }
   $scope.failFT =function (error)
   {
-    $("#loader_img").hide()
-
+		console.log('error loading image');
   }
   $scope.signature_ready=function(){
     clearButton = document.querySelector("#clearCanvas")
@@ -233,38 +228,41 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
   }
 
   $scope.uploadprofileweb=function(){
-      $("#loader_img_int").show()
-        var f = document.getElementById('msds').files[0],
+				var f = document.getElementById('msds').files[0],
             r = new FileReader();
             $scope.f=f
         r.onloadend = function(e) {
             var data = e.target.result;
-            console.log(data);
             f={}
             f.data=data
             f.name=$scope.f.name
-            data={action:"upload_document_ax",type:"profile",id:$scope.Customer.user_id, f:f,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
-            $http.post(SERVICEURL2,data,{
-            headers: {'Content-Type': undefined}
-            })
+            var extn = "." +f.name.split(".").pop();
+            filename=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+            //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+						$scope.Customer.image=filename;
+						$scope.Customer.imageLoaded=false;
+
+            data={action:"upload_document_ax",type:"profile", f:f,filename:filename,pInfo:$scope.agent.pInfo}
+            $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
             .then(function(data){
-              $scope.Customer.image=data.image;
-              if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
-                $scope.Doc.isImage=false
-              }
-              $("#loader_img_int").hide()
+
+              $timeout(function() {
+								$scope.Customer.imageLoaded=true;
+	              $scope.$broadcast('fileUploaded',$scope.Company)
+
+                }
+                ,200)
               if (data.data.RESPONSECODE=='-1'){
                  localstorage('msg','Sessione Scaduta ');
                  $state.go('login');;;
               }
                 console.log('success');
             })
-            , (function(e){
+            , (function(){
                 console.log('error');
             });
         };
         r.readAsDataURL(f);
-
   }
   $scope.imageurl=function(Customer){
 
@@ -272,6 +270,9 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
     imageurl= '../img/customer-listing1.png'
     else
     imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
+
+		if (!Customer.imageLoaded)
+      imageurl='../img/loading_image.gif'
     //
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl
@@ -409,14 +410,16 @@ $scope.$on('addButton', function(e) {
 $scope.$on('$viewContentLoaded',
          function(event){
            $timeout(function() {
-             $('input.mdl-textfield__input').each(
-               function(index){
-                 $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                 $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-               })
-							 $('.mdl-layout__drawer-button').hide()
+						 setDefaults($scope)
+						 $('.mdl-layout__drawer-button').hide()
+						 $scope.main.loader=false
+						 $timeout(function() {
+							 resize_img()
+						 },1000);
+
+
              $scope.main.loader=false
-          }, 5);
+          }, 200);
 });
 
 

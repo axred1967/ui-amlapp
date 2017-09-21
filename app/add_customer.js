@@ -47,9 +47,9 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
          else {
            data[res.slice(-1)[0]]=new Date(data[res.slice(-1)[0] ])
          }
-        })        
+        })
         $scope.Customer =  data;
-        $scope.Customer.IMAGEURI=UPLOADSURL +"user/small/"
+        $scope.Customer.imageLoaded=true;
         //$rootScope.$broadcast('show')
         $scope.loader=false
         $scope.Customer.Docs=IsJsonString($scope.Customer.Docs)
@@ -162,54 +162,62 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
 
 if ($scope.page.temp!==undefined && $scope.page.temp!==null){
   $scope.Customer=$scope.page.temp
+  $scope.Customer.imageLoaded=true;
   //convertDateStringsToDates($scope.Customer)
 }  else {
-     if ($scope.action=="saveProfileCustomer")
+//     if ($scope.action=="saveProfileCustomer")
         $scope.loadItem()
 }
 
 
 $scope.uploadprofileweb=function(){
-    $("#loader_img_int").show()
-      var f = document.getElementById('msds').files[0],
-          r = new FileReader();
-          $scope.f=f
-      r.onloadend = function(e) {
-          var data = e.target.result;
-          console.log(data);
-          f={}
-          f.data=data
-          f.name=$scope.f.name
-          data={action:"upload_document_ax",type:"profile",id:$scope.Customer.user_id, f:f,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
-          $http.post(SERVICEURL2,data,{
-          headers: {'Content-Type': undefined}
-      })
-          .then(function(data){
-            $scope.Customer.image=data.image;
-            if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
-              $scope.Doc.isImage=false
-            }
-            $("#loader_img_int").hide()
-            if (data.data.RESPONSECODE=='-1'){
-               localstorage('msg','Sessione Scaduta ');
-               $state.go('login');;;
-            }
-              console.log('success');
-          })
-          , (function(){
-              console.log('error');
-          });
-      };
-      r.readAsDataURL(f);
+  var f = document.getElementById('msds').files[0],
+  r = new FileReader();
+  $scope.f=f
+  r.onloadend = function(e) {
+    var data = e.target.result;
+    f={}
+    f.data=data
+    f.name=$scope.f.name
+    var extn = "." +f.name.split(".").pop();
+    filename=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+    //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+    $scope.Customer.image=filename;
+    $scope.Customer.imageLoaded=false;
 
+    data={action:"upload_document_ax",type:"profile", f:f,filename:filename,pInfo:$scope.agent.pInfo}
+    $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+    .then(function(data){
+
+      $timeout(function() {
+        $scope.Customer.imageLoaded=true;
+        $scope.$broadcast('fileUploaded',$scope.Customer)
+
+      }
+      ,200)
+      if (data.data.RESPONSECODE=='-1'){
+        localstorage('msg','Sessione Scaduta ');
+        $state.go('login');;;
+      }
+      console.log('success');
+    })
+    , (function(){
+      console.log('error');
+    });
+  };
+  r.readAsDataURL(f);
 }
 
-$scope.imageurl=function(image){
-  if (image===undefined ||  image== null || image.length==0)
-    imageurl= ''
+
+$scope.imageurl=function(Customer){
+  if (Customer===undefined || Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
+  imageurl= '../img/customer-listing1.png'
   else
-  imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
-//
+  imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
+
+  if (!Customer.imageLoaded)
+    imageurl='../img/loading_image.gif'
+  //
   //  Customer.imageurl= Customer.IMAGEURI +Customer.image
   return   imageurl
 
@@ -303,25 +311,32 @@ $scope.uploadPhoto=function(imageURI){
   options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
   options.mimeType="text/plain";
   options.chunkedMode = false;
+
+  $scope.$apply(function () {
+    var extn = "." +options.fileName.split(".").pop();
+    filename=baseName(options.fileName).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+    //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+    $scope.Customer.image=filename
+    $scope.Customer.imageLoaded=false
+  });
+
   var params = new Object();
 
   options.params = params;
   var ft = new FileTransfer();
-  $scope.loader=true
-  //$http.post( LOG,  {data:SERVICEURL +"?action=upload_user_image&userid="+userid})
-  ft.upload(imageURI, encodeURI(SERVICEURL +"?action=upload_user_image&userid="+userid), $scope.winFT, $scope.failFT, options);
+  var url=SERVICEURL +"?action=upload_document_ax&profile=1"+$scope.agent.pInfoUrl
+  ft.upload(imageURI, url, $scope.winFT, $scope.failFT, options,true);
+  var params = new Object();
 
-  //          ft.upload(imageURI, encodeURI(SERVICEURL +"?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per), $scope.winFT, $scope.failFT, options,true);
 
 
 
 }
 $scope.winFT=function (r)
 {
-  var review_info   =JSON.parse(r.response);
-  $scope.Customer.image=review_info.response
-  $scope.loader=false
-  $scope.$apply()
+  $scope.$apply(function () {
+    $scope.Customer.imageLoaded=true
+  });
 
 }
 $scope.failFT =function (error)
@@ -452,12 +467,16 @@ $scope.back=function(){
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-               $('input.mdl-textfield__input').each(
-                 function(index){
-                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                 })
+               setDefaults($scope)
+  						 $('.mdl-layout__drawer-button').hide()
+  						 $scope.main.loader=false
+  						 $timeout(function() {
+  							 resize_img()
+  						 },1000);
+
+
                $scope.main.loader=false
+
             }, 200);
   });
 

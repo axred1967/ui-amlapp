@@ -1,4 +1,4 @@
-app2.controller('add_document', function ($scope,$http,$translate,$state,$timeout,AutoComplete,$stateParams) {
+app2.controller('add_document', function ($scope,$http,$translate,$state,$timeout,AutoComplete,$stateParams,$rootScope) {
   $scope.loader=true
   /* gestiote parametri di stato */
 	$scope.curr_page=$state.current.name
@@ -128,7 +128,7 @@ $scope.loadItem=function(){
             //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
             $scope.Doc.loaded=false
             $scope.Doc.doc_image=filename
-             $scope.Doc.IMAGEURI=UPLOADSURL +"document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
+             $scope.Doc.IMAGEURI=UPLOADSURL +'document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
             $scope.Doc.file_type=extn;
             if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
               $scope.Doc.isImage=false
@@ -137,14 +137,13 @@ $scope.loadItem=function(){
               $scope.Doc.isImage=true
 
             }
-            data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, f:f,filename:filename,pInfo:$scope.agent.pInfo}
+            data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, indice:$scope.Doc.indice,f:f,filename:filename,pInfo:$scope.agent.pInfo}
             $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
             .then(function(data){
 
               $timeout(function() {
-                $scope.Doc.doc_image=data.data.response;
                 $scope.Doc.loaded=true
-                $scope.$broadcast('fileUploaded',$scope.Doc)
+                $scope.$broadcast('fileUploaded',data.data.response)
 
                 }
                 ,200)
@@ -164,18 +163,18 @@ $scope.loadItem=function(){
 
   $scope.imageurl=function(Doc){
     if (Doc===undefined || Doc.doc_image===undefined ||  Doc.doc_image== null || Doc.doc_image.length==0){
-			imageurl= '/img/customer-listing1.png'
+			imageurl= BASEURL+ 'img/customer-listing1.png'
 			return imageurl
 			}
 			else if (Doc.isImage){
 			imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
 		}
 		else{
-			imageurl= '/img/'+ Doc.file_type.substr(1)+'.png'
+			imageurl= BASEURL+ '/img/'+ Doc.file_type.substr(1)+'.png'
 
 		}
     if (!Doc.loaded)
-      imageurl='/img/loading_image.gif'
+      imageurl=BASEURL+ 'img/loading_image.gif'
 
 
     return   imageurl
@@ -281,7 +280,7 @@ $scope.loadItem=function(){
       //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
       $scope.Doc.loaded=false
       $scope.Doc.doc_image=filename
-      $scope.Doc.IMAGEURI=UPLOADSURL +"document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
+      $scope.Doc.IMAGEURI=UPLOADSURL +'document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
       $scope.Doc.file_type=extn;
       if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
         $scope.Doc.isImage=false
@@ -297,7 +296,7 @@ $scope.loadItem=function(){
     options.params = params;
     var ft = new FileTransfer();
     //$http.post( LOG,  {data:SERVICEURL +"?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per})
-    var url=SERVICEURL +"?action=upload_document_ax&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per+$scope.agent.pInfoUrl
+    var url=SERVICEURL +"?action=upload_document_ax&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per+"&indice="+$scope.Doc.indice+$scope.agent.pInfoUrl
     ft.upload(imageURI, url, $scope.winFT, $scope.failFT, options,true);
 
 
@@ -343,23 +342,24 @@ $scope.loadItem=function(){
       usertype: localStorage.getItem('userType')
     }
     dbData=angular.extend({},$scope.Doc)
-    if ($scope.page.action=="add_document_for_kyc" || $scope.page.action=="edit_document_for_kyc"){
-			$scope.pages[$scope.page.location].newOb={}
-			$scope.pages[$scope.page.location].newOb=dbData
-			$scope.pages[$scope.page.location].edit=$scope.page.edit
-			$scope.pages[$scope.page.location].indice=$scope.page.indice
+    if ($scope.page.action=="add_document_for_kyc" || $scope.page.action=="edit_document_for_kyc" || $scope.page.action=="add_document_for_kyc_owner" || $scope.page.action=="edit_document_for_kyc_owner"){
+      if ($scope.Docs.length>0){
+        $scope.pages[$scope.page.location].newOb=[]
+  			$scope.pages[$scope.page.location].newOb=$scope.Docs
+  			$scope.pages[$scope.page.location].indice=$scope.page.indice
+        $scope.pages[$scope.page.location].edit=$scope.page.edit
+
+      }else {
+        $scope.pages[$scope.page.location].newOb={}
+  			$scope.pages[$scope.page.location].newOb=dbData
+  			$scope.pages[$scope.page.location].edit=$scope.page.edit
+  			$scope.pages[$scope.page.location].indice=$scope.page.indice
+
+      }
 			$scope.back()
 	    return;
 		}
 
-    if ($scope.page.action=="add_document_for_kyc_owner" || $scope.page.action=="edit_document_for_kyc_owner"){
-			$scope.pages[$scope.page.location].newOb={}
-			$scope.pages[$scope.page.location].newOb=dbData
-			$scope.pages[$scope.page.location].edit=$scope.page.edit
-			$scope.pages[$scope.page.location].indice=$scope.page.indice
-			$scope.back()
-	    return;
-		}
 
     var langfileloginchk = localStorage.getItem("language");
     data={"action":"savedocument",type:$scope.action, dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
@@ -413,6 +413,36 @@ $scope.loadItem=function(){
     localstorage('pages',JSON.stringify($scope.pages))
     $state.go($scope.page.location,{pages:$scope.pages})
     }
+    $scope.preUploaded=function(Docs) {
+            $scope.Docs=Docs;
+            $timeout(function() {
+              resize_img()
+            },500);
+    };
+    $scope.uploadedMFile=function(Doc) {
+            $rootScope.$broadcast('fileUploaded',Doc);
+    };
+    $scope.$on('fileUploaded', function(e,filename) {
+      if ($scope.Docs!==undefined && $scope.Docs.length>0){
+        angular.forEach($scope.Docs, function(doc,key){
+          if (filename==$scope.Docs[key].doc_image){
+            $scope.Docs[key].loaded=true
+            $timeout(function() {
+              resize_img()
+            },500);
+          }
+
+        })
+      }
+      if ($scope.Doc!==undefined && filename== $scope.Doc.doc_image){
+        $scope.Doc.loaded=true
+        $timeout(function() {
+          resize_img()
+        },500);
+      }
+
+    });
+
   $scope.$on('backButton', function(e) {
       $scope.back()
   });
@@ -425,12 +455,7 @@ $scope.loadItem=function(){
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-               $('input.mdl-textfield__input').each(
-                 function(index){
-                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                 })
-               //nascondo menu sx
+               setDefaults($scope)
                $('.mdl-layout__drawer-button').hide()
                $scope.main.loader=false
                $timeout(function() {
