@@ -159,24 +159,7 @@ header .mdl-layout__header-row button {
 /*------------------------------------------------------------------
 4.1. GRID
 -------------------------------------------------------------------*/
-.mdl-grid {
-    padding: 8px;
-}
-.mdl-cell {
-	margin: 8px;
-}
-.mdl-cell--4-col {
-    width: calc(33.33333% - 16px);
-}
-.mdl-cell--6-col {
-    width: calc(50% - 16px);
-}
-.mdl-cell--8-col {
-    width: calc(66.66666% - 16px);
-}
-.mdl-cell--12-col {
-	width: calc(100% - 16px);
-}
+.
 
 /*------------------------------------------------------------------
 4.2. HEADER
@@ -492,30 +475,7 @@ thead, tbody, .mdl-data-table__cell--non-numeric {
 /*------------------------------------------------------------------
 6.2. GALLERY
 -------------------------------------------------------------------*/
-.mdl-layout__content.gallery-container {
-	margin-bottom: 4px;
-}
-.mdl-grid.gallery {
-    padding: 0 2px;
-}
-.gallery .mdl-cell {
-	margin: 4px 2px 0;
-}
-.gallery.masonry img {
-	margin-bottom: 4px;
-}
-.gallery .mdl-cell--4-col {
-    width: calc(33.33333% - 4px);
-}
-.gallery .mdl-cell--6-col {
-    width: calc(50% - 4px);
-}
-.gallery .mdl-cell--8-col {
-    width: calc(66.66666% - 4px);
-}
-.gallery .mdl-cell--12-col {
-	width: calc(100% - 4px);
-}
+
 
 /*------------------------------------------------------------------
 6.3. BLOG

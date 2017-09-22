@@ -1,4 +1,4 @@
-<<center>
+<center>
 <span style="font-size:18px;font-weight:bold" class="orange" id="name_agent">{{'Adeguata Verifica'|translate}}</span><br/>
 <span style="font-size:18px;font-weight:bold" class="blue" id="name_agent">{{Contract.CPU}} - {{Contract.fullname}}</span>
 </center>
@@ -55,7 +55,7 @@
 
 <div  class="mdl-grid"       >
 
-  <div ng-hide="Kyc.Docs.length == 0 " ng-class="{'mdl-cell--3-col-desktop mdl-cell-12-col-phone mdl-cell-6-col-tablet': main.web }"   id="list_doc"
+  <div ng-hide="Kyc.Docs.length == 0 " ng-class="{'mdl-cell--3-col-desktop mdl-cell--12-col-phone mdl-cell--6-col-tablet': main.web }"   id="list_doc"
   ng-hide="Kyc.Docs.length == 0 " class="ng-hide" ng-repeat="Doc in Kyc.Docs track by $index  "   ng-init="DocIndex=$index">
 
     <div ng-hide="Doc.deleted" style="padding:16px" >
