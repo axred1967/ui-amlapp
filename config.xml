@@ -1,11 +1,11 @@
 <?xml version='1.1' encoding='utf-8'?>
 <widget id="com.euriskoformazione.amlapp" version="1.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>Amlapp</name>
+    <name>Amlapp-dev</name>
     <description>
         Amlapp
     </description>
     <author email="info@euriskoformazione.it" href="http://amlapp.euriskoformazione.com">
-       Amlapp
+       Eurisko formazione e consulenza srls
     </author>
     <content src="index.html" />
     <preference name="DisallowOverscroll" value="true" />
