@@ -30,6 +30,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
   $scope.deleted=0
 	$scope.Kyc={}
 
+
 	$scope.imageurl=function(Doc){
 
     if (Doc===undefined || Doc.doc_image===undefined ||  Doc.doc_image== null || Doc.doc_image.length==0){
@@ -41,11 +42,15 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 
 		}
 		else{
-			imageurl= '/img/'+ Doc.file_type.substr(1)+'.png'
+			imageurl= BASEURL+'img/'+ Doc.file_type.substr(1)+'.png'
 
 		}
 		if (!Doc.loaded){
-			imageurl='/img/loading_image.gif'
+			imageurl=BASEURL+'/img/loading_image.gif'
+
+		}
+		if (Doc.downloading){
+			imageurl=BASEURL+'/img/downloading.gif'
 
 		}
 
@@ -165,8 +170,67 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 	else{
 			$scope.loadItem()
 	}
+	settings={table:'kyc',id:'id',
+						fields :{
+							'Docs':'uno.Docs'
+						},
+						where: {
+							'j1.contractor_id': {valore:$scope.Contract.contractor_id},
+							'CHAR_LENGTH(uno.Docs)':{'opcond':'>', valore:20}
+						},
+						join:{
+					    'j1':{'table':'contract',
+					          'condition':'uno.contract_id=j1.id '
+					        }
 
+						},
+						limit:1,
+						order:{'uno.id':'desc'}
+					}
+	data= {"action":"ListObjs",settings:settings,pInfo:$scope.agent.pInfo}
+	$http.post(SERVICEURL2,  data )
+	.then(function(responceData)  {
+		if(responceData.data.RESPONSECODE=='1') 			{
+			data=responceData.data.RESPONSE
+			$scope.precAVDocs=IsJsonString(data[0].docs);
+		}
+		else   {
+			if (responceData.data.RESPONSECODE=='-1'){
+				localstorage('msg','Sessione Scaduta ');
+				$state.go('login');;;
+			}
+		}})
+		, (function() {
+			console.log("error");
+		});
+  $scope.fillKycData=function(){
+		swal({
+			title: $filter('translate')("Sei Sicuro?"),
+			text: $filter('translate')("Saranno Caricati i documenti allegati all'ultima AV sul Soggetto"),
+			icon: "warning",
+			buttons: {
+			'procedi':{text:$filter('translate')('Procedi'),value:true},
+			'annulla':{text:$filter('translate')('Annulla'),value:false},
 
+			},
+
+		})
+		.then((Value) => {
+			if (Value) {
+				$scope.Kyc.Docs=$scope.precAVDocs
+				$scope.saveDocs()
+			$timeout(function() {
+				 resize_img()
+			 },1000);
+
+				swal($filter('translate')('importazione effettuata'), {
+					icon: "success",
+				});
+			} else {
+				swal($filter('translate')('importazione Annulata'));
+			}
+	  })
+	}
   $scope.deleteDoc=function(ob,index ){
 	swal({
 		title: $filter('translate')("Sei Sicuro?"),
@@ -283,22 +347,18 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 
     }
   }
-	$scope.download = function(Doc) {
+	$scope.download = function(Doc,indice) {
      url=SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
-     $http.get(url, {
-         responseType: "arraybuffer"
-       })
-       .then(function(data) {
          var anchor = angular.element('<a/>');
          angular.element(document.body).append(anchor);
          var ev = document.createEvent("MouseEvents");
          ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+				 $scope.Kyc.Docs[indice].downloading=false
          anchor.attr({
            href: url,
            target: '_blank',
            download: Doc.doc_image
          })[0].dispatchEvent(ev);
-       })
      }
 
 

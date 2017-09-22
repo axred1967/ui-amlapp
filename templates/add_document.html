@@ -66,11 +66,13 @@
 
             <div class="mdl-card__actions">
               <div class="mdl-layout-spacer"></div>
-              <input ng-show="main.web"  type="file" id="msds"  name="msds" ng-model="fileweb"/>
-              <button ng-show="main.web" id="addfileweb"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfileweb()" ><i class="material-icons">file_upload</i></button>
+              <input style="display:none" type="file" id="msds"  name="msds" ng-model="fileweb" onchange="angular.element(this).scope().uploadfileweb(this)"/>
+              <button ng-show="main.web" id="addfileweb" onclick="$('#msds').click()" class="mdl-button mdl-button--icon mdl-button--colored"><i class="material-icons">file_upload</i></button>
               <span class="mdl-tooltip mdl-tooltip--validation" for="addfileweb" >
                 <span >{{'Carica da WEB'|translate}}.</span>
               </span>
+
+
               <button ng-hide="main.web"  id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
               <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
                 <span >{{'Scatta una foto'|translate}}.</span>
@@ -88,12 +90,21 @@
         </fieldset>
       </div>
     </div>
+<br/>
+    <label style="    color: #3f51b5;    font-size: 12px;    top: 4px;    visibility: visible;" >{{'Carica Più Documenti' | translate }}</label>
 
     <fieldset ng-show="main.web && ! page.edit " class="asset-upload"
     uploadmfiles onload="" ng-model="Doc" docs="Docs" dir-Agent="agent.pInfo" doc="Doc"
     dir-text="" pre-uploaded="preUploaded(args)" uploaded-m-file="uploadedMFile(args)">
 
-{{ 'Se vuoi caricare più file Trascinali qui ' | translate }}
+<input style="display:none" type="file" id="multiup"  name="multiup" ng-model="fileweb" onchange="angular.element(this).scope().uploadmfileweb(this)" multiple/>
+<button ng-show="main.web" id="addfileweb" onclick="$('#multiup').click()" class="mdl-button mdl-button--icon mdl-button--colored"><i class="material-icons">file_upload</i></button>
+<span class="mdl-tooltip mdl-tooltip--validation" for="addfileweb" >
+  <span >{{'Carica da WEB'|translate}}.</span>
+</span>
+<label style="    color: #3f51b5;    font-size: 12px;    top: 4px;    visibility: visible;" >{{ 'Trascinali i Documenti qui  o scegli ' | translate }}</label>
+
+
 <div ng-class="{'mdl-grid': main.web }" >
       <div ng-class="{'mdl-cell--4-col': main.web }" ng-repeat="Doc in Docs" style="padding:20px">
         <div class="demo-card-image mdl-card mdl-shadow--2dp">

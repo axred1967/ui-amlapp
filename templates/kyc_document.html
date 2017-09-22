@@ -25,6 +25,16 @@
 
   </div>
   <div>
+    <center>
+    <button  ng-show="precAVDocs.length >0 "  id="fillData" ng-click="fillKycData()"
+       class=" mdl-button mdl-js-button mdl-button--fab   mdl-button--mini-fab mdl-button--colored blue-btn">
+      <i class="material-icons">replay</i>
+    </button>
+    <span class="mdl-tooltip mdl-tooltip--validation" for="fillData" >
+      <span >{{'Carica i documenti da ultima AV sul soggetto'|translate}}.</span>
+    </span>
+  </center>
+
   </div>
   <div ng-class="(Kyc.kyc_status==0) ? 'Alto' : 'Basso'" style="text-align:right!important">
     <i ng-show="Kyc.kyc_status==1" class="Basso material-icons" id="AVOK">done</i>
@@ -53,12 +63,12 @@
       <div class="demo-card-image mdl-card mdl-shadow--2dp" >
         <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
         <div class="mdl-image center-cropped" ng-click="edit_document(Doc,DocIndex)">
-        <img  class="loadImg"  ng-src ="{{imageurl(Doc)}}" ></img>
+        <img  class="loadImg" id="{{'Doc_image'+DocIndex}}" ng-src ="{{imageurl(Doc)}}" ></img>
       </div>
         <div class="mdl-card__actions">
 
           <div class="mdl-layout-spacer"></div>
-          <button tooltip ng-hide="Doc.isImage" id="{{'download'+DocIndex}}"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="download(Doc)" >
+          <button tooltip ng-hide="Doc.isImage" id="{{'download'+DocIndex}}"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="download(Doc,DocIndex)" >
             <i class="material-icons">file_download</i>
           </button>
           <span class="mdl-tooltip mdl-tooltip--validation" for="{{'download'+DocIndex}}" >

@@ -217,10 +217,7 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
   }
   $scope.download = function(Doc) {
      url=SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
-     $http.get(url, {
-         responseType: "arraybuffer"
-       })
-       .then(function(data) {
+
          var anchor = angular.element('<a/>');
          angular.element(document.body).append(anchor);
          var ev = document.createEvent("MouseEvents");
@@ -230,7 +227,6 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
            target: '_blank',
            download: Doc.doc_image
          })[0].dispatchEvent(ev);
-       })
      }
 
 

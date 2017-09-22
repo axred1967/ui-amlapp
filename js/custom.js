@@ -378,6 +378,7 @@ function getCountryList(){
 }
 function resize_img(){
     $('.demo-card-image img.loadImg').each(function() {
+      $(this).removeAttr('style');
       var maxHeight = $(this).parent().height();    // Max height for the image
       var maxWidth = $(this).parent().width();    // Max height for the image
       var height = $(this).height();  // Current image height
@@ -438,6 +439,33 @@ function resize_img(){
 */
 
     });
+}
+function resize_single_img(id){
+    setTimeout(function(){
+      $('#'+id).each(function() {
+        $(this).removeAttr('style');
+        var maxHeight = $(this).parent().height();    // Max height for the image
+        var maxWidth = $(this).parent().width();    // Max height for the image
+        var height = $(this).height();  // Current image height
+        var width = $(this).width();    // Current image width
+        var height = $(this).height();  // Current image height
+        var ratio_ori = width/height;  // Used for aspect ratio
+        var ratio_height = height/maxHeight;  // Used for aspect ratio
+        var ratio_width = width/maxWidth;  // Used for aspect ratio
+        if(height > maxHeight){
+          $(this).css("height", maxHeight);   // Set new height
+          $(this).css("width", width*1/ratio_height );   // Set new height
+        }
+
+        if(width > maxWidth){
+          $(this).css("width", maxWidth);   // Set new height
+          $(this).css("height", height*1/ratio_width);   // Set new height
+        }
+
+      });
+      
+    }
+    , 3000);
 }
 function setDefaults($scope){
   $('input').each(

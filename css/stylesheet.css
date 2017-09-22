@@ -2000,6 +2000,7 @@ main{
 .center-cropped {
     overflow:hidden;
 		max-height:300px;
+		min-height:300px
 }
 .mdl-image{
 	vertical-align:middle;

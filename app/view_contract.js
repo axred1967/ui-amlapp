@@ -24,6 +24,23 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 	$scope.main.loader=true
 	$scope.curr_page="view_contract"
   $scope.Contract=$scope.page.Contract
+	if($scope.Contract===undefined){
+		swal({
+			title: $filter('translate')("Problema"),
+			text: $filter('translate')("la APP non riesce a caridare i dati del Contratto, ritorna alla home!"),
+			icon: "error",
+			buttons: {
+			'procedi':{text:$filter('translate')('Procedi'),value:true},
+
+			},
+
+		})
+		.then((Value) => {
+			if (Value) {
+				$scope.back()
+			}
+		})
+	}
 
 	$scope.loadItem=function(){
 
@@ -153,10 +170,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 		url=PDFURL +'kyc.php?id='+$scope.Contract.contract_id+"&download=Y"+$scope.agent.pInfoUrl
 		if ($scope.main.web){
 
-			$http.get(url, {
-				responseType: "arraybuffer"
-			})
-			.then(function(data) {
+
 				var anchor = angular.element('<a/>');
 				angular.element(document.body).append(anchor);
 				var ev = document.createEvent("MouseEvents");
@@ -166,7 +180,6 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 					target: '_blank',
 					download: 'kyc'+$scope.Contract.contract_id+ '-'+$scope.agent.id+'.pdf'
 				})[0].dispatchEvent(ev);
-			})
 
 		}
 		else {

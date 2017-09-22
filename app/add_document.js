@@ -112,52 +112,111 @@ $scope.loadItem=function(){
           fd.append('for',$scope.Doc.per)
 
   */
-  $scope.uploadfileweb=function(){
-
-
-        var f = document.getElementById('msds').files[0],
+  $scope.uploadfileweb=function(e){
+            f=e.files[0]
             r = new FileReader();
-            $scope.f=f
-        r.onloadend = function(e) {
-            var data = e.target.result;
-            f={}
-            f.data=data
-            f.name=$scope.f.name
-            var extn = "." +f.name.split(".").pop();
-            filename=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
-            //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
-            $scope.Doc.loaded=false
-            $scope.Doc.doc_image=filename
-             $scope.Doc.IMAGEURI=UPLOADSURL +'document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
-            $scope.Doc.file_type=extn;
-            if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
-              $scope.Doc.isImage=false
-            }
-            else {
-              $scope.Doc.isImage=true
+             $scope.f=f
+         r.onloadend = function(e) {
+             var data = e.target.result;
+             f={}
+             f.data=data
+             f.name=$scope.f.name
+             var extn = "." +f.name.split(".").pop();
+             filename=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+             //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+             $scope.Doc.loaded=false
+             $scope.Doc.doc_image=filename
+              $scope.Doc.IMAGEURI=UPLOADSURL +'document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
+             $scope.Doc.file_type=extn;
+             if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
+               $scope.Doc.isImage=false
+             }
+             else {
+               $scope.Doc.isImage=true
 
-            }
-            data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, indice:$scope.Doc.indice,f:f,filename:filename,pInfo:$scope.agent.pInfo}
-            $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
-            .then(function(data){
+             }
+             data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, indice:$scope.Doc.indice,f:f,filename:filename,pInfo:$scope.agent.pInfo}
+             $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+             .then(function(data){
 
-              $timeout(function() {
-                $scope.Doc.loaded=true
-                $scope.$broadcast('fileUploaded',data.data.response)
+               $timeout(function() {
+                 $scope.Doc.loaded=true
+                 $scope.$broadcast('fileUploaded',data.data.response)
 
+                 }
+                 ,200)
+               if (data.data.RESPONSECODE=='-1'){
+                  localstorage('msg','Sessione Scaduta ');
+                  $state.go('login');;;
+               }
+                 console.log('success');
+             })
+             , (function(){
+                 console.log('error');
+             });
+         };
+         r.readAsDataURL(f);
+
+
+  }
+  $scope.uploadmfileweb=function(  e){
+            files=e.files
+            var nfile=files.length
+            var $i=0;
+            var image_type=['.png','.gif','.png','.tif','.bmp','.jpg','.jpeg']
+            angular.forEach(files, function(value){
+              var f = value
+              r = new FileReader();
+              var file=f
+              r.onloadend = function(e) {
+                var data = e.target.result;
+                f={}
+                f.data=data
+                f.name=file.name
+                var extn = "." +f.name.split(".").pop();
+                filename=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+
+                if ($scope.Docs[$i]===undefined){
+                  $scope.Docs[$i]={}
                 }
-                ,200)
-              if (data.data.RESPONSECODE=='-1'){
-                 localstorage('msg','Sessione Scaduta ');
-                 $state.go('login');;;
-              }
-                console.log('success');
-            })
-            , (function(){
-                console.log('error');
-            });
-        };
-        r.readAsDataURL(f);
+                $scope.Docs[$i].doc_name=file.name;
+                $scope.Docs[$i].loaded=false
+                $scope.Docs[$i].per=$scope.Doc.per
+                $scope.Docs[$i].per_id=$scope.Doc.per_id
+                $scope.Docs[$i].indice=$scope.Doc.indice+$i
+                $scope.Docs[$i].doc_image=filename
+                $scope.Docs[$i].file_type=extn;
+                if(image_type.indexOf($scope.Docs[$i].file_type) === -1) {
+                  $scope.Docs[$i].isImage=false
+                }
+                else {
+                  $scope.Docs[$i].isImage=true
+                }
+                data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, filename:filename,indice:$scope.Doc.indice+$i,f:f,pInfo:$scope.agent.pInfo}
+                $i++;
+                if ($i>=nfile)
+                  $timeout(function() {
+                    resize_img()
+                  },500);
+
+                $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+                .then(function(data){
+                  if (data.data.RESPONSECODE=='1'){
+                    $rootScope.$broadcast('fileUploaded',data.data.response);
+                  }
+                  if (data.data.RESPONSECODE=='-1'){
+                    localstorage('msg','Sessione Scaduta ');
+                    $state.go('login');;;
+                  }
+                  console.log('success');
+                })
+                , (function(){
+                  console.log('error');
+                });
+              };
+              r.readAsDataURL(f);
+          })
+
 
   }
 
@@ -389,10 +448,7 @@ $scope.loadItem=function(){
 
   $scope.download = function(Doc) {
      url=SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
-     $http.get(url, {
-         responseType: "arraybuffer"
-       })
-       .then(function(data) {
+
          var anchor = angular.element('<a/>');
          angular.element(document.body).append(anchor);
          var ev = document.createEvent("MouseEvents");
@@ -402,7 +458,6 @@ $scope.loadItem=function(){
            target: '_blank',
            download: Doc.doc_image
          })[0].dispatchEvent(ev);
-       })
      }
 
   $scope.back=function(){
