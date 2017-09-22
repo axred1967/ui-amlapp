@@ -44,10 +44,11 @@
 
   <script src="https://amlapp.euriskoformazione.com/dev/ui-amlapp/js/jquery-2.1.4.min.js"></script>
   <script type="text/javascript" src="https://amlapp.euriskoformazione.com/dev/ui-amlapp/js/custom.js"></script>
+
   <script>
   var isapp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
   if ( isapp ) {
-    document.write('<script type="text/javascript" charset="utf-8" src="cordova.js"></script>');
+    document.write('<script type="text/javascript" charset="utf-8" src="cordova.js" ></'+'script>');
     $(document).ready(function(){app.initialize();});
   }
   </script>
