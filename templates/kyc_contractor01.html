@@ -1,6 +1,6 @@
 <fieldset ng-show="Kyc.kyc_update.state=='aggiornamento'">
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
-    <text-angular   class="textwidth100" style="width: 100% !important;" ng-model="Customer.updatereason" ng-required="Kyc.kyc_update.state=='aggiornamento'"
+    <text-angular   class="textwidth100" style="width: 100% !important;" ng-class="{'imported': Customer.imported.updatereason }" ng-model="Customer.updatereason" ng-required="Kyc.kyc_update.state=='aggiornamento'"
     type="text" rows= "3" id="reason" name="reason" ></text-angular>
     <label for="reason"  class="mdl-textfield__label   " style="margin-top:-10px;color: #3f51b5;font-size: 12px;top: 4px;visibility: visible;">
       {{ 'Motivo del Aggiornamento' | translate}}</label>
@@ -13,7 +13,7 @@
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="text" autocomplete="off" id="Customer_name" name="Customer_name"  pattern="[A-Za-z\s]*"
-    ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="passo==1 "
+      ng-class="{'imported': Customer.imported.name }" ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="passo==1 "
     />
     <label class="mdl-textfield__label" for="Customer_name">{{'Name'|translate}} *</label>
     <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_name" ng-show="form.Customer_name.$invalid && form.Customer_name.$touched">
@@ -24,7 +24,7 @@
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="text" autocomplete="off" id="Customer_surname" name="Customer_surname"value=" "  pattern="[A-Za-z\s]*"
-    ng-model="Customer.surname"  ng-change="Customer.surname=(Customer.surname| capitalize)" minlength="3"
+    ng-class="{'imported': Customer.imported.surname }" ng-model="Customer.surname"  ng-change="Customer.surname=(Customer.surname| capitalize)" minlength="3"
     ng-required="passo==1 " />
     <label class="mdl-textfield__label" for=""Customer_surname"">{{'Surname'|translate}} *</label>
     <span class="mdl-tooltip mdl-tooltip--validation" for="Custome_surname" ng-show="form.Customer_surname.$invalid && form.Customer_surname.$touched">
@@ -49,7 +49,7 @@ ng-focus="resetAC()"
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="email" id="Customer_email" name="Customer_email" value=" "
-    ng-model="Customer.email"  />
+    ng-class="{'imported': Customer.imported.email }" ng-model="Customer.email"  />
     <label class="mdl-textfield__label" for="email">{{'EmailID' | translate}}*</label>
     <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_email" ng-show="form.Customer_email.$invalid && form.Customer_email.$touched">
       <span ng-show="form.Customer_email.$error.required">{{'Richiesta.'| translate}}</span>
@@ -61,7 +61,7 @@ ng-focus="resetAC()"
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="text" autocomplete="off" id="Customer_mobile"  name="Customer_mobile" value=" "
-    ng-model="Customer.mobile"  />
+    ng-class="{'imported': Customer.imported.mobile }" ng-model="Customer.mobile"  />
     <label class="mdl-textfield__label" for="mobile">{{'Mobile' | translate}}*</label>
     <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_mobile" ng-show="form.Customer_mobile.$invalid && form.Customer_mobile.$touched">
       <span ng-show="form.Customer_mobile.$error.required">Required.</span>
@@ -72,7 +72,7 @@ ng-focus="resetAC()"
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="date" date-input id="dob" name="dob"
-    ng-model="Customer.dob"   ng-required="passo==1"
+    ng-class="{'imported': Customer.imported.dob }" ng-model="Customer.dob"   ng-required="passo==1"
     />
     <label class="mdl-textfield__label" for="dob">{{'Dob'|translate}} *</label>
     <span class="mdl-tooltip mdl-tooltip--validation" for="dob" ng-show="form.dob.$invalid && form.dob.$touched">
@@ -83,7 +83,7 @@ ng-focus="resetAC()"
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="text" autocomplete="off" id="tob" name="tob"  pattern="[A-Za-z\s]*"
-    ng-model="Customer.birth_town"  ng-change="Customer.birth_town=(Customer.birth_town| capitalize)"
+    ng-class="{'imported': Customer.imported.birth_town }" ng-model="Customer.birth_town"  ng-change="Customer.birth_town=(Customer.birth_town| capitalize)"
     minlength="3" ng-required="passo==1"
     ng-keyup="showAC('users.birth_town','tob',{zero:true});"
     ng-focus="showAC('users.birth_town','tob',{zero:true});resetAC()"
@@ -107,7 +107,7 @@ ng-focus="resetAC()"
 <fieldset>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
   <input class="mdl-textfield__input" type="text" autocomplete="off" id="birth_country" name="birth_country" minlength="3"  value=" "
-  ng-model="Customer.birth_country"   minlength="3"  ng-required="passo==1" def-setting="country"
+  ng-class="{'imported': Customer.imported.birth_country }" ng-model="Customer.birth_country"   minlength="3"  ng-required="passo==1" def-setting="country"
   ng-keyup="showAC('users.birth_country','birth_country',{countries:true,zero:true});"
   ng-focus="showAC('users.birth_country','birth_country',{countries:true,zero:true});resetAC()"
   />
@@ -132,7 +132,7 @@ ng-focus="resetAC()"
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="text" autocomplete="off" id="id_type" name="id_type"
-    ng-model="Customer.id_type"  ng-change="Kyc.contractor_data.id_type=(Kyc.contractor_data.id_type| capitalize)" minlength="3"
+    ng-class="{'imported': Customer.imported.id_type }" ng-model="Customer.id_type"  ng-change="Kyc.contractor_data.id_type=(Kyc.contractor_data.id_type| capitalize)" minlength="3"
     ng-required="passo==1"
     ng-keyup="showAC('users.id_type','id_type',{zero:true});"
     ng-focus="resetAC();showAC('users.id_type','id_type',{zero:true});" />
@@ -155,7 +155,7 @@ ng-focus="resetAC()"
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="text" autocomplete="off" id="id_authority_name" name="id_authority_name"
-    ng-model="Customer.id_authority_name"  ng-change="Kyc.contractor_data.id_authority_name=(Kyc.contractor_data.id_authority_name| capitalize)"
+    ng-class="{'imported': Customer.imported.id_authority_name }" ng-model="Customer.id_authority_name"  ng-change="Kyc.contractor_data.id_authority_name=(Kyc.contractor_data.id_authority_name| capitalize)"
     minlength="3" ng-required="passo==1"
     ng-focus="resetAC();showAC('users.id_authority_name','id_authority_name',{zero:true});"
     ng-keyup="showAC('users.id_authority_name','id_authority_name',{zero:true});"  />
@@ -178,7 +178,7 @@ ng-focus="resetAC()"
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="text" autocomplete="off" id="Kyc_ndoc" name="Kyc_ndoc"
-    ng-model="Customer.id_number"   ng-required="passo==1 "
+    ng-class="{'imported': Customer.imported.id_number }" ng-model="Customer.id_number"   ng-required="passo==1 "
     />
     <label class="mdl-textfield__label" for="Kyc_doi">{{'Numero del documento di identità'|translate}} *</label>
     <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_ndoc" ng-show="form.Kyc_ndoc.$invalid && form.Kyc_ndoc.$touched">
@@ -188,7 +188,7 @@ ng-focus="resetAC()"
 </fieldset>                  <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="date" date-input id="Kyc_ddoc" name="Kyc_ddoc"
-    ng-model="Customer.id_release_date"   ng-required="passo==1 "
+    ng-class="{'imported': Customer.imported.id_release_date }" ng-model="Customer.id_release_date"   ng-required="passo==1 "
     />
     <label class="mdl-textfield__label" for="Kyc_doi">{{'ReleaseDateofIdentityDocument'|translate}} *</label>
     <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_ddoc" ng-show="form.Kyc_ddoc.$invalid && form.Kyc_ddoc.$touched">
@@ -200,7 +200,7 @@ ng-focus="resetAC()"
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="date" date-input id="Kyc_eovdoc" name="Kyc_eovdoc"
-    ng-model="Customer.id_validity"   ng-required="passo==1 "
+    ng-class="{'imported': Customer.imported.id_validity }" ng-model="Customer.id_validity"   ng-required="passo==1 "
     />
     <label class="mdl-textfield__label" for="Kyc_doi">{{'Data Scandenza Documento'|translate}} *</label>
     <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_eovdoc" ng-show="form.Kyc_eovdoc.$invalid && form.Kyc_eovdoc.$touched">

@@ -81,14 +81,50 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 
         $scope.Kyc=data;
 				$scope.Kyc.Docs=IsJsonString($scope.Kyc.Docs,true)
+				settings={table:'kyc',id:'id',
+									fields :{
+										'Docs':'uno.Docs',
+										'CPU' :'j1.CPU'
+									},
+									where: {
+										'uno.id': {'opcond':'<>',valore:$scope.Kyc.id},
+										'j1.contractor_id': {valore:$scope.Contract.contractor_id},
+										'CHAR_LENGTH(uno.Docs)':{'opcond':'>', valore:20}
+									},
+									join:{
+								    'j1':{'table':'contract',
+								          'condition':'uno.contract_id=j1.id '
+								        }
+
+									},
+									limit:1,
+									order:{'uno.id':'desc'}
+								}
+				data= {"action":"ListObjs",settings:settings,pInfo:$scope.agent.pInfo}
+				$http.post(SERVICEURL2,  data )
+				.then(function(responceData)  {
+					if(responceData.data.RESPONSECODE=='1') 			{
+						data=responceData.data.RESPONSE
+						$scope.precAVDocs=IsJsonString(data[0].docs);
+						angular.forEach($scope.precAVDocs, function(doc,key){
+							 var prec=""
+								if ($scope.precAVDocs[key].doc_name!==undefined){
+									prec=$scope.precAVDocs[key].doc_name
+								}
+								$scope.precAVDocs[key].doc_name= prec+ " - importato da CPU" + data[0].cpu
+						})
+					}
+					else   {
+						if (responceData.data.RESPONSECODE=='-1'){
+							localstorage('msg','Sessione Scaduta ');
+							$state.go('login');;;
+						}
+					}})
+					, (function() {
+						console.log("error");
+					});
 
 
-      $('input.mdl-textfield__input').each(
-          function(index){
-            $(this).parent('div.mdl-textfield').addClass('is-dirty');
-            $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-          }
-        );
       }
       else
       {
@@ -170,39 +206,6 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 	else{
 			$scope.loadItem()
 	}
-	settings={table:'kyc',id:'id',
-						fields :{
-							'Docs':'uno.Docs'
-						},
-						where: {
-							'j1.contractor_id': {valore:$scope.Contract.contractor_id},
-							'CHAR_LENGTH(uno.Docs)':{'opcond':'>', valore:20}
-						},
-						join:{
-					    'j1':{'table':'contract',
-					          'condition':'uno.contract_id=j1.id '
-					        }
-
-						},
-						limit:1,
-						order:{'uno.id':'desc'}
-					}
-	data= {"action":"ListObjs",settings:settings,pInfo:$scope.agent.pInfo}
-	$http.post(SERVICEURL2,  data )
-	.then(function(responceData)  {
-		if(responceData.data.RESPONSECODE=='1') 			{
-			data=responceData.data.RESPONSE
-			$scope.precAVDocs=IsJsonString(data[0].docs);
-		}
-		else   {
-			if (responceData.data.RESPONSECODE=='-1'){
-				localstorage('msg','Sessione Scaduta ');
-				$state.go('login');;;
-			}
-		}})
-		, (function() {
-			console.log("error");
-		});
   $scope.fillKycData=function(){
 		swal({
 			title: $filter('translate')("Sei Sicuro?"),
@@ -217,7 +220,11 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 		})
 		.then((Value) => {
 			if (Value) {
-				$scope.Kyc.Docs=$scope.precAVDocs
+				if (Array.isArray($scope.precAVDocs)){
+					angular.forEach($scope.precAVDocs, function(value){
+						 $scope.Kyc.Docs.push(value);
+					})
+				}
 				$scope.saveDocs()
 			$timeout(function() {
 				 resize_img()
@@ -245,8 +252,24 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 	})
 	.then((Value) => {
 		if (Value) {
-			$scope.Kyc['Docs'].splice(index,1)
-			$scope.saveDocs()
+			if (ob.per_id==$scope.Contract.contract_id){
+				data={action:'delete',table:'tmp_image','primary':'imagename',id:ob.doc_image,pInfo:$scope.agent.pInfo}
+				$http.post(SERVICEURL2,data)
+		    .then(function(responceData)  {
+					$scope.Kyc['Docs'].splice(index,1)
+					$scope.saveDocs()
+		      console.log(responceData);
+		    })
+		    , (function(error) {
+		      console.log("error");
+		    })
+
+			}
+			else {
+				$scope.Kyc['Docs'].splice(index,1)
+				$scope.saveDocs()
+
+			}
 			swal($filter('translate')('Cancellazione effettuata'), {
 				icon: "success",
 			});
@@ -348,43 +371,54 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
     }
   }
 	$scope.download = function(Doc,indice) {
-     url=SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
-		 if ($scope.main.web){
-         var anchor = angular.element('<a/>');
-         angular.element(document.body).append(anchor);
-         var ev = document.createEvent("MouseEvents");
-         ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-				 $scope.Kyc.Docs[indice].downloading=false
-         anchor.attr({
-           href: url,
-           target: '_blank',
-           download: Doc.doc_image
-         })[0].dispatchEvent(ev);
-     }
+		url=SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
+		if (Doc.isImage){
+			url=SERVICEDIRURL +"file_down.php?action=file&resize=m&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
+			dialog.showModal();
+			$timeout(function(){
+				init_canvas_image('DocCanvas',url)
 
-	 else {
-		 var fileTransfer = new FileTransfer();
- //		var uri = encodeURI(url);
-			 var uri = url;
+			},500)
+		}
+		else{
+			if ($scope.main.web){
+				var anchor = angular.element('<a/>');
+				angular.element(document.body).append(anchor);
+				var ev = document.createEvent("MouseEvents");
+				ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+				$scope.Kyc.Docs[indice].downloading=false
+				anchor.attr({
+					href: url,
+					target: '_blank',
+					download: Doc.doc_image
+				})[0].dispatchEvent(ev);
 
-		 fileTransfer.download(
-			 uri,
-			 cordova.file.externalApplicationStorageDirectory+'download/doc'+ Doc.file_type,
-			 function(entry) {
-				 cordova.plugins.SitewaertsDocumentViewer.viewDocument(
-					 cordova.file.externalApplicationStorageDirectory+'download/MyPdf.pdf', extToMime(Doc.file_type.substr(1)));
+			}
 
-					 console.log("download complete: " + entry.fullPath);
-				 },
-				 function(error) {
-					 console.log("download error source " + error.source);
-					 console.log("download error target " + error.target);
-					 console.log("upload error code" + error.code);
-				 }
-			 );
+			else {
+				var fileTransfer = new FileTransfer();
+				//		var uri = encodeURI(url);
+				var uri = url;
 
-		 }
-	}
+				fileTransfer.download(
+					uri,
+					cordova.file.externalApplicationStorageDirectory+'download/doc'+ Doc.file_type,
+					function(entry) {
+						cordova.plugins.SitewaertsDocumentViewer.viewDocument(
+							cordova.file.externalApplicationStorageDirectory+'download/MyPdf.pdf', extToMime(Doc.file_type.substr(1)));
+
+							console.log("download complete: " + entry.fullPath);
+						},
+						function(error) {
+							console.log("download error source " + error.source);
+							console.log("download error target " + error.target);
+							console.log("upload error code" + error.code);
+						}
+					);
+
+				}
+			}
+		}
 
   $scope.add_document=function(){
 		$scope.pages['add_document']={action:'add_document_for_kyc',location:$state.current.name,
@@ -396,10 +430,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 
   }
   $scope.edit_document=function(doc,indice){
-		if (!doc.isImage) {
-			download(doc)
-			return
-		}
+
 		$scope.edit_documentb(doc,indice)
 	}
   $scope.edit_documentb=function(doc,indice){
@@ -413,7 +444,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 	$scope.$on('fileUploaded', function(e,filename) {
 		if ($scope.Kyc.Docs!==undefined && $scope.Kyc.Docs.length>0){
 			angular.forEach($scope.Kyc.Docs, function(doc,key){
-				if (filename==$scope.Kyc.Docs[key].doc_name){
+				if (filename==$scope.Kyc.Docs[key].doc_image){
 					$scope.Kyc.Docs[key].loaded=true
 					$timeout(function() {
 						resize_img()

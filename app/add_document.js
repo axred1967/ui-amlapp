@@ -97,7 +97,7 @@ $scope.loadItem=function(){
   });
 
 }
-  $scope.image_type=['.png','.gif','.png','.tif','.bmp','.jpg']
+  $scope.image_type=['.png','.gif','.png','.tif','.bmp','.jpg','.jpeg']
   $scope.Doc.isImage=true
   if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
     $scope.Doc.isImage=false
@@ -141,8 +141,8 @@ $scope.loadItem=function(){
 
                $timeout(function() {
                  $scope.Doc.loaded=true
-                 $scope.$broadcast('fileUploaded',data.data.response)
-
+                 $rootScope.$broadcast('fileUploaded',data.data.response)
+                 $("#msds").val('')
                  }
                  ,200)
                if (data.data.RESPONSECODE=='-1'){
@@ -499,18 +499,55 @@ $scope.gotFileEntry= function(fileEntry) {
   }
 
   $scope.download = function(Doc) {
-     url=SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
+    if (Doc.doc_image!==undefined &&  Doc.doc_image.length>0){
+    url=SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
+		if (Doc.isImage) {
+			url=SERVICEDIRURL +"file_down.php?action=file&resize=m&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
+			dialog.showModal();
+			$timeout(function(){
+				init_canvas_image('DocCanvas',url)
 
-         var anchor = angular.element('<a/>');
-         angular.element(document.body).append(anchor);
-         var ev = document.createEvent("MouseEvents");
-         ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-         anchor.attr({
-           href: url,
-           target: '_blank',
-           download: Doc.doc_image
-         })[0].dispatchEvent(ev);
-     }
+			},500)
+		}
+		else{
+			if ($scope.main.web){
+				var anchor = angular.element('<a/>');
+				angular.element(document.body).append(anchor);
+				var ev = document.createEvent("MouseEvents");
+				ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+				anchor.attr({
+					href: url,
+					target: '_blank',
+					download: Doc.doc_image
+				})[0].dispatchEvent(ev);
+
+			}
+
+			else {
+				var fileTransfer = new FileTransfer();
+				//		var uri = encodeURI(url);
+				var uri = url;
+
+				fileTransfer.download(
+					uri,
+					cordova.file.externalApplicationStorageDirectory+'download/doc'+ Doc.file_type,
+					function(entry) {
+						cordova.plugins.SitewaertsDocumentViewer.viewDocument(
+							cordova.file.externalApplicationStorageDirectory+'download/MyDoc'+ Doc.image_type, extToMime(Doc.file_type.substr(1)));
+
+							console.log("download complete: " + entry.fullPath);
+						},
+						function(error) {
+							console.log("download error source " + error.source);
+							console.log("download error target " + error.target);
+							console.log("upload error code" + error.code);
+						}
+					);
+
+				}
+			}
+    }
+   }
 
   $scope.back=function(){
     switch ($scope.page.action){
@@ -529,6 +566,11 @@ $scope.gotFileEntry= function(fileEntry) {
     $scope.uploadedMFile=function(Doc) {
             $rootScope.$broadcast('fileUploaded',Doc);
     };
+    $scope.loadCanvas=function(CanvasId) {
+        init_canvas_image(CanvasId,$scope.imageurl($scope.Doc))
+    };
+
+
     $scope.$on('fileUploaded', function(e,filename) {
       if ($scope.Docs!==undefined && $scope.Docs.length>0){
         angular.forEach($scope.Docs, function(doc,key){
@@ -536,16 +578,19 @@ $scope.gotFileEntry= function(fileEntry) {
             $scope.Docs[key].loaded=true
             $timeout(function() {
               resize_img()
-            },500);
+            },1000);
           }
 
         })
       }
       if ($scope.Doc!==undefined && filename== $scope.Doc.doc_image){
-        $scope.Doc.loaded=true
-        $timeout(function() {
-          resize_img()
-        },500);
+        $scope.$apply(function(){
+          $scope.Doc.loaded=true
+          $timeout(function() {
+            resize_img()
+          },1000);
+
+        })
       }
 
     });

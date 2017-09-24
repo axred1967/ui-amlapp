@@ -61,8 +61,8 @@
     <div ng-hide="Doc.deleted" style="padding:16px" >
 
       <div class="demo-card-image mdl-card mdl-shadow--2dp" >
-        <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
-        <div class="mdl-image center-cropped" ng-click="edit_document(Doc,DocIndex)">
+        <div class="mdl-card__title mdl-card--expand">&nbsp;{{Doc.doc_name}}</div>
+        <div class="mdl-image center-cropped" ng-click="download(Doc,DocIndex)">
         <img  class="loadImg" id="{{'Doc_image'+DocIndex}}" ng-src ="{{imageurl(Doc)}}" ></img>
       </div>
         <div class="mdl-card__actions">
@@ -74,7 +74,7 @@
           <span class="mdl-tooltip mdl-tooltip--validation" for="{{'download'+DocIndex}}" >
             <span >{{'download file'|translate}}.</span>
           </span>
-           <button tooltip id="{{'addCamera'+DocIndex}}"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="edit_documentb(Doc,DocIndex)" >
+           <button tooltip id="{{'addCamera'+DocIndex}}"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="edit_document(Doc,DocIndex)" >
             <i class="material-icons">mode_edit</i>
           </button>
           <span class="mdl-tooltip mdl-tooltip--validation" for="{{'addCamera'+DocIndex}}" >

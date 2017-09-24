@@ -3,7 +3,7 @@
 
 // Page Transitions
 $(document).ready(function() {
-  
+
   $(".animsition").animsition({
 
     inClass               :   'fade-in',

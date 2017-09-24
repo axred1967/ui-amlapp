@@ -49,6 +49,7 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
       $state.go($scope.page.location,{pages:$scope.pages})
     }
 		$scope.Customer={}
+		$scope.Customer.imported={}
 		$scope.kyc_data={}
 
   $scope.main.Back=true
@@ -103,6 +104,10 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 											 $scope.Kyc.contract_data=IsJsonString($scope.Kyc.contract_data)
 
 											 $scope.Customer=angular.extend({},$scope.Kyc.contractor_data);
+											 angular.forEach($scope.Customer, function(doc,key){
+												 $scope.imported[key]=false
+										 	})
+
 											 if ($scope.Kyc.contractor_data.name===undefined || $scope.Kyc.contractor_data.name===null || $scope.Kyc.contractor_data.name==null){
 
 												 settings={table:'users',id:'user_id',
@@ -187,7 +192,14 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
     }
 */
 $scope.fillKycData=function(){
-	$scope.Customer=$scope.kyc_data;
+	$scope.Customer.imported={}
+	angular.forEach($scope.kyc_data, function(doc,key){
+				$scope.Customer.imported[key]=true;
+				$scope.Customer[key]=$scope.kyc_data[key]
+
+
+	})
+
 	setDefaults($scope);
 
 }
@@ -269,6 +281,9 @@ $scope.fillKycData=function(){
 	  }
 
     $scope.save_kyc= function (passo){
+			if (passo=1){
+				$scope.back(passo)
+			}
       if ($scope.form.$invalid) {
         angular.forEach($scope.form.$error, function(field) {
           angular.forEach(field, function(errorField) {
