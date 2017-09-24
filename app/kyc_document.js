@@ -349,6 +349,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
   }
 	$scope.download = function(Doc,indice) {
      url=SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
+		 if ($scope.main.web){
          var anchor = angular.element('<a/>');
          angular.element(document.body).append(anchor);
          var ev = document.createEvent("MouseEvents");
@@ -361,6 +362,29 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
          })[0].dispatchEvent(ev);
      }
 
+	 else {
+		 var fileTransfer = new FileTransfer();
+ //		var uri = encodeURI(url);
+			 var uri = url;
+
+		 fileTransfer.download(
+			 uri,
+			 cordova.file.externalApplicationStorageDirectory+'download/doc'+ Doc.file_type,
+			 function(entry) {
+				 cordova.plugins.SitewaertsDocumentViewer.viewDocument(
+					 cordova.file.externalApplicationStorageDirectory+'download/MyPdf.pdf', extToMime(Doc.file_type.substr(1)));
+
+					 console.log("download complete: " + entry.fullPath);
+				 },
+				 function(error) {
+					 console.log("download error source " + error.source);
+					 console.log("download error target " + error.target);
+					 console.log("upload error code" + error.code);
+				 }
+			 );
+
+		 }
+	}
 
   $scope.add_document=function(){
 		$scope.pages['add_document']={action:'add_document_for_kyc',location:$state.current.name,

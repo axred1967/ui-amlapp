@@ -327,41 +327,93 @@ $scope.loadItem=function(){
   }
 
   $scope.uploadPhoto=function(imageURI){
-    var options = new FileUploadOptions();
+    //mi sono rotto leggo il file e poi lo passo ...altrimenti non controllo nulla
+    window.resolveLocalFileSystemURI(imageURI, $scope.gotFileEntry, $scope.fail);
+  }
+$scope.gotFileEntry= function(fileEntry) {
+  //metodo per leggere il file
+     // alert(fileEntry.fullPath);
+      console.log("got image file entry: " +  fileEntry.fullPath);
+  //convert all file to base64 formats
+      fileEntry.file( function(file) {
+  //uncomment the code if you need to check image size
+         //if(file.size>(1049576/2))
+        // {
+             //alert('File size exceeds 500kb');
+            // return false;
+        // }
+          var reader = new FileReader();
+          reader.onloadend = function(e) {
+            var data = e.target.result;
+            f={}
+            f.data=data
+            spedat=data.split(',')
+            data1=spedat[1]
+            f.name=file.name
+            /*
+            var extn
+            if(data1.charAt(0)=='/'){
+              extn=".jpeg";
+            }else if(data1.charAt(0)=='R'){
+              extn=".gif";
+            }else if(data1.charAt(0)=='i'){
+              extn=".png";
+            }
+            */
+            var extn
+            var ext=spedat[0].split('/')
+            spedat=''
+            ext=ext[1].split(';')
+            extn='.' + ext[0]
 
-    options.fileKey="file";
-    options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
-    options.mimeType="text/plain";
-    options.chunkedMode = false;
-    $scope.$apply(function () {
-      var extn = "." +options.fileName.split(".").pop();
-      filename=baseName(options.fileName).substr(0,20) + Math.random().toString(36).slice(-16) + extn
-      //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
-      $scope.Doc.loaded=false
-      $scope.Doc.doc_image=filename
-      $scope.Doc.IMAGEURI=UPLOADSURL +'document/'+$scope.Doc.per+'_'+$scope.Doc.per_id +'/resize/'
-      $scope.Doc.file_type=extn;
-      if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
-        $scope.Doc.isImage=false
-      }
-      else {
-        $scope.Doc.isImage=true
-      }
-    });
+            var filename=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+            f.name=filename
+            $scope.$apply(function () {
 
+              $scope.Doc.file_type=extn
+              if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
+                $scope.Doc.isImage=false
+              }
+              else {
+                $scope.Doc.isImage=true
 
-    var params = new Object();
+              }
+              $scope.Doc.loaded=false
+              $scope.Doc.per=$scope.Doc.per
+              $scope.Doc.per_id=$scope.Doc.per_id
+              $scope.Doc.indice=$scope.Doc.indice
+              $scope.Doc.doc_image=filename
+              $scope.Doc.isImage=true
+            })
 
-    options.params = params;
-    var ft = new FileTransfer();
-    //$http.post( LOG,  {data:SERVICEURL +"?action=upload_document_image_multi&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per})
-    var url=SERVICEURL +"?action=upload_document_ax&userid="+$scope.Doc.per_id+"&for="+$scope.Doc.per+"&indice="+$scope.Doc.indice+$scope.agent.pInfoUrl
-    ft.upload(imageURI, url, $scope.winFT, $scope.failFT, options,true);
+            data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, filename:filename,indice:$scope.Doc.indice,f:f,pInfo:$scope.agent.pInfo}
+              $timeout(function() {
+                resize_img()
+              },500);
+
+            $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+            .then(function(data){
+              if (data.data.RESPONSECODE=='1'){
+                $rootScope.$broadcast('fileUploaded',data.data.response);
+              }
+              if (data.data.RESPONSECODE=='-1'){
+                localstorage('msg','Sessione Scaduta ');
+                $state.go('login');;;
+              }
+              console.log('success');
+            })
+            , (function(){
+              console.log('error');
+            });
+          };
+          reader.readAsDataURL(file);
+
+        })
 
 
 
   }
-  $scope.winFT=function (r)
+  $scope.win=function (r)
   {
     var  r=IsJsonString(r.response)
 
@@ -373,7 +425,7 @@ $scope.loadItem=function(){
         ,200)
     });
   }
-  $scope.failFT =function (error)
+  $scope.fail =function (error)
   {
     $scope.Docs.doc_image=$scope.prev_image
     $scope.main.loader=false
