@@ -1972,6 +1972,38 @@ main{
 		max-height:300px;
 		min-height:300px
 }
+/* Portrait and Landscape */
+@media
+  (min-device-width: 800px)
+  and (max-device-width: 1280px) {
+		.center-cropped {
+				max-height:150px;
+				min-height:150px
+		}
+
+}
+
+/* Portrait */
+@media
+  (max-device-width: 800px)
+  and (orientation: portrait) {
+		.center-cropped {
+				max-height:150px;
+				min-height:150px
+		}
+
+}
+
+/* Landscape */
+@media
+  (max-device-width: 1280px)
+  and (orientation: landscape) {
+		.center-cropped {
+				max-height:150px;
+				min-height:150px
+		}
+
+}
 .mdl-image{
 	vertical-align:middle;
 		text-align:center;
