@@ -71,8 +71,9 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 			 break;
 		 }
 		 $scope.setEoC=function(){
-			 if ($scope.Contract!==undefined && $scope.Contract.contract_date!==undefined){
-				 d=$scope.Contract.contract_date
+			 oggi=new Date()
+			 if ($scope.Contract!==undefined && $scope.Contract.contract_date!==undefined &&  $scope.Contract.contract_eov.setHours(0,0,0,0)==oggi.setHours(0,0,0,0)) {
+				 d = Object.assign($scope.Contract.contract_date)
 		     d.setFullYear(d.getFullYear()+10)
 		     $scope.Contract.contract_eov=d
 			 }
@@ -86,50 +87,47 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 				 $val= $scope[o[0]]
 				 if ($val==1){
 					 $scope[o[0]]=0;
-	 					return
 				 }
-				 if ($val==0){
+				 else{
 					 $scope[o[0]]=1;
-	 					return
 				 }
 				 break;
 				 case 2:
 				 $val= $scope[o[0]][o[1]]
 				 if ($val==1){
 					 $scope[o[0]][o[1]]=0;
-						return
 				 }
-				 if ($val==0){
+				 else{
 					 $scope[o[0]][o[1]]=1;
-						return
 				 }
 				 break;
 				 case 3:
 				 $val= $scope[o[0]][o[1]][o[2]]
 				 if ($val==1){
 					 $scope[o[0]][o[1]][o[2]]=0
-						return
 				 }
-				 if ($val==0){
+				 else{
 					 $scope[o[0]][o[1]][o[2]]=1;
-						return
 				 }
 				 break;
 				 case 4:
 				 $val= $scope[o[0]][o[1]][o[2]][o[3]]
 				 if ($val==1){
 					 $scope[o[0]][o[1]][o[2]][o[3]]=0
-						return
 				 }
-				 if ($val==0){
+				 else{
 					 $scope[o[0]][o[1]][o[2]][o[3]]=1;
-						return
 				 }
 				 break;
 
 			 }
 
 
+		 }
+		 $scope.changeProcura=function(){
+			 if ($scope.Contract.procura){
+				 $scope.$broadcast('procuratore')
+			 }
 		 }
 		 /*
 		 $scope.$on('$viewContentLoaded',
@@ -430,6 +428,9 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 	  }
 		$scope.$on('backButton', function(e) {
 	      $scope.back()
+	  });
+		$scope.$on('procuratore', function(e) {
+	      $scope.Contract.role_for_other="Procuratore"
 	  });
 
 	  $scope.$on('addButton', function(e) {

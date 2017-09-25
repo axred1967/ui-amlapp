@@ -1917,6 +1917,16 @@ padding-left: 10px;
 	max-width:95%
 
 }
+.gridAx-item50 {
+  flex-grow: 5;
+	max-width:80%;
+
+}
+.gridAx-item100 {
+  flex-grow: 5;
+	max-width:100%;
+
+}
 .toright {
   right: 0px!important;
 	left:auto!important;

@@ -171,7 +171,7 @@
   "actForCompany" : " Agisce per una società",
   "actForOtherPerson" : " Agisce per un altra persona",
   "addNewOtherPerson" :" aggiungi Delegante",
-  "kindofDelegation" :" Aggiungi tipo di procura/delga ",
+  "kindofDelegation" :" Altro tipo di procura/delga ",
   "Upload_contract" : " Carica documento Prestazione/conferimento ",
   "NewCustomer" :"Nuovo Cliente",
   "EditContract" :"Modifica Prestazione",
@@ -182,7 +182,8 @@
   "Tutti i Clienti dell'agenzia" :"Tutti i clienti dello studio",
   "Modifica Contratto":"Modifica Prestazione",
   "Cerca Firmatario":"Cerca Esecutore",
-  "Show Password":"mostra password"
+  "Show Password":"mostra password",
+  "Agente di riferimento":"Collaboratore di riferimento"
 
 
 }

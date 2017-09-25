@@ -24,8 +24,7 @@ app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeo
   $scope.main.viewName="Assegnazione del rischio"
   $scope.main.loader=true
 
-
-  $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
+	$scope.Contract=$scope.pages[$scope.page.location].Contract
 
 
 

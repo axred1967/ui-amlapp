@@ -102,7 +102,7 @@
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="date" date-input id="Contract_contract_date"  name="Contract_contract_date"  minlength="3"  value=" "
-            ng-model="Contract.contract_date"   minlength="3" autocomplete="off"
+            ng-model="Contract.contract_date"   minlength="3" autocomplete="off" ng-blur="setEoC()"
             />
             <label class="mdl-textfield__label" for="Contract_contract_date">{{'ContractDate' | translate }}*</label>
             <span class="mdl-tooltip mdl-tooltip--validation" for="Contract_contract_date" ng-show="form.Contract_contract_date.$invalid && form.Contract_contract_date.$touched">
@@ -328,6 +328,16 @@
         <fieldset>
           <div id="show_Role" style="width:100%" ng-show="Contract.act_for_other>0">
 
+            <div class="gridAx">
+              <div  class="gridAx-item  " style="padding-right:16px;">
+                <label  id="lprocura" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="procura">
+                  <input id="procura" name="procura"  type="checkbox" class="mdl-checkbox__input" value="1"
+                  autocomplete="off"
+                  ng-click="toogle('Contract.procura');changeProcura()"  modelAx="Contract.procura"        />
+                  <span class="mdl-checkbox__label">{{'Procuratore'|translate}}</span>
+                </label>
+            </div>
+              <div class="gridAx-item100">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
               <input class="mdl-textfield__input" type="text" autocomplete="off" ng-model="Contract.role_for_other" ng-keyup="showAC('Contract.role_for_other','role_for_other',{zero:true});"
               id="role_for_other" name="role_for_other"  ng-required="Contract.act_for_other>0" autocomplete="off"
@@ -345,6 +355,7 @@
                 <span ng-show="form.role_for_other.$error.required">{{'Richiesto'|translate}}.</span>
               </span>
               </div>
+            </div>
             </div>
           </fieldset>
 
@@ -429,6 +440,7 @@
                   <select ng-model="Contract.agent_id" class="mdl-textfield__input"
                   ng-required="page.other_data "
                   id="agent_id" name="agent_id">
+                  <option value="{{agent.user_id}}" ng-selected="agenti.length==0 || Contract.agent_id==agent.user_id">{{agent.name}} </option>
                   <option ng-repeat="agenti in agentList" value="{{agenti.agent_id}}" ng-selected="Contract.agent_id==agenti.agent_id">{{agenti.name}} {{agenti.surname}}</option>
                 </select>
                 <label class="mdl-textfield__label" for="agent_id">{{'Agente di riferimento '|translate}} *</label>
