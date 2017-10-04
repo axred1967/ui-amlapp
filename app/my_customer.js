@@ -32,13 +32,9 @@ app2.factory('Customers_inf', function($http,$state) {
         appData=[]
       data={"action":"OwnersList",company_id:this.CompanyId,last:last,appData:appData,pInfo:this.pInfo}
     }
-    $('#ui-content').hide()
-    $('#ui-loader').show()
 
     $http.post(SERVICEURL2,  data )
     .then(function(responceData)  {
-      $('#ui-content').show()
-      $('#ui-loader').hide()
       if(responceData.data.RESPONSECODE=='1') 			{
         data=responceData.data.RESPONSE;
         this.loaded=data.length
@@ -115,9 +111,9 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
   $scope.imageurl=function(Customer){
 
     if (Customer===undefined || Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
-      imageurl= '../img/customer-listing1.png'
+      imageurl= BASEURL + 'img/customer-listing1.png'
     else
-    imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
+    imageurl= SERVICEDIRURL +"file_down.php?tipo=profilo&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
 //
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl
@@ -126,19 +122,19 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
 
 
   $scope.tocustomer = function(d){
-    $scope.pages['add_customer']={action:'update_customer', user_id:d.user_id,location:$state.current.name,temp:null,Customer:d}
+    $scope.pages['add_customer']={action:'update_customer', user_id:d.user_id,location:$state.current.name,temp:null,Customer:d,currentObId:d.user_id,currentOb:'users'}
     localstorage('pages',JSON.stringify($scope.pages))
 
     $state.go('add_customer',{pages:$scope.pages})
   };
 
   $scope.add_customer = function(){
-    $scope.pages['add_customer']={action:'add_customer', location:$state.current.name,temp:null}
+    $scope.pages['add_customer']={action:'add_customer', location:$state.current.name,temp:null,currentObId:null,currentOb:'users'}
     localstorage('pages',JSON.stringify($scope.pages))
     $state.go('add_customer',{pages:$scope.pages})
   };
   $scope.toDocs = function(d){
-    $scope.pages['my_document']={action:'list_from_my_customer', location:$state.current.name,Customer:d}
+    $scope.pages['my_document']={action:'list_from_my_customer', location:$state.current.name,Customer:d,currentObId:d.user_id,currentOb:'users'}
     localstorage('pages',JSON.stringify($scope.pages))
     $state.go('my_document',{pages:$scope.pages})
   };
@@ -178,13 +174,9 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-               $('input.mdl-textfield__input').each(
-                 function(index){
-                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                 })
+               setDefaults($scope)
                $scope.main.loader=false
-            }, 5);
+            }, 200);
   });
 
 });

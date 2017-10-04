@@ -122,6 +122,8 @@ $scope.loadItem=function(){
              f.data=data
              f.name=$scope.f.name
              var extn = "." +f.name.split(".").pop();
+             if ($scope.Doc.doc_name===undefined || $scope.Doc.doc_name.length==0)
+              $scope.Doc.doc_name=baseName(f.name)
              filename=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
              //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
              $scope.Doc.loaded=false
@@ -135,6 +137,7 @@ $scope.loadItem=function(){
                $scope.Doc.isImage=true
 
              }
+             $scope.Docs.push($scope.Doc);
              data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, indice:$scope.Doc.indice,f:f,filename:filename,pInfo:$scope.agent.pInfo}
              $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
              .then(function(data){
@@ -142,6 +145,7 @@ $scope.loadItem=function(){
                $timeout(function() {
                  $scope.Doc.loaded=true
                  $rootScope.$broadcast('fileUploaded',data.data.response)
+
                  $("#msds").val('')
                  }
                  ,200)
@@ -162,7 +166,7 @@ $scope.loadItem=function(){
   $scope.uploadmfileweb=function(  e){
             files=e.files
             var nfile=files.length
-            var $i=0;
+            var $i=$scope.Docs.length;
             var image_type=['.png','.gif','.png','.tif','.bmp','.jpg','.jpeg']
             angular.forEach(files, function(value){
               var f = value
@@ -195,9 +199,7 @@ $scope.loadItem=function(){
                 data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, filename:filename,indice:$scope.Doc.indice+$i,f:f,pInfo:$scope.agent.pInfo}
                 $i++;
                 if ($i>=nfile)
-                  $timeout(function() {
-                    resize_img()
-                  },500);
+                  $('#multiup').val('')
 
                 $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
                 .then(function(data){
@@ -296,6 +298,26 @@ $scope.loadItem=function(){
   {
     $scope.Doc.doc_image=""
   }
+  $scope.deleteDocs=function(Doc,index)
+  {
+    if (Doc.per_id==$scope.pages.currentObId){
+      data={action:'delete',table:'tmp_image','primary':'imagename',id:Doc.doc_image,pInfo:$scope.agent.pInfo}
+      $http.post(SERVICEURL2,data)
+      .then(function(responceData)  {
+        $scope.Docs.splice(index,1)
+        console.log(responceData);
+      })
+      , (function(error) {
+        console.log("error");
+      })
+
+    }
+    else {
+      $scope.Docs.splice(index,1)
+
+    }
+
+  }
 
   $scope.uploadfromgallery=function()
   {
@@ -385,11 +407,8 @@ $scope.gotFileEntry= function(fileEntry) {
               $scope.Doc.doc_image=filename
               $scope.Doc.isImage=true
             })
-
+            $scope.Docs.push($scope.Doc);
             data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, filename:filename,indice:$scope.Doc.indice,f:f,pInfo:$scope.agent.pInfo}
-              $timeout(function() {
-                resize_img()
-              },500);
 
             $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
             .then(function(data){
@@ -502,10 +521,10 @@ $scope.gotFileEntry= function(fileEntry) {
     if (Doc.doc_image!==undefined &&  Doc.doc_image.length>0){
     url=SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
 		if (Doc.isImage) {
-			url=SERVICEDIRURL +"file_down.php?action=file&resize=m&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
+			url=SERVICEDIRURL +"file_down.php?action=file&resize=m&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+$scope.agent.pInfoUrl
 			dialog.showModal();
 			$timeout(function(){
-				init_canvas_image('DocCanvas',url)
+				init_canvas_image('DocCanvas',url,Doc)
 
 			},500)
 		}
@@ -559,9 +578,7 @@ $scope.gotFileEntry= function(fileEntry) {
     }
     $scope.preUploaded=function(Docs) {
             $scope.Docs=Docs;
-            $timeout(function() {
-              resize_img()
-            },500);
+
     };
     $scope.uploadedMFile=function(Doc) {
             $rootScope.$broadcast('fileUploaded',Doc);
@@ -576,19 +593,15 @@ $scope.gotFileEntry= function(fileEntry) {
         angular.forEach($scope.Docs, function(doc,key){
           if (filename==$scope.Docs[key].doc_image){
             $scope.Docs[key].loaded=true
-            $timeout(function() {
-              resize_img()
-            },1000);
+
           }
 
         })
       }
       if ($scope.Doc!==undefined && filename== $scope.Doc.doc_image){
         $scope.$apply(function(){
+
           $scope.Doc.loaded=true
-          $timeout(function() {
-            resize_img()
-          },1000);
 
         })
       }
@@ -602,6 +615,57 @@ $scope.gotFileEntry= function(fileEntry) {
   $scope.$on('addButton', function(e) {
 
   })
+  $scope.$on('updateImageDialog', function(e,args) {
+		  indice=args.doc.indice
+
+			if (args.doc.changed){
+        if  ($scope.page.edit){
+          $scope.Doc.loaded=false
+  				$scope.Doc.image_type='.png';
+  				$scope.Doc.doc_image=baseName($scope.Doc.doc_name)+ Math.random().toString(36).slice(-16)+'.png'
+  				var f={}
+  				f.name=$scope.Doc.doc_image
+  				filename=f.name
+  				f.data=canvasDoc.toDataURL()
+  				data={action:"upload_document_ax",userid:$scope.Doc.per_id,for:$scope.Doc.per, indice:indice,f:f,filename:filename,pInfo:$scope.agent.pInfo}
+        }
+        else {
+          $scope.Docs['indice'].loaded=false
+  				$scope.Docs[indice].image_type='.png';
+  				$scope.Docs[indice].doc_image=baseName($scope.Docs[indice].doc_name)+ Math.random().toString(36).slice(-16)+'.png'
+  				var f={}
+  				f.name=$scope.Docs[indice].doc_image
+  				filename=f.name
+  				f.data=canvasDoc.toDataURL()
+  				data={action:"upload_document_ax",userid:$scope.Docs[indice].per_id,for:$scope.Docs[indice].per, indice:indice,f:f,filename:filename,pInfo:$scope.agent.pInfo}
+
+        }
+				$http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+				.then(function(data){
+					$timeout(function() {
+
+						$rootScope.$broadcast('fileUploaded',data.data.response)
+						}
+						,200)
+					if (data.data.RESPONSECODE=='-1'){
+						 localstorage('msg','Sessione Scaduta ');
+						 $state.go('login');;;
+					}
+						console.log('success');
+				})
+				, (function(){
+						console.log('error');
+				});
+
+			}
+			else {
+				$scope.Docs[indice].rotate=args.gradi
+
+
+			}
+
+
+  })
 
   $scope.loader=false
   $scope.$on('$viewContentLoaded',
@@ -610,9 +674,6 @@ $scope.gotFileEntry= function(fileEntry) {
                setDefaults($scope)
                $('.mdl-layout__drawer-button').hide()
                $scope.main.loader=false
-               $timeout(function() {
-                 resize_img()
-               },1000);
             }, 200);
   });
 })

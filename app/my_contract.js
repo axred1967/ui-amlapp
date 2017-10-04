@@ -130,7 +130,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     $scope.agent.priviledge=localStorage.getItem('priviledge');
 
     $scope.agent.cookie=localStorage.getItem('cookie');
-    $scope.agent.image=data.localStorage.getItem('image');
+    $scope.agent.image=localStorage.getItem('image');
 
     $scope.agent.image=localStorage.getItem('Profileimageagencyuser');
     $scope.agent.settings=IsJsonString(localStorage.getItem('userSettings'));
@@ -141,7 +141,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     if ($scope.agent.image===undefined ||  $scope.agent.image== null || $scope.agent.image.length==0)
       $scope.agent.imageurl= ''
     else
-      $scope.agent.imageurl= SERVICEDIRURL +"file_down.php?file=" + $scope.agent.image +"&action=file&profile=1"
+      $scope.agent.imageurl= SERVICEDIRURL +"tipo=profilo&file_down.php?file=" + $scope.agent.image +"&action=file&profile=1"
     $scope.agent.paese= localStorage.getItem("paese");
     $scope.agent.tipo_cliente= localStorage.getItem("tipo_cliente");
   }
@@ -210,22 +210,22 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   $scope.imageurl=function(Contract){
     if (Contract.act_for_other==1 && Contract.company_image!==undefined && Contract.company_image !=null && Contract.company_image.length>0){
       //Contract.imageurl= Contract.IMAGEURI +Contract.company_image
-      Contract.imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Contract.company_image +"&profile=1&entity=company"+$scope.agent.pInfoUrl
+      Contract.imageurl= SERVICEDIRURL +"file_down.php?tipo=profilo&file=" + Contract.company_image +"&entity=company"+$scope.agent.pInfoUrl
 
       return   Contract.imageurl
 
     }
     if (Contract.act_for_other==2 && Contract.owner_image!==undefined && Contract.owner_image  !=null && Contract.owner_image.length>0){
 //      Contract.imageurl= Contract.IMAGEURI +Contract.owner_image
-      Contract.imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Contract.owner_image +"&profile=1"+$scope.agent.pInfoUrl
+      Contract.imageurl= SERVICEDIRURL +"file_down.php?tipo=profilofile=" + Contract.owner_image +$scope.agent.pInfoUrl
       return   Contract.imageurl
 
     }
     Contract.IMAGEURI=UPLOADSURL +"user/small/"
     if (Contract.image===undefined || Contract.image==null || Contract.image.length==0)
-    Contract.imageurl= '../img/customer-listing1.png'
+    Contract.imageurl= BASEURL + 'img/customer-listing1.png'
     else
-    Contract.imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Contract.image +"&profile=1"+$scope.agent.pInfoUrl
+    Contract.imageurl= SERVICEDIRURL +"file_down.php?tipo=profilo&file=" + Contract.image +$scope.agent.pInfoUrl
 //    Contract.imageurl= Contract.IMAGEURI +Contract.image
     return   Contract.imageurl
 
@@ -310,7 +310,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
   }
   $scope.toDocs = function(Contract){
-    pages={'kyc_document':{action:'', location:$state.current.name,Contract:Contract,view:true}}
+    pages={'kyc_document':{action:'', location:$state.current.name,Contract:Contract,view:true},currentObId:d.contract_id,currentOb:'contract'}
     localstorage('pages',JSON.stringify(pages))
     $state.go('kyc_document',{pages:pages})
 
@@ -327,12 +327,12 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     localstorage('Contract', JSON.stringify(d));
     */
 
-    pages={'view_contract':{action:'view', location:$state.current.name,Contract:d}}
+    pages={'view_contract':{action:'view', location:$state.current.name,Contract:d},currentObId:d.contract_id,currentOb:'contract'}
     localstorage('pages',JSON.stringify(pages))
     $state.go('view_contract',{pages:pages})
   };
   $scope.add_contract = function(){
-    pages={'add_contract':{action:'add_contract', location:$state.current.name}}
+    pages={'add_contract':{action:'add_contract', location:$state.current.name},currentOb:'contract'}
     localstorage('pages',JSON.stringify(pages))
     $state.go('add_contract',{pages:pages})
   };

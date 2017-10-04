@@ -49,23 +49,16 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
          }
         })
         $scope.Customer =  data;
-        $scope.Customer.imageLoaded=true;
+        $scope.imageLoaded=true;
         //$rootScope.$broadcast('show')
         $scope.loader=false
-        $scope.Customer.Docs=IsJsonString($scope.Customer.Docs)
-        if (!isObject($scope.Customer.Docs)){
-            $scope.Customer.Docs=[{}]
-            $scope.newDocs=true;
+        $scope.Customer.settings=IsJsonString($scope.Customer.settings)
+        if (!isObject($scope.Customer.settigss)){
+            $scope.Customer.settings={}
 
         }
         //convertDateStringsToDates($scope.Customer)
 
-        $('input.mdl-textfield__input').each(
-          function(index){
-            $(this).parent('div.mdl-textfield').addClass('is-dirty');
-            $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-          }
-        );
 
       }
       else
@@ -162,12 +155,13 @@ app2.controller('add_customer', function ($scope,$http,$state,$translate,$rootSc
 
 if ($scope.page.temp!==undefined && $scope.page.temp!==null){
   $scope.Customer=$scope.page.temp
-  $scope.Customer.imageLoaded=true;
+  $scope.imageLoaded=true;
   //convertDateStringsToDates($scope.Customer)
 }  else {
 //     if ($scope.action=="saveProfileCustomer")
         $scope.loadItem()
 }
+$scope.imageLoaded=true
 
 
 $scope.uploadprofileweb=function(){
@@ -180,21 +174,19 @@ $scope.uploadprofileweb=function(){
     f.data=data
     f.name=$scope.f.name
     var extn = "." +f.name.split(".").pop();
-    filename=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+    filename=$scope.Customer.user_id+ "_profilo" +  Math.random().toString(36).slice(-16) +extn
     //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
     $scope.Customer.image=filename;
-    $scope.Customer.imageLoaded=false;
+    $scope.imageLoaded=false;
 
-    data={action:"upload_document_ax",type:"profile", f:f,filename:filename,pInfo:$scope.agent.pInfo}
+    data={action:"upload_document_ax",type:"profile",entity:'users',entity_key:$scope.Customer.user_id, f:f,filename:filename,pInfo:$scope.agent.pInfo}
     $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
     .then(function(data){
 
-      $timeout(function() {
-        $scope.Customer.imageLoaded=true;
-        $scope.$broadcast('fileUploaded',$scope.Customer)
+        image=data.data.image
+        $scope.imageLoaded=true;
+        $scope.$broadcast('fileUploaded',image)
 
-      }
-      ,200)
       if (data.data.RESPONSECODE=='-1'){
         localstorage('msg','Sessione Scaduta ');
         $state.go('login');;;
@@ -211,12 +203,12 @@ $scope.uploadprofileweb=function(){
 
 $scope.imageurl=function(Customer){
   if (Customer===undefined || Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
-  imageurl= '../img/customer-listing1.png'
+  imageurl= BASEURL + 'img/customer-listing1.png'
   else
-  imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
+  imageurl= SERVICEDIRURL +"file_down.php?file=" + Customer.image +"&tipo=profilo"+ $scope.agent.pInfoUrl
 
-  if (!Customer.imageLoaded)
-    imageurl='../img/loading_image.gif'
+  if (!$scope.imageLoaded)
+    imageurl=BASEURL +'img/loading_image.gif'
   //
   //  Customer.imageurl= Customer.IMAGEURI +Customer.image
   return   imageurl
@@ -305,29 +297,48 @@ $scope.add_photo=function()
 }
 
 $scope.uploadPhoto=function(imageURI){
-  userid=$scope.Customer.user_id
-  var options = new FileUploadOptions();
-  options.fileKey="file";
-  options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
-  options.mimeType="text/plain";
-  options.chunkedMode = false;
+  window.resolveLocalFileSystemURI(imageURI, $scope.gotFileEntry, $scope.fail);
+}
+$scope.gotFileEntry= function(fileEntry) {
+    fileEntry.file( function(file) {
+        var reader = new FileReader();
+        reader.onloadend = function(e) {
+          var data = e.target.result;
+          f={}
+          f.data=data
+          spedat=data.split(',')
+          data1=spedat[1]
+          f.name=file.name
+          var extn
+          var ext=spedat[0].split('/')
+          spedat=''
+          ext=ext[1].split(';')
+          extn='.' + ext[0]
 
-  $scope.$apply(function () {
-    var extn = "." +options.fileName.split(".").pop();
-    filename=baseName(options.fileName).substr(0,20) + Math.random().toString(36).slice(-16) + extn
-    //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
-    $scope.Customer.image=filename
-    $scope.Customer.imageLoaded=false
-  });
+          var filename=$scope.Customer.user_id +"_profilo" + extn
+          f.name=filename
+          $scope.$apply(function () {
+            $scope.imageLoaded=false
+          })
+          data={action:"upload_document_ax",type:"profile",entity:'users',entity_key:$scope.Customer.user_id, f:f,filename:filename,pInfo:$scope.agent.pInfo}
+          $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+          .then(function(data){
+            if (data.data.RESPONSECODE=='1'){
+              $rootScope.$broadcast('fileUploaded',data.data.response);
+            }
+            if (data.data.RESPONSECODE=='-1'){
+              localstorage('msg','Sessione Scaduta ');
+              $state.go('login');;;
+            }
+            console.log('success');
+          })
+          , (function(){
+            console.log('error');
+          });
+        };
+        reader.readAsDataURL(file);
 
-  var params = new Object();
-
-  options.params = params;
-  var ft = new FileTransfer();
-  var url=SERVICEURL +"?action=upload_document_ax&profile=1"+$scope.agent.pInfoUrl
-  ft.upload(imageURI, url, $scope.winFT, $scope.failFT, options,true);
-  var params = new Object();
-
+      })
 
 
 
@@ -335,7 +346,7 @@ $scope.uploadPhoto=function(imageURI){
 $scope.winFT=function (r)
 {
   $scope.$apply(function () {
-    $scope.Customer.imageLoaded=true
+    $scope.imageLoaded=true
   });
 
 }
@@ -360,7 +371,7 @@ $scope.showAC=function($search,$word, settings){
 
   if (( $word  !== "undefined" && $word.length>0 &&  $word!=$scope.oldWord) || settings.zero){
 
-   data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+   data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       if(data.data.RESPONSECODE=='1') 			{
@@ -417,6 +428,16 @@ $scope.other=function(){
   $scope.arrow=($scope.page.other_data!== undefined || $scope.page.other_data) ? 'arrow_drop_up' : 'arrow_drop_down';
 
 }
+$scope.edit_profile=function(){
+  url=SERVICEDIRURL +"file_down.php?resize=m&tipo=profilo&file=" + $scope.Customer.image+$scope.agent.pInfoUrl
+  doc={}
+  doc.rotate=$scope.Customer.settings.imagerotate
+  dialog.showModal();
+  $timeout(function(){
+    init_canvas_image('DocCanvas',url,doc)
+
+  },500)
+}
 
 $scope.back=function(){
   precPage=JSON.parse(localStorage.getItem($scope.page.location))
@@ -464,20 +485,53 @@ $scope.back=function(){
   $scope.$on('addButton', function(e) {
 
   })
+  $scope.$on('fileUploaded', function(e,filename) {
+        if (filename==$scope.Customer.image){
+          $scope.imageLoaded=true
+        }
+
+
+  });
+  $scope.$on('updateImageDialog', function(e,args) {
+    if (args.doc.changed){
+
+          $scope.Customer.image=$scope.Customer.user_id+ "_profilo" + Math.random().toString(36).slice(-16)+'.png'
+          $scope.imageLoaded=false
+          var f={}
+          f.name=$scope.Customer.image
+          filename=f.name
+          f.data=canvasDoc.toDataURL()
+          data={action:"upload_document_ax",type:"profile",entity:'users',entity_key:$scope.Customer.user_id, f:f,filename:filename,pInfo:$scope.agent.pInfo}
+         $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+        .then(function(data){
+
+          $scope.imageLoaded=true
+          if (data.data.RESPONSECODE=='-1'){
+             localstorage('msg','Sessione Scaduta ');
+             $state.go('login');;;
+          }
+            console.log('success');
+        })
+        , (function(){
+            console.log('error');
+        });
+
+      }
+      else {
+        $scope.Customer.settings.imagerotate=args.gradi
+      }
+
+
+  })
+
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
                setDefaults($scope)
   						 $('.mdl-layout__drawer-button').hide()
   						 $scope.main.loader=false
-  						 $timeout(function() {
-  							 resize_img()
-  						 },1000);
 
-
-               $scope.main.loader=false
-
-            }, 200);
+            }, 800);
   });
 
 

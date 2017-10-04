@@ -49,7 +49,7 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
       $state.go($scope.page.location,{pages:$scope.pages})
     }
 		$scope.Customer={}
-		$scope.Customer.imported={}
+		$scope.imported=[]
 		$scope.kyc_data={}
 
   $scope.main.Back=true
@@ -91,22 +91,13 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
                        var data=responceData.data.RESPONSE;
 
 											 $scope.Kyc=data;
-											 $('input[type="date"]').each(function(){
-								 				 d=$(this).attr('ng-model')
-								 				 res=d.split('.')
-												 if (data[res.slice(-1)[0]]!=undefined)
-								 				 	data[res.slice(-1)[0]]=new Date(data[res.slice(-1)[0] ])
 
-								 			 	 })
                        $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
 											 $scope.Kyc.kyc_update=IsJsonString($scope.Kyc.kyc_update)
 
 											 $scope.Kyc.contract_data=IsJsonString($scope.Kyc.contract_data)
 
 											 $scope.Customer=angular.extend({},$scope.Kyc.contractor_data);
-											 angular.forEach($scope.Customer, function(doc,key){
-												 $scope.imported[key]=false
-										 	})
 
 											 if ($scope.Kyc.contractor_data.name===undefined || $scope.Kyc.contractor_data.name===null || $scope.Kyc.contractor_data.name==null){
 
@@ -141,12 +132,6 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 											 }
 
                        $scope.main.loader=false
-                         $('input.mdl-textfield__input').each(
-                         function(index){
-                           $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                           $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                         }
-                       );
                      }
                      else
                      {
@@ -192,9 +177,9 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
     }
 */
 $scope.fillKycData=function(){
-	$scope.Customer.imported={}
+	$scope.imported={}
 	angular.forEach($scope.kyc_data, function(doc,key){
-				$scope.Customer.imported[key]=true;
+				$scope.imported[key]=true;
 				$scope.Customer[key]=$scope.kyc_data[key]
 
 
@@ -281,7 +266,7 @@ $scope.fillKycData=function(){
 	  }
 
     $scope.save_kyc= function (passo){
-			if (passo=1){
+			if (passo==1){
 				$scope.back(passo)
 			}
       if ($scope.form.$invalid) {
@@ -301,6 +286,8 @@ $scope.fillKycData=function(){
       }
       var langfileloginchk = localStorage.getItem("language");
 			dbData={}
+			dbData.place_of_identification=$scope.Kyc.place_of_identification
+			dbData.date_of_identification=$scope.Kyc.date_of_identification			
 			dbData.contractor_data=JSON.stringify(angular.extend($scope.Kyc.contractor_data,$scope.Customer))
      data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
       $http.post( SERVICEURL2,  data )
@@ -426,20 +413,21 @@ $scope.fillKycData=function(){
     $scope.add_contract()
   })
 	$scope.$on('$viewContentLoaded',
-					 function(event){
-						 $timeout(function() {
-							 $('input.mdl-textfield__input').each(
-								 function(index){
-									 $(this).parent('div.mdl-textfield').addClass('is-dirty');
-									 $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-								 })
-								 setDefaults($scope)
-								 $('.mdl-layout__drawer-button').hide()
+	function(event){
+		$timeout(function() {
+			$scope.main.loader=false
+			$('.mdl-layout__drawer-button').hide()
+			setDefaults($scope)
+			angular.forEach($scope.Customer, function(doc,key){
+				if ($scope.imported===undefined){
+					$scope.imported=[]
+
+				}
+				$scope.imported[key]=false
+			})
 
 
-						}, 800);
+		}, 800);
 	});
-  $scope.main.loader=false
-	$('.mdl-layout__drawer-button').hide()
 
 })

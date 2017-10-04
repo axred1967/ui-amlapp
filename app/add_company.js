@@ -39,13 +39,12 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
 				 }
 			 })
         $scope.Company=data;
-        //convertDateStringsToDates($scope.Company)
-        if (!isObject($scope.Company.Docs)){
-          $scope.Company.Docs=[{}]
-          $scope.newDocs=true
+				$scope.Company.settings=IsJsonString($scope.Company.settings)
+        if (!isObject($scope.Company.settings)){
+          $scope.Company.settings={}
         }
         $scope.loader=false
-        $scope.Company.imageLoaded=true
+        $scope.imageLoaded=true
 
       }
       else
@@ -100,14 +99,14 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
 	    filename=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
 	    //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
 	    $scope.Company.image=filename;
-	    $scope.Company.imageLoaded=false;
+	    $scope.imageLoaded=false;
 
-	    data={action:"upload_document_ax",type:"profile", entity:'company',f:f,filename:filename,pInfo:$scope.agent.pInfo}
+	    data={action:"upload_document_ax",type:"profile",entity:'company',entity_key:$scope.Company.company_id, f:f,filename:filename ,pInfo:$scope.agent.pInfo}
 	    $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
 	    .then(function(data){
 
 	      $timeout(function() {
-	        $scope.Company.imageLoaded=true;
+	        $scope.imageLoaded=true;
 	        $scope.$broadcast('fileUploaded',$scope.Company)
 
 	      }
@@ -125,15 +124,24 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
 	  r.readAsDataURL(f);
 
   }
+	$scope.edit_profile=function(){
+	  url=SERVICEDIRURL +"file_down.php?action=file&resize=m&tipo=profilo&entity=company&entity_key="+$scope.Company.company_id+"&file=" + $scope.Company.image+$scope.agent.pInfoUrl
+	  doc={}
+	  doc.rotate=$scope.Company.settings.imagerotate
+	  dialog.showModal();
+	  $timeout(function(){
+	    init_canvas_image('DocCanvas',url,doc)
 
-  $scope.imageurl=function(Customer){
-		if (Customer===undefined || Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
-	  imageurl= '../img/customer-listing1.png'
+	  },500)
+	}
+  $scope.imageurl=function(Company){
+		if (Company===undefined || Company.image===undefined ||  Company.image== null || Company.image.length==0)
+	  imageurl= BASEURL+ 'img/customer-listing1.png'
 	  else
-	  imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Customer.image +"&profile=1&entity=company"+ $scope.agent.pInfoUrl
+	  imageurl= SERVICEDIRURL +"file_down.php?tipo=profilo&entity=company&entity_key="+$scope.Company.company_id+"&file=" + $scope.Company.imag
 
-	  if (!Customer.imageLoaded)
-	    imageurl='../img/loading_image.gif'
+	  if (!$scope.imageLoaded)
+	    imageurl=BASEURL+ 'img/loading_image.gif'
 	  //
 	  //  Customer.imageurl= Customer.IMAGEURI +Customer.image
 	  return   imageurl  }
@@ -154,7 +162,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
 
     if (( $word  !== "undefined" && $word.length>0 &&  $word!=$scope.oldWord) || settings.zero){
 
-     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,pInfo:$scope.agent.pInfo}
       $http.post( SERVICEURL2,  data )
       .then(function(data) {
         if(data.data.RESPONSECODE=='1') 			{
@@ -204,6 +212,16 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
       $scope.word['countries']=[]
     }
   }
+	$scope.edit_profile=function(){
+	  url=SERVICEDIRURL +"file_down.php?action=file&resize=m&profile=1&entity=company&entity_key="+$scope.Company.company_id+"&file=" + $scope.Company.image+$scope.agent.pInfoUrl
+	  doc={}
+	  doc.rotate=$scope.Company.settings.imagerotate
+	  dialog.showModal();
+	  $timeout(function(){
+	    init_canvas_image('DocCanvas',url,doc)
+
+	  },500)
+	}
   $scope.add_company= function (){
     if ($scope.form.$invalid) {
       $scope.invalid=""
@@ -281,35 +299,59 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     );
   }
 
-  $scope.uploadPhoto=function(imageURI){
-    company_id=$scope.Compnay.company_id
-    var options = new FileUploadOptions();
-    options.fileKey="file";
-    options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
-    options.mimeType="text/plain";
-    options.chunkedMode = false;
-/////
-	$scope.$apply(function () {
-		var extn = "." +options.fileName.split(".").pop();
-		filename=baseName(options.fileName).substr(0,20) + Math.random().toString(36).slice(-16) + extn
-		//f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
-		$scope.Company.image=filename
-		$scope.Company.imageLoaded=false
-	});
+	$scope.uploadPhoto=function(imageURI){
+		window.resolveLocalFileSystemURI(imageURI, $scope.gotFileEntry, $scope.fail);
+	}
+	$scope.gotFileEntry= function(fileEntry) {
+		fileEntry.file( function(file) {
+			var reader = new FileReader();
+			reader.onloadend = function(e) {
+				var data = e.target.result;
+				f={}
+				f.data=data
+				spedat=data.split(',')
+				data1=spedat[1]
+				f.name=file.name
+				var extn
+				var ext=spedat[0].split('/')
+				spedat=''
+				ext=ext[1].split(';')
+				extn='.' + ext[0]
 
-	var params = new Object();
+				var filename=$scope.Company.user_id +"_profilo" + extn
+				f.name=filename
+				$scope.$apply(function () {
+					$scope.imageLoaded=false
+				})
+				data={action:"upload_document_ax",type:"profile",entity:'company',entity_key:$scope.Company.user_id, f:f,filename:filename,pInfo:$scope.agent.pInfo}
+				$http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+				.then(function(data){
+					if (data.data.RESPONSECODE=='1'){
+						$rootScope.$broadcast('fileUploaded',data.data.response);
+					}
+					if (data.data.RESPONSECODE=='-1'){
+						localstorage('msg','Sessione Scaduta ');
+						$state.go('login');;;
+					}
+					console.log('success');
+				})
+				, (function(){
+					console.log('error');
+				});
+			};
+			reader.readAsDataURL(file);
 
-	options.params = params;
-	var ft = new FileTransfer();
-	var url=SERVICEURL +"?action=upload_document_ax&profile=1&entity=company"+$scope.agent.pInfoUrl
-	ft.upload(imageURI, url, $scope.winFT, $scope.failFT, options,true);
+		})
 
 
-  }
+
+	}
+
+
   $scope.winFT=function (r)
   {
 		$scope.$apply(function () {
-	    $scope.Company.imageLoaded=true
+	    $scope.imageLoaded=true
 	  });
 
   }
@@ -348,6 +390,38 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
 
   $scope.$on('addButton', function(e) {
   })
+	$scope.$on('updateImageDialog', function(e,args) {
+		if (args.doc.changed){
+
+					$scope.Company.image=$scope.Company.user_id+ "_profilo" + Math.random().toString(36).slice(-16)+'.png'
+					$scope.imageLoaded=false
+					var f={}
+					f.name=$scope.Company.image
+					filename=f.name
+					f.data=canvasDoc.toDataURL()
+					data={action:"upload_document_ax",type:"profile",entity:'company',entity_key:$scope.Company.company_id, f:f,filename:filename,pInfo:$scope.agent.pInfo}
+				 $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+				.then(function(data){
+
+					$scope.imageLoaded=true
+					if (data.data.RESPONSECODE=='-1'){
+						 localstorage('msg','Sessione Scaduta ');
+						 $state.go('login');;;
+					}
+						console.log('success');
+				})
+				, (function(){
+						console.log('error');
+				});
+
+			}
+			else {
+				$scope.Company.settings.imagerotate=args.gradi
+			}
+
+
+	})
+
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {

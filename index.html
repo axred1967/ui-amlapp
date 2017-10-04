@@ -29,6 +29,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   -->
   <link rel="stylesheet" href="https://amlapp.euriskoformazione.com/dev/ui-amlapp/css/roboto.css" type="text/css">
+  <link rel="stylesheet" href="https://amlapp.euriskoformazione.com/dev/ui-amlapp/css/dialog-polyfill.css" type="text/css">
   <link rel="stylesheet" href="https://amlapp.euriskoformazione.com/dev/ui-amlapp/css/materialIcon.css" type="text/css">
   <link rel="stylesheet" type="text/css" href="https://amlapp.euriskoformazione.com/dev/ui-amlapp/font-awesome-4.6.2/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="https://amlapp.euriskoformazione.com/dev/ui-amlapp/css/animsition.min.css">
@@ -39,16 +40,17 @@
   <link rel="stylesheet" href="https://amlapp.euriskoformazione.com/dev/ui-amlapp/css/material.min.css">
   <link rel="stylesheet" href="https://amlapp.euriskoformazione.com/dev/ui-amlapp/css/swipebox.min.css">
   <link rel="stylesheet" href="https://amlapp.euriskoformazione.com/dev/ui-amlapp/css/stylesheet.css">
+  <link rel="stylesheet" href="https://amlapp.euriskoformazione.com/dev/ui-amlapp/css/media_query.css">
   <link rel="stylesheet" href="https://amlapp.euriskoformazione.com/dev/ui-amlapp/css/jquery.fancybox.css">
   <script src='https://www.google.com/recaptcha/api.js'></script>
 
+  <script src="https://amlapp.euriskoformazione.com/dev/ui-amlapp/js/dialog-polyfill.js"></script>
   <script src="https://amlapp.euriskoformazione.com/dev/ui-amlapp/js/jquery-2.1.4.min.js"></script>
   <script type="text/javascript" src="https://amlapp.euriskoformazione.com/dev/ui-amlapp/js/custom.js"></script>
-
   <script>
   var isapp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
   if ( isapp ) {
-    document.write('<script type="text/javascript" charset="utf-8" src="cordova.js" ></'+'script>');
+    document.write('<script src="cordova.js"></' + 'script>');
     $(document).ready(function(){app.initialize();});
   }
   </script>
@@ -169,7 +171,7 @@ Text angular
               </a>  -->
               <div ng-show="main.Sidebar" class="left" style="margin-left:25px">&nbsp;</div>
               <a ng-show="main.Back==true"  class="mdl-button mdl-js-button mdl-button--icon left" href="javascript:;" ng-click="back()">
-                <img src="https://amlapp.euriskoformazione.com/dev/ui-amlapp/img/back-button.png">
+                <img src="img/back-button.png">
               </a>
               <button id="add_button" ng-show="main.Add==true" ng-click="add()" class="mdl-button mdl-js-button mdl-button--icon right" style="border:2px solid #FFF">
                 <!--<img src="ui-amlapp/img/add-search.png">-->
@@ -196,7 +198,7 @@ Text angular
           </div>
         </div>
         <div id="ui-loader" class="center2" ng-show="main.loader==true" id="loader_img" >&nbsp;
-          <img   style="height:50px;width:50px;margin-top:20px" src="https://amlapp.euriskoformazione.com/dev/ui-amlapp/img/loader2.gif"  />
+          <img   style="height:50px;width:50px;margin-top:20px" src="img/loader2.gif"  />
         </div>
         <div  id="ui-content" ng-class="(main.login) ? 'meno30Top' :''" ui-view ng-hide="main.loader==true" class="  account-data add-customer-data content-data-ax" ng-cloak> <!-- text fields -->
         </div>
@@ -204,6 +206,57 @@ Text angular
 
     </main>
   </div>
+  <dialog class="mdl-dialog docCanvasDialog">
+    <div id="docCanvasContainer" class= "docCanvasContainer">
+      <div style="margin:10px">
+        <img class="loadImg loader"  src ="img/loading_image.gif" ></img>
+     <div id="containerCanvasDoc"  style="display:none">
+
+       <canvas style="margin-left:-25px" id="DocCanvas">
+       </canvas>
+       <div style="display:none;margin-left:-25px" class="cropCanvas" id="cropCanvas">
+          <div  class="resizerCanvas" style="width: 10px; height: 10px; background: blue; position: absolute; cursor: nw-resize; top: 0px; left: 0px;"></div>
+          <div class="resizerCanvas" style="width: 10px; height: 10px; background: blue; position: absolute; right: 0px; bottom: 0px; cursor: se-resize;"></div>
+          <div class="resizerCanvas" style="width: 10px; height: 10px; background: blue; position: absolute; cursor: ne-resize; top: 0px; right: 0px;"></div>
+          <div class="resizerCanvas" style="width: 10px; height: 10px; background: blue; position: absolute; cursor: sw-resize; bottom: 0px; left: 0px;"></div>
+       </div>
+     </div>
+     <div class=" mdl-dialog__actions" style="margin-left:-25px">
+       <button type="button" class="mdl-button closx mdl-button--colored closex" id="closeDocCanvas" onclick="">
+        <i class="material-icons">close</i>
+       </button>
+       <span class="mdl-tooltip mdl-tooltip--validation"  for="closeDocCanvas" >
+         <span >{{'Esci'|translate}}</span>
+       </span>
+       <button type="button" class="mdl-button mdl-button--colored " id="saveDocCanvas" onclick="cropCanvas();angular.element(this).scope().updateImageDialog(degrees,docPassed);dialog.close()" >
+        <i class="material-icons">save</i>
+       </button>
+       <span class="mdl-tooltip mdl-tooltip--validation" for="saveDocCanvas" >
+         <span >{{'Salva'|translate}}</span>
+       </span>
+
+       <div class="mdl-layout-spacer"></div>
+       <button  id="rotate90" onclick="drawRotated(-90)" class="mdl-button mdl-button--icon mdl-button--colored"><i class="material-icons">rotate_left</i></button>
+       <span class="mdl-tooltip mdl-tooltip--validation" for="rotate90" >
+         <span >90° orario.</span>
+       </span>
+
+
+       <button  id="rotate_90"class="mdl-button mdl-button--icon mdl-button--colored" onclick="drawRotated(90)" ><i class="material-icons">rotate_right</i></button>
+       <span class="mdl-tooltip mdl-tooltip--validation" for="rotate_90" >
+         <span >90° antiorario'.</span>
+       </span>
+     </div>
+   </div>
+   </div>
+   </dialog>
+   <script>
+      var dialog = document.querySelector('dialog');
+      dialogPolyfill.registerDialog(dialog);
+      dialog.querySelector('.closx').addEventListener('click', function() {
+        dialog.close();
+      });
+    </script>
 </div>
 <script>
 $( document ).ready(function() {
@@ -221,6 +274,14 @@ $( document ).ready(function() {
     $('.mdl-layout__obfuscator').toggleClass('is-visible');
   });
 });
+$(document).keyup(function (e) {
+       if (e.keyCode == 27) {
+           removeListerenCanvasDoc();
+       }
+   });
 </script>
+<!-- Getione Dialog per immagini
+-->
+
 </body>
 </html>

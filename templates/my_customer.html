@@ -1,4 +1,4 @@
-<div >
+<div>
 <div id="no_customer" ng-hide="Customers_inf.Customers.length != 0 " class="ng-hide"  >
   <div  class="mdl-cell mdl-cell--12-col">
     <div class="mdl-card amazing mdl-shadow--2dp">
@@ -16,8 +16,7 @@
 </div>
 
 <div infinite-scroll='Customers_inf.nextPage()' infinite-scroll-disabled='Customers_inf.busy' infinite-scroll-distance='0'
-infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-scroll-container="'.add-customer-data'"
->
+     infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-scroll-container="'.add-customer-data'">
 
 <div   ng-hide="Customers_inf.Customers.length == 0 " class="ng-hide"  class="mdl-grid hidden" >
   <div id="list_customer"  ng-repeat="Customer in Customers_inf.Customers | filter:searchText "

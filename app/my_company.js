@@ -82,32 +82,32 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
 
   $scope.imageurl=function(image){
     if (image===undefined || image.length==0)
-      imageurl= '../img/customer-listing1.png'
+      imageurl= BASEURL + 'img/customer-listing1.png'
     else
-        imageurl= SERVICEDIRURL +"file_down.php?file=" + image +"&profile=1&entity=company"+$scope.agent.pInfoUrl
+        imageurl= SERVICEDIRURL +"file_down.php?file=" + image +"&tipo=profilo&entity=company"+$scope.agent.pInfoUrl
     return   imageurl
 
 
   }
 
   $scope.tocompany = function(d){
-    $scope.pages['add_company']={action:'edit_company', company_id:d.company_id,location:$state.current.name,temp:null}
+    $scope.pages['add_company']={action:'edit_company', company_id:d.company_id,location:$state.current.name,temp:null,currentObId:d.company_id,currentOb:'company'}
     localstorage('pages',JSON.stringify($scope.pages))
     $state.go('add_company',{pages:$scope.pages})
   };
   $scope.add_company = function(){
-    $scope.pages['add_company']={action:'add_company', location:$state.current.name,temp:null}
+    $scope.pages['add_company']={action:'add_company', location:$state.current.name,temp:null,currentObId:null,currentOb:'company'}
     localstorage('pages',JSON.stringify($scope.pages))
     $state.go('add_company',{pages:$scope.pages})
   };
   $scope.toowners = function(d){
-    $scope.pages['owners_list']={action:'owner_list', location:$state.current.name,temp:null,Company:d}
+    $scope.pages['owners_list']={action:'owner_list', location:$state.current.name,temp:null,Company:d,currentObId:d.company_id,currentOb:'company'}
     localstorage('pages',JSON.stringify($scope.pages))
     $state.go('owners_list',{pages:$scope.pages})
 
   };
   $scope.toDocs = function(d){
-    $scope.pages['my_document']={action:'list_from_my_company', location:$state.current.name,temp:null,Company:d}
+    $scope.pages['my_document']={action:'list_from_my_company', location:$state.current.name,temp:null,Company:d,currentObId:d.company_id,currentOb:'company'}
     localstorage('pages',JSON.stringify($scope.pages))
     $state.go('my_document',{pages:$scope.pages})
 

@@ -172,7 +172,7 @@ app2.controller('my_document', function ($scope,$http,$translate, $state, Docs_i
   $scope.imageurl=function(Doc){
 
     if (Doc===undefined || Doc.doc_image===undefined ||  Doc.doc_image== null || Doc.doc_image.length==0)
-      imageurl= '../img/customer-listing1.png'
+      imageurl= BASEURL + 'img/customer-listing1.png'
     else
       imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
 

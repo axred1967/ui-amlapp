@@ -13,6 +13,7 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
   $scope.main.Search=false
   $scope.main.viewName="il mio profilo"
   $scope.main.Sidebar=false
+	$scope.imageLoaded=true;
 
   data={"action":"view_Customer_Profile_info",customer_id:$scope.agent.user_id,pInfo:$scope.agent.pInfo}
 
@@ -29,9 +30,10 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
         $scope.agent.settings={}
       }
       $scope.Customer.doc_name="Immagine Profilo"
-      $scope.Customer.IMAGEURI=UPLOADSURL +"user/small/"
-      $scope.oldSign  = $scope.Customer.sign
-			$scope.Customer.imageLoaded=true;
+			$scope.imageLoaded=true;
+
+			url=SERVICEDIRURL +"file_down.php?tipo=firma&file=" +$scope.Customer.sign +"&entity_key="+$scope.agent.user_id+"&entity=users"+ $scope.agent.pInfoUrl
+			$scope.signaturePad.fromDataURL(url)
 
 
     }
@@ -83,45 +85,70 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
     );
   }
 
-  $scope.uploadPhoto=function(imageURI){
-    userid=localStorage.getItem("userId")
-    var options = new FileUploadOptions();
-    options.fileKey="file";
-    options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1)+'.png';
-    options.mimeType="text/plain";
-    options.chunkedMode = false;
-		$scope.$apply(function () {
-      var extn = "." +options.fileName.split(".").pop();
-      filename=baseName(options.fileName).substr(0,20) + Math.random().toString(36).slice(-16) + extn
-      //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
-      $scope.Customer.image=filename
-			$scope.Customer.imageLoaded=false
-    });
+	$scope.uploadPhoto=function(imageURI){
+	  window.resolveLocalFileSystemURI(imageURI, $scope.gotFileEntry, $scope.fail);
+	}
+	$scope.gotFileEntry= function(fileEntry) {
+	    fileEntry.file( function(file) {
+	        var reader = new FileReader();
+	        reader.onloadend = function(e) {
+	          var data = e.target.result;
+	          f={}
+	          f.data=data
+	          spedat=data.split(',')
+	          data1=spedat[1]
+	          f.name=file.name
+	          var extn
+	          var ext=spedat[0].split('/')
+	          spedat=''
+	          ext=ext[1].split(';')
+	          extn='.' + ext[0]
 
-    var params = new Object();
+	          var filename=$scope.Customer.user_id +"_profilo" + extn
+	          f.name=filename
+	          $scope.$apply(function () {
+	            $scope.imageLoaded=false
+	          })
+	          data={action:"upload_document_ax",type:"profile",entity:'users',entity_key:$scope.Customer.user_id, f:f,filename:filename,pInfo:$scope.agent.pInfo}
+	          $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+	          .then(function(data){
+	            if (data.data.RESPONSECODE=='1'){
+	              $rootScope.$broadcast('fileUploaded',data.data.response);
+	            }
+	            if (data.data.RESPONSECODE=='-1'){
+	              localstorage('msg','Sessione Scaduta ');
+	              $state.go('login');;;
+	            }
+	            console.log('success');
+	          })
+	          , (function(){
+	            console.log('error');
+	          });
+	        };
+	        reader.readAsDataURL(file);
 
-    options.params = params;
-    var ft = new FileTransfer();
-		var url=SERVICEURL +"?action=upload_document_ax&profile=1"+$scope.agent.pInfoUrl
-    ft.upload(imageURI, url, $scope.winFT, $scope.failFT, options,true);
-  }
+	      })
+
+	}
   $scope.winFT=function (r)
   {
 		$scope.$apply(function () {
-			$scope.Customer.imageLoaded=true
+			$scope.imageLoaded=true
 		});
   }
   $scope.failFT =function (error)
   {
 		console.log('error loading image');
   }
-  $scope.signature_ready=function(){
+
+	$scope.signature_ready=function(){
     clearButton = document.querySelector("#clearCanvas")
 
     var wrapper = document.getElementById("signature-pad"),
     savePNGButton = wrapper.querySelector("[data-action=save-png]"),
     canvas = wrapper.querySelector("canvas"),
     signaturePad;
+    $scope.signaturePad = new SignaturePad(canvas);
 
     // Adjust canvas coordinate space taking into account pixel ratio,
     // to make it look crisp on mobile devices.
@@ -130,46 +157,32 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
       // When zoomed out to less than 100%, for some very strange reason,
       // some browsers report devicePixelRatio as less than 1
       // and only part of the canvas is cleared then.
-      var Canvas2 = $("#canvas2")[0];
-      $('#sig').val(Canvas2.toDataURL())
-      var ratio =  Math.max(window.devicePixelRatio || 1, 1);
-      canvas.width = canvas.offsetWidth * ratio;
-      ratiox=canvas.offsetWidth/canvas.width
-      canvas.height = canvas.offsetHeight * ratio;
-      ratioy=canvas.offsetHeight/canvas.height
-      var image = new Image();
-      image.src = $('#sig').val();
-      canvas.getContext("2d").scale(ratio, ratio);
-      //canvas.getContext("2d").translate(canvas.width/2,canvas.height/2);
-      canvas.getContext("2d").drawImage(image,0,0);
-      //canvas.getContext("2d").translate(-canvas.width/2,-canvas.height/2)
-    }
+        var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+
+         // This part causes the canvas to be cleared
+         $cbody=$('.signature-pad--body')
+         canvas.height=$cbody.height();
+         canvas.width=$cbody.width();
+
+         // This library does not listen for canvas changes, so after the canvas is automatically
+         // cleared by the browser, SignaturePad#isEmpty might still return false, even though the
+         // canvas looks empty, because the internal data of this library wasn't cleared. To make sure
+         // that the state of this library is consistent with visual state of the canvas, you
+         // have to clear it manually.
+         $scope.signaturePad.clear();
+
+  }
 
     window.onresize = resizeCanvas;
     resizeCanvas();
 
-    signaturePad = new SignaturePad(canvas);
 
     clearButton.addEventListener("click", function (event) {
-      signaturePad.clear();
+      $scope.signaturePad.clear();
     });
   };
   $scope.signature_ready();
-  $scope.showCanvas=function(){
-    $scope.oldSign="change"
-    $('#canvas2').attr('height','300px')
-  }
 
-  $scope.saveimg=function(){
-      $('#sign').show();
-      vals=$('#sig').val();
-      if(vals != '')
-      {
-        $('#sign').attr('src',vals);
-      }
-
-
-  }
   $scope.save_profile= function (){
     if ($scope.form.$invalid) {
       angular.forEach($scope.form.$error, function(field) {
@@ -187,11 +200,25 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
       console.log($scope.data);
     }
     var Canvas2 = $("#canvas2")[0];
-    var blank = $("#blank")[0];
-    if (Canvas2.toDataURL()==blank.toDataURL())
-        $scope.Customer.sign=""
-    else if ($scope.oldSign!= null && $scope.oldSign!==undefined && $scope.oldSign.length<10)
-        $scope.Customer.sign=Canvas2.toDataURL()
+
+      var f={}
+      f.name=$scope.agent.user_id +"_firma"+ Math.random().toString(36).slice(-16)+'.png'
+      filename=f.name
+      $scope.Customer.sign=f.name
+      f.data=Canvas2.toDataURL()
+      data={action:"upload_document_ax",firma:true,entity_key:$scope.agent.user_id,entity:'users', f:f,filename:filename,pInfo:$scope.agent.pInfo}
+      $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+      .then(function(data){
+
+        if (data.data.RESPONSECODE=='-1'){
+          localstorage('msg','Sessione Scaduta ');
+          $state.go('login');;;
+        }
+        console.log('success');
+      })
+      , (function(){
+        console.log('error');
+      });
 
     $scope.Customer.settings=JSON.stringify($scope.agent.settings);
     data={ "action":'saveProfileAx', dbData: $scope.Customer,pInfo:$scope.agent.pInfo}
@@ -226,53 +253,60 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
       console.log("error");
     });
   }
+	$scope.edit_profile=function(){
+	  url=SERVICEDIRURL +"file_down.php?resize=m&tipo=profilo&file=" + $scope.Customer.image+$scope.agent.pInfoUrl
+	  doc={}
+	  doc.rotate=$scope.Customer.settings.imagerotate
+	  dialog.showModal();
+	  $timeout(function(){
+	    init_canvas_image('DocCanvas',url,doc)
 
+	  },500)
+	}
   $scope.uploadprofileweb=function(){
-				var f = document.getElementById('msds').files[0],
-            r = new FileReader();
-            $scope.f=f
-        r.onloadend = function(e) {
-            var data = e.target.result;
-            f={}
-            f.data=data
-            f.name=$scope.f.name
-            var extn = "." +f.name.split(".").pop();
-            filename=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
-            //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
-						$scope.Customer.image=filename;
-						$scope.Customer.imageLoaded=false;
+		var f = document.getElementById('msds').files[0],
+	  r = new FileReader();
+	  $scope.f=f
+	  r.onloadend = function(e) {
+	    var data = e.target.result;
+	    f={}
+	    f.data=data
+	    f.name=$scope.f.name
+	    var extn = "." +f.name.split(".").pop();
+	    filename=$scope.Customer.user_id+ "_profilo" +  Math.random().toString(36).slice(-16) +extn
+	    //f.name=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
+	    $scope.Customer.image=filename;
+	    $scope.imageLoaded=false;
 
-            data={action:"upload_document_ax",type:"profile", f:f,filename:filename,pInfo:$scope.agent.pInfo}
-            $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
-            .then(function(data){
+	    data={action:"upload_document_ax",type:"profile",entity:'users',entity_key:$scope.Customer.user_id, f:f,filename:filename,pInfo:$scope.agent.pInfo}
+	    $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+	    .then(function(data){
 
-              $timeout(function() {
-								$scope.Customer.imageLoaded=true;
-	              $scope.$broadcast('fileUploaded',$scope.Company)
+	        image=data.data.image
+	        $scope.imageLoaded=true;
+	        $scope.$broadcast('fileUploaded',image)
 
-                }
-                ,200)
-              if (data.data.RESPONSECODE=='-1'){
-                 localstorage('msg','Sessione Scaduta ');
-                 $state.go('login');;;
-              }
-                console.log('success');
-            })
-            , (function(){
-                console.log('error');
-            });
-        };
-        r.readAsDataURL(f);
-  }
+	      if (data.data.RESPONSECODE=='-1'){
+	        localstorage('msg','Sessione Scaduta ');
+	        $state.go('login');;;
+	      }
+	      console.log('success');
+	    })
+	    , (function(){
+	      console.log('error');
+	    });
+	  };
+	  r.readAsDataURL(f);
+	}
   $scope.imageurl=function(Customer){
 
     if (Customer===undefined || Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
-    imageurl= '../img/customer-listing1.png'
+    imageurl= BASEURL + 'img/customer-listing1.png'
     else
-    imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
+    imageurl= SERVICEDIRURL +"file_down.php?file=" + Customer.image +"&tipo=profilo"+ $scope.agent.pInfoUrl
 
-		if (!Customer.imageLoaded)
-      imageurl='../img/loading_image.gif'
+		if (!$scope.imageLoaded)
+      imageurl= BASEURL +'img/loading_image.gif'
     //
     //  Customer.imageurl= Customer.IMAGEURI +Customer.image
     return   imageurl
@@ -407,6 +441,46 @@ $scope.$on('backButton', function(e) {
 
 $scope.$on('addButton', function(e) {
 })
+$scope.$on('fileUploaded', function(e,filename) {
+			if (filename==$scope.Customer.image){
+				$scope.imageLoaded=true
+			}
+
+
+});
+
+$scope.$on('updateImageDialog', function(e,args) {
+	if (args.doc.changed){
+
+				$scope.Customer.image=$scope.Customer.user_id+ "_profilo" + Math.random().toString(36).slice(-16)+'.png'
+				$scope.imageLoaded=false
+				var f={}
+				f.name=$scope.Customer.image
+				filename=f.name
+				f.data=canvasDoc.toDataURL()
+				data={action:"upload_document_ax",type:"profile",entity:'users',entity_key:$scope.Customer.user_id, f:f,filename:filename,pInfo:$scope.agent.pInfo}
+			 $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+			.then(function(data){
+
+				$scope.imageLoaded=true
+				if (data.data.RESPONSECODE=='-1'){
+					 localstorage('msg','Sessione Scaduta ');
+					 $state.go('login');;;
+				}
+					console.log('success');
+			})
+			, (function(){
+					console.log('error');
+			});
+
+		}
+		else {
+			$scope.Customer.settings.imagerotate=args.gradi
+		}
+
+
+})
+
 $scope.$on('$viewContentLoaded',
          function(event){
            $timeout(function() {

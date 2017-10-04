@@ -13,7 +13,6 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 		$scope.main.viewName+="- N." + $scope.Contract.number
 	}
 
-
 	$scope.main.Back=true
 	$scope.main.Add=true
 	$scope.main.AddPage="add_contract"
@@ -44,7 +43,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 
 	$scope.loadItem=function(){
 
-		data= {"action":"view_Contract_info",contract_id:$scope.Contract.contract_id,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+		data= {"action":"view_Contract_info",contract_id:$scope.pages.currentObId,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
 		$scope.loader=true;
 		$http.post( SERVICEURL2,  data )
 		.then(function(responceData) {

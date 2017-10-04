@@ -43,7 +43,7 @@ app2.controller('my_agencies', function ($scope,$http,$translate,$rootScope,$sta
 
   $scope.imageurl=function(image){
     if (image===undefined || image==null || image.length==0)
-      imageurl= '../img/customer-listing1.png'
+      imageurl= BASEURL + 'img/customer-listing1.png'
     else
       imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Ob.image +"&profile=1"+ $scope.agent.pInfoUrl
   //    Ob.imageurl= Ob.IMAGEURI +Ob.image

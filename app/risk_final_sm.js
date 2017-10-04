@@ -43,6 +43,7 @@ app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeo
           $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
+				$scope.Risk.risk_update=IsJsonString($scope.Risk.risk_update)
         //convertDateStringsToDates($scope.Risk)
         //convertDateStringsToDates($scope.Risk.risk_data)
         var $risk=0
@@ -144,8 +145,8 @@ app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeo
       console.log($scope.data);
     }
     var langfileloginchk = localStorage.getItem("language");
-    dbData=$scope.Risk
-    dbData.risk_data=JSON.stringify(dbData.risk_data)
+
+    dbData=JSON.stringify($scope.Risk.risk_data)
 
     $('#loader_img').show();
    data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,final:true,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}

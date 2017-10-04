@@ -349,7 +349,7 @@ $scope.imageurl=function(image){
   if (image===undefined ||  image== null || image.length==0)
     imageurl= ''
   else
-  imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + image +"&profile=1&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
+  imageurl= SERVICEDIRURL +"file_down.php?file=" + image +"&tipo=profilo&agent_id="+ $scope.agent.id+"&cookie="+$scope.agent.cookie
 //
   //  Customer.imageurl= Customer.IMAGEURI +Customer.image
   return   imageurl

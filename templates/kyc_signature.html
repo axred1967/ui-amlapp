@@ -42,42 +42,56 @@
 <div class="mdl-card mdl-shadow--2dp ">
   <form name="form" id= "form" action="javascript:;" novalidate>
     <br/>
+
+
+
     <center>
     <span style="font-size:14px;font-weight:bold" class="orange" id="name_agent">{{'Fai inserire  la Firma del sottoscrittore '|translate}}</span><br/>
-    </center>
 
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" >
-      <img id="sign" ng-src="{{oldSign}}" ng-show="oldSign.length>7" height="20%">
-    </div>
+      <div  id="signature-pad" class="signature-pad  "  >
+        <div class="signature-pad--body signature">
 
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-      <div style="padding:16px;" id="signature-pad" class="m-signature-pad" ng-hide="oldSign.length>7" >
-        <canvas id="canvas2" style="border:1px solid #cbcbcb" class="mdl-textfield__input" height="300"> </canvas> <br>
-        <canvas id='blank' style='display:none'></canvas>
+        <canvas id="canvas2" > </canvas>
+      </div>
 
         <input style="display:none" type="text" ng-model="Kyc.contractor_data.sign" name="sig" id="sig" />
-      </div>
-      <center><a id="clearCanvas" ng-click="showCanvas()" href="javascript:;" data-action="clear" style="color:#1C224B;font-size:18px;">{{'Pulisci'|translate}}</a></center>
-    </div>
 
-  </form>
+      <div class="signature-pad--actions">
+         <div>
+           <button id="clearCanvas" ng-click="showCanvas()" href="javascript:;" data-action="clear"  class="mdl-button mdl-js-button mmdl-button--mini-fab mdl-button--colored orange-btn">
+             <i class="material-icons">clear</i>
+           </button>
+           <span class="mdl-tooltip mdl-tooltip--validation" for="clearCanvas" >
+             <span >  {{'Pulisci'|translate}}.</span>
+           </span>
+
+         </div>
+         <div>
+         </div>
+       </div>
+     </div>
+   </center>
+ </form>
+ </div>
+ <div id="containerf">
+   <div>
+     <button  id="save_prev" ng-click="save_kyc('-1')" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
+       <i class="material-icons">arrow_left_thick</i>
+     </button>
+     <span class="mdl-tooltip mdl-tooltip--validation" for="save_prev" >
+       <span >{{'Salva e Torna a precedente'|translate}}.</span>
+     </span>
+   </div>
+   <div>
+     <center>
+     <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="save_kyc('0');" href="javascript:;">
+       {{'Concludi AV' |translate}}
+     </a>
+   </div>
+ </center>
+   <div>
+
+   </div>
 
 
-</div>
-<br/>
-<button  id="save_prev" ng-click="back(-1)" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
-  <i class="material-icons">arrow_left_thick</i>
-</button>
-<span class="mdl-tooltip mdl-tooltip--validation" for="save_prev" >
-  <span >{{'Torna a precedente'|translate}}.</span>
-</span>
-<br/>
-<div style="clear:both" class="center-align">
-
-  <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="save_kyc('0');" href="javascript:;">
-    {{'Concludi KYC' |translate}}
-  </a>
-
-</div>
-<br/>
-<br/>
+ </div>

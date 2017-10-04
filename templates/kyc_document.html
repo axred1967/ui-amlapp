@@ -63,7 +63,7 @@
       <div class="demo-card-image mdl-card mdl-shadow--2dp" >
         <div class="mdl-card__title mdl-card--expand">&nbsp;{{Doc.doc_name}}</div>
         <div class="mdl-image center-cropped" ng-click="download(Doc,DocIndex)">
-        <img  class="loadImg" id="{{'Doc_image'+DocIndex}}" ng-src ="{{imageurl(Doc)}}" ></img>
+        <img  ng-class="{90:'image_90', 180:'image_180', 270:'image_270','-90':'image_270', '-180':'image_180', '-270':'image_90' }[Doc.rotate]" class="loadImg" id="{{'Doc_image'+DocIndex}}" ng-src ="{{imageurl(Doc)}}" ></img>
       </div>
         <div class="mdl-card__actions">
 

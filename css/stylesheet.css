@@ -86,10 +86,10 @@ Primary use: App & Mobile Website
     float: left;
 }
 .user1 {
-	background-image: url('../img/user.jpg');
+	background-image: url('https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/user.jpg');
 }
 .user2 {
-	background-image: url('../img/sub-user.jpg');
+	background-image: url('https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/sub-user.jpg');
 }
 
 /*------------------------------------------------------------------
@@ -452,7 +452,7 @@ thead, tbody, .mdl-data-table__cell--non-numeric {
 6.1. HOME
 -------------------------------------------------------------------*/
 .launch {
-	background: url(../img/home.jpg) center / cover;
+	background: url(https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/home.jpg) center / cover;
 	height: 100vh;
 	text-align: center;
 }
@@ -548,7 +548,7 @@ thead, tbody, .mdl-data-table__cell--non-numeric {
 	border-radius: 2px;
 }
 .article-bg {
-	background: url(../img/9.jpg) center / cover;
+	background: url(https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/9.jpg) center / cover;
 	height: 250px;
 	width: 100vw;
 }
@@ -774,7 +774,7 @@ thead, tbody, .mdl-data-table__cell--non-numeric {
 	color: #ffffff;
 	font-size: 12px;
 	font-weight: 100;
-	background: url(../img/2.jpg);
+	background: url(https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/2.jpg);
 	position: relative;
 }
 .mdl-card.weather > span {
@@ -820,7 +820,7 @@ thead, tbody, .mdl-data-table__cell--non-numeric {
 6.7. LOGIN
 -------------------------------------------------------------------*/
 .login-bg {
-	background: url(../img/10_blur.jpg) center / cover;
+	background: url(https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/10_blur.jpg) center / cover;
 	height: 100vh;
 	overflow: hidden;
 	padding: 0 16px;
@@ -1343,7 +1343,7 @@ overflow-x: hidden;
 }
 
 .demo-card-image.mdl-card {
-	background: url('../img/logo.png') center
+	background: url('https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/logo.png') center
 	background-size: 80px 60px;
   background-repeat: no-repeat;;
 }
@@ -1550,31 +1550,29 @@ td.wordwrap{
     margin-bottom: 24px;
 }
 .customer-listing1{
-	background-image:url(../img/customer-listing1.png);
-	margin-right:8px;
 }
 .customer-listing2{
-	background-image:url(../img/customer-listing2.png);
+	background-image:url(https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/customer-listing2.png);
 	margin-right:8px;
 }
 .customer-listing3{
-	background-image:url(../img/customer-listing3.png);
+	background-image:url(https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/customer-listing3.png);
 	margin-right:8px;
 }
 .customer-listing4{
-	background-image:url(../img/customer-listing4.png);
+	background-image:url(https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/customer-listing4.png);
 	margin-right:8px;
 }
 .customer-listing5{
-	background-image:url(../img/customer-listing5.png);
+	background-image:url(https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/customer-listing5.png);
 	margin-right:8px;
 }
 .customer-listing6{
-	background-image:url(../img/customer-listing6.png);
+	background-image:url(https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/customer-listing6.png);
 	margin-right:8px;
 }
 .customer-listing7{
-	background-image:url(../img/customer-listing7.png);
+	background-image:url(https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/customer-listing7.png);
 	margin-right:8px;
 }
 #customer-listing .mdl-card__supporting-text{
@@ -1673,7 +1671,7 @@ td.wordwrap{
     display:none;
 }
 .radio-toolbar input[type="radio"] + label{
-    background:url(../img/unchecked-checkbox.png) no-repeat right center;
+    background:url(https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/unchecked-checkbox.png) no-repeat right center;
 	width:auto;
 	height:20px;
 	display: inline-block;
@@ -1681,7 +1679,7 @@ td.wordwrap{
 }
 
 .radio-toolbar input[type="radio"]:checked + label{
-	background:url(../img/checked-checkbox.png) no-repeat right center;
+	background:url(https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/checked-checkbox.png) no-repeat right center;
 	width:auto;
 	height:20px;
 	display: inline-block;
@@ -1702,7 +1700,7 @@ td.wordwrap{
 	font-size:15px;
 }
 .agent-img-bg{
-	background:url(../img/agent-img-bg.png) left top;
+	background:url(https://amlpp.euriskoformazione.com/dev/ui-amlapp/img/agent-img-bg.png) left top;
 	background-size: cover;
 }
 .view-agent{
@@ -1968,46 +1966,9 @@ main{
 	overflow-y:hidden !important
 }
 .center-cropped {
-    overflow:hidden;
-		max-height:300px;
-		min-height:300px
-}
-/* Portrait and Landscape */
-@media
-  (min-device-width: 800px)
-  and (max-device-width: 1280px) {
-		.center-cropped {
-				max-height:150px;
-				min-height:150px
-		}
-
+		height:300px
 }
 
-/* Portrait */
-@media
-  (max-device-width: 800px)
-  and (orientation: portrait) {
-		.center-cropped {
-				max-height:150px;
-				min-height:150px
-		}
-
-}
-
-/* Landscape */
-@media
-  (max-device-width: 1280px)
-  and (orientation: landscape) {
-		.center-cropped {
-				max-height:150px;
-				min-height:150px
-		}
-
-}
-.mdl-image{
-	vertical-align:middle;
-		text-align:center;
-}
 .center-cropped img {
 	/*
     height: 100%;
@@ -2025,11 +1986,148 @@ main{
 	min-height:200px;
 	padding:10px;
 }
-canvas { display:block; margin:1em auto; background:#fff; border:1px solid #ccc;width:100%;height:100% }
-.mdl-dialog{width:90%;height:90%}
+canvas#DocCanvas { display:block;  background:#fff; border:1px solid #ccc;}
+.docCanvasDialog{
+	  width:100%;
+		height:100%;
+		min-height:100%;
+	}
+.docCanvasContainer{
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%); /* IE 9 */
+    -webkit-transform: translate(-50%, -50%); /* Ch */
+}
 #canvasDocContainer{
-	height:80%;
+
 }
 .imported{
 	    border-bottom: 1px solid green !important;
+}
+
+.image_270 {
+		-webkit-transform: rotate(270deg);
+		-moz-transform: rotate(270deg);
+		-ms-transform: rotate(270deg);
+		-o-transform: rotate(270deg);
+		transform: rotate(270deg);
+}
+.image_90 {
+		-webkit-transform: rotate(90deg);
+		-moz-transform: rotate(90deg);
+		-ms-transform: rotate(90deg);
+		-o-transform: rotate(90deg);
+		transform: rotate(90deg);
+}
+.image_180 {
+		-webkit-transform: rotate(180deg);
+		-moz-transform: rotate(180deg);
+		-ms-transform: rotate(180deg);
+		-o-transform: rotate(180deg);
+		transform: rotate(180deg);
+}
+.loadImg{
+	height:100%;
+ width:100%;
+	object-fit:scale-down;
+}
+.cropCanvas{
+	border:1px solid blue;
+	position: absolute;
+	resize: both;
+	overflow: auto;
+}
+.signature{
+	border:1px solid #cbcbcb;
+
+  padding-left:2px!important;
+	padding-right:2px!important;
+}
+.signature-container{
+  margin: 0px auto;
+  text-align: center;
+	width:100%;
+	height:100%;
+	align-items: center;
+	display: -webkit-box;
+   display: -ms-flexbox;
+   display: flex;
+}
+.signature-pad {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column;
+  font-size: 10px;
+  width: 100%;
+  height: 100%;
+	width:900px;
+	height:300px;
+  max-width: 900px;
+  max-height: 300px;
+  border: 1px solid #e8e8e8;
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.08) inset;
+  border-radius: 4px;
+  padding-top: 16px;
+	padding-bottom: 16px;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+.signature-pad::before,
+.signature-pad::after {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  width: 40%;
+  height: 10px;
+  bottom: 10px;
+  background: transparent;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+}
+
+.signature-pad::before {
+  left: 20px;
+  -webkit-transform: skew(-3deg) rotate(-3deg);
+          transform: skew(-3deg) rotate(-3deg);
+}
+
+.signature-pad::after {
+  right: 20px;
+  -webkit-transform: skew(3deg) rotate(3deg);
+          transform: skew(3deg) rotate(3deg);
+}
+
+.signature-pad--body {
+  position: relative;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  border: 1px solid #f4f4f4;
+}
+
+.signature-pad--body
+canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.02) inset;
+}
+.signature-pad--actions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-top: 8px;
 }

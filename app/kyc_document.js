@@ -34,11 +34,11 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 	$scope.imageurl=function(Doc){
 
     if (Doc===undefined || Doc.doc_image===undefined ||  Doc.doc_image== null || Doc.doc_image.length==0){
-			imageurl= '../img/customer-listing1.png'
+			imageurl= BASEURL + 'img/customer-listing1.png'
 			return imageurl
 			}
 			else if (Doc.isImage){
-			imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
+			imageurl= SERVICEDIRURL +"file_down.php?file=" + Doc.doc_image +"&resize=1&doc_per="+ Doc.per+ "&per_id=" +Doc.per_id + $scope.agent.pInfoUrl
 
 		}
 		else{
@@ -156,13 +156,11 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 	$scope.saveDocs= function (passo){
 		dbData={}
 		dbData.Docs=JSON.stringify($scope.Kyc.Docs )
-    $scope.main.loader=true;
 
    data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       if(data.data.RESPONSECODE=='1') 			{
-				$scope.main.loader=false;
         //swal("",data.data.RESPONSE);
       }
       else
@@ -185,7 +183,15 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 		$scope.Kyc.Docs=$scope.page.Docs
 
 		if ($scope.page.edit){
-			$scope.Kyc.Docs[$scope.page.indice]=$scope.page.newOb
+			if (Array.isArray($scope.page.newOb)){
+				angular.forEach($scope.page.newOb, function(value,key){
+					 $scope.Kyc.Docs[value.indice]=value
+				})
+
+
+			}	else {
+				$scope.Kyc.Docs[$scope.page.indice]=$scope.page.newOb
+			}
 		}
 		else{
 			if (Array.isArray($scope.page.newOb)){
@@ -226,9 +232,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 					})
 				}
 				$scope.saveDocs()
-			$timeout(function() {
-				 resize_img()
-			 },1000);
+
 
 				swal($filter('translate')('importazione effettuata'), {
 					icon: "success",
@@ -252,7 +256,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 	})
 	.then((Value) => {
 		if (Value) {
-			if (ob.per_id==$scope.Contract.contract_id){
+			if (ob.per_id==$scope.pages.currentObId){
 				data={action:'delete',table:'tmp_image','primary':'imagename',id:ob.doc_image,pInfo:$scope.agent.pInfo}
 				$http.post(SERVICEURL2,data)
 		    .then(function(responceData)  {
@@ -371,12 +375,12 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
     }
   }
 	$scope.download = function(Doc,indice) {
-		url=SERVICEDIRURL +"file_down.php?action=file&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
+		url=SERVICEDIRURL +"file_down.php?file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
 		if (Doc.isImage){
-			url=SERVICEDIRURL +"file_down.php?action=file&resize=m&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
+			url=SERVICEDIRURL +"file_down.php?resize=m&file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
 			dialog.showModal();
 			$timeout(function(){
-				init_canvas_image('DocCanvas',url)
+				init_canvas_image('DocCanvas',url, Doc)
 
 			},500)
 		}
@@ -422,7 +426,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 
   $scope.add_document=function(){
 		$scope.pages['add_document']={action:'add_document_for_kyc',location:$state.current.name,
-		Doc:{agency_id:$scope.agent.agency_id,per_id:$scope.Contract.contract_id,per:'kyc',edit:false, indice:$scope.Kyc.Docs.length}}
+		Doc:{agency_id:$scope.agent.agency_id,per_id:$scope.pages.currentObId,per:$scope.pages.currentOb,edit:false, indice:$scope.Kyc.Docs.length}}
 		$scope.pages[$state.current.name].Docs=$scope.Kyc.Docs
 		localstorage('pages',JSON.stringify($scope.pages))
 		$state.go('add_document',{pages:$scope.pages})
@@ -446,9 +450,6 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 			angular.forEach($scope.Kyc.Docs, function(doc,key){
 				if (filename==$scope.Kyc.Docs[key].doc_image){
 					$scope.Kyc.Docs[key].loaded=true
-					$timeout(function() {
-						resize_img()
-					},500);
 				}
 
 			})
@@ -463,6 +464,49 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
   $scope.$on('addButton', function(e) {
     $scope.add_document()
   })
+
+	$scope.$on('updateImageDialog', function(e,args) {
+		  indice=args.doc.indice
+
+			if (args.doc.changed){
+				$scope.Kyc.Docs[indice].loaded=false
+				$scope.Kyc.Docs[indice].image_type='.png';
+				$scope.Kyc.Docs[indice].doc_image=baseName($scope.Kyc.Docs[indice].doc_name)+ Math.random().toString(36).slice(-16)+'.png'
+				var f={}
+				f.name=$scope.Kyc.Docs[indice].doc_image
+				filename=f.name
+
+				f.data=canvasDoc.toDataURL()
+				data={action:"upload_document_ax",userid:$scope.Kyc.Docs[indice].per_id,for:$scope.Kyc.Docs[indice].per, indice:indice,f:f,filename:filename,pInfo:$scope.agent.pInfo}
+				$http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
+				.then(function(data){
+					$timeout(function() {
+						$scope.Kyc.Docs[indice].loaded=true
+						$scope.saveDocs()
+						$rootScope.$broadcast('fileUploaded',data.data.response)
+						}
+						,200)
+					if (data.data.RESPONSECODE=='-1'){
+						 localstorage('msg','Sessione Scaduta ');
+						 $state.go('login');;;
+					}
+						console.log('success');
+				})
+				, (function(){
+						console.log('error');
+				});
+
+			}
+			else {
+				$scope.Kyc.Docs[indice].rotate=args.gradi
+				$scope.saveDocs()
+
+			}
+
+
+  })
+
+
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
@@ -473,9 +517,6 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
                  })
 								 $('.mdl-layout__drawer-button').hide()
                $scope.main.loader=false
-							 $timeout(function() {
-							 	resize_img()
-							},500);
             }, 200);
   });
 

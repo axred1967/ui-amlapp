@@ -725,7 +725,7 @@ app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLo
     if ($scope.agent.image===undefined ||  $scope.agent.image === null ||  $scope.agent.image == 'null' || $scope.agent.image.length==0)
       $scope.agent.imageurl= ''
     else
-      $scope.agent.imageurl= SERVICEDIRURL +"file_down.php?file=" + $scope.agent.image +"&action=file&profile=1"+ $scope.agent.pInfoUrl
+      $scope.agent.imageurl= SERVICEDIRURL +"file_down.php?tipo=profilo&file=" + $scope.agent.image +"profile=1"+ $scope.agent.pInfoUrl
 
     $scope.agent.paese= localStorage.getItem("paese");
     $scope.agent.tipo_cliente= localStorage.getItem("tipo_cliente");
@@ -847,6 +847,10 @@ $scope.loadAgentList();
   }
     //checkthesidebarinfouser();
 
+    $scope.updateImageDialog=function(gradi,indice){
+      $scope.$broadcast('updateImageDialog',{gradi:gradi,doc:docPassed})
+
+    }
 
 
 })

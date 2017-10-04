@@ -27,7 +27,7 @@ app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_i
 
     Customer.IMAGEURI=UPLOADSURL +"user/small/"
     if (Customer.image===undefined ||  Customer.image== null || Customer.image.length==0)
-      Customer.imageurl= '../img/customer-listing1.png'
+      Customer.imageurl= BASEURL + 'img/customer-listing1.png'
     else
    Customer.imageurl= SERVICEDIRURL +"file_down.php?action=file&file=" + Customer.image +"&profile=1"+ $scope.agent.pInfoUrl
 //

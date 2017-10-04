@@ -164,7 +164,7 @@ SignaturePad.prototype.fromDataURL = function (dataUrl) {
   this._reset();
   image.src = dataUrl;
   image.onload = function () {
-    _this._ctx.drawImage(image, 0, 0, width, height);
+    _this._ctx.drawImage(image, (width-image.width)/2, (height-image.height)/2, width, height);
   };
   this._isEmpty = false;
 };
