@@ -105,7 +105,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 				.then(function(responceData)  {
 					if(responceData.data.RESPONSECODE=='1') 			{
 						data=responceData.data.RESPONSE
-						$scope.precAVDocs=IsJsonString(data[0].docs);
+						$scope.precAVDocs=IsJsonString(data[0].Docs);
 						angular.forEach($scope.precAVDocs, function(doc,key){
 							 var prec=""
 								if ($scope.precAVDocs[key].doc_name!==undefined){

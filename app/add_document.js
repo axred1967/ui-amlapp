@@ -183,7 +183,13 @@ $scope.loadItem=function(){
                 if ($scope.Docs[$i]===undefined){
                   $scope.Docs[$i]={}
                 }
-                $scope.Docs[$i].doc_name=file.name;
+                if ($scope.Doc.doc_name!==undefined && $scope.Doc.doc_name.length>0 && $i==0){
+                  $scope.Docs[$i].doc_name=$scope.Doc.doc_name;
+
+                }else{
+                  $scope.Docs[$i].doc_name=file.name;
+                }
+                $scope.Docs[$i].doc_type=$scope.Doc.doc_type
                 $scope.Docs[$i].loaded=false
                 $scope.Docs[$i].per=$scope.Doc.per
                 $scope.Docs[$i].per_id=$scope.Doc.per_id

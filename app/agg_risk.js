@@ -101,8 +101,21 @@ $scope.print_risk=function(Contract){
       if (Value) {
         data={action:'addAggRisk',contract_id:$scope.Contract.contract_id,pInfo:$scope.agent.pInfo}
         $http.post(SERVICEURL2,data)
-        $state.reload()
-        $scope.back()
+        .then(function(data){
+          if (data.data.RESPONSECODE=='1'){
+            $state.reload()
+            $scope.back()
+
+          }
+          if (data.data.RESPONSECODE=='-1'){
+            localstorage('msg','Sessione Scaduta ');
+            $state.go('login');;;
+          }
+          console.log('success');
+        })
+        , (function(){
+          console.log('error');
+        });
         swal($filter('translate')("Storicizzazione Eseguita!"), {
           icon: "success",
         });

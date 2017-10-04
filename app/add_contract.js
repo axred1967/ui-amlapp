@@ -423,7 +423,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
 
 		$scope.back=function(){
-	    $state.go($scope.page.location)
+	    $state.go($scope.page.location,{pages:$scope.pages})
 	  }
 		$scope.$on('backButton', function(e) {
 	      $scope.back()

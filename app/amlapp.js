@@ -443,6 +443,14 @@ app2.directive('uploadmfiles', ['$http','$timeout', function($http) {
             if (scope.docs[$i]===undefined){
               scope.docs[$i]={}
             }
+            if ($scope.Doc.doc_name!==undefined && $scope.doc.doc_name.length>0 && $i==0){
+              $scope.docs[$i].doc_name=$scope.doc.doc_name;
+
+            }else{
+              $scope.docs[$i].doc_name=file.name;
+            }
+            $scope.docs[$i].doc_type=$scope.doc.doc_type
+
             scope.docs[$i].doc_name=file.name;
             scope.docs[$i].loaded=false
             scope.docs[$i].per=scope.doc.per
