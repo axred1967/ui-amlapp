@@ -172,6 +172,29 @@
         </fieldset>
         <fieldset ng-show="agent.user_type<3">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <label  id="lend_det" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="end_det">
+              <input id="end_det" name="end_det"  type="checkbox" class="mdl-checkbox__input" value="1"
+              autocomplete="off"  ng-true-value="1" ng-false-value="0"
+              ng-click=toogle('agent.settings.end_det')  modelAx="Contract.end_det"        />
+              <span class="mdl-checkbox__label">{{'Fine validità determinabile'|translate}}</span>
+            </label>
+
+          </div>
+        </fieldset>
+
+        <fieldset  ng-show="agent.user_type<3">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <label  id="lvalue_det" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="value_det">
+              <input id="value_det" name="value_det"  type="checkbox" class="mdl-checkbox__input" value="1"
+              autocomplete="off"  ng-true-value="1" ng-false-value="0"
+              ng-click=toogle('agent.settings.value_det')  modelAx="agent.settings.value_det"        />
+              <span class="mdl-checkbox__label">{{'Valore contratto determinabile'|translate}}</span>
+            </label>
+
+          </div>
+        </fieldset>
+        <fieldset ng-show="agent.user_type<3">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="text" id="natura_contratto" name="natura_contratto" minlength="3"  value=" "
           ng-model="agent.settings.naturaContratto"   minlength="3" autocomplete="off"
 

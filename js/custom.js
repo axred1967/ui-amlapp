@@ -523,6 +523,15 @@ function setDefaults($scope){
 
         }
 
+        if (typeof attr === typeof undefined || attr === false){
+          attr=$(this).attr('modelAx')
+          if (typeof attr !== typeof undefined && attr !== false){
+            d=$(this).attr('modelAx')
+            res=d.split('.')
+
+          }
+
+        }
         if ($(this).attr('type')=="date"){
           if ($scope[res[0]]!==undefined  ){
             dom=$scope[res[0]][res.slice(-1)[0]]

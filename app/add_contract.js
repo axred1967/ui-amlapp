@@ -41,8 +41,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
        $scope.action='add'
        $scope.main.viewName="Nuovo Contratto"
        $scope.Contract={}
-			 $scope.Contract.value_det=1
-			 $scope.Contract.end_det=1
+
 
        break;
        default :
@@ -73,7 +72,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 		 $scope.setEoC=function(){
 			 oggi=new Date()
 			 if ($scope.Contract!==undefined && $scope.Contract.contract_date!==undefined &&  $scope.Contract.contract_eov.setHours(0,0,0,0)==oggi.setHours(0,0,0,0)) {
-				 d = Object.assign($scope.Contract.contract_date)
+				 Object.assign(d,$scope.Contract.contract_date)
 		     d.setFullYear(d.getFullYear()+10)
 		     $scope.Contract.contract_eov=d
 			 }

@@ -84,6 +84,50 @@ app2.controller('my_profile', function ($scope,$http,$state,$translate,$timeout,
       }
     );
   }
+	$scope.toogle=function(o){
+		o = o.split(".")
+		switch (o.length){
+			case 1:
+			$val= $scope[o[0]]
+			if ($val==1){
+				$scope[o[0]]=0;
+			}
+			else{
+				$scope[o[0]]=1;
+			}
+			break;
+			case 2:
+			$val= $scope[o[0]][o[1]]
+			if ($val==1){
+				$scope[o[0]][o[1]]=0;
+			}
+			else{
+				$scope[o[0]][o[1]]=1;
+			}
+			break;
+			case 3:
+			$val= $scope[o[0]][o[1]][o[2]]
+			if ($val==1){
+				$scope[o[0]][o[1]][o[2]]=0
+			}
+			else{
+				$scope[o[0]][o[1]][o[2]]=1;
+			}
+			break;
+			case 4:
+			$val= $scope[o[0]][o[1]][o[2]][o[3]]
+			if ($val==1){
+				$scope[o[0]][o[1]][o[2]][o[3]]=0
+			}
+			else{
+				$scope[o[0]][o[1]][o[2]][o[3]]=1;
+			}
+			break;
+
+		}
+
+
+	}
 
 	$scope.uploadPhoto=function(imageURI){
 	  window.resolveLocalFileSystemURI(imageURI, $scope.gotFileEntry, $scope.fail);

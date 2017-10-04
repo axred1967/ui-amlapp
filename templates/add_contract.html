@@ -115,8 +115,8 @@
         <fieldset ng-show="Contract.tipo_contratto==0">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <label  id="lend_det" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="end_det">
-              <input id="end_det" name="end_det"  type="checkbox" class="mdl-checkbox__input" value="1"
-              autocomplete="off"
+              <input id="end_det" name="end_det"  type="checkbox" class="mdl-checkbox__input" ng-true-value="1" ng-false-value="0"
+              autocomplete="off" def-setting="end_det" 
               ng-click=toogle('Contract.end_det')  modelAx="Contract.end_det"        />
               <span class="mdl-checkbox__label">{{'Fine validità determinabile'|translate}}</span>
             </label>
@@ -139,7 +139,7 @@
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <label  id="lvalue_det" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="value_det">
-              <input id="value_det" name="value_det"  type="checkbox" class="mdl-checkbox__input" value="1"
+              <input id="value_det" name="value_det"  type="checkbox" class="mdl-checkbox__input" def-setting="value_det" ng-true-value="1" ng-false-value="0"
               autocomplete="off"
               ng-click=toogle('Contract.value_det')  modelAx="Contract.value_det"        />
               <span class="mdl-checkbox__label">{{'Valore contratto determinabile'|translate}}</span>

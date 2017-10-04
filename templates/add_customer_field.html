@@ -20,6 +20,21 @@
     </span>
   </div>
 </fieldset>
+<fieldset>
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+  <input class="mdl-textfield__input" type="text" autocomplete="off" id="customer_fiscal_number" name="customer_fiscal_number"
+  ng-model="Customer.fiscal_number"
+  minlength="3"   ng-required="true"
+
+  ng-focus="resetAC()"
+  />
+  <label class="mdl-textfield__label" for="customer_fiscal_number">{{'Codice ISS/Codice Fiscale'|translate}} *</label>
+  <span class="mdl-tooltip mdl-tooltip--validation" for="customer_fiscal_number" ng-show="form.customer_fiscal_number.$invalid && form.customer_fiscal_number.$touched">
+    <span ng-show="form.customer_fiscal_number.$error.required">{{'Richiesto'| translate}}</span>
+  </span>
+</div>
+</fieldset>
+
 <fieldset ng-show="page.owners && page.type!='owners'" id="perc" >
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
 
@@ -119,6 +134,7 @@
 </div>
 </fieldset>
 <br/>
+<div ng-hide="page.action=='add_customer_for_contract'">
 <center ng-hide="page.other_data">
   <button  id="otherdown" ng-click="other()" class=" mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
     <i class="material-icons" >arrow_drop_down</i>
@@ -136,7 +152,7 @@
   </span>
 </center>
 <br/>
-
+</div>
 <div ng-show="page.other_data">
   <br/>
 <!--- -->

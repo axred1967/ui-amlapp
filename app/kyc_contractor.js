@@ -66,6 +66,7 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 	 'name':'concat(uno.name," " , uno.surname)',
  		'email':'uno.email',
  		'user_id':'uno.user_id',
+		'fiscal_number':'uno.fiscal_number'
 	}
 
 
@@ -105,7 +106,9 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 																	 fields:{'name':'uno.name',
 																	 'surname':'uno.surname',
 																	 'email':'uno.email',
-																	 'mobile':'uno.mobile'
+																	 'mobile':'uno.mobile',
+																	 'fiscal_number':'uno.fiscal_number'
+
 																	 },
 																	 where:{user_id:{valore:$scope.Contract.contractor_id}}
 																	 }
@@ -118,6 +121,7 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 														 $scope.Customer.email=data[0].email
 														 $scope.Customer.surname=data[0].surname
 														 $scope.Customer.mobile=data[0].mobile
+														 $scope.Customer.fiscal_number=data[0].fiscal_number
 										       }
 										       else   {
 										         if (responceData.data.RESPONSECODE=='-1'){
@@ -193,7 +197,7 @@ $scope.fillKycData=function(){
 	 if ($scope.Customer!==undefined && $scope.Customer.fiscal_number!==undefined && $scope.Customer.fiscal_number.length>0){
 		 settings={table:'kyc_person',id:'id',
 							 where: {
-								 fiscal_id: {valore:$scope.Customer.fiscal_number},
+								 'lower(fiscal_id)': {valore:$scope.Customer.fiscal_number.toLowerCase()},
 								 agency_id: {valore:$scope.agent.agency_id}}
 							 }
 		 data= {"action":"ListObjs",settings:settings,pInfo:$scope.agent.pInfo}
@@ -287,7 +291,7 @@ $scope.fillKycData=function(){
       var langfileloginchk = localStorage.getItem("language");
 			dbData={}
 			dbData.place_of_identification=$scope.Kyc.place_of_identification
-			dbData.date_of_identification=$scope.Kyc.date_of_identification			
+			dbData.date_of_identification=$scope.Kyc.date_of_identification
 			dbData.contractor_data=JSON.stringify(angular.extend($scope.Kyc.contractor_data,$scope.Customer))
      data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
       $http.post( SERVICEURL2,  data )
