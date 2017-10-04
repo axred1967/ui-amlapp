@@ -83,8 +83,8 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 				$scope.Kyc.Docs=IsJsonString($scope.Kyc.Docs,true)
 				settings={table:'kyc',id:'id',
 									fields :{
-										'Docs':'uno.Docs',
-										'CPU' :'j1.CPU'
+										'uno.Docs':'Docs',
+										'j1.CPU' :'CPU'
 									},
 									where: {
 										'uno.id': {'opcond':'<>',valore:$scope.Kyc.id},

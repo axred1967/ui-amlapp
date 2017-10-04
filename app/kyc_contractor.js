@@ -103,11 +103,11 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 											 if ($scope.Kyc.contractor_data.name===undefined || $scope.Kyc.contractor_data.name===null || $scope.Kyc.contractor_data.name==null){
 
 												 settings={table:'users',id:'user_id',
-																	 fields:{'name':'uno.name',
-																	 'surname':'uno.surname',
-																	 'email':'uno.email',
-																	 'mobile':'uno.mobile',
-																	 'fiscal_number':'uno.fiscal_number'
+																	 fields:{'uno.name':'name',
+																	 'uno.surname':'surname',
+																	 'uno.email':'email',
+																	 'uno.mobile':'mobile',
+																	 'uno.fiscal_number':'fiscal_number'
 
 																	 },
 																	 where:{user_id:{valore:$scope.Contract.contractor_id}}

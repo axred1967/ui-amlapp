@@ -734,9 +734,9 @@ app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLo
 $scope.loadAgentList=function(){
     settings={table:'agent',id:'agent_id',
               fields:{
-                'name':'j1.name',
-                'surname':'j1.surname',
-              'agent_id':'uno.agent_id'
+                'j1.name':'name',
+                'j1.surname':'surname',
+              'uno.agent_id':'agent_id'
               },
               join:{
                 'j1':{'table':'users',

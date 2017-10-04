@@ -49,11 +49,11 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout
 				if ($scope.Company.name===undefined || $scope.Company.name===null || $scope.Company.name==null){
 
 				settings={table:'company',id:'company_id',
-									fields:{'name':'uno.name',
-									'company_type':'uno.company_type',
-									'address':'uno.address',
-									'country':'uno.country',
-									'town':'uno.town'
+									fields:{'uno.name':'name',
+									'uno.company_type':'company_type',
+									'uno.address':'address',
+									'uno.country':'country',
+									'uno.town':'town'
 									},
 									where:{company_id:{valore:$scope.Contract.other_id}}
 									}
