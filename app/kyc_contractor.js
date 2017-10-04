@@ -20,8 +20,8 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 				$scope.passo++
         $state.go('kyc_contractor.02',{pages:$scope.pages})
 				$scope.main.viewName="Dati Firmatario " + $scope.passo
-
-        return;
+				document.body.scrollTop = document.documentElement.scrollTop = 0;
+	        return;
       }
 			if ($scope.passo==2 && passo>0){
 				next="kyc_document"
@@ -99,6 +99,7 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 											 $scope.Kyc.contract_data=IsJsonString($scope.Kyc.contract_data)
 
 											 $scope.Customer=angular.extend({},$scope.Kyc.contractor_data);
+											 setDefaults($scope)
 
 											 if ($scope.Kyc.contractor_data.name===undefined || $scope.Kyc.contractor_data.name===null || $scope.Kyc.contractor_data.name==null){
 

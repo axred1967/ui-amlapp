@@ -59,7 +59,7 @@
         <form id="form" name="form" action="#" novalidate="">
 
           <fieldset ng-show="passo==1">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <div ng-show="passo==1" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="text" autocomplete="off" id="Kyc_poi" name="Kyc_poi"  pattern="[A-Za-z\s]*"
               ng-model="Kyc.place_of_identification"  ng-change="Kyc.place_of_identification=(Kyc.place_of_identification| capitalize)"
               minlength="3" ng-required="true"
@@ -85,7 +85,7 @@
           </fieldset>
 
           <fieldset ng-show="passo==1">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <div ng-show="passo==1" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="date" date-input id="Kyc_doi" name="Kyc_doi"
               ng-model="Kyc.date_of_identification"   ng-required="true" autocomplete="off"
               />
