@@ -27,7 +27,6 @@ app2.controller('risk_profile02', function ($scope,$http,$state,$translate,$time
   $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Attività e Residenza"
   $scope.main.loader=true
-    $scope.page={}
 
   $scope.curr_page='risk_profile02'
   page=localStorage.getItem($scope.curr_page)
@@ -42,16 +41,13 @@ app2.controller('risk_profile02', function ($scope,$http,$state,$translate,$time
 
   switch ($scope.action){
     default:
-    var id=localStorage.getItem("CustomerProfileId");
-    var email=localStorage.getItem("userEmail");
-    $scope.Contract=JSON.parse(localStorage.getItem('Contract'))
-    appData=$scope.Contract
+    $scope.Contract=$scope.pages[$scope.page.location].Contract
+    appData=$scope.Contract;
    data={"action":"riskAx",appData:appData,agg:$scope.page.agg,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
       $('#loader_img').hide();
       if(responceData.data.RESPONSECODE=='1') 			{
-        $scope.Kyc=responceData.data.kyc;
         data=responceData.data.RESPONSE;
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
@@ -61,38 +57,8 @@ app2.controller('risk_profile02', function ($scope,$http,$state,$translate,$time
           $scope.Risk.risk_data.mainActivity={}
           if ($scope.Risk.risk_data.Residence===undefined || ! isObject($scope.Risk.risk_data.Residence))
             $scope.Risk.risk_data.Residence={}
-
-//        $scope.Risk.risk_data.partial=IsJsonString($scope.Risk.risk_data.partial)
-$('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
-  function(index){
-    ngm=$(this).attr('ng-model')
-    s = ngm.split(".")
-    switch (s.length){
-      case 1:
-          $val= $scope[s[0]]
-          break;
-          case 2:
-              $val= $scope[s[0]][s[1]]
-              break;
-              case 3:
-                  $val= $scope[s[0]][s[1]][s[2]]
-                  break;
-                  case 4:
-                      $val= $scope[s[0]][s[1]][s[2]][s[3]]
-                      break;
-
-    }
-    if ( $(this).attr('type')=="radio" && $val==$(this).attr('value'))
-      document.getElementById($(this).attr('id')).parentNode.MaterialRadio.check()
-        //$(this).parentNode.MaterialRadio.check()
-      if ($(this).attr('type')=="checkbox" && $val==$(this).attr('value'))
-      document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox.check()
-//                $(this).parentNode.MaterialCheckbox.check()
-
-    $(this).parent('div.mdl-textfield').addClass('is-dirty');
-    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-  }
-);
+            setDefaults($scope)
+            
       }
       else
       {
@@ -268,11 +234,7 @@ $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
    $scope.$on('$viewContentLoaded',
             function(event){
               $timeout(function() {
-                $('input.mdl-textfield__input').each(
-                  function(index){
-                    $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                  })
+                setDefaults($scope)
                 $scope.main.loader=false
              }, 5);
    });

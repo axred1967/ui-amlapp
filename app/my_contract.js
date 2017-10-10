@@ -150,27 +150,46 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
       tipo_cliente = $scope.agent.tipo_cliente;
       switch (paese){
         case 'italia':
+        switch (tipo_cliente){
+          case 'agenzia assicurazioni':
+          $translate.use('it-IT'); // translati   ons-en-US.json
+          break;
+          case 'studio commercialisti':
+          $translate.use('it-IT-comm'); // translati   ons-en-US.json
+          break;
+          case 'studio notarile':
+          $translate.use('it-IT-notaiIT'); // translati   ons-en-US.json
+          break;
+          default:
+          $translate.use('it-IT'); // translati   ons-en-US.json
+
+        }
+        break;
         case 'san marino':
         tmhDynamicLocale.set('it');
         switch (tipo_cliente){
           case 'agenzia assicurazioni':
-            $translate.use('it-IT'); // translati   ons-en-US.json
-            break;
+          $translate.use('it-IT'); // translati   ons-en-US.json
+          break;
           case 'studio commercialisti':
           $translate.use('it-IT-comm'); // translati   ons-en-US.json
           break;
+          case 'studio notarile':
+          $translate.use('it-IT-notaiSM'); // translati   ons-en-US.json
+          break;
           default:
-            $translate.use('it-IT'); // translati   ons-en-US.json
+          $translate.use('it-IT'); // translati   ons-en-US.json
 
         }
         break;
         case'stati uniti' :
-          break;
+        break;
         default:
         $translate.use('it-IT'); // translati   ons-en-US.json
         tmhDynamicLocale.set('it');
 
       }
+
       if ($scope.agent.user_type==3)
       $scope.main.Cm="Dati personali"
       else
@@ -468,7 +487,22 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   $scope.deleteContract2=function(contract,index){
     data={action:'delete',table:'contract','primary':'id',id:contract.contract_id ,pInfo:$scope.agent.pInfo}
     $http.post(SERVICEURL2,data)
-    $state.reload()
+               .then(function(data){
+          if(data.data.RESPONSECODE=='1')
+          {
+            $state.reload()
+          }
+          else      {
+            if (data.data.RESPONSECODE=='-1'){
+               localstorage('msg','Sessione Scaduta ');
+               $state.go('login');;;
+            }
+            swal("",data.data.RESPONSE);
+          }
+        })
+        , (function(){
+          console.log('error');
+        })
   }
   $scope.back = function(d){
     $state.go($scope.page.location)

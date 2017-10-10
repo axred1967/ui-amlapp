@@ -1,4 +1,11 @@
-app2.controller('add_agency', function ($scope,$http,$state,$translate,$timeout,textAngularManager,$window) {
+app2.controller('add_agency', function ($scope,$http,$state,$translate,$timeout,textAngularManager,$window,$stateParams) {
+  $scope.curr_page=$state.current.name
+  $scope.pages=$stateParams.pages
+  if ($scope.pages===null || $scope.pages===undefined){
+    $scope.pages=JSON.parse(localStorage.getItem('pages'));
+  }
+  $scope.page=$scope.pages[$state.current.name]
+
   $scope.main.login=false
   $scope.main.Back=true
   $scope.main.Add=false
@@ -7,20 +14,12 @@ app2.controller('add_agency', function ($scope,$http,$state,$translate,$timeout,
   $scope.main.Sidebar=false
   $scope.main.viewName="Iscrivito ad AmlAPP"
   $scope.Ob={}
-  $scope.page={}
   $scope.settings={}
-  $scope.curr_page='add_agency'
+
 
  //chaptcha
   $scope.key="6LdHxysUAAAAAJI6B3TtZodNDewSh-CVY_lCxYbz";
 
-  page=localStorage.getItem($scope.curr_page)
-  if ( page!= null && page.length >0 ){
-    $scope.page=JSON.parse(page)
-    $scope.action=$scope.page.action
-
-  }
-  $scope.main.location=$scope.page.location
   $scope.settings.table="agency"
   $scope.settings.id="agency_id"
 
@@ -45,16 +44,17 @@ app2.controller('add_agency', function ($scope,$http,$state,$translate,$timeout,
     $scope.main.viewName="Completa Iscrizione"
     $scope.settings.action="edit"
     $scope.main.Back=false
-    $scope.Ob=JSON.parse(localStorage.getItem('Ob'))
-    $scope.Ob.settings=IsJsonString($scope.Ob.settings)
+    $scope.Ob=$scope.page.Ob
+    //$scope.Ob.settings=IsJsonString($scope.Ob.settings)
     $scope.Ob.status=1
     break;
 
     default:
     $scope.main.viewName="Modifica Cliente AmlAPP"
     $scope.settings.action="edit"
-    $scope.Ob=JSON.parse(localStorage.getItem('Ob'))
-    $scope.Ob.settings=IsJsonString($scope.Ob.settings)
+    $scope.Ob=$scope.page.Ob
+    $scope.Ob.status=1
+    //$scope.Ob.settings=IsJsonString($scope.Ob.settings)
 
   }
 
@@ -129,7 +129,7 @@ app2.controller('add_agency', function ($scope,$http,$state,$translate,$timeout,
     else {
       data={action:'saveOb', dbData:$scope.Ob, settings:$scope.settings,pInfo:$scope.agent.pInfo}
     }
-    
+
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
         if(data.data.RESPONSECODE=='1') 			{
@@ -230,9 +230,6 @@ app2.controller('add_agency', function ($scope,$http,$state,$translate,$timeout,
 
 
    $scope.back=function(passo){
-     precPage=JSON.parse(localStorage.getItem($scope.page.location))
-     if (!isObject(precPage))
-       precPage={}
      switch ($scope.page.action){
        case 'signUp':
           if ($scope.lastid>0)
@@ -242,7 +239,7 @@ app2.controller('add_agency', function ($scope,$http,$state,$translate,$timeout,
            swal('','Registrazione Completata\n ora puoi provare la nostra APP per un mese gratuitamente','');
            break;
       }
-      $state.go($scope.page.location)
+      $state.go($scope.page.location, {pages:$scope.pages})
 
    }
    $scope.$on('backButton', function(e) {

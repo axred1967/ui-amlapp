@@ -1,18 +1,8 @@
-<fieldset ng-show="Kyc.kyc_update.state=='aggiornamento'">
-  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
-    <text-angular   class="textwidth100" style="width: 100% !important;" ng-class="{'imported': imported.updatereason }" ng-model="Customer.updatereason" ng-required="Kyc.kyc_update.state=='aggiornamento'"
-    type="text" rows= "3" id="reason" name="reason" ></text-angular>
-    <label for="reason"  class="mdl-textfield__label   " style="margin-top:-10px;color: #3f51b5;font-size: 12px;top: 4px;visibility: visible;">
-      {{ 'Motivo del Aggiornamento' | translate}}</label>
-    <span class="mdl-tooltip mdl-tooltip--validation" for="reason" minlength="3" ng-show="form.reason.$invalid && form.reason.$touched">
-      <span ng-show="form.reason.$error.required">{{'Richiesto'|translate}}.</span>
-    </div>
-</fieldset>
 
 
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text" autocomplete="off" id="Customer_name" name="Customer_name"  pattern="[A-Za-z\s]*"
+    <input class="mdl-textfield__input" type="text" autocomplete="off" id="Customer_name" name="Customer_name"  pattern="[A-Za-zÀ-ž\s]*"
       ng-class="{'imported': imported.name }" ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="passo==1 "
     />
     <label class="mdl-textfield__label" for="Customer_name">{{'Name'|translate}} *</label>
@@ -23,7 +13,7 @@
 </fieldset>
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text" autocomplete="off" id="Customer_surname" name="Customer_surname"value=" "  pattern="[A-Za-z\s]*"
+    <input class="mdl-textfield__input" type="text" autocomplete="off" id="Customer_surname" name="Customer_surname"value=" "  pattern="[A-Za-zÀ-ž\s]*"
     ng-class="{'imported': imported.surname }" ng-model="Customer.surname"  ng-change="Customer.surname=(Customer.surname| capitalize)" minlength="3"
     ng-required="passo==1 " />
     <label class="mdl-textfield__label" for=""Customer_surname"">{{'Surname'|translate}} *</label>

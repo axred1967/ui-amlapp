@@ -57,6 +57,16 @@
       <div class="mdl-cell mdl-cell--12-col">
         <h5 style"text-color:red" ng-if="formStatus">{{formStatus}}</h5>
         <form id="form" name="form" action="#" novalidate="">
+          <fieldset ng-show="passo==1 && Kyc.kyc_update.state=='aggiornamento'">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
+              <text-angular   class="textwidth100" style="width: 100% !important;" ng-class="{'imported': imported.updatereason }" ng-model="Kyc.kyc_update.updateReasons" ng-required="pass==1 && Kyc.kyc_update.state=='aggiornamento'"
+              type="text" rows= "3" id="reason" name="reason" ></text-angular>
+              <label for="reason"  class="mdl-textfield__label   " style="margin-top:-10px;color: #3f51b5;font-size: 12px;top: 4px;visibility: visible;">
+                {{ 'Motivo del Aggiornamento' | translate}}</label>
+              <span class="mdl-tooltip mdl-tooltip--validation" for="reason" minlength="3" ng-show="form.reason.$invalid && form.reason.$touched">
+                <span ng-show="form.reason.$error.required">{{'Richiesto'|translate}}.</span>
+              </div>
+          </fieldset>
 
           <fieldset ng-show="passo==1">
             <div ng-show="passo==1" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">

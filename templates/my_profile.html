@@ -80,7 +80,7 @@
         </fieldset>
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="Customer_name" name="Customer_name"  pattern="[A-Za-z\s]*"
+            <input class="mdl-textfield__input" type="text" id="Customer_name" name="Customer_name"
             ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="true"
             />
             <label class="mdl-textfield__label" for="Customer_name">{{'Name'|translate}} *</label>
@@ -193,6 +193,30 @@
 
           </div>
         </fieldset>
+
+<label  id="lvalue_det" class="mdl-textfield__label " >{{' Tipo Contratto Predefinito:'|translate}}</label>
+       <div class="mdl-grid">
+          <div class="mdl-cell ">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="tipo_contratto-1">
+              <input  type="radio" id="tipo_contratto-1" ng-model="agent.settings.tipo_contratto" class="mdl-radio__button" name="tipo_contratto"  value="0" checked>
+              <span class="mdl-radio__label" >{{'Rapporto Continuativo'| translate}}</span>
+            </label>
+          </div>
+
+          <div class="mdl-cell">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="tipo_contratto-2">
+              <input type="radio" id="tipo_contratto-2" ng-model="agent.settings.tipo_contratto" class="mdl-radio__button" name="tipo_contratto" value="1"  >
+              <span class="mdl-radio__label">{{'Prestazione Professionale'| translate}}</span>
+            </label>
+          </div>
+          <div class="mdl-cell">
+            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="tipo_contratto-3">
+              <input type="radio" id="tipo_contratto-3" ng-model="agent.settings.tipo_contratto" class="mdl-radio__button" name="tipo_contratto" value="2" >
+              <span class="mdl-radio__label" >{{'Prestazione occasionale'| translate}}</span>
+            </label>
+          </div>
+        </div>
+      </div>
         <fieldset ng-show="agent.user_type<3">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="text" id="natura_contratto" name="natura_contratto" minlength="3"  value=" "

@@ -97,7 +97,7 @@ $scope.loadItem=function(){
   });
 
 }
-  $scope.image_type=['.png','.gif','.png','.tif','.bmp','.jpg','.jpeg']
+  $scope.image_type=['.png','.gif','.png','.jpg','.jpeg']
   $scope.Doc.isImage=true
   if($scope.image_type.indexOf($scope.Doc.file_type) === -1) {
     $scope.Doc.isImage=false
@@ -167,7 +167,7 @@ $scope.loadItem=function(){
             files=e.files
             var nfile=files.length
             var $i=$scope.Docs.length;
-            var image_type=['.png','.gif','.png','.tif','.bmp','.jpg','.jpeg']
+            var image_type=['.png','.gif','.png','.jpg','.jpeg']
             angular.forEach(files, function(value){
               var f = value
               r = new FileReader();

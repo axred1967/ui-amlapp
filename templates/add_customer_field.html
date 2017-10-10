@@ -1,6 +1,6 @@
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text" autocomplete="off" id="Customer_name" name="Customer_name"  pattern="[A-Za-z\s]*"
+    <input class="mdl-textfield__input" type="text" autocomplete="off" id="Customer_name" name="Customer_name"  pattern="[A-Za-zÀ-ž\s]*"
     ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="true "
     />
     <label class="mdl-textfield__label" for="Customer_name">{{'Name'|translate}} *</label>
@@ -11,7 +11,7 @@
 </fieldset>
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text" autocomplete="off" id="Customer_surname" name="Customer_surname"value=" "  pattern="[A-Za-z\s]*"
+    <input class="mdl-textfield__input" type="text" autocomplete="off" id="Customer_surname" name="Customer_surname"value=" "  pattern="[A-Za-zÀ-ž\s]*"
     ng-model="Customer.surname"  ng-change="Customer.surname=(Customer.surname| capitalize)" minlength="3"
     ng-required="true " />
     <label class="mdl-textfield__label" for=""Customer_surname"">{{'Surname'|translate}} *</label>

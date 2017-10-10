@@ -22,7 +22,7 @@ app2.controller('risk_final', function ($scope,$http,$state,$translate,$timeout,
   $('.mdl-layout__drawer-button').hide()
   $scope.main.viewName="Frequenza e Consistenza"
   $scope.main.loader=true
-    $scope.page={}
+  
 
   $scope.curr_page='risk_final'
   page=localStorage.getItem($scope.curr_page)

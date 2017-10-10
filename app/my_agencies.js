@@ -1,5 +1,12 @@
-app2.controller('my_agencies', function ($scope,$http,$translate,$rootScope,$state,ObAmlApp,$timeout) {
+app2.controller('my_agencies', function ($scope,$http,$translate,$rootScope,$state,ObAmlApp,$timeout,$stateParams) {
   //alert(window.location.pathname.replace(/^\//, ''));
+  $scope.curr_page=$state.current.name
+  $scope.pages=$stateParams.pages
+  if ($scope.pages===null || $scope.pages===undefined){
+    $scope.pages=JSON.parse(localStorage.getItem('pages'));
+  }
+  $scope.page=$scope.pages[$state.current.name]
+
   $scope.main.login=false
   $scope.main.Back=false
   if ($scope.agent.user_type == 3)
@@ -13,21 +20,20 @@ app2.controller('my_agencies', function ($scope,$http,$translate,$rootScope,$sta
   $scope.main.Sidebar=true
   $('.mdl-layout__drawer-button').show()
   $scope.main.loader=true
-  $scope.page={}
 
 
   $scope.ObAmlApp=new ObAmlApp
   $scope.ObAmlApp.pInfo=$scope.agent.pInfo
   $scope.ObAmlApp.set_settings({table:'agency',id:'agency_id',
-  fields:{'address':'uno.address',
-  'country':'uno.country',
-  'town':'uno.town',
-  'tipo_cliente_app':'uno.tipo_cliente_app',
-  'name':'j1.name',
-  'email':'j1.email',
-  'settings':'j1.settings',
-  'user_id':'uno.user_id',
-  'agency_id':'uno.agency_id'
+  fields:{'uno.address':'address',
+  'uno.country':'country',
+  'uno.town':'town',
+  'uno.tipo_cliente_app':'tipo_cliente_app',
+  'j1.name':'name',
+  'j1.email':'email',
+  'j1.settings':'settings',
+  'uno.user_id':'user_id',
+  'uno.agency_id':'agency_id'
 },
   join:{
     'j1':{'table':'users',
@@ -50,13 +56,14 @@ app2.controller('my_agencies', function ($scope,$http,$translate,$rootScope,$sta
     return   imageurl
   }
   $scope.add_ob = function(){
-    localstorage('add_agency',JSON.stringify({action:'add_ob',location:$scope.curr_page}))
-    $state.go('add_agency')
+    $scope.pages.add_agency={action:'add_ob',location:$scope.curr_page}
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go('add_agency', {pages:$scope.pages})
   };
   $scope.toOb = function(Ob,index){
-    localstorage('add_agency',JSON.stringify({action:'edit',location:$scope.curr_page}))
-    localstorage('Ob',JSON.stringify(Ob))
-    $state.go('add_agency',null,{ reload: true })
+    $scope.pages.add_agency={action:'edit',location:$scope.curr_page,Ob:Ob}
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go('add_agency',{pages:$scope.pages})
   };
 
   $scope.deleteOb=function(Ob,index )

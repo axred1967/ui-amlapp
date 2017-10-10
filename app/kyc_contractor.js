@@ -7,11 +7,13 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 			$scope.pages=JSON.parse(localStorage.getItem('pages'));
 		}
 		$scope.page=$scope.pages[$state.current.name]
-		if (!$scope.page.passo===undefined)
-			$scope.passo=$scope.page.passo
-		else {
+		if ($state.current.name='kyc_contractor.01'){
 			$scope.passo=1
 		}
+		if ($state.current.name='kyc_contractor.02'){
+			$scope.passo=2
+		}
+
     $scope.back=function(passo){
       if ($scope.passo==1 && passo>0){
         $scope.pages['kyc_contractor.02']={action:'',passo:passo, location:$scope.page.location,prev_page:$state.current.name,temp:null}
@@ -293,6 +295,8 @@ $scope.fillKycData=function(){
 			dbData={}
 			dbData.place_of_identification=$scope.Kyc.place_of_identification
 			dbData.date_of_identification=$scope.Kyc.date_of_identification
+			dbData.kyc_update=JSON.stringify($scope.Kyc.kyc_update)
+
 			dbData.contractor_data=JSON.stringify(angular.extend($scope.Kyc.contractor_data,$scope.Customer))
      data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
       $http.post( SERVICEURL2,  data )
@@ -430,7 +434,8 @@ $scope.fillKycData=function(){
 				}
 				$scope.imported[key]=false
 			})
-
+			var elmnt= document.getElementById("ui-content")
+			 elmnt.scrollTop=0;
 
 		}, 800);
 	});

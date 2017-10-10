@@ -37,9 +37,9 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
         $scope.countryList=responceData.countrylist
 
         $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
-        $scope.Kyc.contract_data=IsJsonString($scope.Kyc.contract)
-        $scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data)
-        $scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
+        //$scope.Kyc.contract_data=IsJsonString($scope.Kyc.contract)
+        //$scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data)
+        //$scope.Kyc.company_data=IsJsonString($scope.Kyc.company_data)
         //convertDateStringsToDates($scope.Kyc)
         //convertDateStringsToDates($scope.Kyc.contractor_data)
         //convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
@@ -155,10 +155,8 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
 
 
     var langfileloginchk = localStorage.getItem("language");
-    dbData=angular.extend({},$scope.Kyc)
-    dbData.contractor_data=JSON.stringify(dbData.contractor_data)
-    dbData.company_data=JSON.stringify(dbData.company_data)
-    dbData.owner_data=JSON.stringify(dbData.owner_data)
+    dbData={}
+    dbData.contractor_data=JSON.stringify($scope.Kyc.contractor_data)
     dbData.kyc_status=1
     dbData.kyc_date=convertDatestoStrings(new Date())
     data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,final:true,agg:$scope.page.agg,pInfo:$scope.agent.pInfo}

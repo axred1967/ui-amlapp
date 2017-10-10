@@ -65,6 +65,11 @@ Primary use: App & Mobile Website
 	float: right;
 	margin-right:16px;
 }
+.tright {
+	text-align:right !important;
+	align:right !important;
+}
+
 .transparent-header {
 	background-color: transparent;
 	position: absolute;
@@ -2130,4 +2135,13 @@ canvas {
       -ms-flex-pack: justify;
           justify-content: space-between;
   margin-top: 8px;
+}
+.tview td:nth-child(1) {
+	width:180px;
+ /* your stuff here */
+}
+.tview td:nth-child(2) {
+ width:400px;
+ text-align:left;
+/* your stuff here */
 }

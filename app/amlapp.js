@@ -35,12 +35,12 @@ app2.config(function ($translateProvider, tmhDynamicLocaleProvider,$sceDelegateP
   ]);
   // Enable escaping of HTML
   $translateProvider.useStaticFilesLoader({
-                    prefix: BASEURL+ '/localization/',
+                    prefix: BASEURL+ 'localization/',
                     suffix: '.json'
                 })
                 .preferredLanguage('it-IT')
 
-  tmhDynamicLocaleProvider.localeLocationPattern(BASEURL+'/localization/angular-locale_{{locale}}.js');
+  tmhDynamicLocaleProvider.localeLocationPattern(BASEURL+'localization/angular-locale_{{locale}}.js');
 
   $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
 });
@@ -427,7 +427,7 @@ app2.directive('uploadmfiles', ['$http','$timeout', function($http) {
       var uploadmfiles = function(files) {
         var nfile=files.length
         var $i=0;
-        var image_type=['.png','.gif','.png','.tif','.bmp','.jpg','.jpeg']
+        var image_type=['.png','.gif','.png','.jpg','.jpeg']
         angular.forEach(files, function(value){
           var f = value
           r = new FileReader();
@@ -443,13 +443,13 @@ app2.directive('uploadmfiles', ['$http','$timeout', function($http) {
             if (scope.docs[$i]===undefined){
               scope.docs[$i]={}
             }
-            if ($scope.Doc.doc_name!==undefined && $scope.doc.doc_name.length>0 && $i==0){
-              $scope.docs[$i].doc_name=$scope.doc.doc_name;
+            if (scope.doc.doc_name!==undefined && scope.doc.doc_name.length>0 && $i==0){
+              scope.docs[$i].doc_name=scope.doc.doc_name;
 
             }else{
-              $scope.docs[$i].doc_name=file.name;
+              scope.docs[$i].doc_name=file.name;
             }
-            $scope.docs[$i].doc_type=$scope.doc.doc_type
+            scope.docs[$i].doc_type=scope.doc.doc_type
 
             scope.docs[$i].doc_name=file.name;
             scope.docs[$i].loaded=false
@@ -780,32 +780,50 @@ $scope.loadAgentList();
 
 
 
-  // fisso preferenze nomi
-      paese = $scope.agent.paese;
-      tipo_cliente = $scope.agent.tipo_cliente;
-      switch (paese){
-        case 'italia':
-        case 'san marino':
-        tmhDynamicLocale.set('it');
-        switch (tipo_cliente){
-          case 'agenzia assicurazioni':
-            $translate.use('it-IT'); // translati   ons-en-US.json
-            break;
-          case 'studio commercialisti':
-          $translate.use('it-IT-comm'); // translati   ons-en-US.json
-          break;
-          default:
-            $translate.use('it-IT'); // translati   ons-en-US.json
+// fisso preferenze nomi
+paese = $scope.agent.paese;
+tipo_cliente = $scope.agent.tipo_cliente;
+switch (paese){
+  case 'italia':
+  switch (tipo_cliente){
+    case 'agenzia assicurazioni':
+    $translate.use('it-IT'); // translati   ons-en-US.json
+    break;
+    case 'studio commercialisti':
+    $translate.use('it-IT-comm'); // translati   ons-en-US.json
+    break;
+    case 'studio notarile':
+    $translate.use('it-IT-notaiIT'); // translati   ons-en-US.json
+    break;
+    default:
+    $translate.use('it-IT'); // translati   ons-en-US.json
 
-        }
-        break;
-        case'stati uniti' :
-          break;
-        default:
-        $translate.use('it-IT'); // translati   ons-en-US.json
-        tmhDynamicLocale.set('it');
+  }
+  break;
+  case 'san marino':
+  tmhDynamicLocale.set('it');
+  switch (tipo_cliente){
+    case 'agenzia assicurazioni':
+    $translate.use('it-IT'); // translati   ons-en-US.json
+    break;
+    case 'studio commercialisti':
+    $translate.use('it-IT-comm'); // translati   ons-en-US.json
+    break;
+    case 'studio notarile':
+    $translate.use('it-IT-notaiSM'); // translati   ons-en-US.json
+    break;
+    default:
+    $translate.use('it-IT'); // translati   ons-en-US.json
 
-      }
+  }
+  break;
+  case'stati uniti' :
+  break;
+  default:
+  $translate.use('it-IT'); // translati   ons-en-US.json
+  tmhDynamicLocale.set('it');
+
+}
 
   $scope.load=false
   $scope.main={}

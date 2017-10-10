@@ -14,7 +14,7 @@
       ng-model="Company.company_type"   minlength="3" ng-required="true" autocomplete="off"
       ng-keyup="showAC('company.company_type','company_type',{zero:true});"
       ng-focus="resetAC();showAC('company.company_type','company_type',{zero:true});" />
-      <label class="mdl-textfield__label" for="company_type">{{'Tipologia Soggetto Giuridico'|translate}} *</label>
+      <label class="mdl-textfield__label" for="company_type">{{'Tipologia soggetto giuridico'|translate}} *</label>
       <table class="mdl-data-table mdl-js-data-table  border-none scrolly" autocomplete="company_type" tabindex="30">
         <tbody style="display:table">
           <tr ng-click="addWord('Company.company_type',item.word,{id:'company_type'})"
@@ -57,7 +57,7 @@
       ng-keyup="showAC('company.town','town',{zero:true});"
       ng-focus="showAC('company.town','town',{zero:true});resetAC()"
       />
-      <label class="mdl-textfield__label" for="town">{{'Città di residenza'|translate}} *</label>
+      <label class="mdl-textfield__label" for="town">{{'Città'|translate}} *</label>
       <table class="mdl-data-table mdl-js-data-table  border-none scrolly" autocomplete="town" >
         <tbody style="display:table">
           <tr ng-click="addWord('Company.town',item.word,{id:'town'})" ng-repeat="item in word.town">
@@ -78,7 +78,7 @@
       ng-keyup="showAC('company.country','country',{countries:true,zero:true});"
       ng-focus="showAC('company.country','country',{countries:true,zero:true});resetAC()"
       />
-      <label class="mdl-textfield__label" for="country">{{'Paese Sede Attività'|translate}} *</label>
+      <label class="mdl-textfield__label" for="country">{{'Paese'|translate}} *</label>
       <table class="mdl-data-table mdl-js-data-table  border-none scrolly" autocomplete="country"  tabindex="30">
         <tbody style="display:table">
           <tr ng-click="addWord('Company.country',item.word,{countries:true,id:'country'})"
@@ -102,7 +102,7 @@
       ng-focus="showAC(Company.authorised_by,'authorised_by',{zero:true});resetAC();"
       autocomplete="off"
       id="authorised_by" name="authorised_by" />
-      <label for="authorised_by" class="mdl-textfield__label">{{ 'Companyauthorizedby' | translate}}</label>
+      <label for="authorised_by" class="mdl-textfield__label">{{ 'Iscritta al Registro delle imprese di' | translate}}</label>
       <table class="mdl-data-table mdl-js-data-table  border-none scrolly  " autocomplete="authorised_by">
         <tbody style="display:table">
           <tr ng-click="addWord('authorised_by',item.word,{id:'authorised_by'})" ng-repeat="item in word.authorised_by">
@@ -116,12 +116,12 @@
     </fieldset>
     <fieldset>
       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-        <input class="mdl-textfield__input"  type="date" date-input ng-model="Company.authorisation_date"
+        <input class="mdl-textfield__input"  type="text" date-input ng-model="Company.authorizationNumber"
 
-        id="authorisation_date" name="authorisation_date" />
-        <label for="authorisation_date" class="mdl-textfield__label" >{{ 'DateofAutorized' | translate}}</label>
-        <span class="mdl-tooltip mdl-tooltip--validation" for="authorisation_date" minlength="3" ng-show="form.authorisation_date.$invalid && form.authorisation_date.$touched">
-          <span ng-show="form.authorisation_date.$error.required">{{'Richiesto'|translate}}.</span>
+        id="authorizationNumber" name="authorizationNumber" />
+        <label for="authorizationNumber" class="mdl-textfield__label" >{{ 'Numero iscrizione' | translate}}</label>
+        <span class="mdl-tooltip mdl-tooltip--validation" for="authorizationNumber" minlength="3" ng-show="form.authorizationNumber.$invalid && form.authorizationNumber.$touched">
+          <span ng-show="form.authorizationNumber.$error.required">{{'Richiesto'|translate}}.</span>
         </div>
       </fieldset>
       <fieldset>

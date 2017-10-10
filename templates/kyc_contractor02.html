@@ -54,7 +54,7 @@
     ng-keyup="showAC('users.resi_country','resi_country',{countries:true,zero:true});"
     ng-focus="showAC('users.resi_country','resi_country',{countries:true,zero:true});resetAC()"
     />
-    <label class="mdl-textfield__label" for="resi_country">{{'Paese di Residenza'|translate}} *</label>
+    <label class="mdl-textfield__label" for="resi_country">{{'Paese di residenza'|translate}} *</label>
     <table class="mdl-data-table mdl-js-data-table  border-none  scrolly" tabindex="30" autocomplete="resi_country">
       <tbody style="display:table">
         <tr tabindex="30"
@@ -90,7 +90,7 @@
   ng-keyup="showAC('users.domi_country','domi_country',{countries:true,zero:true});"
   ng-focus="showAC('users.domi_country','domi_country',{countries:true,zero:true});resetAC()"
   />
-  <label class="mdl-textfield__label" for="domi_country">{{'Paese di Domicilio'|translate}} *</label>
+  <label class="mdl-textfield__label" for="domi_country">{{'Paese di domicilio'|translate}} *</label>
   <table class="mdl-data-table mdl-js-data-table  border-none  scrolly" tabindex="30" autocomplete="domi_country">
     <tbody style="display:table">
       <tr tabindex="30"
@@ -115,7 +115,7 @@
   minlength="3"      ng-required="passo==2 && Customer.check_residence==1"
 
   />
-  <label class="mdl-textfield__label" for="customer_address_domi">{{'Indirizzo Domicilio'|translate}} *</label>
+  <label class="mdl-textfield__label" for="customer_address_domi">{{'Indirizzo domicilio'|translate}} *</label>
   <span class="mdl-tooltip mdl-tooltip--validation" for="customer_address_domi" ng-show="form.customer_address_domi.$invalid && form.customer_address_domi.$touched">
     <span ng-show="form.customer_address_domi.$error.required">{{'Richiesto'| translate}}</span>
   </span>
@@ -129,7 +129,7 @@
   ng-keyup="showAC('users.domi_down','domi_town',{zero:true});"
   ng-focus="resetAC()"
   />
-  <label class="mdl-textfield__label" for="domi_town">{{'Città di Domicilio'|translate}} *</label>
+  <label class="mdl-textfield__label" for="domi_town">{{'Città di domicilio'|translate}} *</label>
   <table class="mdl-data-table mdl-js-data-table  border-none  scrolly " tabindex="30" autocomplete="domi_town">
     <tbody style="display:table">
       <tr tabindex="30"
@@ -413,30 +413,7 @@ ng-focus="resetAC();showAC('users.income_source','income_source',{order:1,zero:t
 
 </div>
 </fieldset>
-<fieldset>
-<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-<input class="mdl-textfield__input" type="text" autocomplete="off" id="found_source" name="found_source" minlength="3"  value=" "
-ng-model="Customer.found_source"   minlength="3"
-ng-keyup="showAC('users.found_source','found_source',{order:1,zero:true});"
-ng-focus="resetAC();showAC('users.found_source','found_source',{order:1,zero:true})"
-/>
-<label class="mdl-textfield__label" for="found_source">{{'Origine dei fondi' | translate }}*</label>
-<table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="found_source">
-  <tbody style="display:table">
-    <tr
-    ng-click="addWord('Customer.found_source',item.word,false,{countries:true,id:'found_source'})"
-    my-Enter="addWord('Customer.found_source',item.word,false,{countries:true,id:'found_source'})"
-    ng-repeat="item in word.found_source">
-      <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
-    </tr>
-  </tbody>
-</table>
-<span class="mdl-tooltip mdl-tooltip--validation" for="found_source" ng-show="form.found_source.$invalid && form.found_source.$touched">
-  <span ng-show="form.found_source.$error.required">{{'Richiesto'|translate}}.</span>
-</span>
 
-</div>
-</fieldset>
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
     <text-angular   class="textwidth100" style="width: 100% !important;" ng-model="Customer.notes"
