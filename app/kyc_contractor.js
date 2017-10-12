@@ -7,10 +7,10 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 			$scope.pages=JSON.parse(localStorage.getItem('pages'));
 		}
 		$scope.page=$scope.pages[$state.current.name]
-		if ($state.current.name='kyc_contractor.01'){
+		if ($state.current.name=='kyc_contractor.01'){
 			$scope.passo=1
 		}
-		if ($state.current.name='kyc_contractor.02'){
+		if ($state.current.name=='kyc_contractor.02'){
 			$scope.passo=2
 		}
 

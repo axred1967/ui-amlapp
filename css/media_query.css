@@ -453,8 +453,22 @@
   and (orientation: landscape) {
 
 }
-/*desktop */
+
 /* ----------- Non-Retina Screens ----------- */
+@media (max-width: 600px)
+   {
+    /*desktop */
+    .tview td:nth-child(1) {
+      width:100px;
+     /* your stuff here */
+    }
+    .tview td:nth-child(2) {
+     width:220px;
+     text-align:left;
+    /* your stuff here */
+    }
+
+}
 @media screen
   and (min-device-width: 1200px)
   and (max-device-width: 1600px)

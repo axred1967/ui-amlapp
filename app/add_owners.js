@@ -74,6 +74,8 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
 	    $scope.main.viewName="Nuovo TE"
 	    $scope.action='add_owners'
 	    $scope.Owner.company_id=$scope.page.company_id
+			$scope.Owner.user_type=3
+			$scope.Owner.password=Math.random().toString(36).slice(-8)
 			$scope.add_edit="Inserisci i dati del Titolare Effettivo"
 			$scope.Owner.company_id=$scope.page.company_id
 	    break;

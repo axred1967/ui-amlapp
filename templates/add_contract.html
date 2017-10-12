@@ -52,8 +52,8 @@
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" autocomplete="off" id="nature_contract" name="nature_contract" minlength="3"  value=" "
             ng-keyup="showAC('Contract.nature_contract','nature_contract',{zero:true});"
-            ng-model="Contract.nature_contract " def-setting="naturaContratto"
-            ng-change="Contract.nature_contract=(Contract.nature_contract| capitalize)" minlength="3"
+            ng-model="Contract.nature_contract" def-setting="naturaContratto"
+            ng-change="Contract.nature_contract=(Contract.nature_contract| capitalize)" minlength="3" ng-required="true"
             ng-focus="showAC('Contract.nature_contract','nature_contract',{zero:true});resetAC()"
             />
             <label class="mdl-textfield__label" for="nature_contract">{{'Natura del Contratto'|translate}} *</label>
@@ -101,7 +101,7 @@
         </fieldset>
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="date" date-input id="Contract_contract_date"  name="Contract_contract_date"  minlength="3"  value=" "
+            <input class="mdl-textfield__input" type="date" date-input id="Contract_contract_date"  name="Contract_contract_date"  ng-required="true"  value=" "
             ng-model="Contract.contract_date"   minlength="3" autocomplete="off" ng-blur="setEoC()"
             />
             <label class="mdl-textfield__label" for="Contract_contract_date">{{'ContractDate' | translate }}</label>
@@ -115,10 +115,10 @@
         <fieldset ng-show="Contract.tipo_contratto==0">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <label  id="lend_det" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="end_det">
-              <input id="end_det" name="end_det"  type="checkbox" class="mdl-checkbox__input" value="1"
-              autocomplete="off" def-setting="end_det"
-              ng-model="Contract.end_det"        />
-              <span class="mdl-checkbox__label">{{'Fine validità determinabile'|translate}}</span>
+              <input id="end_det" name="end_det"  type="checkbox" class="mdl-checkbox__input" value="0" ng-true-value="'0'" ng-false-value="'1'"
+              autocomplete="off" def-setting="end_det" modelAx="Contract.end_det"
+              ng-model="Contract['end_det']"        />
+              <span class="mdl-checkbox__label">{{'Fine non validità determinabile'|translate}}</span>
             </label>
 
           </div>
@@ -139,10 +139,10 @@
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <label  id="lvalue_det" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="value_det">
-              <input id="value_det" name="value_det"  type="checkbox" class="mdl-checkbox__input" def-setting="value_det" value="1" 
-              autocomplete="off"
-                ng-model="Contract.value_det"        />
-              <span class="mdl-checkbox__label">{{'Valore contratto determinabile'|translate}}</span>
+              <input id="value_det" name="value_det"  type="checkbox" class="mdl-checkbox__input" def-setting="value_det" value="0" ng-true-value="'0'" ng-false-value="'1'"
+              autocomplete="off" modelAx="Contract.value_det"
+                ng-model="Contract['value_det']"        />
+              <span class="mdl-checkbox__label">{{'Valore non contratto determinabile'|translate}}</span>
             </label>
 
           </div>
@@ -177,7 +177,7 @@
 -->
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="text" autocomplete="off" id="activity_country" name="activity_country" minlength="3"  value=" "
-          ng-model="Contract.activity_country"   minlength="3" autocomplete="off" ng-required="true"
+          ng-model="Contract.activity_country"   minlength="3" autocomplete="off" ng-required="true" def-setting="country"
           ng-keyup="showAC('users.activity_country','activity_country',{countries:true,zero:true});"
           ng-focus="showAC('users.activity_country','activity_country',{countries:true,zero:true});resetAC()"
           />
@@ -377,14 +377,6 @@
           <div id="show_Role" style="width:100%" ng-show="Contract.act_for_other>0">
 
             <div class="gridAx">
-              <div  class="gridAx-item  " style="padding-right:16px;">
-                <label  id="lprocura" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="procura">
-                  <input id="procura" name="procura"  type="checkbox" class="mdl-checkbox__input" value="1"
-                  autocomplete="off"
-                  ng-click=""  ng-model="Contract.procura"        />
-                  <span class="mdl-checkbox__label">{{'Censisci deleghe sociali'|translate}}</span>
-                </label>
-            </div>
               <div class="gridAx-item100">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
               <input class="mdl-textfield__input" type="text" autocomplete="off" ng-model="Contract.role_for_other" ng-keyup="showAC('Contract.role_for_other','role_for_other',{zero:true});"
@@ -404,6 +396,15 @@
               </span>
               </div>
             </div>
+            <div  class="gridAx-item  " style="padding-right:16px;">
+                <label  id="lprocura" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="procura">
+                  <input id="procura" name="procura"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
+                  autocomplete="off"
+                  ng-click=""  ng-model="Contract['procura']"    modelAx="Contract.procura"    />
+                  <span class="mdl-checkbox__label">{{'Censisci deleghe sociali'|translate}}</span>
+                </label>
+            </div>
+
             </div>
           </fieldset>
 
@@ -507,7 +508,7 @@
         <div ng-show="action=='edit' && 1==0" class="mdl-grid">
           <div class="mdl-cell mdl-cell--12-col ">
             <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="aggKyc-1">
-              <input type="checkbox" id="aggKyc-1" ng-model="aggKyc" class="mdl-checkbox__input" checked>
+              <input type="checkbox" id="aggKyc-1" ng-model="aggKyc" class="mdl-checkbox__input" ng-true-value="'1'" ng-false-value="'0'" checked>
               <span class="mdl-checkbox__label">{{'Aggiorna Anagrafiche Kyc'| translate}}</span>
             </label>
           </div>

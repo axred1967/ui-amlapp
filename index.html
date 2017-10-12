@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="no-js">
 <head>
-  
+
   <title>AMLAPP</title>
   <meta name="description" content="">
   <meta name="HandheldFriendly" content="True">
@@ -146,7 +146,7 @@ Text angular
             <nav class="mdl-navigation" style="background-color:white">
               <a class="mdl-navigation__link " ui-sref="home"><i style="color:#757575" class="material-icons">reorder</i><span>{{'Contratti'|translate}}</span></a>
               <a  class="mdl-navigation__link " ui-sref="my_customer" ><i style="color:#757575" class="material-icons">accessibility</i><span>{{main.Cm||translate}}</span></a>
-              <a class="mdl-navigation__link " ui-sref="my_company" ><i style="color:#757575" class="material-icons">business</i><span>{{'Societa\''|translate}}</span></a>
+              <a class="mdl-navigation__link " ui-sref="my_company" ><i style="color:#757575" class="material-icons">business</i><span>{{'Società'|translate}}</span></a>
               <a ng-show= "agent.user_type==1 " class="mdl-navigation__link " ui-sref="my_agent"> <i style="color:#757575" class="material-icons">group</i><span>{{'Agenti'|translate}}</span></a>
               <a ng-hide= "agent.user_type!=-1 " class="mdl-navigation__link " ui-sref="my_agencies"> <i style="color:#757575" class="material-icons">local_library</i><span>{{'Agenzie'|translate}}</span></a>
               <a ng-hide= "agent.user_type!=-1 " class="mdl-navigation__link " ui-sref="email_templates"> <i style="color:#757575" class="material-icons">email</i><span>{{'Mail '|translate}}</span></a>

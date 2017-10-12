@@ -242,7 +242,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
     }
 
     $scope.loader=true
-    dbData= $scope.Company
+    dbData= angular.extend({},$scope.Company);
     data={ "action":$scope.action,  dbData:dbData,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {

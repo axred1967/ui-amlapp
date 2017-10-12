@@ -49,8 +49,8 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
             </span>
             <br ng-show="Contract.act_for_other>0"/>
             -->
-
-            <span style="cursor:pointer;" class="orange first_letter_cap" >
+            <br/>
+            <span style="cursor:pointer;" class="azure first_letter_cap" >
               <strong>{{Contract.nature_contract}}</strong>
             </span><br>
             <span class="green" style=" cursor:pointer;"  class="long-email">
@@ -80,14 +80,14 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
         <div class="mdl-card__actions mdl-card--border " style="font-size:12px">
           <div class="mdl-cell">
             <span class="orange">{{'Adeguata Verifica'|translate}}</span><br/>
-            <span ng-show="Contract.kyc_status==1">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="img/green-check.png"></span></span>
+            <span ng-show="Contract.kyc_status==1" class="green">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="img/green-check.png"></span></span>
             <span ng-show="Contract.kyc_status!=1">{{'in esecuzione'|translate}}</span>
           </div>
           <div class="mdl-cell">
             <div ng-hide="agent.user_type==3 ">
 
             <span class="blue">{{'Analisi del Rischio'|translate}} </span><br/>
-            <span ng-show="Contract.risk_status ==1">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="img/green-check.png"></span></span>
+            <span ng-show="Contract.risk_status ==1" class="green">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="img/green-check.png"></span></span>
             <span ng-show="Contract.risk_status !=1">{{'in esecuzione'|translate}}</span>
             <span ng-class="Contract.riskAssigned">{{ Contract.riskAssigned |translate}} </span>
           </div>
@@ -108,13 +108,13 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
             <span class=" mdl-tooltip mdl-tooltip--validation" for="{{ 'documents' + ContractIndex }}" >
               <span >{{'Documenti Contratto'|translate}}.</span>
             </span>
-            <button tooltip ng-show="Contract.kyc_status==1"   id="{{ 'print_kyc' + ContractIndex }}"  ng-click="print_kyc(Contract,ContractIndex)" class="right  mdl-button  mdl-button--fab mdl-button--icon mdl-button--colored orange-btn">
+            <button tooltip ng-show="Contract.kyc_status==1"   id="{{ 'print_kyc' + ContractIndex }}"  ng-click="print_kyc(Contract,ContractIndex)" class="right  mdl-button  mdl-button--icon mdl-button--colored orange">
               <i class="material-icons">printer</i>
             </button>
             <span  class=" mdl-tooltip mdl-tooltip--validation" for="{{ 'print_kyc' + ContractIndex }}" >
               <span >{{'Stampa Adeguata verifica Kyc'|translate}}.</span>
             </span>
-            <button tooltip ng-show="Contract.status==1"   id="{{ 'print_risk' + ContractIndex }}"  ng-click="print_risk(Contract,ContractIndex)" class="right  mdl-button  mdl-button--fab mdl-button--icon mdl-button--colored  blue-btn">
+            <button tooltip ng-show="Contract.status==1"   id="{{ 'print_risk' + ContractIndex }}"  ng-click="print_risk(Contract,ContractIndex)" class="right  mdl-button   mdl-button--icon mdl-button--colored  blue">
               <i class="material-icons">printer</i>
             </button>
             <span  class=" mdl-tooltip mdl-tooltip--validation" for="{{ 'print_risk' + ContractIndex }}" >

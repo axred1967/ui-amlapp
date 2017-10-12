@@ -150,6 +150,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
       tipo_cliente = $scope.agent.tipo_cliente;
       switch (paese){
         case 'italia':
+        tmhDynamicLocale.set('it');
         switch (tipo_cliente){
           case 'agenzia assicurazioni':
           $translate.use('it-IT'); // translati   ons-en-US.json
@@ -191,9 +192,9 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
       }
 
       if ($scope.agent.user_type==3)
-      $scope.main.Cm="Dati personali"
-      else
-      $scope.main.Cm="Le mie Persone"
+      $scope.main.Cm=$filter('translate')("dati personali")
+        else
+      $scope.main.Cm=$filter('translate')("Le mie Persone")
   //alert(window.location.pathname.replace(/^\//, ''));
 
   $scope.main.login=false

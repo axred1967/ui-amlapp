@@ -6,8 +6,10 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 		$scope.pages=JSON.parse(localStorage.getItem('pages'));
 	}
 	$scope.page=$scope.pages[$state.current.name]
+	if ($scope.page===undefined || $scope.page.Contract===undefined){
+ 	 $state.go('home');
+  }
 	$scope.Contract=$scope.page.Contract
-
 	$scope.main.viewName="CPU:" + $scope.Contract.CPU
 	if ($scope.Contract.number>0 ){
 		$scope.main.viewName+="- N." + $scope.Contract.number

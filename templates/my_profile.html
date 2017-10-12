@@ -47,36 +47,36 @@
           <div class="mdl-grid">
             <div ng-class="{'mdl-cell--3-col-desktop mdl-cell-12-col-phone mdl-cell-6-col-tablet': main.web }">
 
-          <div class="demo-card-image mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title mdl-card--expand">{{'Immagine Profilo'|translate}}</div>
-            <div class="center-cropped mdl-image"  ng-click="edit_profile()">
-              <img ng-class="{90:'image_90', 180:'image_180', 270:'image_270','-90':'image_270', '-180':'image_180', '-270':'image_90' }[Customer.settings.imagerotate]" onkeypress=""class="loadImg"  ng-src ="{{imageurl(Customer) }}" ></img>
-            </div>
+              <div class="demo-card-image mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title mdl-card--expand">{{'Immagine Profilo'|translate}}</div>
+                <div class="center-cropped mdl-image"  ng-click="edit_profile()">
+                  <img ng-class="{90:'image_90', 180:'image_180', 270:'image_270','-90':'image_270', '-180':'image_180', '-270':'image_90' }[Customer.settings.imagerotate]" onkeypress=""class="loadImg"  ng-src ="{{imageurl(Customer) }}" ></img>
+                </div>
 
-            <div class="mdl-card__actions">
-              <div class="mdl-layout-spacer"></div>
-              <input style="display:none" type="file" id="msds"  name="msds" ng-model="fileweb" onchange="angular.element(this).scope().uploadprofileweb(this)"  accept='image/*'/>
-              <button ng-show="main.web" id="addfileweb" onclick="$('#msds').click()" class="mdl-button mdl-button--icon mdl-button--colored"><i class="material-icons">file_upload</i></button>
-              <span class="mdl-tooltip mdl-tooltip--validation" for="addfileweb" >
-                <span >{{'Carica da WEB'|translate}}.</span>
-              </span>
+                <div class="mdl-card__actions">
+                  <div class="mdl-layout-spacer"></div>
+                  <input style="display:none" type="file" id="msds"  name="msds" ng-model="fileweb" onchange="angular.element(this).scope().uploadprofileweb(this)"  accept='image/*'/>
+                  <button ng-show="main.web" id="addfileweb" onclick="$('#msds').click()" class="mdl-button mdl-button--icon mdl-button--colored"><i class="material-icons">file_upload</i></button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="addfileweb" >
+                    <span >{{'Carica da WEB'|translate}}.</span>
+                  </span>
 
-              <button ng-hide="main.web"  id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
-              <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
-                <span >{{'Scatta una foto'|translate}}.</span>
-              </span>
-              <button ng-hide="main.web" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
-              <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
-                <span >{{'Scegli da Galleria'|translate}}.</span>
-              </span>
-              <button ng-show="loaded" id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
-              <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
-                <span >{{'Cancella'|translate}}.</span>
-              </span>
+                  <button ng-hide="main.web"  id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
+                    <span >{{'Scatta una foto'|translate}}.</span>
+                  </span>
+                  <button ng-hide="main.web" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
+                    <span >{{'Scegli da Galleria'|translate}}.</span>
+                  </span>
+                  <button ng-show="loaded" id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
+                  <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+                    <span >{{'Cancella'|translate}}.</span>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        </div>
         </fieldset>
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -122,44 +122,44 @@
             </span>
           </div>
         </fieldset>
-<div ng-show="agent.user_type==1">
-        <h5>Parametri di Configurazione</h5>
-        <fieldset ng-show="agent.user_type<3">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" id="country" name="country" minlength="3"  value=" "
-          ng-model="agent.settings.country"   minlength="3" autocomplete="off"
-          ng-keyup="showAC('users.countries','country', {countries:true,zero:true});"
-          ng-focus="showAC('users.countries','country', {countries:true,zero:true});resetAC()"
-          />
-          <label class="mdl-textfield__label" for="country">{{'Paese predefinito'|translate}} *</label>
-          <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="country">
-            <tbody style="display:table">
-              <tr ng-click="addWord('agent.settings.country',item.word,{countries:true,id:'country'})"
+        <div ng-show="agent.user_type==1">
+          <h5>Parametri di Configurazione</h5>
+          <fieldset ng-show="agent.user_type<3">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input class="mdl-textfield__input" type="text" id="country" name="country" minlength="3"  value=" "
+              ng-model="agent.settings.country"   minlength="3" autocomplete="off"
+              ng-keyup="showAC('users.countries','country', {countries:true,zero:true});"
+              ng-focus="showAC('users.countries','country', {countries:true,zero:true});resetAC()"
+              />
+              <label class="mdl-textfield__label" for="country">{{'Paese predefinito'|translate}} *</label>
+              <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="country">
+                <tbody style="display:table">
+                  <tr ng-click="addWord('agent.settings.country',item.word,{countries:true,id:'country'})"
                   my-Enter="addWord('agent.settings.country',item.word,{countries:true,id:'country'})"
                   ng-repeat="item in word.countries" tabindex="30">
-                <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
-              </tr>
-            </tbody>
-          </table>
+                  <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+                </tr>
+              </tbody>
+            </table>
 
-          <span class="mdl-tooltip mdl-tooltip--validation" for="country" ng-show="form.country.$invalid && form.country.$touched">
-            <span ng-show="form.country.$error.required">{{'Richiesto'| translate}}</span>
-          </span>
-        </div>
+            <span class="mdl-tooltip mdl-tooltip--validation" for="country" ng-show="form.country.$invalid && form.country.$touched">
+              <span ng-show="form.country.$error.required">{{'Richiesto'| translate}}</span>
+            </span>
+          </div>
         </fieldset>
         <fieldset ng-show="agent.user_type<3">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" id="luogoID" name="luogoID" minlength="3"  value=" "
-          ng-model="agent.settings.luogoIdentificazione"   minlength="3" autocomplete="off"
-          ng-keyup="showAC('users.resi_town','luogoID', {zero:true});"
-          ng-focus="showAC('users.resi_town','luogoID', {zero:true});resetAC()"
-          />
-          <label class="mdl-textfield__label" for="luogoID">{{'Luogo Identificazione predefinito'|translate}} *</label>
-          <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="luogoID">
-            <tbody style="display:table">
-              <tr ng-click="addWord('agent.settings.luogoID',item.word,{id:'luogoID'})"
-                  my-Enter="addWord('agent.settings.luogoID',item.word,{id:'luogoID'})"
-                  ng-repeat="item in word.countries" tabindex="30">
+            <input class="mdl-textfield__input" type="text" id="luogoID" name="luogoID" minlength="3"  value=" "
+            ng-model="agent.settings.luogoIdentificazione"   minlength="3" autocomplete="off"
+            ng-keyup="showAC('users.resi_town','luogoID', {zero:true});"
+            ng-focus="showAC('users.resi_town','luogoID', {zero:true});resetAC()"
+            />
+            <label class="mdl-textfield__label" for="luogoID">{{'Luogo Identificazione predefinito'|translate}} *</label>
+            <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="luogoID">
+              <tbody style="display:table">
+                <tr ng-click="addWord('agent.settings.luogoID',item.word,{id:'luogoID'})"
+                my-Enter="addWord('agent.settings.luogoID',item.word,{id:'luogoID'})"
+                ng-repeat="item in word.countries" tabindex="30">
                 <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
               </tr>
             </tbody>
@@ -169,56 +169,55 @@
             <span ng-show="form.luogoID.$error.required">{{'Richiesto'| translate}}</span>
           </span>
         </div>
-        </fieldset>
-        <fieldset ng-show="agent.user_type<3">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <label  id="lend_det" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="end_det">
-              <input id="end_det" name="end_det"  type="checkbox" class="mdl-checkbox__input" value="1"
-              autocomplete="off"  ng-true-value="1" ng-false-value="0"
-              ng-click=toogle('agent.settings.end_det')  modelAx="Contract.end_det"        />
-              <span class="mdl-checkbox__label">{{'Fine validità determinabile'|translate}}</span>
-            </label>
+      </fieldset>
+      <fieldset ng-show="agent.user_type<3">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <label  id="lend_det" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="end_det">
+            <input id="end_det" name="end_det"  type="checkbox" class="mdl-checkbox__input" value="0"
+            autocomplete="off"  ng-true-value="'0'" ng-false-value="'1'"
+            ng-model="agent['settings']['value_det']"  modelAx="agent.settings.end_det"        />
+            <span class="mdl-checkbox__label">{{'Fine validità non determinabile'|translate}}</span>
+          </label>
 
-          </div>
-        </fieldset>
+        </div>
+      </fieldset>
 
-        <fieldset  ng-show="agent.user_type<3">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <label  id="lvalue_det" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="value_det">
-              <input id="value_det" name="value_det"  type="checkbox" class="mdl-checkbox__input" value="1"
-              autocomplete="off"  ng-true-value="1" ng-false-value="0"
-              ng-click=toogle('agent.settings.value_det')  modelAx="agent.settings.value_det"        />
-              <span class="mdl-checkbox__label">{{'Valore contratto determinabile'|translate}}</span>
-            </label>
+      <fieldset  ng-show="agent.user_type<3">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <label  id="lvalue_det" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="value_det">
+            <input id="value_det" name="value_det"  type="checkbox" class="mdl-checkbox__input" value="0"
+            autocomplete="off"  ng-true-value="'0'" ng-false-value="'1'"
+            ng-model="agent['settings']['end_det']"  modelAx="agent.settings.value_det"        />
+            <span class="mdl-checkbox__label">{{'Valore contratto non determinabile'|translate}}</span>
+          </label>
 
-          </div>
-        </fieldset>
+        </div>
+      </fieldset>
 
-<label  id="lvalue_det" class="mdl-textfield__label " >{{' Tipo Contratto Predefinito:'|translate}}</label>
-       <div class="mdl-grid">
-          <div class="mdl-cell ">
-            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="tipo_contratto-1">
-              <input  type="radio" id="tipo_contratto-1" ng-model="agent.settings.tipo_contratto" class="mdl-radio__button" name="tipo_contratto"  value="0" checked>
-              <span class="mdl-radio__label" >{{'Rapporto Continuativo'| translate}}</span>
-            </label>
-          </div>
 
-          <div class="mdl-cell">
-            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="tipo_contratto-2">
-              <input type="radio" id="tipo_contratto-2" ng-model="agent.settings.tipo_contratto" class="mdl-radio__button" name="tipo_contratto" value="1"  >
-              <span class="mdl-radio__label">{{'Prestazione Professionale'| translate}}</span>
-            </label>
-          </div>
-          <div class="mdl-cell">
-            <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="tipo_contratto-3">
-              <input type="radio" id="tipo_contratto-3" ng-model="agent.settings.tipo_contratto" class="mdl-radio__button" name="tipo_contratto" value="2" >
-              <span class="mdl-radio__label" >{{'Prestazione occasionale'| translate}}</span>
-            </label>
-          </div>
+      <div class="mdl-grid">
+        <div class="mdl-cell ">
+          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="tipo_contratto-1">
+            <input  type="radio" id="tipo_contratto-1" ng-model="agent.settings.tipo_contratto" class="mdl-radio__button" name="tipo_contratto"  value="0" checked>
+            <span class="mdl-radio__label" >{{'Rapporto Continuativo'| translate}}</span>
+          </label>
+        </div>
+
+        <div class="mdl-cell">
+          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="tipo_contratto-2">
+            <input type="radio" id="tipo_contratto-2" ng-model="agent.settings.tipo_contratto" class="mdl-radio__button" name="tipo_contratto" value="1"  >
+            <span class="mdl-radio__label">{{'Prestazione Professionale'| translate}}</span>
+          </label>
+        </div>
+        <div class="mdl-cell">
+          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="tipo_contratto-3">
+            <input type="radio" id="tipo_contratto-3" ng-model="agent.settings.tipo_contratto" class="mdl-radio__button" name="tipo_contratto" value="2" >
+            <span class="mdl-radio__label" >{{'Prestazione occasionale'| translate}}</span>
+          </label>
         </div>
       </div>
-        <fieldset ng-show="agent.user_type<3">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      <fieldset ng-show="agent.user_type<3">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="text" id="natura_contratto" name="natura_contratto" minlength="3"  value=" "
           ng-model="agent.settings.naturaContratto"   minlength="3" autocomplete="off"
 
@@ -230,117 +229,119 @@
             <span ng-show="form.natura_contratto.$error.required">{{'Richiesto'| translate}}</span>
           </span>
         </div>
-        </fieldset>
+      </fieldset>
 
-        <fieldset ng-show="agent.user_type<3">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
-            <h5 class="kyc01-head">{{'Tipo di Analisi del Rischio'}} </h5>
+      <fieldset ng-show="agent.user_type<3">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+          <h5 class="kyc01-head">{{'Tipo di Analisi del Rischio'}} </h5>
 
-            <div class="mdl-grid">
-              <div class="mdl-cell ">
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="risk_type-1">
-                  <input  type="radio" id="risk_type-1" ng-model="agent.settings.risk_type" class="mdl-radio__button" name="risk_type" value="1"  >
-                  <span class="mdl-radio__label" >{{'Calcolo del Rishio SM Approvato AIF'| translate}}</span>
-                </label>
-              </div>
+          <div class="mdl-grid">
+            <div class="mdl-cell ">
+              <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="risk_type-1">
+                <input  type="radio" id="risk_type-1" ng-model="agent.settings.risk_type" class="mdl-radio__button" name="risk_type" value="1"  >
+                <span class="mdl-radio__label" >{{'Calcolo del Rishio SM Approvato AIF'| translate}}</span>
+              </label>
+            </div>
 
-              <div class="mdl-cell">
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="risk_type-0">
-                  <input    type="radio" id="risk_type-0" ng-model="agent.settings.risk_type" class="mdl-radio__button" name="risk_type" value="0"  checked>
-                  <span class="mdl-radio__label">{{'Calcolo Rischio 3° direttiva'| translate}}</span>
-                </label>
-              </div>
-              <div class="mdl-cell">
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="risk_type-2">
-                  <input    type="radio" id="risk_type-2" ng-model="agent.settings.risk_type" class="mdl-radio__button" name="risk_type" value="2"  >
-                  <span class="mdl-radio__label">{{'Calcolo Rischio 4° direttiva'| translate}}</span>
-                </label>
-              </div>
+            <div class="mdl-cell">
+              <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="risk_type-0">
+                <input    type="radio" id="risk_type-0" ng-model="agent.settings.risk_type" class="mdl-radio__button" name="risk_type" value="0"  checked>
+                <span class="mdl-radio__label">{{'Calcolo Rischio 3° direttiva'| translate}}</span>
+              </label>
+            </div>
+            <div class="mdl-cell">
+              <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="risk_type-2">
+                <input    type="radio" id="risk_type-2" ng-model="agent.settings.risk_type" class="mdl-radio__button" name="risk_type" value="2"  >
+                <span class="mdl-radio__label">{{'Calcolo Rischio 4° direttiva'| translate}}</span>
+              </label>
             </div>
           </div>
-        </fieldset>
-        <fieldset ng-show="agent.user_type<3">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
-            <h5 class="kyc01-head">{{'Firma digitale  sul Contratto '}} </h5>
+        </div>
+      </fieldset>
+      <fieldset ng-show="agent.user_type<3">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+          <h5 class="kyc01-head">{{'Firma digitale  sul Contratto '}} </h5>
 
-            <div class="mdl-grid">
-              <div class="mdl-cell ">
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sign-1">
-                  <input  type="radio" id="sign-1" ng-model="agent.settings.sign" class="mdl-radio__button" name="sign" value="1"  >
-                  <span class="mdl-radio__label" >{{'SI'| translate}}</span>
-                </label>
-              </div>
+          <div class="mdl-grid">
+            <div class="mdl-cell ">
+              <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sign-1">
+                <input  type="radio" id="sign-1" ng-model="agent.settings.sign" class="mdl-radio__button" name="sign" value="1"  >
+                <span class="mdl-radio__label" >{{'SI'| translate}}</span>
+              </label>
+            </div>
 
-              <div class="mdl-cell">
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sign-0">
-                  <input    type="radio" id="sign-0" ng-model="agent.settings.sign" class="mdl-radio__button" name="sign" value="0"  checked>
-                  <span class="mdl-radio__label">{{'No'| translate}}</span>
-                </label>
-              </div>
+            <div class="mdl-cell">
+              <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sign-0">
+                <input    type="radio" id="sign-0" ng-model="agent.settings.sign" class="mdl-radio__button" name="sign" value="0"  checked>
+                <span class="mdl-radio__label">{{'No'| translate}}</span>
+              </label>
             </div>
           </div>
-        </fieldset>
-        <fieldset ng-show="agent.user_type<3">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
-            <h5 class="kyc01-head">{{'Invia Kyc e Analisi del Rischio via email '}} </h5>
+        </div>
+      </fieldset>
+      <fieldset ng-show="agent.user_type<3">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
+          <h5 class="kyc01-head">{{'Invia Kyc e Analisi del Rischio via email '}} </h5>
 
-            <div class="mdl-grid">
-              <div class="mdl-cell ">
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sendKycRisk-1">
-                  <input  type="radio" id="sendKycRisk-1" ng-model="agent.settings.sendKycRisk" class="mdl-radio__button" name="sendKycRisk" value="1"  >
-                  <span class="mdl-radio__label" >{{'SI'| translate}}</span>
-                </label>
-              </div>
+          <div class="mdl-grid">
+            <div class="mdl-cell ">
+              <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sendKycRisk-1">
+                <input  type="radio" id="sendKycRisk-1" ng-model="agent.settings.sendKycRisk" class="mdl-radio__button" name="sendKycRisk" value="1"  >
+                <span class="mdl-radio__label" >{{'SI'| translate}}</span>
+              </label>
+            </div>
 
-              <div class="mdl-cell">
-                <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sendKycRisk-0">
-                  <input    type="radio" id="sendKycRisk-0" ng-model="agent.settings.sendKycRisk" class="mdl-radio__button" name="sendKycRisk" value="0"  checked>
-                  <span class="mdl-radio__label">{{'No'| translate}}</span>
-                </label>
-              </div>
+            <div class="mdl-cell">
+              <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="sendKycRisk-0">
+                <input    type="radio" id="sendKycRisk-0" ng-model="agent.settings.sendKycRisk" class="mdl-radio__button" name="sendKycRisk" value="0"  checked>
+                <span class="mdl-radio__label">{{'No'| translate}}</span>
+              </label>
             </div>
           </div>
-        </fieldset>
+        </div>
+      </fieldset>
+        </div>
+
+
+
+
+  <center>
+    <span style="font-size:14px;font-weight:bold" class="orange" id="name_agent">{{'Firma Digitale '|translate}}</span><br/>
+
+    <div  id="signature-pad" class="signature-pad  "  >
+      <div class="signature-pad--body signature">
+
+        <canvas id="canvas2" > </canvas>
       </div>
 
-          <center>
-          <span style="font-size:14px;font-weight:bold" class="orange" id="name_agent">{{'Firma Digitale '|translate}}</span><br/>
+      <input style="display:none" type="text" ng-model="Customer.sign" name="sig" id="sig" />
 
-            <div  id="signature-pad" class="signature-pad  "  >
-              <div class="signature-pad--body signature">
+      <div class="signature-pad--actions">
+        <div>
+          <button id="clearCanvas" ng-click="showCanvas()" href="javascript:;" data-action="clear"  class="mdl-button mdl-js-button mmdl-button--mini-fab mdl-button--colored orange-btn">
+            <i class="material-icons">clear</i>
+          </button>
+          <span class="mdl-tooltip mdl-tooltip--validation" for="clearCanvas" >
+            <span >  {{'Pulisci'|translate}}.</span>
+          </span>
 
-              <canvas id="canvas2" > </canvas>
-            </div>
-
-              <input style="display:none" type="text" ng-model="Customer.sign" name="sig" id="sig" />
-
-            <div class="signature-pad--actions">
-               <div>
-                 <button id="clearCanvas" ng-click="showCanvas()" href="javascript:;" data-action="clear"  class="mdl-button mdl-js-button mmdl-button--mini-fab mdl-button--colored orange-btn">
-                   <i class="material-icons">clear</i>
-                 </button>
-                 <span class="mdl-tooltip mdl-tooltip--validation" for="clearCanvas" >
-                   <span >  {{'Pulisci'|translate}}.</span>
-                 </span>
-
-               </div>
-               <div>
-               </div>
-             </div>
-           </div>
-         </center>
+        </div>
 
       </div>
     </div>
-  </form>
+  </center>
+
+</div>
+</div>
+</form>
 </div>
 </div>
 <br/>
 <div class="center-align">
-<a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="save_profile()" href="javascript:;">
-  {{'Save'|translate}}
-</a>
-<a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="back()" href="javascript:;">
-  {{'Cancel'|translate}}
-</a>
+  <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="save_profile()" href="javascript:;">
+    {{'Save'|translate}}
+  </a>
+  <a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="back()" href="javascript:;">
+    {{'Cancel'|translate}}
+  </a>
 </div>

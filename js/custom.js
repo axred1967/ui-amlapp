@@ -475,14 +475,27 @@ function setDefaults($scope){
         $(this).parent('div.mdl-textfield').removeClass('is-invalid');
       }
 
-      ngm=$(this).attr('ng-model')
+      ngm=$(this).attr('modelAx')
       if (ngm===undefined){
-        ngm=$(this).attr('modelAx')
+        ngm=$(this).attr('ng-model')
       }
+
       if (typeof ngm !== typeof undefined && ngm !== false){
         var $val
-        s = ngm.split(".")
-        switch (s.length){
+        res = ngm.split(".")
+        s=res
+        
+        attr=$(this).attr('def-setting')
+        if (typeof attr !== typeof undefined && attr !== false){
+          if ($scope[res[0]]!==undefined ){
+            if ($scope[res[0]][res.slice(-1)[0]]===undefined || $scope[res[0]][res.slice(-1)[0]]===null || $scope[res[0]][res.slice(-1)[0]]=="" )
+            $scope[res[0]][res.slice(-1)[0]]=$scope.agent.settings[$(this).attr('def-setting')]
+          }
+        }
+        //if (s.length==1){
+        //  s=$(this).attr('modelAx').split(".")
+        //}
+        switch (res.length){
           case 1:
           if ( $scope[s[0]]!==undefined)
           $val= $scope[s[0]]
@@ -506,6 +519,7 @@ function setDefaults($scope){
           $val= $scope[s[0]][s[1]][s[2]][s[3]]
           break;
         }
+
         if ($(this).hasClass('mdl-radio__button') && $val!==undefined){
           if ( $(this).attr('type')=="radio" && $val==$(this).attr('value') && document.getElementById($(this).attr('id')).parentNode.MaterialRadio!==undefined)
           document.getElementById($(this).attr('id')).parentNode.MaterialRadio.check()
@@ -515,40 +529,21 @@ function setDefaults($scope){
           //$(this).parentNode.MaterialRadio.check()
           if ($(this).attr('type')=="checkbox" && $val==$(this).attr('value') && document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox!==undefined)
           document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox.check()
-        }
-        attr=$(this).attr('ng-model')
-        if (typeof attr !== typeof undefined && attr !== false){
-          d=$(this).attr('ng-model')
-          res=d.split('.')
-
+          i=1
         }
 
-        if (typeof attr === typeof undefined || attr === false){
-          attr=$(this).attr('modelAx')
-          if (typeof attr !== typeof undefined && attr !== false){
-            d=$(this).attr('modelAx')
-            res=d.split('.')
-
-          }
-
-        }
         if ($(this).attr('type')=="date"){
           if ($scope[res[0]]!==undefined  ){
             dom=$scope[res[0]][res.slice(-1)[0]]
             if (dom===undefined || dom===null || dom=="" ||  (dom instanceof Date && isNaN(dom.valueOf())) )
-            $scope[res[0]][res.slice(-1)[0]]=new Date()
+            $scope[res[0]][res.slice(-1)[0]]=null
+            //i=1
             else if (!isObject($scope[res[0]][res.slice(-1)[0]]))
             $scope[res[0]][res.slice(-1)[0]]=new Date($scope[res[0]][res.slice(-1)[0]])
 
           }
         }
-        attr=$(this).attr('def-setting')
-        if (typeof attr !== typeof undefined && attr !== false){
-          if ($scope[res[0]]!==undefined ){
-            if ($scope[res[0]][res.slice(-1)[0]]===undefined || $scope[res[0]][res.slice(-1)[0]]===null || $scope[res[0]][res.slice(-1)[0]]=="" )
-            $scope[res[0]][res.slice(-1)[0]]=$scope.agent.settings[$(this).attr('def-setting')]
-          }
-        }
+
       }
 
 

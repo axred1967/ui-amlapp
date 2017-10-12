@@ -1538,16 +1538,73 @@ td.wordwrap{
 	text-align:center;
 	margin-bottom:60px;
 }
+.orange {
+	color:#E5A430 !important;
+
+}
+.blue {
+	color:#1c224b !important;
+
+}
+.green{
+	color:#3D674B;
+}
+.azure{
+	color:#3D67AF;
+}
+.gray{
+	color:#636366;
+}
 .orange-btn{
-	background:#f7961d !important;
+	background:#E5A430 !important;
 	text-transform:capitalize !important;
 }
 .blue-btn{
 	background:#1c224b !important;
 	text-transform:capitalize !important;
 }
+.gray-btn{
+	background:#636366 !important;
+	text-transform:capitalize !important;
+}
+.azure-btn{
+	background:#3D67AF !important;
+	text-transform:capitalize !important;
+}
+
+.green-btn{
+	background:#3D674B !important;
+	text-transform:capitalize !important;
+}
 .red-btn{
 	background:red !important;
+	text-transform:capitalize !important;
+}
+.green-checkbox{
+	display: inline-block;
+	width: 12px;
+	padding-left: 5px;
+}
+.blue-th{
+	background:#1c224b !important;
+	text-transform:capitalize !important;
+	color:white !important;
+	font-size:16px !important;
+	font-weight:700;
+}
+.yellow-row{
+	color:black;
+	background:#3D674B !important;
+	text-transform:capitalize !important;
+}
+.gray-row{
+	color:white;
+	background:#636366 !important;
+	text-transform:capitalize !important;
+}
+.azure-row{
+	color:black;
+	background:#3D67AF !important;
 	text-transform:capitalize !important;
 }
 
@@ -1595,11 +1652,7 @@ td.wordwrap{
 	width:70px;
 	color:#383838;
 }
-.green-checkbox{
-	display: inline-block;
-	width: 12px;
-	padding-left: 5px;
-}
+
 .mr-top-22px{
 	margin-top:22px;
 }
@@ -1794,42 +1847,7 @@ padding-left: 10px;
   margin-right: 5px;
   margin-left: 5px;
 }
-.orange {
-	color:#f7961d !important;
 
-}
-.blue {
-	color:#1c224b !important;
-
-}
-.green{
-	color:#9CCC65
-}
-.blue-th{
-	background:#1c224b !important;
-	text-transform:capitalize !important;
-	color:white !important;
-	font-size:16px !important;
-	font-weight:bold;
-}
-.yellow-row{
-	color:black;
-	font-weight:bold;
-	background:#ffff85 !important;
-	text-transform:capitalize !important;
-}
-.gray-row{
-	color:black;
-	font-weight:bold;
-	background:#c0c0c0 !important;
-	text-transform:capitalize !important;
-}
-.azure-row{
-	color:black;
-	font-weight:bold;
-	background:#99ccff !important;
-	text-transform:capitalize !important;
-}
 
 @media only screen and (max-width: 480px) {
 /*

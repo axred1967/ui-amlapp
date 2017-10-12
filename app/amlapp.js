@@ -141,7 +141,7 @@ app2.config(function($stateProvider, $urlRouterProvider) {
                   controller: 'add_owners',
                     },
                 'customer_fields@add_owners':   {
-                  templateUrl: BASEURL+ 'templates/owner_field.html',
+                  templateUrl: BASEURL+ 'templates/add_TEField.html',
                   },
                 }
         })
@@ -160,9 +160,17 @@ app2.config(function($stateProvider, $urlRouterProvider) {
         })
         .state('add_company', {
             url: '/add_company',
-            templateUrl: BASEURL+ 'templates/add_company.html',
-            controller: 'add_company',
-            params: {pages: null}
+            params: {pages: null},
+            views: {
+              '': {
+                templateUrl: BASEURL+ 'templates/add_company.html',
+                controller: 'add_company',
+              },
+              '01@add_company':   {
+                templateUrl: BASEURL+ 'templates/kyc_company_field.html',
+
+              }
+            }
         })
         .state('kyc_contractor', {
             url: '/contractorData',
@@ -703,7 +711,7 @@ app2.service('AutoComplete',function($http,$state){
 
 
 
-app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLocale,$translate,$sce,$timeout,$location,$window,$http) {
+app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLocale,$translate,$sce,$timeout,$location,$window,$http,$filter) {
   var isapp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
   var forceSSL = function () {
       if ( $location.protocol() !== 'https') {
@@ -828,9 +836,9 @@ switch (paese){
   $scope.load=false
   $scope.main={}
   if ($scope.agent.user_type==3)
-  $scope.main.Cm="dati personali"
-  else
-  $scope.main.Cm="Le mie Persone"
+  $scope.main.Cm=$filter('translate')("dati personali")
+    else
+  $scope.main.Cm=$filter('translate')("Le mie Persone")
   $scope.main.Sidebar=true
   $scope.main.Add=true
   $scope.main.Back=true

@@ -71,7 +71,7 @@ app2.factory('Customers_inf', function($http,$state) {
 
 });
 
-app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $state, Customers_inf,$timeout, $interval, $stateParams) {
+app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $state, Customers_inf,$timeout, $interval, $translate,$filter, $stateParams) {
   /* gestiote parametri di stato */
 	$scope.curr_page=$state.current.name
 	$scope.pages=$stateParams.pages
@@ -96,11 +96,9 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
   $scope.main.Search=true
   $scope.main.AddPage="add_customer"
   $scope.main.action="add_customer"
-  if ($scope.agent.user_type==3)
-  $scope.main.viewName="i miei dati personali"
-  else
-  $scope.main.viewName="Le mie Persone"
+
   $scope.main.Sidebar=true
+  $scope.main.viewName="Le mie Persone"
   $('.mdl-layout__drawer-button').show()
   $scope.main.loader=true
 

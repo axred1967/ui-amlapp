@@ -58,7 +58,12 @@ app2.controller('risk_final_4d', function ($scope,$http,$state,$translate,$timeo
         }
         if ($scope.Kyc !==undefined && $scope.Kyc.contractor_data.check_pep==1){
           $scope.Risk.risk_data.riskCalculated="Alto";
+					if ($scope.Risk.risk_data.riskDescription!==undefined)
           $scope.Risk.risk_data.riskDescription+="Il Cliente o alcuni titolari effettivi sono PEP"
+					else
+					$scope.Risk.risk_data.riskDescription="Il Cliente o alcuni titolari effettivi sono PEP"
+
+
         }
         if ($scope.Kyc.contractor_data.check_pep!==undefined && $scope.Kyc.contractor_data.check_pep==1  ){
           $scope.PEP="il Cliente si è dichiarato PEP"

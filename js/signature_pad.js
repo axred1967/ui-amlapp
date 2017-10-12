@@ -157,7 +157,8 @@ SignaturePad.prototype.fromDataURL = function (dataUrl) {
   var _this = this;
 
   var image = new Image();
-  var ratio = window.devicePixelRatio || 1;
+  //var ratio = window.devicePixelRatio || 1;
+	var ratio=1
   var width = this._canvas.width / ratio;
   var height = this._canvas.height / ratio;
 
