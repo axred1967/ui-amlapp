@@ -471,8 +471,11 @@ function setDefaults($scope){
   $('input').each(
     function(index){
       if ($(this).hasClass('mdl-textfield__input')){
-        $(this).parent('div.mdl-textfield').addClass('is-dirty');
-        $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+        if ($(this).attr('excludeDirty')===undefined){
+          $(this).parent('div.mdl-textfield').addClass('is-dirty');
+          $(this).parent('div.mdl-textfield').removeClass('is-invalid');
+
+        }
       }
 
       ngm=$(this).attr('modelAx')
@@ -484,7 +487,7 @@ function setDefaults($scope){
         var $val
         res = ngm.split(".")
         s=res
-        
+
         attr=$(this).attr('def-setting')
         if (typeof attr !== typeof undefined && attr !== false){
           if ($scope[res[0]]!==undefined ){
