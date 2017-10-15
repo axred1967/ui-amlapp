@@ -315,16 +315,17 @@ $scope.gotFileEntry= function(fileEntry) {
           ext=ext[1].split(';')
           extn='.' + ext[0]
 
-          var filename=$scope.Customer.user_id +"_profilo" + extn
+          var filename=$scope.Customer.user_id+ "_profilo" +  Math.random().toString(36).slice(-16) +extn
           f.name=filename
           $scope.$apply(function () {
+            $scope.Customer.image=filename
             $scope.imageLoaded=false
           })
           data={action:"upload_document_ax",type:"profile",entity:'users',entity_key:$scope.Customer.user_id, f:f,filename:filename,pInfo:$scope.agent.pInfo}
           $http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
           .then(function(data){
             if (data.data.RESPONSECODE=='1'){
-              $rootScope.$broadcast('fileUploaded',data.data.response);
+              $rootScope.$broadcast('fileUploaded',data.data.image);
             }
             if (data.data.RESPONSECODE=='-1'){
               localstorage('msg','Sessione Scaduta ');

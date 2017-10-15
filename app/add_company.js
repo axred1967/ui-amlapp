@@ -107,7 +107,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
 
 	      $timeout(function() {
 	        $scope.imageLoaded=true;
-	        $scope.$broadcast('fileUploaded',$scope.Company)
+	        $scope.$broadcast('fileUploaded',data.data.image)
 
 	      }
 	      ,200)
@@ -138,7 +138,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
 		if (Company===undefined || Company.image===undefined ||  Company.image== null || Company.image.length==0)
 	  imageurl= BASEURL+ 'img/customer-listing1.png'
 	  else
-	  imageurl= SERVICEDIRURL +"file_down.php?tipo=profilo&entity=company&entity_key="+$scope.Company.company_id+"&file=" + $scope.Company.imag
+	  imageurl= SERVICEDIRURL +"file_down.php?tipo=profilo&entity=company&entity_key="+$scope.Company.company_id+"&file=" + $scope.Company.image +$scope.agent.pInfoUrl
 
 	  if (!$scope.imageLoaded)
 	    imageurl=BASEURL+ 'img/loading_image.gif'
@@ -318,16 +318,17 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
 				ext=ext[1].split(';')
 				extn='.' + ext[0]
 
-				var filename=$scope.Company.user_id +"_profilo" + extn
+				var filename=baseName(f.name).substr(0,20) + Math.random().toString(36).slice(-16) + extn
 				f.name=filename
 				$scope.$apply(function () {
+					$scope.Company.image=filename
 					$scope.imageLoaded=false
 				})
-				data={action:"upload_document_ax",type:"profile",entity:'company',entity_key:$scope.Company.user_id, f:f,filename:filename,pInfo:$scope.agent.pInfo}
+				data={action:"upload_document_ax",type:"profile",entity:'company',entity_key:$scope.Company.company_id, f:f,filename:filename,pInfo:$scope.agent.pInfo}
 				$http.post(SERVICEURL2,data,{ headers: {'Content-Type': undefined}  })
 				.then(function(data){
 					if (data.data.RESPONSECODE=='1'){
-						$rootScope.$broadcast('fileUploaded',data.data.response);
+						$rootScope.$broadcast('fileUploaded',data.data.image);
 					}
 					if (data.data.RESPONSECODE=='-1'){
 						localstorage('msg','Sessione Scaduta ');
@@ -421,7 +422,13 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
 
 
 	})
+	$scope.$on('fileUploaded', function(e,filename) {
+        if (filename==$scope.Company.image){
+          $scope.imageLoaded=true
+        }
 
+
+  });
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {

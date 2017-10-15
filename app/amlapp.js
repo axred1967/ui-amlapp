@@ -845,6 +845,7 @@ switch (paese){
   $scope.main.Search=false
   $scope.main.viewName=""
   $scope.main.other_data=false
+  $scope.main.hideName=false
   var isapp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
   if ( isapp ) {
     $scope.main.web=false
@@ -861,7 +862,25 @@ switch (paese){
 
 
   }
+  $scope.checkDirty=function(){
+    $timeout(function(){
+      if ($('#searchExCont').hasClass('is-focused')){
+        $scope.main.hideName=true
+      }else {
+        $scope.main.hideName=false
+
+      }
+    }
+    ,500)
+
+  }
   $scope.search=function(){
+    if ($('#searchExCont').hasClass('is-focused')){
+      $scope.main.hideName=true
+    }else {
+      $scope.main.hideName=false
+
+    }
     $scope.$broadcast('searchButton')
 
 

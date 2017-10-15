@@ -170,7 +170,7 @@ Text angular
                 <!--  <a class="mdl-button mdl-js-button mdl-button--icon left" onClick="logout()" href="javascript:void(0)">
                 <img src="ui-amlapp/img/back-button.png">
               </a>  -->
-              <div ng-show="main.Sidebar" class="left" style="margin-left:25px">&nbsp;</div>
+              <div ng-show="main.Sidebar" class="left" style="margin-left:25px"  >&nbsp;</div>
               <a ng-show="main.Back==true"  class="mdl-button mdl-js-button mdl-button--icon left" href="javascript:;" ng-click="back()">
                 <img src="img/back-button.png">
               </a>
@@ -184,17 +184,17 @@ Text angular
               &nbsp;
               <div class="right mdl-layout-spacer"></div>
               &nbsp;
-              <div ng-show="main.Search" class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right right">
-                <label class="mdl-button mdl-js-button mdl-button--icon"
-                for="waterfall-exp">
+              <div ng-show="main.Search"  id="searchExCont" class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right right">
+                <label class="mdl-button mdl-js-button mdl-button--icon" ng-focus="checkDirty()"
+                for="searchBar" tabindex="30">
                 <i class="material-icons">search</i>
               </label>
               <div class="mdl-textfield__expandable-holder">
-                <input ng-model="searchText" excludeDirty class="mdl-textfield__input" type="text" name="sample" ng-keyup="search()"
-                id="waterfall-exp" />
+                <input ng-model="searchText" excludeDirty class="mdl-textfield__input" type="text" name="searchBar" ng-keyup="search()"
+                id="searchBar" />
               </div>
             </div>
-            <span id="center" class="main-heading">{{main.viewName | translate}}</span>
+            <span id="center" ng-hide="main.hideName" class="main-heading">{{main.viewName | translate}}</span>
             <div class="clr"></div>
           </div>
         </div>

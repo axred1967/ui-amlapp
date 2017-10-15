@@ -1,3 +1,39 @@
+<fieldset ng-show="page.location=='my_customer'">
+  <div class="mdl-grid">
+    <div class="mdl-cell--3-col-desktop mdl-cell--12-col-phone mdl-cell--6-col-tablet">
+  <div class="demo-card-image mdl-card mdl-shadow--2dp">
+    <div class="mdl-card__title mdl-card--expand">{{'Immagine Profilo'|translate}}</div>
+    <div class="center-cropped mdl-image"  ng-click="edit_profile()">
+      <img ng-class="{90:'image_90', 180:'image_180', 270:'image_270','-90':'image_270', '-180':'image_180', '-270':'image_90' }[Customer.settings.imagerotate]" onkeypress=""class="loadImg"  ng-src ="{{imageurl(Customer) }}" ></img>
+    </div>
+
+    <div class="mdl-card__actions">
+      <div class="mdl-layout-spacer"></div>
+      <input style="display:none" type="file" id="msds"  name="msds" ng-model="fileweb" onchange="angular.element(this).scope().uploadprofileweb(this)"  accept='image/*'/>
+      <button ng-show="main.web" id="addfileweb" onclick="$('#msds').click()" class="mdl-button mdl-button--icon mdl-button--colored"><i class="material-icons">file_upload</i></button>
+      <span class="mdl-tooltip mdl-tooltip--validation" for="addfileweb" >
+        <span >{{'Carica da WEB'|translate}}.</span>
+      </span>
+
+      <button ng-hide="main.web"  id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
+      <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
+        <span >{{'Scatta una foto'|translate}}.</span>
+      </span>
+      <button ng-hide="main.web" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
+      <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
+        <span >{{'Scegli da Galleria'|translate}}.</span>
+      </span>
+      <button ng-show="loaded" id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
+      <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
+        <span >{{'Cancella'|translate}}.</span>
+      </span>
+    </div>
+
+  </div>
+</div>
+</div>
+</fieldset>
+<br/>
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="text" autocomplete="off" id="Customer_name" name="Customer_name"  pattern="[A-Za-zÀ-ž\s]*"
@@ -97,43 +133,6 @@
     </span>
   </div>
 </fieldset>
-<!-- image profile -->
-<fieldset>
-  <div class="mdl-grid">
-    <div ng-class="{'mdl-cell--3-col-desktop mdl-cell-12-col-phone mdl-cell-6-col-tablet': main.web }">
-  <div class="demo-card-image mdl-card mdl-shadow--2dp">
-    <div class="mdl-card__title mdl-card--expand">{{'Immagine Profilo'|translate}}</div>
-    <div class="center-cropped mdl-image"  ng-click="edit_profile()">
-      <img ng-class="{90:'image_90', 180:'image_180', 270:'image_270','-90':'image_270', '-180':'image_180', '-270':'image_90' }[Customer.settings.imagerotate]" onkeypress=""class="loadImg"  ng-src ="{{imageurl(Customer) }}" ></img>
-    </div>
-
-    <div class="mdl-card__actions">
-      <div class="mdl-layout-spacer"></div>
-      <input style="display:none" type="file" id="msds"  name="msds" ng-model="fileweb" onchange="angular.element(this).scope().uploadprofileweb(this)"  accept='image/*'/>
-      <button ng-show="main.web" id="addfileweb" onclick="$('#msds').click()" class="mdl-button mdl-button--icon mdl-button--colored"><i class="material-icons">file_upload</i></button>
-      <span class="mdl-tooltip mdl-tooltip--validation" for="addfileweb" >
-        <span >{{'Carica da WEB'|translate}}.</span>
-      </span>
-
-      <button ng-hide="main.web"  id="addCamera"class="mdl-button mdl-button--icon mdl-button--colored" ng-click="add_photo()" ><i class="material-icons">add_a_photo</i></button>
-      <span class="mdl-tooltip mdl-tooltip--validation" for="addCamera" >
-        <span >{{'Scatta una foto'|translate}}.</span>
-      </span>
-      <button ng-hide="main.web" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="uploadfromgallery()" ><i class="material-icons">insert_photo</i></button>
-      <span class="mdl-tooltip mdl-tooltip--validation" for="addGallery" >
-        <span >{{'Scegli da Galleria'|translate}}.</span>
-      </span>
-      <button ng-show="loaded" id="deleteDoc" class="mdl-button mdl-button--icon mdl-button--colored" ng-click="deleteDoc()" ><i class="material-icons">delete</i></button>
-      <span class="mdl-tooltip mdl-tooltip--validation" for="deleteDoc" >
-        <span >{{'Cancella'|translate}}.</span>
-      </span>
-    </div>
-
-  </div>
-</div>
-</div>
-</fieldset>
-<br/>
 <div ng-hide="page.action=='add_customer_for_contract'">
 <center ng-hide="page.other_data">
   <button  id="otherdown" ng-click="other()" class=" mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
