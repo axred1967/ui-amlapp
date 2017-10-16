@@ -130,6 +130,11 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 		localstorage('pages',JSON.stringify($scope.pages))
 		$state.go('kyc_owners',{pages:$scope.pages})
 	};
+	$scope.role = function(){
+		$scope.pages['kyc_role']={action:'', company_id:$scope.Contract.company_id,location:$state.current.name,Contract:$scope.Contract,view:true}
+		localstorage('pages',JSON.stringify($scope.pages))
+		$state.go('kyc_role',{pages:$scope.pages})
+	};
 	$scope.edit_company = function(){
 		$scope.pages['kyc_company']={action:'', user_id:$scope.Contract.contractor_id,location:$state.current.name,
 		company_id:$scope.Contract.company_id,Contract:$scope.Contract, view:true}

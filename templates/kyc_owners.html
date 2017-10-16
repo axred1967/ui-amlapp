@@ -44,7 +44,7 @@
 
 
 
-  <div id="list_owner" ng-hide="Kyc.owner_data.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Owner in Kyc.owner_data  " ng-init="ownerIndex=$index">
+  <div id="list_owner" ng-hide="Kyc.owner_data.length == 0 " class="ng-hide"  class="mdl-grid hidden"  ng-repeat="Owner in Objs  " ng-init="ownerIndex=$index">
     <div class="mdl-cell mdl-cell--12-col">
       <div class="mdl-card amazing mdl-shadow--2dp">
         <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
@@ -87,14 +87,14 @@
     </div>
   </div>
 
-  <div id="no_Owner" ng-hide="Kyc.owner_data.length != 0 " class="ng-hide"  >
+  <div id="no_Owner" ng-hide="Objs.length != 0 " class="ng-hide"  >
     <div  class="mdl-cell mdl-cell--12-col">
       <div class="mdl-card amazing mdl-shadow--2dp">
         <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">
           <div class="mdl-grid">
             <div class="mdl-cell-12-col">
               <span style="cursor:pointer;" >
-                <strong class="blue first_letter_cap">Nessun Titolare Effettivo per {{Company.name}} ancora inserito</strong>
+                <strong class="blue first_letter_cap">{{noOne |translate}}  {{Company.name}} {{'ancora inserito' |translate}}</strong>
               </span><br/>
             </div>
           </div>

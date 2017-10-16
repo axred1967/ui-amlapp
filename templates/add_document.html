@@ -96,7 +96,7 @@
       </div>
     </div>
 <br/>
-    <label ng-show="main.web && ! page.edit " style="    color: #3f51b5;    font-size: 12px;    top: 4px;    visibility: visible;" >{{'Elenco Documenti Caricati' | translate }}</label>
+    <label ng-show=" page.edit " style="    color: #3f51b5;    font-size: 12px;    top: 4px;    visibility: visible;" >{{'Elenco Documenti Caricati' | translate }}</label>
 
     <fieldset ng-show="main.web && ! page.edit " class="asset-upload"
     uploadmfiles onload="" ng-model="Doc" docs="Docs" dir-Agent="agent.pInfo" doc="Doc"
@@ -106,7 +106,7 @@
 <label style="    color: #3f51b5;    font-size: 12px;    top: 4px;    visibility: visible;" >{{ 'Trascinali i Documenti qui  o scegli ' | translate }}</label>
 
 
-<div ng-class="{'mdl-grid': main.web }" >
+<div  >
       <div  ng-repeat="Doc in Docs" ng-init="DocIndex=$index"
       style="padding:20px" class="mdl-cell--3-col-desktop mdl-cell--12-col-phone mdl-cell--6-col-tablet">
         <div class="demo-card-image mdl-card mdl-shadow--2dp">

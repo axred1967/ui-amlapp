@@ -8,6 +8,13 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 		$scope.page=$scope.pages[$state.current.name]
     $scope.back=function(passo){
       if (passo>0){
+				if ($scope.Kyc.contract.procura==1){
+					$scope.pages['kyc_role' ]={action:'',location:$scope.page.location,prev_page:$state.current.name,agg:$scope.page.agg}
+	        localstorage('pages', JSON.stringify($scope.pages));
+	        $state.go('kyc_role' ,{pages:$scope.pages})
+	        return;
+
+				}
         $scope.pages['kyc_document' ]={action:'',location:$scope.page.location,prev_page:$state.current.name,agg:$scope.page.agg}
         localstorage('pages', JSON.stringify($scope.pages));
         $state.go('kyc_document' ,{pages:$scope.pages})
@@ -29,7 +36,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
   $scope.main.loader=true
   $scope.deleted=0
 	$scope.Kyc={}
-
+	$scope.noOne="Nessun Titolare Effettivo per"
 
 
 	$scope.loadItem=function(){
@@ -41,16 +48,12 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
       if(responceData.data.RESPONSECODE=='1') 			{
         data=responceData.data.RESPONSE;
         $scope.Kyc=data;
-				$scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data,true)
-				if ( $scope.Kyc.owner_data.length===undefined || $scope.Kyc.owner_data.length==0){
-					$scope.Kyc.owner_data=[]
+				$scope.Kyc.contract=IsJsonString($scope.Kyc.contract_data,true)
+				$scope.Objs=IsJsonString($scope.Kyc.owner_data,true)
+				if ( $scope.Objs.length===undefined || $scope.Objs.length==0){
+					$scope.Objs=[]
 				}
-      $('input.mdl-textfield__input').each(
-          function(index){
-            $(this).parent('div.mdl-textfield').addClass('is-dirty');
-            $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-          }
-        );
+				setDefaults($scope)
       }
       else
       {
@@ -83,7 +86,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 
 	$scope.saveOwner= function (passo){
 		dbData={}
-		dbData.owner_data=JSON.stringify($scope.Kyc.owner_data )
+		dbData.owner_data=JSON.stringify($scope.Objs )
     $scope.main.loader=true;
 
    data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
@@ -110,12 +113,12 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 
   }
 	if (isObject($scope.page.newOb)){
-		$scope.Kyc.owner_data=$scope.page.owner_data
+		$scope.Objs=$scope.page.Objs
 		if ($scope.page.edit){
-			$scope.Kyc.owner_data[$scope.page.indice]=$scope.page.newOb
+			$scope.Objs[$scope.page.indice]=$scope.page.newOb
 		}
 		else{
-			$scope.Kyc.owner_data[$scope.Kyc.owner_data.length]=$scope.page.newOb
+			$scope.Objs[$scope.Objs.length]=$scope.page.newOb
 		}
 		$scope.saveOwner()
 		$scope.pages[$state.current.name].newOb=1
@@ -150,7 +153,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
   }
   $scope.deleteOwn2=function(ob,index){
 		//delete $scope.Kyc['owner_data'][index]
-		$scope.Kyc['owner_data'].splice(index,1)
+		$scope.Objs.splice(index,1)
 		$scope.saveOwner()
 
   }
@@ -160,7 +163,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 
   $scope.save_kyc= function (passo){
 		dbData={}
-		dbData.owner_data=JSON.stringify($scope.Kyc.owner_data )
+		dbData.owner_data=JSON.stringify($scope.Objs )
     $scope.main.loader=true;
 
    data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
@@ -258,7 +261,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 
 		}
 		$scope.pages['add_owners.kyc']={action:'add_customer_for_kyc_owner',type:type,company_id:$scope.Contract.other_id,location:$state.current.name,other_data:true,owners:true}
-		$scope.pages[$state.current.name].owner_data=$scope.Kyc.owner_data
+		$scope.pages[$state.current.name].Objs=$scope.Objs
 		localstorage('pages',JSON.stringify($scope.pages))
 		$state.go('add_owners.kyc',{pages:$scope.pages})
 
@@ -273,7 +276,7 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 
 		}
 		$scope.pages['add_owners.kyc']={action:'edit_customer_for_kyc_owner', location:$state.current.name,other_data:true,owners:true,type:type,kyc:$scope.Kyc,Owner:Owner,edit:true,indice:indice}
-		$scope.pages[$state.current.name].owner_data=$scope.Kyc.owner_data
+		$scope.pages[$state.current.name].Objs=$scope.Objs
 		localstorage('pages',JSON.stringify($scope.pages))
 		$state.go('add_owners.kyc',{pages:$scope.pages})
 

@@ -25,11 +25,10 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
 	$scope.main.AddPage="add_owners"
   $scope.main.Search=false
   $scope.main.Sidebar=false
-  $('.mdl-layout__drawer-button').hide()
   $scope.main.loader=true
   $scope.deleted=0
 	$scope.Kyc={}
-
+	$scope.noOne="Nessun Ruolo per"
 
 
 	$scope.loadItem=function(){
@@ -41,16 +40,11 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
       if(responceData.data.RESPONSECODE=='1') 			{
         data=responceData.data.RESPONSE;
         $scope.Kyc=data;
-				$scope.Kyc.owner_data=IsJsonString($scope.Kyc.owner_data,true)
-				if ( $scope.Kyc.role_data.length===undefined || $scope.Kyc.owner_data.length==0){
-					$scope.Kyc.owner_data=[]
+				$scope.Objs=IsJsonString($scope.Kyc.role_data,true)
+				if ( $scope.Objs.length===undefined || $scope.Objs.length==0){
+					$scope.Objs=[]
 				}
-      $('input.mdl-textfield__input').each(
-          function(index){
-            $(this).parent('div.mdl-textfield').addClass('is-dirty');
-            $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-          }
-        );
+				setDefaults($scope)
       }
       else
       {
@@ -72,7 +66,7 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
 		$scope.Contract=$scope.pages[$scope.page.location].Contract
 		$scope.action="saveKyc"
 		if  ($scope.Contract.act_for_other==1){
-			$scope.main.viewName="TE Persona Giuridica"
+			$scope.main.viewName="Ruoli Persona Giuridica"
 
 		}
 		else {
@@ -83,7 +77,7 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
 
 	$scope.saveOwner= function (passo){
 		dbData={}
-		dbData.owner_data=JSON.stringify($scope.Kyc.owner_data )
+		dbData.role_data=JSON.stringify($scope.Objs )
     $scope.main.loader=true;
 
    data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
@@ -110,12 +104,12 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
 
   }
 	if (isObject($scope.page.newOb)){
-		$scope.Kyc.owner_data=$scope.page.owner_data
+		$scope.Objs=$scope.page.Objs
 		if ($scope.page.edit){
-			$scope.Kyc.owner_data[$scope.page.indice]=$scope.page.newOb
+			$scope.Objs[$scope.page.indice]=$scope.page.newOb
 		}
 		else{
-			$scope.Kyc.owner_data[$scope.Kyc.owner_data.length]=$scope.page.newOb
+			$scope.Objs[$scope.Objs.length]=$scope.page.newOb
 		}
 		$scope.saveOwner()
 		$scope.pages[$state.current.name].newOb=1
@@ -150,7 +144,7 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
   }
   $scope.deleteOwn2=function(ob,index){
 		//delete $scope.Kyc['owner_data'][index]
-		$scope.Kyc['owner_data'].splice(index,1)
+		$scope.Objs.splice(index,1)
 		$scope.saveOwner()
 
   }
@@ -160,7 +154,7 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
 
   $scope.save_kyc= function (passo){
 		dbData={}
-		dbData.owner_data=JSON.stringify($scope.Kyc.owner_data )
+		dbData.role_data=JSON.stringify($scope.Objs )
     $scope.main.loader=true;
 
    data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
@@ -206,7 +200,7 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
 
     if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
 
-     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,pInfo:$scope.agent.pInfo}
       $http.post( SERVICEURL2,  data )
       .then(function(data) {
         if(data.data.RESPONSECODE=='1') 			{
@@ -250,30 +244,21 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
 
 
   $scope.add_owner=function(Owner){
-		if ($scope.Contract.act_for_other==1){
-			type="companyTE"
-		}
-		else {
-			type="otherPersonTE"
+		type="role"
 
-		}
-		$scope.pages['add_owners.kyc']={action:'add_customer_for_kyc_owner',type:type,company_id:$scope.Contract.other_id,location:$state.current.name,other_data:true,owners:true}
-		$scope.pages[$state.current.name].owner_data=$scope.Kyc.owner_data
+
+		$scope.pages['add_owners.kyc']={action:'add_customer_for_kyc_role',type:type,company_id:$scope.Contract.other_id,location:$state.current.name,other_data:true,owners:true,role:true}
+		$scope.pages[$state.current.name].Objs=$scope.Objs
 		localstorage('pages',JSON.stringify($scope.pages))
 		$state.go('add_owners.kyc',{pages:$scope.pages})
 
 
   }
   $scope.edit_owner=function(Owner,indice){
-		if ($scope.Contract.act_for_other==1){
-			type="companyTE"
-		}
-		else {
-			type="otherPersonTE"
+		type="role"
 
-		}
-		$scope.pages['add_owners.kyc']={action:'edit_customer_for_kyc_owner', location:$state.current.name,other_data:true,owners:true,type:type,kyc:$scope.Kyc,Owner:Owner,edit:true,indice:indice}
-		$scope.pages[$state.current.name].owner_data=$scope.Kyc.owner_data
+		$scope.pages['add_owners.kyc']={action:'edit_customer_for_kyc_role', location:$state.current.name,other_data:true,owners:true,role:true,type:type,kyc:$scope.Kyc,Owner:Owner,edit:true,indice:indice}
+		$scope.pages[$state.current.name].Objs=$scope.Objs
 		localstorage('pages',JSON.stringify($scope.pages))
 		$state.go('add_owners.kyc',{pages:$scope.pages})
 
@@ -292,12 +277,9 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-               $('input.mdl-textfield__input').each(
-                 function(index){
-                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                 })
+							 setDefaults($scope)
                $scope.main.loader=false
+							 $('.mdl-layout__drawer-button').hide()
             }, 5);
   });
 

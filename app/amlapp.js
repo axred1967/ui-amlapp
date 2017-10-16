@@ -221,6 +221,12 @@ app2.config(function($stateProvider, $urlRouterProvider) {
             controller: 'kyc_owners',
             params: {pages: null}
         })
+        .state('kyc_role', {
+            url: '/kyc_role',
+            templateUrl: BASEURL+ 'templates/kyc_owners.html',
+            controller: 'kyc_role',
+            params: {pages: null}
+        })
         .state('kyc_document', {
             url: '/kyc_document',
             templateUrl: BASEURL+ 'templates/kyc_document.html',

@@ -212,16 +212,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
       $scope.word['countries']=[]
     }
   }
-	$scope.edit_profile=function(){
-	  url=SERVICEDIRURL +"file_down.php?action=file&resize=m&profile=1&entity=company&entity_key="+$scope.Company.company_id+"&file=" + $scope.Company.image+$scope.agent.pInfoUrl
-	  doc={}
-	  doc.rotate=$scope.Company.settings.imagerotate
-	  dialog.showModal();
-	  $timeout(function(){
-	    init_canvas_image('DocCanvas',url,doc)
 
-	  },500)
-	}
   $scope.add_company= function (){
     if ($scope.form.$invalid) {
       $scope.invalid=""
@@ -378,6 +369,7 @@ app2.controller('add_company', function ($scope,$http,$state,$translate,$rootSco
       if ($scope.lastid!==undefined && $scope.lastid>0 ){
 				$scope.pages[$scope.page.location].temp.name=$scope.Company.name
 				$scope.pages[$scope.page.location].temp.company_id= $scope.lastid
+				$scope.pages[$scope.page.location].temp.other_id= $scope.lastid
 				localstorage('pages', JSON.stringify($scope.pages));
       }
       break;

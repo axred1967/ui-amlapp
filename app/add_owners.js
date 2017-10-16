@@ -51,13 +51,30 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
 			$scope.add_edit="Modifica i dati del Titolare Effettivo"
 			$scope.add_customer=true
     	break;
-    case 'add_customer_for_kyc_owner' :
+    case 'add_customer_for_kyc_role' :
 			$scope.settings.action="add"
 	    $scope.Owner={}
-	    $scope.main.viewName="Nuovo TE"
+//			$scope.page.type="owners"
+	    $scope.main.viewName="Nuovo Ruolo "
 	    $scope.Owner.company_id=$scope.page.company_id
-			$scope.add_edit="Inserisci i dati del Titolare Effettivo"
+			$scope.add_edit="Inserisci i dati della persona che esercita il ruolo"
 	    break;
+			case 'edit_customer_for_kyc_role' :
+//				$scope.page.type=""
+		    $scope.Owner=$scope.page.Owner
+				$scope.Customer=angular.extend({},$scope.Owner)
+		    $scope.Contract=$scope.page.Contract
+		    $scope.main.viewName="Modifica Dati Ruolo"
+				$scope.add_edit="Modifica i dati della persona che esercita il ruolo"
+				$scope.add_customer=true
+	    	break;
+	    case 'add_customer_for_kyc_owner' :
+				$scope.settings.action="add"
+		    $scope.Owner={}
+		    $scope.main.viewName="Nuovo TE"
+		    $scope.Owner.company_id=$scope.page.company_id
+				$scope.add_edit="Inserisci i dati del Titolare Effettivo"
+		    break;
     case 'add_owner_from_contract' :
 			$scope.settings.action="add"
 	    $scope.Owner={}
@@ -83,7 +100,7 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
 
   $scope.showContractorList=function(){
     if ((typeof $scope.Owner.fullname !== "undefined" && $scope.oldContrator!=$scope.Owner.fullname)){
-     data={ "action":"ACCustomerList", name:$scope.Owner.fullname,kyc:$scope.searchKyc,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+     data={ "action":"ACCustomerList", name:$scope.Owner.fullname,kyc:$scope.searchKyc,pInfo:$scope.agent.pInfo}
       $http.post( SERVICEURL2,  data )
       .then(function(data) {
         if(data.data.RESPONSECODE=='1') 			{
@@ -115,13 +132,6 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
 					errof+=" " +errorField.$name
 	      })
 	    });
-			if (!((errof==" Percentuale"  && $scope.page.type=='otherPersonTE')|| (errof==" tipote" && $scope.page.type=='companyTE') )){
-				$scope.formStatus = "Dati non Validi." ;
-		    swal('','Dati non validi' + errof)
-		    console.log("Form is invalid.");
-		    return
-
-			}
 	  } else {
 	    //$scope.formStatus = "Form is valid.";
 	    console.log("Form is valid.");
@@ -145,7 +155,7 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
 		if ($scope.page.other_data && dbData.state!==undefined){
 			dbData.state.kyc=true
 		}
-		if ($scope.page.action=="add_customer_for_kyc_owner" || $scope.page.action=="edit_customer_for_kyc_owner"){
+		if ($scope.page.action=="add_customer_for_kyc_owner" || $scope.page.action=="edit_customer_for_kyc_owner" || $scope.page.action=="add_customer_for_kyc_role" || $scope.page.action=="edit_customer_for_kyc_role"){
 			$scope.pages[$scope.page.location].newOb={}
 			$scope.pages[$scope.page.location].newOb=dbData
 			if ($scope.pages[$scope.page.location].newOb.state===undefined || $scope.pages[$scope.page.location].newOb.state===null )
@@ -441,7 +451,7 @@ $scope.showAC=function($search,$word, settings){
 
   if (( $word  !== "undefined" && $word.length>0 &&  $word!=$scope.oldWord) || settings.zero){
 
-   data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+   data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,zero:settings.zero,order:settings.order,countries:settings.countries,search:$word ,table:$table,pinfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       if(data.data.RESPONSECODE=='1') 			{

@@ -330,7 +330,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
   }
   $scope.toDocs = function(Contract){
-    pages={'kyc_document':{action:'', location:$state.current.name,Contract:Contract,view:true},currentObId:d.contract_id,currentOb:'contract'}
+    pages={'kyc_document':{action:'', location:$state.current.name,Contract:Contract,view:true},currentObId:Contract.contract_id,currentOb:'contract'}
     localstorage('pages',JSON.stringify(pages))
     $state.go('kyc_document',{pages:pages})
 

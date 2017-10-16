@@ -49,7 +49,7 @@
     </table>
     <br/>
     <div class="mdl-card__actions mdl-card--border " style="font-size:12px" >
-      <div class="mdl-cell--4-col">
+      <div class="mdl-cell--4-col pr16">
         <div class="left" style="text-align:left">
           <span ng-show="Contract.kyc_update.state=='aggiornamento'" class="blue" >{{'Aggiornamento'|translate}}</span><br/>
           <span class="orange">{{'Adeguata Verifica'|translate}} </span><br/>
@@ -61,7 +61,7 @@
       </div>
 
     </div>
-    <div class="mdl-cell--4-col">
+    <div class="mdl-cell--4-col pr16">
       <button  id="Risk" ng-click="edit_contract(Contract.contractor_id)" class="center mdl-button mdl-js-button mdl-button--fab mdl-button--colored gray-btn">
         <i class="material-icons">reorder</i>
       </button>
@@ -70,7 +70,7 @@
       </span>
 
     </div>
-    <div class="mdl-cell--4-col">
+    <div class="mdl-cell--4-col pr16">
       <div class="right" style="text-align:right">
         <span ng-show="Contract.risk_update.state=='aggiornamento'" class="blue" >{{'Aggiornamento'|translate}}</span><br/>
         <span class="orange">{{'Analisi del Rischio'|translate}} </span><br/>
@@ -85,7 +85,7 @@
 
 </div>
 <div class="mdl-card__actions mdl-card--border">
-  <div class="mdl-cell--4-col">
+  <div class="mdl-cell--4-col  pr16">
     <button  id="Kyc" ng-click="edit_kyc()" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
       AV
     </button>
@@ -94,7 +94,7 @@
     </span>
 
   </div>
-  <div class="mdl-cell--2-col">
+  <div class="mdl-cell--2-col  pr16">
     <button  id="profile" ng-click="edit_profile(Contract)" class="center mdl-button mdl-js-button mdl-button--fab mdl-button--colored azure-btn">
       <i class="material-icons">create</i>
     </button>
@@ -102,7 +102,7 @@
       <span >{{'Dati Firmatario'|translate}}.</span>
     </span>
   </div>
-  <div class="mdl-cell--2-col">
+  <div class="mdl-cell--2-col  pr16">
     <button  id="doc" ng-click="edit_docu(Contract)" class="center mdl-button mdl-js-button mdl-button--fab mdl-button--colored azure-btn" >
       <i class="material-icons">attachment</i>
     </button>
@@ -110,7 +110,7 @@
       <span >{{'Documenti Contratto'|translate}}.</span>
     </span>
   </div>
-  <div class="mdl-cell--4-col">
+  <div class="mdl-cell--4-col  pr16">
     <button  id="Risk0" ng-click="edit_risk()" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
       Risk
     </button>
@@ -121,7 +121,7 @@
   </div>
 </div>
 <div class="mdl-card__actions mdl-card--border">
-  <div class="mdl-cell--4-col">
+  <div class="mdl-cell--4-col pr16">
     <button  id="aggKyc" ng-click="agg_kyc()" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
       Agg
     </button>
@@ -130,7 +130,7 @@
     </span>
 
   </div>
-  <div class="mdl-cell--2-col">
+  <div class="mdl-cell--2-col pr16">
     <div ng-show="Contract.status ==1 && Contract.act_for_other==1" >
     <button  id="company" ng-click="edit_company()" class="center mdl-button mdl-js-button mdl-button--fab mdl-button--colored green-btn">
       <i class="material-icons">business</i>
@@ -140,7 +140,7 @@
     </span>
   </div>
   </div>
-    <div class="mdl-cell--2-col">
+    <div class="mdl-cell--2-col pr16">
       <div ng-show="Contract.status ==1 && Contract.act_for_other==1" >
     <button  id="owner" ng-click="owners()" class="center mdl-button mdl-js-button mdl-button--fab mdl-button--colored green-btn">
       <i class="material-icons">accessibility</i>
@@ -151,7 +151,7 @@
   </div>
   </div>
 
-  <div class="mdl-cell--4-col">
+  <div class="mdl-cell--4-col pr16">
     <button  id="aggRisk0" ng-click="agg_risk()" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
       Agg
     </button>
@@ -163,7 +163,7 @@
 </div>
 <div class="mdl-card__actions mdl-card--border">
 
-  <div  class="mdl-cell--4-col">
+  <div  class="mdl-cell--4-col pr16 ">
     <button  ng-show="Contract.kyc_status==1" id="print_kyc" ng-click="print_kyc()" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
       <i class="material-icons">printer</i>
     </button>
@@ -171,9 +171,17 @@
       <span >{{'Stampa Adeguata Verifica KYC'|translate}}.</span>
     </span>
   </div>
-  <div  class="mdl-cell--2-col">
+  <div  class="mdl-cell--2-col pr16 ">
+    <div ng-show="Contract.status ==1 && Contract.procura==1" >
+  <button  id="role" ng-click="role()" class="center mdl-button mdl-js-button mdl-button--fab mdl-button--colored green-btn">
+    <i class="material-icons">perm_identity</i>
+  </button>
+  <span class="mdl-tooltip mdl-tooltip--validation" for="role" >
+    <span >{{'Censisci Deleghe sociali'|translate}}.</span>
+  </span>
+</div>
   </div>
-  <div  class="mdl-cell--2-col">
+  <div  class="mdl-cell--2-col  pr16">
     <div ng-show="Contract.act_for_other==2">
     <button  id="delegante" ng-click="owners()" class="center mdl-button mdl-js-button mdl-button--fab mdl-button--colored green-btn">
       <i class="material-icons">account_circle</i>
@@ -184,7 +192,7 @@
   </div>
   </div>
 
-  <div  class=" mdl-cell--4-col">
+  <div  class=" mdl-cell--4-col pr16">
     <button ng-show="Contract.status ==1" id="print" ng-click="print_risk()" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
       <i class="material-icons">printer</i>
     </button>

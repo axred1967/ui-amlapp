@@ -35,30 +35,50 @@
   </span>
 </div>
 </fieldset>
+<div ng-switch on="page.type">
+   <div ng-switch-when="companyTE">
+     <fieldset  id="perc" >
+       <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
 
-<fieldset ng-show="page.owners && page.type=='companyTE'" id="perc" >
-  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+         <input ng-currency currency-symbol="%" min=0 max=100 class="mdl-textfield__input" autocomplete="off"
+         ng-model="Owner.percentuale"  type="text" ng-required=""
+         id="Percentuale" name="Percentuale" />
+         <label  for="Percentuale" class="mdl-textfield__label">{{'Percentuale di possesso della società' | translate}} </label>
+         <span class="mdl-tooltip mdl-tooltip--validation" for="Percentuale"  ng-show="form.Percentuale.$invalid && form.Percentuale.$touched">
+           <span ng-show="form.Percentuale.$error.required">{{'Richiesto'| translate}}.</span>
 
-    <input ng-currency currency-symbol="%" min=0 max=100 class="mdl-textfield__input" autocomplete="off"
-    ng-model="Owner.percentuale"  type="text" ng-required=""
-    id="Percentuale" name="Percentuale" />
-    <label  for="Percentuale" class="mdl-textfield__label">{{'Percentuale di possesso della società' | translate}} </label>
-    <span class="mdl-tooltip mdl-tooltip--validation" for="Percentuale"  ng-show="form.Percentuale.$invalid && form.Percentuale.$touched">
-      <span ng-show="form.Percentuale.$error.required">{{'Richiesto'| translate}}.</span>
+         </div>
+     </fieldset>
 
-    </div>
-</fieldset>
-<fieldset ng-show="page.owners &&  page.type=='otherPersonTE' " id="dele" >
-<div  class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+   </div>
+   <div ng-switch-when="otherPersonTE">
+     <fieldset id="dele" >
+     <div  class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
 
-  <input  class="mdl-textfield__input"  ng-model="Owner.percentuale"  type="text" ng-required=""
-  id="tipote" name="tipote" />
-  <label  for="tipote" class="mdl-textfield__label">{{'Tipo Delega per Esecutore/Firmatario' | translate}} </label>
-  <span class="mdl-tooltip mdl-tooltip--validation" for="tipote"  ng-show="form.tipote.$invalid && form.tipote.$touched">
-    <span ng-show="form.tipote.$error.required">{{'Richiesto'| translate}}.</span>
+       <input  class="mdl-textfield__input"  ng-model="Owner.percentuale"  type="text" ng-required=""
+       id="tipote" name="tipote" />
+       <label  for="tipote" class="mdl-textfield__label">{{'Tipo Delega per Esecutore/Firmatario' | translate}} </label>
+       <span class="mdl-tooltip mdl-tooltip--validation" for="tipote"  ng-show="form.tipote.$invalid && form.tipote.$touched">
+         <span ng-show="form.tipote.$error.required">{{'Richiesto'| translate}}.</span>
 
+     </div>
+     </fieldset>
+   </div>
+     <div ng-switch-when="role">
+       <fieldset id="role" >
+       <div  class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+
+         <input  class="mdl-textfield__input"  ng-model="Owner.ruolo"  type="text" ng-required=""
+         id="ruolo" name="ruolo" />
+         <label  for="ruolo" class="mdl-textfield__label">{{'Tipo Ruolo Sociale' | translate}} </label>
+         <span class="mdl-tooltip mdl-tooltip--validation" for="ruolo"  ng-show="form.ruolo.$invalid && form.ruolo.$touched">
+           <span ng-show="form.ruolo.$error.required">{{'Richiesto'| translate}}.</span>
+
+       </div>
+       </fieldset>
+     </div>
+   </div>
 </div>
-</fieldset>
 
 <div ng-show="page.other_data">
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
