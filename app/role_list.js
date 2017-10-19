@@ -11,31 +11,14 @@ app2.controller('role_list', function ($scope,$http,$translate,$state,Customers_
   $scope.main.Add=true
   $scope.main.Search=true
   $scope.main.AddPage="add_owner"
-  $scope.main.AddLabel="aggiungi Titolare Effettivo"
+  $scope.main.AddLabel="aggiungi Ruolo Sociale"
   $scope.main.Sidebar=false
   $('.mdl-layout__drawer-button').hide()
   $scope.deleted=0
   $scope.main.loader=true
 
   switch ($scope.page.action){
-    case "owner_from_contract":
 
-    $scope.Contract=$scope.page.Contract
-    if ($scope.Contract.act_for_other==2){
-      $scope.company_id=$scope.Contract.company_id;
-      $scope.Company_name="CPU:" + $scope.Contract.CPU + " Deleganti"
-    }
-    else{
-      $scope.company_id=$scope.Contract.company_id;
-      $scope.Company_name=$scope.Contract.name
-
-    }
-    break;
-    case "ownwe_from_compnay":
-		$scope.Company=$scope.page.Company
-    $scope.company_id=$scope.Company.company_id
-    $scope.Company_name=$scope.Company.name
-    break;
     default:
 		$scope.Company=$scope.page.Company
 		$scope.company_id=$scope.Company.company_id

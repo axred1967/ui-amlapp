@@ -859,6 +859,7 @@ switch (paese){
   $scope.main.viewName=""
   $scope.main.other_data=false
   $scope.main.hideName=false
+  $scope.main.logine=false
   var isapp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
   if ( isapp ) {
     $scope.main.web=false
