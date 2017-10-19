@@ -97,7 +97,7 @@
           <fieldset ng-show="passo==1">
             <div ng-show="passo==1" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
               <input class="mdl-textfield__input" type="date" date-input id="Kyc_doi" name="Kyc_doi"
-              ng-model="Kyc.date_of_identification"   ng-required="true" autocomplete="off"
+              ng-model="Kyc.date_of_identification"   ng-required="true" autocomplete="off" def-setting
               />
               <label class="mdl-textfield__label" for="Kyc_doi">{{'Data di identificazione'|translate}} *</label>
               <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_doi" ng-show="form.Kyc_doi.$invalid && form.Kyc_doi.$touched">

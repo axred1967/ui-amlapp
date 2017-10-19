@@ -120,6 +120,13 @@ app2.config(function($stateProvider, $urlRouterProvider) {
             params: {pages: null}
 
         })
+        .state('role_list', {
+            url: '/role_list',
+            templateUrl: BASEURL+ 'templates/kyc_owners.html',
+            controller: 'role_list',
+            params: {pages: null}
+
+        })
         .state('my_document', {
             url: '/document',
             templateUrl: BASEURL+ 'templates/my_document.html',

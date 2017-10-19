@@ -3,7 +3,7 @@
   <div>
     <center>
     <span style="font-size:18px;font-weight:bold" class="orange" id="name_agent">{{'Analisi del Rischio'|translate}}</span><br/>
-    <span style="font-size:18px;font-weight:bold" class="blue" id="name_agent">{{Contract.CPU}} - {{Contract.owner}}</span>
+    <span style="font-size:18px;font-weight:bold" class="blue" id="name_agent">{{Contract.CPU}} - {{Contract.Owner}}</span>
   </center>
   </div>
   <div ng-class="(Risk.risk_status==0) ? 'Alto' : 'Basso'" style="text-align:right!important">
@@ -67,16 +67,6 @@
                 <span ng-show="form.notes.$error.required">{{'Richiesto'|translate}}.</span>
               </div>
 
-          </fieldset>
-          <fieldset ng-show="Risk.risk_update.state=='aggiornamento'">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
-              <text-angular   class="textwidth100" style="width: 100% !important;" ng-class="{'imported': imported.updateReasons }" ng-model="Risk.risk_update.updateReasons" ng-required="risk.risk_update.state=='aggiornamento'"
-              type="text" rows= "3" id="reason" name="reason" ></text-angular>
-              <label for="reason"  class="mdl-textfield__label   " style="margin-top:-10px;color: #3f51b5;font-size: 12px;top: 4px;visibility: visible;">
-                {{ 'Motivo del Aggiornamento' | translate}}</label>
-              <span class="mdl-tooltip mdl-tooltip--validation" for="reason" minlength="3" ng-show="form.reason.$invalid && form.reason.$touched">
-                <span ng-show="form.reason.$error.required">{{'Richiesto'|translate}}.</span>
-              </div>
           </fieldset>
 
 

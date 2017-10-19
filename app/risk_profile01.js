@@ -95,7 +95,7 @@ app2.controller('risk_profile01', function ($scope,$http,$state,$translate,$time
     dbData.risk_data=JSON.stringify(dbData.risk_data)
 
     $('#loader_img').show();
-   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+   data={ "action":"saveRiskAx",agg:$scope.page.agg, appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       $('#loader_img').hide();

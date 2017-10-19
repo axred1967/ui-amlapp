@@ -102,7 +102,7 @@
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="date" date-input id="Contract_contract_date"  name="Contract_contract_date"  ng-required="true"  value=" "
-            ng-model="Contract.contract_date"   minlength="3" autocomplete="off" ng-blur="setEoC()"
+            ng-model="Contract.contract_date"   minlength="3" autocomplete="off" ng-blur="setEoC()" def-setting
             />
             <label class="mdl-textfield__label" for="Contract_contract_date">{{'ContractDate' | translate }}</label>
             <span class="mdl-tooltip mdl-tooltip--validation" for="Contract_contract_date" ng-show="form.Contract_contract_date.$invalid && form.Contract_contract_date.$touched">

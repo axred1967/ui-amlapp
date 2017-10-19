@@ -1,4 +1,4 @@
-app2.controller('owners_list', function ($scope,$http,$translate,$state,Customers_inf,$timeout,$interval,$stateParams) {
+app2.controller('role_list', function ($scope,$http,$translate,$state,Customers_inf,$timeout,$interval,$stateParams) {
   /* gestiote parametri di stato */
 	$scope.curr_page=$state.current.name
 	$scope.pages=$stateParams.pages

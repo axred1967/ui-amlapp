@@ -61,7 +61,7 @@ app2.controller('risk_profile02_4d', function ($scope,$http,$state,$translate,$t
           $scope.PEP="il Cliente si è dichiarato PEP"
 
         }
-
+				setDefaults($scope)
       }
       else
       {
@@ -123,7 +123,7 @@ app2.controller('risk_profile02_4d', function ($scope,$http,$state,$translate,$t
     dbData.risk_data=JSON.stringify(dbData.risk_data)
 
     $('#loader_img').show();
-    data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
+    data={ "action":"saveRiskAx",agg:$scope.page.agg, appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       $('#loader_img').hide();
@@ -219,13 +219,9 @@ app2.controller('risk_profile02_4d', function ($scope,$http,$state,$translate,$t
    $scope.$on('$viewContentLoaded',
             function(event){
               $timeout(function() {
-                $('input.mdl-textfield,input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
-                  function(index){
-                    $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                  })
+  							setDefaults($scope)
                 $scope.main.loader=false
-             }, 5);
+             }, 500);
    });
 
 })

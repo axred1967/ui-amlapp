@@ -157,7 +157,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 		dbData={}
 		dbData.Docs=JSON.stringify($scope.Kyc.Docs )
 
-   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
+   data={ "action":"saveKycAx", appData:$scope.Contract,agg:$scope.page.agg,dbData:dbData,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       if(data.data.RESPONSECODE=='1') 			{
@@ -510,11 +510,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-               $('input.mdl-textfield__input').each(
-                 function(index){
-                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                 })
+							 	setDefaults($scope)
 								 $('.mdl-layout__drawer-button').hide()
                $scope.main.loader=false
             }, 200);

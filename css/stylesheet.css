@@ -1543,17 +1543,17 @@ td.wordwrap{
 
 }
 .blue {
-	color:#1c224b !important;
+	color:#1c224b !important ;
 
 }
 .green{
-	color:#3D674B;
+	color:#3D674B !important;
 }
 .azure{
-	color:#3D67AF;
+	color:#3D67AF !important;
 }
 .gray{
-	color:#636366;
+	color:#636366 !important;
 }
 .orange-btn{
 	background:#E5A430 !important;

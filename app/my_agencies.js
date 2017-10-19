@@ -113,11 +113,7 @@ app2.controller('my_agencies', function ($scope,$http,$translate,$rootScope,$sta
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-               $('input.mdl-textfield__input').each(
-                 function(index){
-                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                 })
+               setDefaults($scope)
                $scope.main.loader=false
             }, 5);
   });

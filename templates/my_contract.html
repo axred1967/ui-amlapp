@@ -102,19 +102,27 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
             <span ng-hide="agent.user_type==3" class="toright1 mdl-tooltip mdl-tooltip--validation" for="{{ 'delete' + ContractIndex }}" >
               <span >{{'Cancella Contratto'|translate}}.</span>
             </span>
+            <button tooltip ng-hide="agent.user_type==3"  id="{{ 'copy' + ContractIndex }}" name="copy" class="right gray mdl-button mdl-button--icon mdl-button--colored "
+            ng-click="copyContract(Contract,ContractIndex)" >
+              <i class="material-icons">content_copy</i>
+            </button>
+            <span ng-hide="agent.user_type==3" class="toright1 mdl-tooltip mdl-tooltip--validation" for="{{ 'copy' + ContractIndex }}" >
+              <span >{{'Duplica Contratto'|translate}}.</span>
+            </span>
             <button  tooltip id="{{ 'documents' + ContractIndex }}" name="documents" class="right mdl-button mdl-button--icon mdl-button--colored" ng-click="toDocs(Contract)" >
               <i class="material-icons">attachment</i>
             </button>
             <span class=" mdl-tooltip mdl-tooltip--validation" for="{{ 'documents' + ContractIndex }}" >
               <span >{{'Documenti Contratto'|translate}}.</span>
             </span>
-            <button tooltip ng-show="Contract.kyc_status==1"   id="{{ 'print_kyc' + ContractIndex }}"  ng-click="print_kyc(Contract,ContractIndex)" class="right  mdl-button  mdl-button--icon mdl-button--colored orange">
+            <button tooltip ng-show="Contract.kyc_status==1"   id="{{ 'print_kyc' + ContractIndex }}"  ng-click="print_kyc(Contract,ContractIndex)"
+            class="right  mdl-button  mdl-button--icon mdl-button--colored orange">
               <i class="material-icons">printer</i>
             </button>
             <span  class=" mdl-tooltip mdl-tooltip--validation" for="{{ 'print_kyc' + ContractIndex }}" >
               <span >{{'Stampa Adeguata verifica Kyc'|translate}}.</span>
             </span>
-            <button tooltip ng-show="Contract.status==1"   id="{{ 'print_risk' + ContractIndex }}"  ng-click="print_risk(Contract,ContractIndex)" class="right  mdl-button   mdl-button--icon mdl-button--colored  blue">
+            <button tooltip ng-show="Contract.risk_status==1"   id="{{ 'print_risk' + ContractIndex }}"  ng-click="print_risk(Contract,ContractIndex)" class="right  mdl-button   mdl-button--icon mdl-button--colored  blue">
               <i class="material-icons">printer</i>
             </button>
             <span  class=" mdl-tooltip mdl-tooltip--validation" for="{{ 'print_risk' + ContractIndex }}" >

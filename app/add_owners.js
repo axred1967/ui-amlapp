@@ -250,17 +250,7 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-               $('input.mdl-textfield__input').each(
-                 function(index){
-                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                 })
-								 $('input[type="date"]').each(function(){
-								  d=$(this).attr('ng-model')
-								  res=d.split('.')
-								  if ($scope.Customer[res.slice(-1)[0]]!==undefined)
-								  $scope.Customer[res.slice(-1)[0]]=new Date($scope.Customer[res.slice(-1)[0] ])
-								 })
+							 setDefaults($scope)
                $scope.main.loader=false
             }, 15);
   });
@@ -281,11 +271,6 @@ $scope.loadItem=function(){
 					delete data[key];
 				}
 			});
-			$('input[type="date"]').each(function(){
-			 d=$(this).attr('ng-model')
-			 res=d.split('.')
-			 data[res.slice(-1)[0]]=new Date(data[res.slice(-1)[0] ])
-		 })
 
 			$scope.Customer =  data;
 			$scope.Customer.IMAGEURI=UPLOADSURL +"user/small/"
@@ -298,13 +283,7 @@ $scope.loadItem=function(){
 
 			}
 			//convertDateStringsToDates($scope.Customer)
-
-			$('input.mdl-textfield__input').each(
-				function(index){
-					$(this).parent('div.mdl-textfield').addClass('is-dirty');
-					$(this).parent('div.mdl-textfield').removeClass('is-invalid');
-				}
-			);
+			setDefaults($scope)
 
 		}
 		else

@@ -252,14 +252,10 @@ app2.controller('add_agency', function ($scope,$http,$state,$translate,$timeout,
             function(event){
               $('.mdl-tooltip.is-active').removeClass('is-active');
               $timeout(function() {
-                $('input.mdl-textfield__input').each(
-                  function(index){
-                    $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                  })
                   $('.mdl-layout__drawer-button').hide()
+                  setDefaults($scope)
                 $scope.main.loader=false
-             }, 100);
+             }, 500);
    });
 
    $scope.main.loader=false

@@ -71,10 +71,10 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 		 }
 		 $scope.setEoC=function(){
 			 oggi=new Date()
-			 if ($scope.Contract!==undefined && $scope.Contract.contract_date!==undefined &&  $scope.Contract.contract_eov.setHours(0,0,0,0)==oggi.setHours(0,0,0,0)) {
-				 Object.assign(d,$scope.Contract.contract_date)
-		     d.setFullYear(d.getFullYear()+10)
-		     $scope.Contract.contract_eov=d
+			 if ($scope.Contract!==undefined && $scope.Contract.contract_date!==undefined && ( $scope.Contract.contract_eov===null)) {
+				 Object.assign(oggi,$scope.Contract.contract_date)
+		     oggi.setFullYear(oggi.getFullYear()+10)
+		     $scope.Contract.contract_eov=oggi
 			 }
 
 	   }
@@ -128,55 +128,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 				 $scope.$broadcast('procuratore')
 			 }
 		 }
-		 /*
-		 $scope.$on('$viewContentLoaded',
-	            function(event){
-								$timeout(function() {
-									$('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox__input').each(
-						 			 function(index){
-						 				 ngm=$(this).attr('ng-model')
-										 if (ngm===undefined){
-											 ngm=$(this).attr('modelAx')
-										 }
-											 s = ngm.split(".")
-											 switch (s.length){
-												 case 1:
-												 $val= $scope[s[0]]
-												 break;
-												 case 2:
-												 $val= $scope[s[0]][s[1]]
-												 break;
-												 case 3:
-												 $val= $scope[s[0]][s[1]][s[2]]
-												 break;
-												 case 4:
-												 $val= $scope[s[0]][s[1]][s[2]][s[3]]
-												 break;
- 										 	}
 
-
-							 				 if ( $(this).attr('type')=="radio" && $val==$(this).attr('value') && document.getElementById($(this).attr('id')).parentNode.MaterialRadio!==undefined)
-							 					 document.getElementById($(this).attr('id')).parentNode.MaterialRadio.check()
-							 						 //$(this).parentNode.MaterialRadio.check()
-							 					 if ($(this).attr('type')=="checkbox" && $val==$(this).attr('value') && document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox!==undefined)
-							 					  document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox.check()
-							 //                $(this).parentNode.MaterialCheckbox.check()
-
-
-
-						 				 $(this).parent('div.mdl-textfield').addClass('is-dirty');
-						 				 $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-						 			 }
-						 		 );
-								 if (! $scope.agent.settings.country!==undefined && ($scope.Contract.activity_country==null || $scope.Contract.activity_country.lenght==0) ){
-	 								$scope.Contract.activity_country=$scope.agent.settings.country;
-	 							}
-
-								 $scope.main.loader=false
-
-						    }, 5);
-	            });
-							*/
 		 $scope.showContractorList=function(){
        if (( $scope.oldContrator!=$scope.Contract.contractor_name)){
 

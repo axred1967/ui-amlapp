@@ -154,11 +154,7 @@ app2.controller('share', function ($scope,$http,$state,$translate,$timeout,$inte
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-               $('input.mdl-textfield__input').each(
-                 function(index){
-                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                 })
+  					 	setDefaults($scope)
                $scope.main.loader=false
             }, 5);
   });
@@ -190,12 +186,7 @@ $scope.loadItem=function(){
 			}
 			//convertDateStringsToDates($scope.Customer)
 
-			$('input.mdl-textfield__input').each(
-				function(index){
-					$(this).parent('div.mdl-textfield').addClass('is-dirty');
-					$(this).parent('div.mdl-textfield').removeClass('is-invalid');
-				}
-			);
+			setDefaults($scope)
 
 		}
 		else

@@ -491,8 +491,13 @@ function setDefaults($scope){
         attr=$(this).attr('def-setting')
         if (typeof attr !== typeof undefined && attr !== false){
           if ($scope[res[0]]!==undefined ){
-            if ($scope[res[0]][res.slice(-1)[0]]===undefined || $scope[res[0]][res.slice(-1)[0]]===null || $scope[res[0]][res.slice(-1)[0]]=="" )
-            $scope[res[0]][res.slice(-1)[0]]=$scope.agent.settings[$(this).attr('def-setting')]
+            if ($scope[res[0]][res.slice(-1)[0]]===undefined || $scope[res[0]][res.slice(-1)[0]]===null || $scope[res[0]][res.slice(-1)[0]]=="" ){
+              if ($(this).attr('type')=='date')
+              $scope[res[0]][res.slice(-1)[0]]=new Date()
+              else
+              $scope[res[0]][res.slice(-1)[0]]=$scope.agent.settings[$(this).attr('def-setting')]
+
+            }
           }
         }
         //if (s.length==1){

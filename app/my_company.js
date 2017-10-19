@@ -54,7 +54,7 @@ app2.factory('Companies_inf', function($http) {
   return Companies_inf;
 
 });
-app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$state, Companies_inf,$timeout,$interval,$stateParams) {
+app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$state, Companies_inf,$timeout,$interval,$stateParams,$filter) {
   /* gestiote parametri di stato */
 	$scope.curr_page=$state.current.name
 	$scope.pages=$stateParams.pages
@@ -73,7 +73,6 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
   $scope.main.viewName="Le mie Società"
   $scope.main.Sidebar=true
   $('.mdl-layout__drawer-button').show()
-  $scope.deleted=0
 
 
   $scope.Companies_inf=new Companies_inf
@@ -112,34 +111,49 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
     $state.go('my_document',{pages:$scope.pages})
 
   };
-  $scope.deleteCompany=function(Company,index )
+  $scope.deleteCompany=function(Ob,index )
   {
-    if ($scope.main.web){
-      r=confirm("Vuoi Cancellare la Società" +Company.name +"?");
-      if (r == true) {
-        $scope.deleteCompany2(Company,index);
+    swal({
+      title: $filter('translate')("Sei Sicuro?"),
+      text: $filter('translate')("la Cancellazione della Persona Giuridica sarà non reversibile!"),
+      icon: "warning",
+      buttons: {
+      'procedi':{text:$filter('translate')('Procedi'),value:true},
+      'annulla':{text:$filter('translate')('Annulla'),value:false},
+
+      },
+
+    })
+    .then((Value) => {
+      if (Value) {
+        data={action:'delete',table:'company','primary':'company_id',id:Ob.company_id ,pInfo:$scope.agent.pInfo}
+        $http.post(SERVICEURL2,data)
+        .then(function(data){
+        if(data.data.RESPONSECODE=='1')
+        {
+          $state.reload()
+          swal($filter('translate')('Cancellazione effettuata'), {
+            icon: "success",
+          });
+        }
+        else      {
+          if (data.data.RESPONSECODE=='-1'){
+             localstorage('msg','Sessione Scaduta ');
+             $state.go('login');;;
+             swal("",data.data.RESPONSE);
+          }
+        }
+      })
+      , (function(){
+        console.log('error');
+      })
+
+      } else {
+        swal($filter('translate')('Cancellazione Annulata'));
       }
-    }
-    else{
-      navigator.notification.confirm(
-          "Vuoi cancellare La Società"+Company.name +"?", // message
-          function(button) {
-           if ( button == 1 ) {
-               $scope.deleteCompany2(Company,index);
-           }
-          },            // callback to invoke with index of button pressed
-          'Sei sicuro?',           // title
-          ['Si','No']     // buttonLabels
-          );
-
-    }
-
+    });
   }
-  $scope.deleteCompany2=function(Company,index){
-    data={action:'delete',table:'company','primary':'company_id',id:Company.company_id ,pInfo:$scope.agent.pInfo}
-    $http.post(SERVICEURL2,data)
-    $state.reload()
-  }
+
   $scope.$on('backButton', function(e) {
   });
 
@@ -149,11 +163,7 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-               $('input.mdl-textfield__input').each(
-                 function(index){
-                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                 })
+               setDefaults($scope)
                $scope.main.loader=false
             }, 5);
   });

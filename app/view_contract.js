@@ -266,11 +266,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 			$scope.$on('$viewContentLoaded',
 			function(event){
 				$timeout(function() {
-					$('input.mdl-textfield__input').each(
-						function(index){
-							$(this).parent('div.mdl-textfield').addClass('is-dirty');
-							$(this).parent('div.mdl-textfield').removeClass('is-invalid');
-						})
+						setDefaults($scope)
 						$scope.main.loader=false
 						//nascondo menu
 						$('.mdl-layout__drawer-button').hide()

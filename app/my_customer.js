@@ -92,7 +92,6 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
     $scope.main.Add=false
   else
     $scope.main.Add=true
-  $scope.deleted=0
   $scope.main.Search=true
   $scope.main.AddPage="add_customer"
   $scope.main.action="add_customer"
@@ -136,33 +135,49 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
     localstorage('pages',JSON.stringify($scope.pages))
     $state.go('my_document',{pages:$scope.pages})
   };
-  $scope.deleteCustomer=function(Customer,index )
+  $scope.deleteCustomer=function(Ob,index )
   {
-    if ($scope.main.web){
-      r=confirm("Vuoi Cancellare la Persona?");
-      if (r == true) {
-        $scope.deleteCustomer2(Customer,index);
-      }
-    }
-    else{
+    swal({
+      title: $filter('translate')("Sei Sicuro?"),
+      text: $filter('translate')("la Cancellazione del Cliente sarà non reversibile!"),
+      icon: "warning",
+      buttons: {
+      'procedi':{text:$filter('translate')('Procedi'),value:true},
+      'annulla':{text:$filter('translate')('Annulla'),value:false},
 
-        navigator.notification.confirm(
-            'Vuoi cancellare la Persona?', // message
-            function(button) {
-             if ( button == 1 ) {
-                 $scope.deleteCustomer2(Customer,index);
-             }
-            },            // callback to invoke with index of button pressed
-            'Sei sicuro?',           // title
-            ['Si','No']     // buttonLabels
-            );
+      },
+
+    })
+    .then((Value) => {
+      if (Value) {
+        data={action:'delete',table:'users','primary':'user_id',id:Ob.user_id ,pInfo:$scope.agent.pInfo}
+        $http.post(SERVICEURL2,data)
+        .then(function(data){
+        if(data.data.RESPONSECODE=='1')
+        {
+          $state.reload()
+          swal($filter('translate')('Cancellazione effettuata'), {
+            icon: "success",
+          });
+        }
+        else      {
+          if (data.data.RESPONSECODE=='-1'){
+             localstorage('msg','Sessione Scaduta ');
+             $state.go('login');;;
+             swal("",data.data.RESPONSE);
+          }
+        }
+      })
+      , (function(){
+        console.log('error');
+      })
+
+      } else {
+        swal($filter('translate')('Cancellazione Annulata'));
       }
+    });
   }
-  $scope.deleteCustomer2=function(Customer,index){
-    data={action:'delete',table:'users','primary':'user_id',id:Customer.user_id ,pInfo:$scope.agent.pInfo}
-    $http.post(SERVICEURL2,data)
-    $state.reload()
-  }
+
   $scope.$on('backButton', function(e) {
   });
 

@@ -80,7 +80,7 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
 		dbData.role_data=JSON.stringify($scope.Objs )
     $scope.main.loader=true;
 
-   data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
+   data={ "action":"saveKycAx", appData:$scope.Contract,agg:$scope.page.agg,dbData:dbData,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       if(data.data.RESPONSECODE=='1') 			{

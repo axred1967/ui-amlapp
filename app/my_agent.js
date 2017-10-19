@@ -17,7 +17,7 @@ app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_i
      $scope.action=$scope.page.action
 
    }
-   
+
    $scope.main.location=$scope.page.location
 
   $scope.Customers_inf=new Customers_inf
@@ -103,11 +103,7 @@ app2.controller('my_agent', function ($scope,$http,$translate,$state,Customers_i
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-               $('input.mdl-textfield__input').each(
-                 function(index){
-                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                 })
+               setDefaults($scope)
                $scope.main.loader=false
             }, 5);
   });

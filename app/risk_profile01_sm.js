@@ -44,6 +44,7 @@ app2.controller('risk_profile01_sm', function ($scope,$http,$state,$translate,$t
         data=responceData.data.RESPONSE;
         $scope.Risk=data;
         $scope.Risk.risk_data=IsJsonString($scope.Risk.risk_data)
+				$scope.Risk.risk_update=IsJsonString($scope.Risk.risk_update)
         if ($scope.Kyc!==undefined)
           $scope.Kyc.contractor_data=IsJsonString($scope.Kyc.contractor_data)
         //convertDateStringsToDates($scope.Risk)
@@ -60,39 +61,7 @@ app2.controller('risk_profile01_sm', function ($scope,$http,$state,$translate,$t
 
         }
 
-        $('input.mdl-textfield,input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
-          function(index){
-            ngm=$(this).attr('ng-model')
-            s = ngm.split(".")
-            switch (s.length){
-              case 1:
-              $val= $scope[s[0]]
-              break;
-              case 2:
-              if ($scope[s[0]]!==undefined)
-              $val= $scope[s[0]][s[1]]
-              break;
-              case 3:
-              if ($scope[s[0]][s[1]]!==undefined)
-              $val= $scope[s[0]][s[1]][s[2]]
-              break;
-              case 4:
-              if ($scope[s[0]][s[1]][s[2]]!==undefined)
-              $val= $scope[s[0]][s[1]][s[2]][s[3]]
-              break;
-
-            }
-            if ( $(this).attr('type')=="radio" && $val==$(this).attr('value'))
-              document.getElementById($(this).attr('id')).parentNode.MaterialRadio.check()
-                //$(this).parentNode.MaterialRadio.check()
-              if ($(this).attr('type')=="checkbox" && $val==$(this).attr('value'))
-              document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox.check()
-//                $(this).parentNode.MaterialCheckbox.check()
-
-            $(this).parent('div.mdl-textfield').addClass('is-dirty');
-            $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-          }
-        );
+				setDefaults($scope)
       }
       else
       {
@@ -128,12 +97,13 @@ app2.controller('risk_profile01_sm', function ($scope,$http,$state,$translate,$t
       console.log($scope.data);
     }
     var langfileloginchk = localStorage.getItem("language");
-    dbData=$scope.Risk
-
-    dbData.risk_data=JSON.stringify(dbData.risk_data)
+    dbData={}
+		dbData.risk_id=$scope.Risk.risk_id
+    dbData.risk_data=JSON.stringify($scope.Risk.risk_data)
+		dbData.risk_update=JSON.stringify($scope.Risk.risk_update)
 
     $('#loader_img').show();
-   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
+   data={ "action":"saveRiskAx",agg:$scope.page.agg, appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       $('#loader_img').hide();
@@ -248,11 +218,7 @@ app2.controller('risk_profile01_sm', function ($scope,$http,$state,$translate,$t
    $scope.$on('$viewContentLoaded',
             function(event){
               $timeout(function() {
-                $('input.mdl-textfield,input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
-                  function(index){
-                    $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                  })
+								setDefaults($scope)
                 $scope.main.loader=false
              }, 5);
    });

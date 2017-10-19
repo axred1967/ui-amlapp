@@ -56,37 +56,8 @@ app2.controller('risk_profile02_sm', function ($scope,$http,$state,$translate,$t
           $scope.PEP="il Cliente si è dichiarato PEP"
 
         }
+				setDefaults($scope)
 
-        $('input.mdl-textfield__input,input.mdl-radio__button,input.mdl-checkbox').each(
-          function(index){
-            ngm=$(this).attr('ng-model')
-            s = ngm.split(".")
-            switch (s.length){
-              case 1:
-                  $val= $scope[s[0]]
-                  break;
-                  case 2:
-                      $val= $scope[s[0]][s[1]]
-                      break;
-                      case 3:
-                          $val= $scope[s[0]][s[1]][s[2]]
-                          break;
-                          case 4:
-                              $val= $scope[s[0]][s[1]][s[2]][s[3]]
-                              break;
-
-            }
-            if ( $(this).attr('type')=="radio" && $val==$(this).attr('value'))
-              document.getElementById($(this).attr('id')).parentNode.MaterialRadio.check()
-                //$(this).parentNode.MaterialRadio.check()
-              if ($(this).attr('type')=="checkbox" && $val==$(this).attr('value'))
-              document.getElementById($(this).attr('id')).parentNode.MaterialCheckbox.check()
-//                $(this).parentNode.MaterialCheckbox.check()
-
-            $(this).parent('div.mdl-textfield').addClass('is-dirty');
-            $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-          }
-        );
       }
       else
       {
@@ -127,7 +98,7 @@ app2.controller('risk_profile02_sm', function ($scope,$http,$state,$translate,$t
     dbData.risk_data=JSON.stringify(dbData.risk_data)
 
     $('#loader_img').show();
-   data={ "action":"saveRiskAx", appData:$scope.Contract,dbData:dbData,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+   data={ "action":"saveRiskAx",agg:$scope.page.agg, appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       $('#loader_img').hide();
@@ -239,13 +210,9 @@ app2.controller('risk_profile02_sm', function ($scope,$http,$state,$translate,$t
    $scope.$on('$viewContentLoaded',
             function(event){
               $timeout(function() {
-                $('input.mdl-textfield__input').each(
-                  function(index){
-                    $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                    $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                  })
+								setDefaults($scope)
                 $scope.main.loader=false
-             }, 5);
+             }, 500);
    });
 
 })

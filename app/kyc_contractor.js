@@ -248,12 +248,7 @@ $scope.fillKycData=function(){
 
 					$scope.main.loader=false
 	        //convertDateStringsToDates($scope.Customer)
-	        $('input.mdl-textfield__input').each(
-	          function(index){
-	            $(this).parent('div.mdl-textfield').addClass('is-dirty');
-	            $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-	          }
-	        );
+					setDefaults($scope)
 	      }
 	      else
 	      {
@@ -298,7 +293,7 @@ $scope.fillKycData=function(){
 			dbData.kyc_update=JSON.stringify($scope.Kyc.kyc_update)
 
 			dbData.contractor_data=JSON.stringify(angular.extend($scope.Kyc.contractor_data,$scope.Customer))
-     data={ "action":"saveKycAx", appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
+     data={ "action":"saveKycAx", agg:$scope.page.agg, appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
       $http.post( SERVICEURL2,  data )
       .then(function(data) {
         //$scope.loader=false

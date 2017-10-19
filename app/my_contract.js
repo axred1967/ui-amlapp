@@ -203,7 +203,6 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     $scope.main.Add=false
   else
     $scope.main.Add=true
-  $scope.deleted=0
   $scope.main.Search=true
   $scope.main.AddPage="add_contract"
   $scope.main.action="add_contract"
@@ -235,9 +234,9 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
       return   Contract.imageurl
 
     }
-    if (Contract.act_for_other==2 && Contract.owner_image!==undefined && Contract.owner_image  !=null && Contract.owner_image.length>0){
-//      Contract.imageurl= Contract.IMAGEURI +Contract.owner_image
-      Contract.imageurl= SERVICEDIRURL +"file_down.php?tipo=profilofile=" + Contract.owner_image +$scope.agent.pInfoUrl
+    if (Contract.act_for_other==2 && Contract.Owner_image!==undefined && Contract.Owner_image  !=null && Contract.Owner_image.length>0){
+//      Contract.imageurl= Contract.IMAGEURI +Contract.Owner_image
+      Contract.imageurl= SERVICEDIRURL +"file_down.php?tipo=profilofile=" + Contract.Owner_image +$scope.agent.pInfoUrl
       return   Contract.imageurl
 
     }
@@ -505,6 +504,50 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
           console.log('error');
         })
   }
+  $scope.copyContract=function(Contract,index ){
+    swal({
+      title: $filter('translate')("Sei Sicuro?"),
+      text: $filter('translate')("I dati del Contratto e della AV  verranno duplicati con un nuovo CPU!"),
+      icon: "warning",
+      buttons: {
+      'procedi':{text:$filter('translate')('Procedi'),value:true},
+      'annulla':{text:$filter('translate')('Annulla'),value:false},
+
+      },
+
+    })
+    .then((Value) => {
+      if (Value) {
+        data={action:'copyContract',id:Contract.contract_id ,pInfo:$scope.agent.pInfo}
+        $http.post(SERVICEURL2,data)
+                   .then(function(data){
+              if(data.data.RESPONSECODE=='1')
+              {
+                swal($filter('translate')('Duplicazione effettuata'), {
+                  icon: "success",
+                });
+                $state.reload()
+              }
+              else      {
+                if (data.data.RESPONSECODE=='-1'){
+                   localstorage('msg','Sessione Scaduta ');
+                   $state.go('login');;;
+                }
+                swal("",data.data.RESPONSE);
+              }
+            })
+            , (function(){
+              console.log('error');
+            })
+
+
+      } else {
+        swal($filter('translate')('Duplicazione Annulata'));
+      }
+    });
+
+  }
+
   $scope.back = function(d){
     $state.go($scope.page.location)
   }
@@ -527,11 +570,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-               $('input.mdl-textfield__input').each(
-                 function(index){
-                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                 })
+               setDefaults($scope)
                $scope.main.loader=false
             }, 5);
   });

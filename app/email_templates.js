@@ -211,11 +211,7 @@ app2.controller('email_templates', function ($scope,$http,$translate,$rootScope,
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-               $('input.mdl-textfield__input').each(
-                 function(index){
-                   $(this).parent('div.mdl-textfield').addClass('is-dirty');
-                   $(this).parent('div.mdl-textfield').removeClass('is-invalid');
-                 })
+               $setDefaults($scope)
                $scope.main.loader=false
             }, 5);
   });
