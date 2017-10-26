@@ -1,14 +1,14 @@
 
 <fieldset>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-  <input class="mdl-textfield__input" type="text" autocomplete="off" id="customer_address_resi" name="customer_address_resi"
+  <input class="mdl-textfield__input" type="text" autocomplete="off" id="address_resi" name="address_resi"
   ng-model="Customer.address_resi"  ng-change="Customer.address_resi=(Customer.address_resi| capitalize)" minlength="3"
   ng-required="page.other_data "
   ng-keyup="showAC('users.address_resi','address_resi',{zero:true});"
   ng-focus="showAC('users.address_resi','address_resi',{zero:true});resetAC()"
   />
-  <label class="mdl-textfield__label" for="customer_address_resi">{{'Addressofresidence'|translate}} *</label>
-  <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="customer_address_resi">
+  <label class="mdl-textfield__label" for="address_resi">{{'Addressofresidence'|translate}} *</label>
+  <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="address_resi">
     <tbody style="display:table">
       <tr tabindex="30"
       ng-click="addWord('Customer.address_resi',item.word,{id:'address_resi'})"
@@ -18,8 +18,8 @@
       </tr>
     </tbody>
   </table>
-  <span class="mdl-tooltip mdl-tooltip--validation" for="customer_address_resi" ng-show="form.customer_address_resi.$invalid && form.customer_address_resi.$touched">
-    <span ng-show="form.customer_address_resi.$error.required">{{'Richiesto'| translate}}</span>
+  <span class="mdl-tooltip mdl-tooltip--validation" for="address_resi" ng-show="form.address_resi.$invalid && form.address_resi.$touched">
+    <span ng-show="form.address_resi.$error.required">{{'Richiesto'| translate}}</span>
   </span>
 </div>
 </fieldset>

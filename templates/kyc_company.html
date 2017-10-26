@@ -1,7 +1,28 @@
-<center>
-<span style="font-size:18px;font-weight:bold" class="orange" id="name_agent">{{'Adeguata Verifica'|translate}}</span><br/>
-<span style="font-size:18px;font-weight:bold" class="blue" id="name_agent">{{Contract.CPU}} - {{Contract.fullname}}</span>
-</center>
+<div  class="mdl-card card-ax">
+
+  <table align="center" class="tview mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+    <tbody>
+      <tr>
+        <td  >
+          <button  id="profile"  class="center mdl-button mdl-js-button  mdl-button--colored green">
+                <i class="material-icons">business</i>
+          </button>
+
+        </td>      <td style="text-align:left;font-size:16px"class="green"><b>{{'Dati Persona Giuiridica' |translate}} </b></td>
+
+      </tr>
+      <tr>
+        <td  >{{'CPU' | translate}} :</td>
+        <td class="blue">{{Contract.CPU}}</td>
+
+      </tr>
+      <tr>
+        <td  >{{'Cliente' | translate}} :</td>
+        <td class="blue" style="font-size:24px;"><b>{{Contract.Owner}}</b></td>
+
+      </tr>
+  </tbody>
+  </table>
 
 <div id="containerf">
   <div>
@@ -62,26 +83,37 @@
       </div>
     </div>
     <br/>
-    <div class="center-align">
-      <button  id="save_prev" ng-click="save_kyc(-1)" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
-        <i class="material-icons">arrow_left_thick</i>
-      </button>
-      <button  id="save_next" ng-click="save_kyc(4)" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
-        <i class="material-icons">arrow_right_thick</i>
+    <div ng-if="!page.view" class="center-align">
+      <button  id="save_prev" ng-click="save_kyc(-1)" class="left mdl-button mdl-js-button  mdl-button--colored orange ">
+        <i class="material-icons size24">keyboard_arrow_left</i>
       </button>
       <span class="mdl-tooltip mdl-tooltip--validation" for="save_prev" >
         <span >{{'SavePrev'|translate}}.</span>
       </span>
-      <button  id="save_exit" ng-click="save_kyc(0)" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored gray-btn ">
-        <i class="material-icons">exit_to_app</i>
+      <button   id="save_next" ng-click="save_kyc(4)" class="right mdl-button mdl-js-button  mdl-button--colored blue">
+        <i class="material-icons size24">keyboard_arrow_right</i>
+      </button>
+      <span class="mdl-tooltip mdl-tooltip--validation" for="save_next" >
+        <span >{{'SaveNext'|translate}}.</span>
+      </span>
+      <button  id="save_exit" ng-click="save_kyc(0)" class="left mdl-button mdl-js-button  mdl-button--colored gray ">
+        <i class="material-icons size24">subdirectory_arrow_left</i>
       </button>
       <span class="mdl-tooltip mdl-tooltip--validation" for="save_exit" >
         <span >{{'SaveExit'|translate}}.</span>
       </span>
 
-      <img style="height:50px;width:50px;display:none;" id="loader_img" src="ui-amlapp/img/loader2.gif"  >
     </div>
+    <div ng-if=" page.view" class="center-align">
+      <button  id="save_exit" ng-click="save_kyc(0)" class="left mdl-button mdl-js-button  mdl-button--colored gray ">
+        <i class="material-icons size24">subdirectory_arrow_left</i>
+      </button>
+      <span class="mdl-tooltip mdl-tooltip--validation" for="save_exit" >
+        <span >{{'SaveExit'|translate}}.</span>
+      </span>
+     </div>
 
   </div>
   <br/>
   <br/>
+</div>

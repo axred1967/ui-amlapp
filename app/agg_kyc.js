@@ -13,7 +13,7 @@ app2.controller('agg_kyc', function ($scope,$http,$translate,$rootScope,$state,O
   $scope.deleted=0
   $scope.main.Search=true
   $scope.main.AddPage="add_ob"
-  $scope.main.AddLabel="aggiuggi aggiornamento adeguata verifica"
+  $scope.main.AddLabel="aggiungi aggiornamento adeguata verifica"
   $scope.main.viewName="Aggiornamenti AV"
   $scope.main.Sidebar=false
   $scope.main.loader=true
@@ -38,7 +38,7 @@ app2.controller('agg_kyc', function ($scope,$http,$translate,$rootScope,$state,O
 //  }
 //  $scope.addMoreItems()
 $scope.print_kyc=function(Contract){
-  url=PDFURL +'kyc.php?agg='+Contract.kyc_id+"&download=Y"+$scope.agent.pInfoUrl
+  url=PDFURL +'kyc.php?agg='+Contract.id+"&download=Y"+$scope.agent.pInfoUrl
   if ($scope.main.web){
     var anchor = angular.element('<a/>');
     angular.element(document.body).append(anchor);

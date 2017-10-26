@@ -1,54 +1,62 @@
-<div style="text-align:center" class="mdl-card mdl-shadow--2dp about">
-  <h5 class="orange" id="name_agent"> {{Contract.Owner}}</h5>
+<div style="text-align:center" class="mdl-card card-ax">
+  <table align="center" class="tview mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+    <tbody>
+      <tr>
+        <td  >{{'CPU' | translate}} :</td>
+        <td class="blue">{{Contract.CPU}}</td>
+
+      </tr>
+      <tr>
+        <td  >{{'Cliente' | translate}} :</td>
+        <td class="blue" style="font-size:24px;"><b>{{Contract.Owner}}</b></td>
+
+      </tr>
+      <tr ng-show="Contract.act_for_other>0">
+        <td  >{{'Firmatario' | translate}} :</td>
+        <td class="orange">{{Contract.contractor_name}}</td>
+
+      </tr>
+      <tr ng-show="Contract.act_for_other>0">
+        <td  >{{'Delega' | translate}} :</td>
+        <td class="blue">{{Contract.role_for_other}}</td>
+
+      </tr>
+
+      <tr>
+        <td  >{{'Scopo del Contratto' | translate}} :</td>
+        <td class="inline azure">{{Contract.scope_contract}}</td>
+
+      </tr>
+      <tr>
+        <td  >{{'Natura del Contratto' | translate}} :</td>
+        <td class="blue">{{Contract.nature_contract}}</td>
+
+      </tr>
+      <tr>
+        <td >{{'Stipulato il' | translate}}l :</td>
+        <td class="blue">{{Contract.contract_date | date : 'shortDate'}}</td>
+
+      </tr>
+      <tr>
+        <td>{{'Valore' | translate}}</td>
+        <td class="blue">{{Contract.contract_value | currency}}</td>
+      </tr>
+      <tr ng-show="Contract.riskAssigned.length>0">
+        <td>{{'Livello di Rischio' | translate}}</td>
+        <td ng-class="Contract.riskAssigned">{{Contract.riskAssigned | translate}}</td>
+      </tr>
+      <tr>
+        <td colspan="2" class="wordwrap">{{Contract.email}}</td>
+      </tr>
+      <tr ng-show="Contract.mobile_number.length>0">
+        <td colspan="2" class="wordwrap">{{Contract.mobile_number}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
   <div class="mdl-card amazing mdl-shadow--2dp">
-    <br/>
-    <table align="center" class="tview mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
-      <tbody>
 
-        <tr ng-show="Contract.act_for_other>0">
-          <td  >{{'Firmatario' | translate}} :</td>
-          <td class="blue">{{Contract.contractor_name}}</td>
-
-        </tr>
-        <tr ng-show="Contract.act_for_other>0">
-          <td  >{{'Delega' | translate}} :</td>
-          <td class="blue">{{Contract.role_for_other}}</td>
-
-        </tr>
-
-        <tr>
-          <td  >{{'Scopo del Contratto' | translate}} :</td>
-          <td class="inline blue">{{Contract.scope_contract}}</td>
-
-        </tr>
-        <tr>
-          <td  >{{'Natura del Contratto' | translate}} :</td>
-          <td class="blue">{{Contract.nature_contract}}</td>
-
-        </tr>
-        <tr>
-          <td >{{'Stipulato i' | translate}}l :</td>
-          <td>{{Contract.contract_date | date : 'shortDate'}}</td>
-
-        </tr>
-        <tr>
-          <td>{{'Valore' | translate}}</td>
-          <td>{{Contract.contract_value | currency}}</td>
-        </tr>
-        <tr ng-show="Contract.riskAssigned.length>0">
-          <td>{{'Livello di Rischio' | translate}}</td>
-          <td ng-class="Contract.riskAssigned">{{Contract.riskAssigned | translate}}</td>
-        </tr>
-        <tr>
-          <td colspan="2" class="wordwrap">{{Contract.email}}</td>
-        </tr>
-        <tr ng-show="Contract.mobile_number.length>0">
-          <td colspan="2" class="wordwrap">{{Contract.mobile_number}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <br/>
-    <div class="mdl-card__actions mdl-card--border " style="font-size:12px" >
+    <div class="mdl-card__actions  " style="font-size:12px" >
       <div class="mdl-cell--4-col pr16">
         <div class="left" style="text-align:left">
           <span ng-show="Contract.kyc_update.state=='aggiornamento'" class="blue" >{{'Aggiornamento'|translate}}</span><br/>
@@ -131,7 +139,7 @@
 
   </div>
   <div class="mdl-cell--2-col pr16">
-    <div ng-show="Contract.status ==1 && Contract.act_for_other==1" >
+    <div ng-show=" Contract.act_for_other==1" >
     <button  id="company" ng-click="edit_company()" class="center mdl-button mdl-js-button mdl-button--fab mdl-button--colored green-btn">
       <i class="material-icons">business</i>
     </button>
@@ -141,7 +149,7 @@
   </div>
   </div>
     <div class="mdl-cell--2-col pr16">
-      <div ng-show="Contract.status ==1 && Contract.act_for_other==1" >
+      <div ng-show=" Contract.act_for_other==1" >
     <button  id="owner" ng-click="owners()" class="center mdl-button mdl-js-button mdl-button--fab mdl-button--colored green-btn">
       <i class="material-icons">accessibility</i>
     </button>
@@ -172,7 +180,7 @@
     </span>
   </div>
   <div  class="mdl-cell--2-col pr16 ">
-    <div ng-show="Contract.status ==1 && Contract.procura==1" >
+    <div ng-show=" Contract.procura==1" >
   <button  id="role" ng-click="role()" class="center mdl-button mdl-js-button mdl-button--fab mdl-button--colored green-btn">
     <i class="material-icons">perm_identity</i>
   </button>

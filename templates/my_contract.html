@@ -33,8 +33,8 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
                 <strong ng-show="Contract.act_for_other==2">{{Contract.other_name}}</strong>
                 <strong ng-show="Contract.act_for_other==1">{{Contract.name}}</strong>
               </span>
-            </span>
-            <br/>
+              <br/>
+              </span>
             <span style="cursor:pointer;" >
               {{Contract.CPU}} - {{Contract.number}}
             </span><br/>
@@ -49,7 +49,6 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
             </span>
             <br ng-show="Contract.act_for_other>0"/>
             -->
-            <br/>
             <span style="cursor:pointer;" class="azure first_letter_cap" >
               <strong>{{Contract.nature_contract}}</strong>
             </span><br>
@@ -79,6 +78,7 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
         </div>
         <div class="mdl-card__actions mdl-card--border " style="font-size:12px">
           <div class="mdl-cell">
+            <span ng-show="Contract.kyc_update.state=='aggiornamento'" class="blue" >{{'Aggiornamento'|translate}}<br/></span>
             <span class="orange">{{'Adeguata Verifica'|translate}}</span><br/>
             <span ng-show="Contract.kyc_status==1" class="green">{{'Eseguita' |translate}}<span class="green-checkbox"><img src="img/green-check.png"></span></span>
             <span ng-show="Contract.kyc_status!=1">{{'in esecuzione'|translate}}</span>

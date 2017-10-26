@@ -1,4 +1,4 @@
-app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootScope,$timeout,$stateParams) {
+app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootScope,$timeout,$stateParams,$filter) {
 	/* gestiote parametri di stato */
 	$scope.curr_page=$state.current.name
 	$scope.pages=$stateParams.pages
@@ -10,10 +10,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
  	 $state.go('home');
   }
 	$scope.Contract=$scope.page.Contract
-	$scope.main.viewName="CPU:" + $scope.Contract.CPU
-	if ($scope.Contract.number>0 ){
-		$scope.main.viewName+="- N." + $scope.Contract.number
-	}
+	$scope.main.viewName=$filter('translate')('Scheda Contratto') 
 
 	$scope.main.Back=true
 	$scope.main.Add=true
@@ -68,11 +65,6 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
         data.kyc_update=IsJsonString(data.kyc_update)
 				data.risk_update=IsJsonString(data.risk_update)
 				$scope.Contract=data;
-				$scope.main.viewName="CPU:" + $scope.Contract.CPU
-				if ($scope.Contract.number>0){
-					$scope.main.viewName+="- N." + $scope.Contract.number
-
-				}
 				$scope.loader=false;
 
 			}

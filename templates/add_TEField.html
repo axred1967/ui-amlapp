@@ -41,7 +41,7 @@
        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
 
          <input ng-currency currency-symbol="%" min=0 max=100 class="mdl-textfield__input" autocomplete="off"
-         ng-model="Owner.percentuale"  type="text" ng-required=""
+         ng-model="Customer.percentuale"  type="text" ng-required=""
          id="Percentuale" name="Percentuale" />
          <label  for="Percentuale" class="mdl-textfield__label">{{'Percentuale di possesso della società' | translate}} </label>
          <span class="mdl-tooltip mdl-tooltip--validation" for="Percentuale"  ng-show="form.Percentuale.$invalid && form.Percentuale.$touched">
@@ -55,9 +55,21 @@
      <fieldset id="dele" >
      <div  class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
 
-       <input  class="mdl-textfield__input"  ng-model="Owner.percentuale"  type="text" ng-required=""
+       <input  class="mdl-textfield__input"  ng-model="Customer.ruolo"  type="text" ng-required="" autocomplete="off"
+       ng-keyup="showAC('company_owners.ruolo','ruolo',{zero:true});"
+       ng-focus="showAC('company_owners.ruolo','ruolo',{zero:true});resetAC()"
        id="tipote" name="tipote" />
        <label  for="tipote" class="mdl-textfield__label">{{'Tipo Delega per Esecutore/Firmatario' | translate}} </label>
+       <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="tipote">
+         <tbody style="display:table">
+           <tr tabindex="30"
+           ng-click="addWord('Customer.ruolo',item.word,{id:'tipote'})"
+           my-Enter="addWord('Customer.ruolo',item.word,{id:'tipote'})"
+           ng-repeat="item in word.ruolo">
+             <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+           </tr>
+         </tbody>
+       </table>
        <span class="mdl-tooltip mdl-tooltip--validation" for="tipote"  ng-show="form.tipote.$invalid && form.tipote.$touched">
          <span ng-show="form.tipote.$error.required">{{'Richiesto'| translate}}.</span>
 
@@ -68,9 +80,23 @@
        <fieldset id="role" >
        <div  class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
 
-         <input  class="mdl-textfield__input"  ng-model="Owner.ruolo"  type="text" ng-required=""
+         <input  class="mdl-textfield__input"  ng-model="Customer.ruolo"  type="text" ng-required=""
+         ng-keyup="showAC('company_owners.ruolo','ruolo',{zero:true});" autocomplete="off"
+         ng-focus="showAC('company_owners.ruolo','ruolo',{zero:true});resetAC()"
+
          id="ruolo" name="ruolo" />
          <label  for="ruolo" class="mdl-textfield__label">{{'Tipo Ruolo Sociale' | translate}} </label>
+         <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="ruolo">
+           <tbody style="display:table">
+             <tr tabindex="30"
+             ng-click="addWord('Customer.ruolo',item.word,{id:'ruolo'})"
+             my-Enter="addWord('Customer.ruolo',item.word,{id:'ruolo'})"
+             ng-repeat="item in word.ruolo">
+               <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+             </tr>
+           </tbody>
+         </table>
+
          <span class="mdl-tooltip mdl-tooltip--validation" for="ruolo"  ng-show="form.ruolo.$invalid && form.ruolo.$touched">
            <span ng-show="form.ruolo.$error.required">{{'Richiesto'| translate}}.</span>
 

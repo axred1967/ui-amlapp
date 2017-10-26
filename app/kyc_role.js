@@ -29,11 +29,13 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
   $scope.deleted=0
 	$scope.Kyc={}
 	$scope.noOne="Nessun Ruolo per"
-
+	$scope.tipo="Elenco ruoli persona giuridica"
+	$scope.main.AddLabel="Censisci Nuovo Ruolo"
+	$scope.icona="perm_identity"
 
 	$scope.loadItem=function(){
     appData=$scope.Contract
-    data={"action":"kycAx",appData:appData,agg:$scope.page.agg,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"kycAx",appData:appData,agg:$scope.page.agg,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
       $('#loader_img').hide();
@@ -66,11 +68,11 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
 		$scope.Contract=$scope.pages[$scope.page.location].Contract
 		$scope.action="saveKyc"
 		if  ($scope.Contract.act_for_other==1){
-			$scope.main.viewName="Ruoli Persona Giuridica"
+			$scope.main.viewName="Adeguata Verifica"
 
 		}
 		else {
-			$scope.main.viewName="Deleganti"
+			$scope.main.viewName="Adeguata Verifica"
 
 		}
   }
@@ -123,14 +125,14 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
   $scope.deleteOwn=function(ob,index )
   {
     if ($scope.main.web){
-      r=confirm("Vuoi Cancellare il Titolare Effettivo?");
+      r=confirm("Vuoi Cancellare il ruolo sociale censito?");
       if (r == true) {
         $scope.deleteOwn2(ob,index);
       }
     }
     else{
       navigator.notification.confirm(
-        "Vuoi Cancellare il Titolare Effettivo?", // message
+        "Vuoi Cancellare il ruolo sociale censito?", // message
         function(button) {
           if ( button == 1 ) {
             $scope.deleteOwn2(ob,index);
@@ -271,7 +273,6 @@ app2.controller('kyc_role', function ($scope,$http,$state,$translate,$timeout,$s
   });
 
   $scope.$on('addButton', function(e) {
-    localstorage('Contract',JSON.stringify($scope.Kyc.contract_data))
     $scope.add_owner()
   })
   $scope.$on('$viewContentLoaded',

@@ -122,7 +122,7 @@ app2.config(function($stateProvider, $urlRouterProvider) {
         })
         .state('role_list', {
             url: '/role_list',
-            templateUrl: BASEURL+ 'templates/kyc_owners.html',
+            templateUrl: BASEURL+ 'templates/owners_list.html',
             controller: 'role_list',
             params: {pages: null}
 
@@ -806,12 +806,16 @@ paese = $scope.agent.paese;
 tipo_cliente = $scope.agent.tipo_cliente;
 switch (paese){
   case 'italia':
+  tmhDynamicLocale.set('it');
   switch (tipo_cliente){
     case 'agenzia assicurazioni':
-    $translate.use('it-IT'); // translati   ons-en-US.json
+    $translate.use('it-ITass'); // translati   ons-en-US.json
     break;
     case 'studio commercialisti':
     $translate.use('it-IT-comm'); // translati   ons-en-US.json
+    break;
+    case 'studio legale':
+    $translate.use('it-IT-avv'); // translati   ons-en-US.json
     break;
     case 'studio notarile':
     $translate.use('it-IT-notaiIT'); // translati   ons-en-US.json
@@ -825,10 +829,13 @@ switch (paese){
   tmhDynamicLocale.set('it');
   switch (tipo_cliente){
     case 'agenzia assicurazioni':
-    $translate.use('it-IT'); // translati   ons-en-US.json
+    $translate.use('sm-SMass'); // translati   ons-en-US.json
     break;
+    case 'studio legale':
+     $translate.use('it-IT-avv'); // translati   ons-en-US.json
+     break;
     case 'studio commercialisti':
-    $translate.use('it-IT-comm'); // translati   ons-en-US.json
+    $translate.use('sm-SM-comm'); // translati   ons-en-US.json
     break;
     case 'studio notarile':
     $translate.use('it-IT-notaiSM'); // translati   ons-en-US.json

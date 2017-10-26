@@ -1,4 +1,4 @@
-app2.controller('role_list', function ($scope,$http,$translate,$state,Customers_inf,$timeout,$interval,$stateParams) {
+app2.controller('role_list', function ($scope,$http,$translate,$state,Customers_inf,$timeout,$interval,$stateParams,ObAmlApp) {
   /* gestiote parametri di stato */
 	$scope.curr_page=$state.current.name
 	$scope.pages=$stateParams.pages
@@ -6,14 +6,14 @@ app2.controller('role_list', function ($scope,$http,$translate,$state,Customers_
 		$scope.pages=JSON.parse(localStorage.getItem('pages'));
 	}
 	$scope.page=$scope.pages[$state.current.name]
-
+	$scope.state=$state.current.name
   $scope.main.Back=true
   $scope.main.Add=true
   $scope.main.Search=true
   $scope.main.AddPage="add_owner"
   $scope.main.AddLabel="aggiungi Ruolo Sociale"
+	$scope.tipo_ruolo="Elenco Cariche Sociali "
   $scope.main.Sidebar=false
-  $('.mdl-layout__drawer-button').hide()
   $scope.deleted=0
   $scope.main.loader=true
 
@@ -28,67 +28,62 @@ app2.controller('role_list', function ($scope,$http,$translate,$state,Customers_
   $scope.main.viewName=$scope.Company_name
 
   $scope.Company={};
-  $scope.Owner={};
+	$scope.Owners_inf=new ObAmlApp
+	$scope.Owners_inf.pInfo=$scope.agent.pInfo
+	$scope.Owners_inf.set_settings({table:'company_owners',id:'id',
+  fields:{
+		'uno.*':'','j1.*':'','concat(name," ",surname)':'fullname'
+	},
+	where:{'uno.company_id':{'valore':$scope.page.currentObId},'uno.tipo':'ROLE'},
+  join:{
+    'j1':{'table':'users',
+          'condition':'uno.user_id=j1.user_id '
+        }
+  }
+	})
 
-  $scope.Owners_inf=new Customers_inf;
-  $scope.Owners_inf.pInfo=$scope.agent.pInfo
-  $scope.Owners_inf.CompanyId=$scope.company_id
 
-  if ($scope.Contract!==undefined && isObject($scope.Contract))
-  $scope.Owners_inf.Contract=$scope.Contract
-  //$scope.Company.name=localStorage.getItem("Company_name");
 
 
   $scope.add_owner=function(Owner){
 		//guardo se arrivo dal contratto o dalla società owner_from_contract viene chiamato dal contratto
-    if ($scope.page.action=='owner_from_contract'){
-      $scope.pages['add_owners']={action:'add_owner_from_contract', location:$state.current.name,company_id:$scope.company_id,owners:true,temp:null,Contract:$scope.Contract}
-
-    }else {
-      $scope.pages['add_owners']={action:'', location:$state.current.name,owners:true,temp:null,company_id:$scope.company_id}
-    }
+    $scope.pages['add_owners']={action:'add_role', location:$state.current.name,owners:true,role:true,type:'role',temp:null,company_id:$scope.company_id}
     localstorage('pages',JSON.stringify($scope.pages))
     $state.go('add_owners',{pages:$scope.pages})
   }
   $scope.edit_owner=function(Owner,indice){
     Owner.indice=indice
-    if ($scope.page.action=='owner_from_contract'){
-      $scope.pages['add_owners']={action:'edit_owners', location:$state.current.name,temp:null,Contract:$scope.Contract,owners:true,Owner:Owner}
-
-    }else {
-      $scope.pages['add_owners']={action:'edit_owners', location:$state.current.name,temp:null,owners:true,Owner:Owner}
-    }
+    $scope.pages['add_owners']={action:'edit_role', location:$state.current.name,temp:null,owners:true,type:'role',role:true,Owner:Owner}
     localstorage('pages',JSON.stringify($scope.pages))
     $state.go('add_owners',{pages:$scope.pages})
 
   }
-  $scope.deleteOwn=function(ob,index )
+	$scope.deleteOwn=function(ob,index )
   {
-    if ($scope.main.web){
-      r=confirm("Vuoi Cancellare il Titolare Effettivo" + ob.fullname +"?");
-      if (r == true) {
-        $scope.deleteOwn2(ob,index);
-      }
-    }
-    else{
-      navigator.notification.confirm(
-        "Vuoi Cancellare il Titolare Effettivo" + ob.fullname +"?", // message
-        function(button) {
-          if ( button == 1 ) {
-            $scope.deleteOwn2(ob,index);
-          }
-        },            // callback to invoke with index of button pressed
-        'Sei sicuro?',           // title
-        ['Si','No']     // buttonLabels
-    );
-    }
+    swal({
+      title: $filter('translate')("Sei Sicuro?"),
+      text: $filter('translate')("la Cancelazione della carica sociale sarà non reversibile!"),
+      icon: "warning",
+      buttons: {
+      'procedi':{text:$filter('translate')('Procedi'),value:true},
+      'annulla':{text:$filter('translate')('Annulla'),value:false},
 
-  }
-  $scope.deleteOwn2=function(ob,index){
-    data={action:'delete',table:'company_owners','primary':'id',id:ob.id ,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
-    $http.post(SERVICEURL2,data)
-    $state.reload()
-  }
+      },
+
+    })
+    .then((Value) => {
+      if (Value) {
+				data={action:'delete',table:'company_owners','primary':'id',id:ob.id ,pInfo:$scope.agent.pInfo}
+        $http.post(SERVICEURL2,data)
+        $state.reload()
+        swal($filter('translate')('Cancellazione effettuata'), {
+          icon: "success",
+        });
+      } else {
+        swal($filter('translate')('Cancellazione Annulata'));
+      }
+    });
+	}
 
   $scope.imageurl=function(Customer){
     Customer.IMAGEURI=UPLOADSURL +"user/small/"
@@ -123,9 +118,10 @@ app2.controller('role_list', function ($scope,$http,$translate,$state,Customers_
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-  					 	$setDefaults($scope)
+  					 	setDefaults($scope)
                $scope.main.loader=false
-            }, 5);
+							 $('.mdl-layout__drawer-button').hide()
+            }, 500);
   });
 
   $scope.loader=false

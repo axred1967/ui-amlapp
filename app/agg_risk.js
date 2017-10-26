@@ -38,7 +38,7 @@ app2.controller('agg_risk', function ($scope,$http,$translate,$rootScope,$state,
 //  }
 //  $scope.addMoreItems()
 $scope.print_risk=function(Contract){
-  url=PDFURL +'risk.php?agg='+Contract.risk_id+"&download=Y"+$scope.agent.pInfoUrl
+  url=PDFURL +'risk.php?agg='+Contract.id+"&download=Y"+$scope.agent.pInfoUrl
   if ($scope.main.web){
     var anchor = angular.element('<a/>');
     angular.element(document.body).append(anchor);

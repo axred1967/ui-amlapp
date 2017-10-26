@@ -105,6 +105,13 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
     $state.go('owners_list',{pages:$scope.pages})
 
   };
+  $scope.toRole = function(d){
+    $scope.pages['role_list']={action:'role_list', location:$state.current.name,temp:null,Company:d,currentObId:d.company_id,currentOb:'company'}
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go('role_list',{pages:$scope.pages})
+
+  };
+
   $scope.toDocs = function(d){
     $scope.pages['my_document']={action:'list_from_my_company', location:$state.current.name,temp:null,Company:d,currentObId:d.company_id,currentOb:'company'}
     localstorage('pages',JSON.stringify($scope.pages))

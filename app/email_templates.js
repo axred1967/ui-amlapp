@@ -211,7 +211,7 @@ app2.controller('email_templates', function ($scope,$http,$translate,$rootScope,
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-               $setDefaults($scope)
+               setDefaults($scope)
                $scope.main.loader=false
             }, 5);
   });

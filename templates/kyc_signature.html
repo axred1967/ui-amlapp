@@ -1,3 +1,5 @@
+<div  class="mdl-card card-ax">
+
 <center>
 <span style="font-size:18px;font-weight:bold" class="orange" id="name_agent">{{'Adeguata Verifica'|translate}}</span><br/>
 <span style="font-size:18px;font-weight:bold" class="blue" id="name_agent">{{Contract.CPU}} - {{Contract.fullname}}</span>
@@ -46,7 +48,7 @@
 
 
     <center>
-    <span style="font-size:14px;font-weight:bold" class="orange" id="name_agent">{{'Fai inserire  la Firma del sottoscrittore '|translate}}</span><br/>
+    <span style="font-size:14px;font-weight:bold" class="azure" id="name_agent">{{'Fai inserire  la Firma del sottoscrittore '|translate}}</span><br/>
 
       <div  id="signature-pad" class="signature-pad  "  >
         <div class="signature-pad--body signature">
@@ -58,7 +60,7 @@
 
       <div class="signature-pad--actions">
          <div>
-           <button id="clearCanvas" ng-click="showCanvas()" href="javascript:;" data-action="clear"  class="mdl-button mdl-js-button mmdl-button--mini-fab mdl-button--colored orange-btn">
+           <button id="clearCanvas" ng-click="showCanvas()" href="javascript:;" data-action="clear"  class="mdl-button mdl-js-button  mdl-button--colored blue">
              <i class="material-icons">clear</i>
            </button>
            <span class="mdl-tooltip mdl-tooltip--validation" for="clearCanvas" >
@@ -75,11 +77,11 @@
  </div>
  <div id="containerf">
    <div>
-     <button  id="save_prev" ng-click="save_kyc('-1')" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
-       <i class="material-icons">arrow_left_thick</i>
+     <button  id="save_prev" ng-click="save_kyc(-1)" class="left mdl-button mdl-js-button  mdl-button--colored orange ">
+       <i class="material-icons size24">keyboard_arrow_left</i>
      </button>
      <span class="mdl-tooltip mdl-tooltip--validation" for="save_prev" >
-       <span >{{'Salva e Torna a precedente'|translate}}.</span>
+       <span >{{'SavePrev'|translate}}.</span>
      </span>
    </div>
    <div>
@@ -95,3 +97,4 @@
 
 
  </div>
+</div>

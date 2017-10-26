@@ -239,7 +239,7 @@ app2.controller('risk_profile01_4d', function ($scope,$http,$state,$translate,$t
    $scope.$on('$viewContentLoaded',
             function(event){
               $timeout(function() {
-  							$setDefaults($scope)
+  							setDefaults($scope)
                 $scope.main.loader=false
              }, 5);
    });

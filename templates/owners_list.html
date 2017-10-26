@@ -1,9 +1,9 @@
-<center class="orange">  <h4>{{'OwnersList' |translate  }} </h4></center>
+<center class="orange">  <h4>{{tipo_ruolo |translate  }} </h4></center>
 <div  infinite-scroll="Owners_inf.nextPage('Owners')" infinite-scroll-disabled='Owners_inf.busy' infinite-scroll-distance='0'
  infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-scroll-container="'.add-customer-data'"
- ng-hide="Owners_inf.Customers.length == 0 " class="ng-hide"  class="mdl-grid hidden" >
+ ng-hide="Owners_inf.Ob.length == 0 " class="ng-hide"  class="mdl-grid hidden" >
 
-<div id="list_owner"   ng-repeat="Owner in Owners_inf.Customers "
+<div id="list_owner"   ng-repeat="Owner in Owners_inf.Ob "
  ng-init="index=$index">
 <div class="mdl-cell mdl-cell--12-col">
   <div class="mdl-card amazing mdl-shadow--2dp">
@@ -17,15 +17,23 @@
         <div class="mdl-cell--12-col"  ng-click="edit_owner(Owner,ownerIndex)">
           <span style="cursor:pointer;" >
             <strong class="blue first_letter_cap">{{Owner.fullname}}</strong>
-          </span><br/>
-          <span class="green" style=" cursor:pointer;"  >
+            <br/>
+          </span>
+          <span ng-show="state=='role_list'" class="green" style=" cursor:pointer;"  >
+            {{ Owner.ruolo   }}
+          <br/>
+          </span>
+
+          <span ng-show="state=='owners_list'" class="green" style=" cursor:pointer;"  >
             {{ Owner.percentuale | currency : '%' }}
-          </span><br/>
-          <span class="green" style=" cursor:pointer;"  >
+            <br/>
+          </span>
+          <span class="gray" style=" cursor:pointer;"  >
             {{Owner.email}}
           </span><br/>
-          <span class="green" style=" cursor:pointer;"  class="long-email">
-            {{Owner.fiscal_id}}
+          {{'Fiscalid' |translate}} &nbsp;
+          <span class="azure" style=" cursor:pointer;"  class="long-email">
+            {{Owner.fiscal_number}}
           </span>
         </div>
       </div>
@@ -45,7 +53,7 @@
 </div>
 </div>
 </div>
-<div id="no_Owner" ng-hide="Owners_inf.Customers.length != 0 " class="ng-hide"  >
+<div id="no_Owner" ng-hide="Owners_inf.Ob.length != 0 " class="ng-hide"  >
   <div  class="mdl-cell mdl-cell--12-col">
     <div class="mdl-card amazing mdl-shadow--2dp">
       <div  style="padding:4px" class="mdl-card__supporting-text mdl-color-text--grey-600">

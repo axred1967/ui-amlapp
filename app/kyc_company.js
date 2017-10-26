@@ -93,7 +93,7 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout
   switch ($scope.page.action){
     default:
     $scope.action="saveKyc"
-    $scope.main.viewName="Dati Persona Giuridica"
+    $scope.main.viewName="Adeguata Verifica"
 		$scope.Contract=$scope.page.Contract
 		if ($scope.Contract===undefined){
 			$scope.Contract=$scope.pages[$scope.page.location].Contract

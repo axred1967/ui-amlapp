@@ -68,6 +68,8 @@ app2.factory('Contracts_inf', function($http,$state) {
         if (this.pInfo.user_type<3)
         angular.forEach(data,function(value,key) {
           data[key].Owner=data[key].fullname
+          data[key].kyc_update=IsJsonString(data[key].kyc_update)
+          data[key].risk_update=IsJsonString(data[key].risk_update)
 
           if (data[key].act_for_other==1){
             data[key].contractor_name=data[key].fullname
@@ -153,13 +155,16 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
         tmhDynamicLocale.set('it');
         switch (tipo_cliente){
           case 'agenzia assicurazioni':
-          $translate.use('it-IT'); // translati   ons-en-US.json
+          $translate.use('it-ITass'); // translati   ons-en-US.json
           break;
           case 'studio commercialisti':
           $translate.use('it-IT-comm'); // translati   ons-en-US.json
           break;
+          case 'studio legale':
+          $translate.use('it-IT-avv'); // translati   ons-en-US.json
+          break;
           case 'studio notarile':
-          $translate.use('it-IT-notaiIT'); // translati   ons-en-US.json
+          $translate.use('it-IT-notai'); // translati   ons-en-US.json
           break;
           default:
           $translate.use('it-IT'); // translati   ons-en-US.json
@@ -170,13 +175,16 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
         tmhDynamicLocale.set('it');
         switch (tipo_cliente){
           case 'agenzia assicurazioni':
-          $translate.use('it-IT'); // translati   ons-en-US.json
+          $translate.use('sm-SMass'); // translati   ons-en-US.json
           break;
           case 'studio commercialisti':
-          $translate.use('it-IT-comm'); // translati   ons-en-US.json
+          $translate.use('sm-SM-comm'); // translati   ons-en-US.json
+          break;
+          case 'studio legale':
+          $translate.use('sm-SM-avv'); // translati   ons-en-US.json
           break;
           case 'studio notarile':
-          $translate.use('it-IT-notaiSM'); // translati   ons-en-US.json
+          $translate.use('sm-SM-notai'); // translati   ons-en-US.json
           break;
           default:
           $translate.use('it-IT'); // translati   ons-en-US.json

@@ -92,19 +92,22 @@
     </div>
   </div>
   <br/>
-  <button  id="save_prev" ng-click="save_risk(-1)" class="left mdl-button mdl-js-button mdl-button--fab mdl-button--colored orange-btn">
-    <i class="material-icons">arrow_left_thick</i>
+  <button  id="save_prev" ng-click="save_risk(-1)" class="left mdl-button mdl-js-button  mdl-button--colored orange ">
+    <i class="material-icons size24">keyboard_arrow_left</i>
   </button>
-
-  <button  id="save_next" ng-click="save_risk(3)" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored blue-btn">
-    <i class="material-icons">arrow_right_thick</i>
+  <span class="mdl-tooltip mdl-tooltip--validation" for="save_prev" >
+    <span >{{'SavePrev'|translate}}.</span>
+  </span>
+  <button   id="save_next" ng-click="save_risk(2)" class="right mdl-button mdl-js-button  mdl-button--colored blue">
+    <i class="material-icons size24">keyboard_arrow_right</i>
   </button>
   <span class="mdl-tooltip mdl-tooltip--validation" for="save_next" >
     <span >{{'SaveNext'|translate}}.</span>
   </span>
-  <button  id="save_exit" ng-click="save_risk(0)" class="right mdl-button mdl-js-button mdl-button--fab mdl-button--colored gray-btn">
-    <i class="material-icons">exit_to_app</i>
+  <button  id="save_exit" ng-click="save_risk(0)" class="left mdl-button mdl-js-button  mdl-button--colored gray ">
+    <i class="material-icons size24">subdirectory_arrow_left</i>
   </button>
   <span class="mdl-tooltip mdl-tooltip--validation" for="save_exit" >
     <span >{{'SaveExit'|translate}}.</span>
   </span>
+  

@@ -32,16 +32,17 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 	$scope.main.AddPage="add_owners"
   $scope.main.Search=false
   $scope.main.Sidebar=false
-  $('.mdl-layout__drawer-button').hide()
   $scope.main.loader=true
   $scope.deleted=0
 	$scope.Kyc={}
 	$scope.noOne="Nessun Titolare Effettivo per"
-
+	$scope.tipo="Elenco titolari effettivi"
+	$scope.main.AddLabel="nuovo Titolare Effettivo"
+	$scope.icona="accessibility"
 
 	$scope.loadItem=function(){
     appData=$scope.Contract
-    data={"action":"kycAx",appData:appData,agg:$scope.page.agg,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
+    data={"action":"kycAx",appData:appData,agg:$scope.page.agg,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(responceData) {
       $('#loader_img').hide();
@@ -75,11 +76,11 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
 		$scope.Contract=$scope.pages[$scope.page.location].Contract
 		$scope.action="saveKyc"
 		if  ($scope.Contract.act_for_other==1){
-			$scope.main.viewName="TE Persona Giuridica"
+			$scope.main.viewName="Adeguata Verifica"
 
 		}
 		else {
-			$scope.main.viewName="Deleganti"
+			$scope.main.viewName="Adeguata Verifica"
 
 		}
   }
@@ -295,8 +296,9 @@ app2.controller('kyc_owners', function ($scope,$http,$state,$translate,$timeout,
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {
-  					 	 $setDefaults($scope)
+  					 	 setDefaults($scope)
                $scope.main.loader=false
+							 $('.mdl-layout__drawer-button').hide()
             }, 5);
   });
 

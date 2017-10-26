@@ -16,7 +16,7 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 
     $scope.back=function(passo){
       if ($scope.passo==1 && passo>0){
-        $scope.pages['kyc_contractor.02']={action:'',passo:passo, location:$scope.page.location,prev_page:$state.current.name,temp:null}
+        $scope.pages['kyc_contractor.02']={action:'',passo:passo, location:$scope.page.location,prev_page:$state.current.name,temp:null,view:$scope.page.view}
         localstorage('pages', JSON.stringify($scope.pages));
 				$scope.main.loader=false
 				$scope.passo++
@@ -45,7 +45,7 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
          $state.go($scope.pages[$state.current.name].prev_page)
 				 $scope.main.loader=false
 				 $scope.passo--
-				 $scope.main.viewName="Dati Firmatario " + $scope.passo
+				 $scope.main.viewName="Adeguata Verifica"
        return;
       }
       $state.go($scope.page.location,{pages:$scope.pages})
@@ -59,7 +59,7 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 //		$scope.main.AddPage="add_contract"
   $scope.main.Search=false
   $scope.main.Sidebar=false
-  $scope.main.viewName="Dati Firmatario " + $scope.passo
+  $scope.main.viewName="Adeguata Verifica"
  $scope.searchContractor={}
  $scope.searchContractor.settings={}
  $scope.searchContractor.settings.table='users'
@@ -336,11 +336,17 @@ $scope.fillKycData=function(){
 	        //$word=$($search.currentTarget).attr('id');
 	        $search=res[1]
 	        $scope.word[$search]=data.data.RESPONSE;
-	      }
+	      } else {
+					$scope.word[$search]={};
+
+
+				}
 	      if (data.data.RESPONSECODE=='-1'){
 	        localstorage('msg','Sessione Scaduta ');
 	        $state.go('login');;;
 	      }
+
+
 	    })
 	    , (function() {
 	      console.log("error");
@@ -429,10 +435,11 @@ $scope.fillKycData=function(){
 				}
 				$scope.imported[key]=false
 			})
+			 $scope.loadKydData()
 			var elmnt= document.getElementById("ui-content")
 			 elmnt.scrollTop=0;
 
-		}, 800);
+		}, 1000);
 	});
 
 })
