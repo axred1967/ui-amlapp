@@ -567,7 +567,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     $scope.add_contract()
   })
   $scope.$on('searchButton', function(e) {
-    $scope.Contracts_inf.search=$scope.searchText
+    $scope.Contracts_inf.search=$scope.main.searchText
     $scope.Contracts_inf.last=99999999999
     $scope.Contracts_inf.Contracts=[]
     $scope.Contracts_inf.loaded=0
