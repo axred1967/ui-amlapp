@@ -867,6 +867,7 @@ switch (paese){
   $scope.main.other_data=false
   $scope.main.hideName=false
   $scope.main.logine=false
+  $scope.main.searchThings={}
   var isapp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
   if ( isapp ) {
     $scope.main.web=false
@@ -887,8 +888,10 @@ switch (paese){
     $timeout(function(){
       if ($('#searchExCont').hasClass('is-focused')){
         $scope.main.hideName=true
+        $scope.$broadcast('showSubHeader')
       }else {
         $scope.main.hideName=false
+        $scope.main.showSubHeader=false
 
       }
     }

@@ -2242,3 +2242,6 @@ canvas {
 .size24{
 	font-size:42px;
 }
+.pad0{
+	padding:0!important;
+}

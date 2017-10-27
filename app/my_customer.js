@@ -73,6 +73,7 @@ app2.factory('Customers_inf', function($http,$state) {
 
 app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $state, Customers_inf,$timeout, $interval, $translate,$filter, $stateParams) {
   /* gestiote parametri di stato */
+  $scope.main.state=$state.current.name
 	$scope.curr_page=$state.current.name
 	$scope.pages=$stateParams.pages
 	if ($scope.pages===null || $scope.pages===undefined){
@@ -177,7 +178,9 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
       }
     });
   }
-
+  $scope.$on('showSubHeader', function(e) {
+    $scope.main.showSubHeader=true
+  })
   $scope.$on('backButton', function(e) {
   });
 

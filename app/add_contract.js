@@ -262,6 +262,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
 
   $scope.add_contract=function(){
+		event.preventDefault()
     //       add_contract($scope.action);
     var langfileloginchk = localStorage.getItem("language");
     if ($scope.form.$invalid) {

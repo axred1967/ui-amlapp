@@ -101,6 +101,7 @@ app2.controller('risk_profile01_4d', function ($scope,$http,$state,$translate,$t
   }
 
   $scope.save_risk= function (passo){
+		event.preventDefault()
     if ($scope.form.$invalid) {
       angular.forEach($scope.form.$error, function(field) {
         angular.forEach(field, function(errorField) {

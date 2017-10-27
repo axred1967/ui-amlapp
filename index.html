@@ -145,11 +145,12 @@ Text angular
         <div ng-if="main.login!=true" >
           <!-- Sidebar -->
           <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-            <header class="mdl-layout__header dark-blue-bg">
+            <header class="mdl-layout__header dark-blue-bg" >
               <div ng-if="main.Back" class="back-button" ng-click="back()"><i class="material-icons">arrow_back</i></div>
-              <div class="mdl-layout__header-row">
+              <div class="mdl-layout__header-row" ng-click="checkDirty()">
                 <div  class="center-container-header">
                   <div style="margin-left:-10px" id="center" ng-hide="main.hideName" class="main-heading">{{main.viewName | translate}}</div>
+                  <div style="margin-left:-10px" id="center" ng-show="main.hideName" class="main-heading">{{'Cerca' | translate}}</div>
 
                 </div>
                   <!-- Title -->
@@ -180,6 +181,11 @@ Text angular
                 <span ng-if="main.Add" style="" class="mdl-tooltip mdl-tooltip--validation toright" for="add_button" >
                   <div >{{main.AddLabel|translate}}</div>
                 </span>
+              </div>
+                  <div ng-if="main.showSubHeader"  class="slide-animate-container" >
+                    <div class="slide-animate" style="width:100%" ng-include="'templates/subHeader_' + main.state+'.html'"></div>
+                  </div>
+
               </header>
 
             <div id="sidebar_agency" class="mdl-layout__drawer" >

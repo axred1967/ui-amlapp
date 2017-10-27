@@ -1,4 +1,5 @@
 <!-- cards grid -->
+<div ng-show="Contracts_inf.loaded>-2" >
 <div  infinite-scroll='Contracts_inf.nextPage()' infinite-scroll-disabled='Contracts_inf.busy' infinite-scroll-distance='0'
 infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-scroll-container="'.add-customer-data'" ng-cloack>
 <!--
@@ -157,4 +158,5 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
       </div>
     </div>
   </div>
+</div>
 </div>

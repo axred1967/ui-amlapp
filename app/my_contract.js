@@ -43,9 +43,10 @@ app2.factory('Contracts_inf', function($http,$state) {
     this.Contracts = [];
     this.busy = false;
     this.after = '';
-    this.loaded=0;
+    this.loaded=-2;
     this.pInfo={}
     this.search=''
+    this.searchThings=''
 
   };
 
@@ -59,7 +60,7 @@ app2.factory('Contracts_inf', function($http,$state) {
       last=this.Contracts[lastkey].contract_id;
 
     }
-    data= {"action":"ContractList",last:last,search:this.search,pInfo:this.pInfo}
+    data= {"action":"ContractList",last:last,search:this.search,searchThings:this.searchThings,pInfo:this.pInfo}
     $http.post(SERVICEURL2,  data )
     .then(function(responceData)  {
       if(responceData.data.RESPONSECODE=='1') 			{
@@ -204,7 +205,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
         else
       $scope.main.Cm=$filter('translate')("Le mie Persone")
   //alert(window.location.pathname.replace(/^\//, ''));
-
+  $scope.main.state=$state.current.name;
   $scope.main.login=false
   $scope.main.Back=false
   if ($scope.agent.user_type == 3)
@@ -219,6 +220,16 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   $('.mdl-layout__drawer-button').show()
   $scope.main.loader=true
   localstorage('pages',JSON.stringify({}))
+$scope.main.searchThings.fullname='1'
+$scope.main.searchThings.CPU='1'
+$scope.main.searchThings.numcontratto='1'
+$scope.main.searchThings.rischio='0'
+$scope.main.searchThings.email='1'
+$scope.main.searchThings.scaduti='0'
+$scope.main.searchThings.scopo='0'
+$scope.main.searchThings.natura='0'
+$scope.main.searchThings.agente='0'
+
 
 
 
@@ -227,6 +238,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   $scope.Contracts_inf=new Contracts_inf
   $scope.Contracts_inf.pInfo=$scope.agent.pInfo
   $scope.Contracts_inf.search=$scope.searchText
+  $scope.Contracts_inf.searchThings=$scope.main.searchThings
 //  $scope.main.loader=Contracts_inf.busy
 //  $scope.addMoreItems =function(){
 
@@ -566,12 +578,22 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   $scope.$on('addButton', function(e) {
     $scope.add_contract()
   })
+  $scope.$on('showSubHeader', function(e) {
+
+    $scope.main.showSubHeader=true
+  })
   $scope.$on('searchButton', function(e) {
-    $scope.Contracts_inf.search=$scope.main.searchText
-    $scope.Contracts_inf.last=99999999999
-    $scope.Contracts_inf.Contracts=[]
-    $scope.Contracts_inf.loaded=0
-    $scope.Contracts_inf.nextPage()
+    $timeout(function() {
+      if ($scope.Contracts_inf.search!=$scope.main.searchText){
+        $scope.Contracts_inf.search=$scope.main.searchText
+        $scope.Contracts_inf.searchThings=$scope.main.searchThings
+        $scope.Contracts_inf.last=99999999999
+        $scope.Contracts_inf.Contracts=[]
+        $scope.Contracts_inf.loaded=0
+        $scope.Contracts_inf.nextPage()
+
+      }
+   }, 2000);
 
 
   })
