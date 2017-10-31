@@ -574,6 +574,9 @@ app2.directive('tooltip', function(){
         }
     };
 });
+// load modulDOM
+
+
 //Field Match directive
 angular.module('fieldMatch', [])
 .directive('fieldMatch', ["$parse", function($parse) {
@@ -657,11 +660,7 @@ app2.directive("ngModel",["$timeout", function($timeout){
 }]);
 
 app2.run(function($rootScope, $timeout) {
-  $rootScope.$on('$viewContentLoaded', function(event) {
-    $timeout(function() {
-      componentHandler.upgradeAllRegistered();
-    }, 0);
-  });
+
   $rootScope.render = {
     header: true,
     aside: true
@@ -736,6 +735,7 @@ app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLo
   $sce.trustAsResourceUrl('https://amlapp.euriskoformazione.com')
   $scope.agent={}
   $scope.agentList={}
+  $scope.agentListI={}
   if ($scope.agent.name===undefined){
     $scope.agent.name=localStorage.getItem('Name');
     $scope.agent.email=localStorage.getItem('userEmail');
@@ -782,7 +782,10 @@ $scope.loadAgentList=function(){
     .then(function(responceData)  {
       if(responceData.data.RESPONSECODE=='1') 			{
         data=responceData.data.RESPONSE
-        $scope.agentList=data;
+        angular.forEach(data,function(value,key) {
+          $scope.agentListI[data[key]['agent_id']]=data[key]
+        })
+        $scope.agentList=data
       }
       else   {
         if (responceData.data.RESPONSECODE=='-1'){
@@ -838,7 +841,7 @@ switch (paese){
     $translate.use('sm-SM-comm'); // translati   ons-en-US.json
     break;
     case 'studio notarile':
-    $translate.use('it-IT-notaiSM'); // translati   ons-en-US.json
+    $translate.use('sm-SM-notai'); // translati   ons-en-US.json
     break;
     default:
     $translate.use('it-IT'); // translati   ons-en-US.json
@@ -867,7 +870,21 @@ switch (paese){
   $scope.main.other_data=false
   $scope.main.hideName=false
   $scope.main.logine=false
+  $scope.main.home={}
+  $scope.main.kyc_document={}
+
+  $scope.main.subHeader="Cerca"
   $scope.main.searchThings={}
+  $scope.main.searchThings.fullname='1'
+  $scope.main.searchThings.CPU='1'
+  $scope.main.searchThings.numcontratto='1'
+  $scope.main.searchThings.rischio='0'
+  $scope.main.searchThings.email='1'
+  $scope.main.searchThings.scaduti='0'
+  $scope.main.searchThings.scopo='0'
+  $scope.main.searchThings.natura='0'
+  $scope.main.searchThings.agente='0'
+
   var isapp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
   if ( isapp ) {
     $scope.main.web=false
@@ -885,13 +902,18 @@ switch (paese){
 
   }
   $scope.checkDirty=function(){
+    if ($scope.main[$scope.main.state].down)
+    return;
     $timeout(function(){
       if ($('#searchExCont').hasClass('is-focused')){
-        $scope.main.hideName=true
+        $scope.main[$scope.main.state].hideName=true
         $scope.$broadcast('showSubHeader')
       }else {
-        $scope.main.hideName=false
-        $scope.main.showSubHeader=false
+        if ( $scope.main.searchText===undefined || $scope.main.searchText.length==0){
+          $scope.main[$scope.main.state].hideName=false
+          $scope.main[$scope.main.state].showSubHeader=false
+
+        }
 
       }
     }
@@ -900,15 +922,32 @@ switch (paese){
   }
   $scope.search=function(){
     if ($('#searchExCont').hasClass('is-focused')){
-      $scope.main.hideName=true
+      $scope.main[$scope.main.state].hideName=true
     }else {
-      $scope.main.hideName=false
+      $scope.main[$scope.main.state].hideName=false
 
     }
-    $scope.$broadcast('searchButton')
+    $scope.$broadcast('searchButton',{click:false})
 
 
   }
+  $scope.searchClick=function(){
+    event.preventDefault();
+    if ( $scope.main[$scope.main.state].showSubHeader){
+      $scope.main[$scope.main.state].hideName=false
+      $scope.main[$scope.main.state].showSubHeader=false
+      $scope.main[$scope.main.state].arrow='arrow_downward'
+
+    }else {
+      $scope.main[$scope.main.state].hideName=true
+      $scope.main[$scope.main.state].showSubHeader=true
+      $scope.main[$scope.main.state].arrow='arrow_upward'
+
+    }
+
+//        $scope.$broadcast('searchButton',{click:true} )
+  }
+
   if ($stateParams.action=='signup'){
     localstorage('add_agency',JSON.stringify({action:'complete_signup',location:'login'}))
     $state.go("add_agency");
@@ -928,6 +967,7 @@ switch (paese){
       $scope.$broadcast('updateImageDialog',{gradi:gradi,doc:docPassed})
 
     }
+
 
 
 })
@@ -977,4 +1017,16 @@ app2.controller('logout', function ($scope, $state) {
   localStorage.removeItem('Profileimageagencyuser');
   localStorage.removeItem('usersettings');
   $state.go('login')
+});
+window.addEventListener('load', function() {
+  var observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function( mutation ) {
+      if (mutation.addedNodes)
+        window.componentHandler.upgradeElements(mutation.addedNodes);
+    })
+  });
+  observer.observe(document.body, {
+      childList: true,
+      subtree: true
+  });
 });

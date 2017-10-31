@@ -2245,3 +2245,15 @@ canvas {
 .pad0{
 	padding:0!important;
 }
+
+.checkBoxHeader.is-checked .mdl-checkbox__box-outline {
+	border: 2px solid #fff !important;
+}
+.checkBoxHeader .mdl-checkbox__ripple-container .mdl-ripple  {
+     background: #fff;
+}
+.subHeader{
+	background:#fff;
+	border:1px solid #1c224b;
+	color:#1c224b;
+}

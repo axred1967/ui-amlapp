@@ -6,6 +6,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 			$scope.pages=JSON.parse(localStorage.getItem('pages'));
 		}
 		$scope.page=$scope.pages[$state.current.name]
+		$scope.main.state=$state.current.name
     $scope.back=function(passo){
       if (passo>0){
         $scope.pages['kyc_signature' ]={action:'',location:$scope.page.location,prev_page:$state.current.name,agg:$scope.page.agg}
@@ -29,7 +30,11 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
   $scope.main.loader=true
   $scope.deleted=0
 	$scope.Kyc={}
-
+	$scope.main.state=$state.current.name
+	$scope.main[$scope.main.state].down=true
+	$scope.main[$scope.main.state].arrow='arrow_downward'
+	$scope.main[$scope.main.state].downLabel="Verifica Doc Obbligatori"
+	$scope.main[$scope.main.state].subHeader="Doc Obbligatori"
 
 	$scope.imageurl=function(Doc){
 
@@ -504,6 +509,9 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 			}
 
 
+  })
+	$scope.$on('showSubHeader', function(e) {
+    $scope.main[$scope.main.state].showSubHeader=true
   })
 
 

@@ -1,3 +1,5 @@
+<div  class="mdl-card card-ax">
+
 <div class="mdl-card mdl-shadow--2dp">
   <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--12-col">
@@ -489,7 +491,7 @@
                   <select ng-model="Contract.agent_id" class="mdl-textfield__input"
                   ng-required="page.other_data "
                   id="agent_id" name="agent_id">
-                  <option value="{{agent.user_id}}" ng-selected="agenti.length==0 || Contract.agent_id==agent.user_id">{{agent.name}} </option>
+                  <option value="{{agent.id}}" ng-selected="agent.length==0 || Contract.agent_id==agent.user_id">{{agent.name}} </option>
                   <option ng-repeat="agenti in agentList" value="{{agenti.agent_id}}" ng-selected="Contract.agent_id==agenti.agent_id">{{agenti.name}} {{agenti.surname}}</option>
                 </select>
                 <label class="mdl-textfield__label" for="agent_id">{{'Agente di riferimento '|translate}} *</label>
@@ -526,3 +528,4 @@
 
       </div>
       <div class="clr"></div>
+</div>

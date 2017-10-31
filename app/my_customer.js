@@ -102,7 +102,6 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
   $('.mdl-layout__drawer-button').show()
   $scope.main.loader=true
 
-
   $scope.Customers_inf=new Customers_inf  //    $scope.datalang = DATALANG;
   $scope.Customers_inf.pInfo=$scope.agent.pInfo
 

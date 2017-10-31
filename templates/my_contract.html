@@ -41,6 +41,7 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
             </span><br/>
             <span ng-show="Contract.act_for_other>0 && agent.user_type!=3" style="cursor:pointer;"  >
               {{'firmatario' | translate}}: <strong class="orange first_letter_cap">{{Contract.contractor_name}}</strong>
+              <br/>
             </span>
             <!--
             <br ng-show="Contract.act_for_other>0 && agent.user_type!=3 "/>
@@ -52,9 +53,14 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
             -->
             <span style="cursor:pointer;" class="azure first_letter_cap" >
               <strong>{{Contract.nature_contract}}</strong>
-            </span><br>
-            <span class="green" style=" cursor:pointer;"  class="long-email">
+              <br/>
+            </span>
+            <span ng-show="Contract.email.length>0" class="green" style=" cursor:pointer;"  class="long-email">
               {{Contract.email}}
+              <br/>
+            </span>
+            <span ng-show="agent.user_type==1 && Contract.agent_id>0 " style="cursor:pointer;" >
+              Agente:<span class="blue first_letter_cap">{{agentListI[Contract.agent_id].name+' '+ agentListI[Contract.agent_id].surname + Contract.agent_id+ agent.id}}</span>
             </span>
 
           </div>

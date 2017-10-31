@@ -468,6 +468,7 @@ function resize_single_img(id){
   , 3000);
 }
 function setDefaults($scope){
+
   $('input').each(
     function(index){
       if ($(this).hasClass('mdl-textfield__input')){
@@ -477,7 +478,6 @@ function setDefaults($scope){
 
         }
       }
-
       ngm=$(this).attr('modelAx')
       if (ngm===undefined){
         ngm=$(this).attr('ng-model')

@@ -2,61 +2,61 @@
 <div class="mdl-grid" style="width:100%">
   <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
-    <label  id="lfullname" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="fullname">
-      <input id="fullname" name="fullname"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
-      autocomplete="off"  modelAx="main.searchThings.fullname" checked
+    <label  id="lfullname" class="mdl-switch mdl-js-switch mdl-js-ripple-effect checkBoxHeader" for="fullname">
+      <input id="fullname" name="fullname"  type="checkbox" class="mdl-switch__input excludeDirty" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      autocomplete="off"  modelAx="main.searchThings.fullname" checked ng-click="searchClick()"
       ng-model="main.searchThings.fullname"        />
-      <span class="mdl-checkbox__label">{{'Nome'|translate}}</span>
+      <span class="mdl-switch__label">{{'Nome'|translate}}</span>
     </label>
     </div>
   </div>
   <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
-    <label  id="lemail" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="email">
-      <input id="email" name="email"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
-      autocomplete="off"  modelAx="main.searchThings.email" checked
+    <label  id="lemail" class="mdl-switch mdl-js-switch mdl-js-ripple-effect checkBoxHeader" for="email">
+      <input id="email" name="email"  type="checkbox" class="mdl-switch__input excludeDirty" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      autocomplete="off"  modelAx="main.searchThings.email" checked ng-click="searchClick()"
       ng-model="main.searchThings.email"        />
-      <span class="mdl-checkbox__label">{{'Email'|translate}}</span>
+      <span class="mdl-switch__label">{{'Email'|translate}}</span>
     </label>
     </div>
   </div>
   <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
-    <label  id="lCPU" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="CPU">
-      <input id="CPU" name="CPU"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
-      autocomplete="off"  checked
+    <label  id="lCPU" class="mdl-switch mdl-js-switch mdl-js-ripple-effect checkBoxHeader" for="CPU">
+      <input id="CPU" name="CPU"  type="checkbox" class="mdl-switch__input excludeDirty" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      autocomplete="off"  checked ng-click="searchClick()"
       ng-model="main.searchThings.CPU"        />
-      <span class="mdl-checkbox__label">{{'CPU'|translate}}</span>
+      <span class="mdl-switch__label">{{'CPU'|translate}}</span>
     </label>
   </div>
   </div>
   <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
-    <label  id="lcontratto" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="contratto">
-      <input id="contratto" name="contratto"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
-      autocomplete="off"  checked modelAx="main.searchThings.numcontratto"
+    <label  id="lcontratto" class="mdl-switch mdl-js-switch mdl-js-ripple-effect checkBoxHeader" for="contratto">
+      <input id="contratto" name="contratto"  type="checkbox" class="mdl-switch__input excludeDirty" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      autocomplete="off"  checked ng-click="searchClick()" modelAx="main.searchThings.numcontratto"
       ng-model="main.searchThings.numcontratto"        />
-      <span class="mdl-checkbox__label">{{'Contratto'|translate}}</span>
+      <span class="mdl-switch__label">{{'Contratto'|translate}}</span>
     </label>
   </div>
   </div>
   <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
-    <label  id="lnatura" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="natura">
-      <input id="natura" name="natura"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
-      autocomplete="off"  modelAx="main.searchThings.natura" checked
+    <label  id="lnatura" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="natura">
+      <input id="natura" name="natura"  type="checkbox" class="mdl-switch__input excludeDirty" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      autocomplete="off"  modelAx="main.searchThings.natura" checked ng-click="searchClick()"
       ng-model="main.searchThings.natura"        />
-      <span class="mdl-checkbox__label">{{'Natura'|translate}}</span>
+      <span class="mdl-switch__label">{{'Natura'|translate}}</span>
     </label>
   </div>
   </div>
   <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
-    <label  id="lscopo" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="scopo">
-      <input id="scopo" name="scopo"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
-      autocomplete="off"  modelAx="main.searchThings.scopo" checked
+    <label  id="lscopo" class="mdl-switch mdl-js-switch mdl-js-ripple-effect checkBoxHeader" for="scopo">
+      <input id="scopo" name="scopo"  type="checkbox" class="mdl-switch__input excludeDirty" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      autocomplete="off"  modelAx="main.searchThings.scopo" checked ng-click="searchClick()"
       ng-model="main.searchThings.scopo"        />
-      <span class="mdl-checkbox__label">{{'Scopo'|translate}}</span>
+      <span class="mdl-switch__label">{{'Scopo'|translate}}</span>
     </label>
   </div>
   </div>
@@ -65,31 +65,31 @@
 
   <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
-    <label  id="lrischio" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="rischio">
-      <input id="rischio" name="rischio"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
-      autocomplete="off"  modelAx="main.searchThings.rischio"  checked
+    <label  id="lrischio" class="mdl-switch mdl-js-switch mdl-js-ripple-effect checkBoxHeader" for="rischio">
+      <input id="rischio" name="rischio"  type="checkbox" class="mdl-switch__input excludeDirty" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      autocomplete="off"  modelAx="main.searchThings.rischio"  checked ng-click="searchClick()"
       ng-model="main.searchThings.rischio"        />
-      <span class="mdl-checkbox__label">{{'Rischio'|translate}}</span>
+      <span class="mdl-switch__label">{{'Rischio'|translate}}</span>
     </label>
   </div>
 </div>
   <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
-    <label  id="lscaduti" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="scaduti">
-      <input id="scaduti" name="scaduti"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
-      autocomplete="off"  modelAx="main.searchThings.scaduti" checked
+    <label  id="lscaduti" class="mdl-switch mdl-js-switch mdl-js-ripple-effect checkBoxHeader" for="scaduti">
+      <input id="scaduti" name="scaduti"  type="checkbox" class="mdl-switch__input excludeDirty" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      autocomplete="off"  modelAx="main.searchThings.scaduti" checked ng-click="searchClick()"
       ng-model="main.searchThings.scaduti"        />
-      <span class="mdl-checkbox__label">{{'Scaduti'|translate}}</span>
+      <span class="mdl-switch__label">{{'Scaduti'|translate}}</span>
     </label>
   </div>
   </div>
   <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
-    <label  id="lagente" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="agente">
-      <input id="agente" name="agente"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
-      autocomplete="off"  modelAx="main.searchThings.agente" checked
+    <label  id="lagente" class="mdl-switch mdl-js-switch mdl-js-ripple-effect checkBoxHeader" for="agente">
+      <input id="agente" name="agente"  type="checkbox" class="mdl-switch__input excludeDirty" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      autocomplete="off"  modelAx="main.searchThings.agente" checked ng-click="searchClick()"
       ng-model="main.searchThings.agente"        />
-      <span class="mdl-checkbox__label">{{'Agente'|translate}}</span>
+      <span class="mdl-switch__label">{{'Agente'|translate}}</span>
     </label>
   </div>
   </div>

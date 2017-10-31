@@ -149,10 +149,10 @@ Text angular
               <div ng-if="main.Back" class="back-button" ng-click="back()"><i class="material-icons">arrow_back</i></div>
               <div class="mdl-layout__header-row" ng-click="checkDirty()">
                 <div  class="center-container-header">
-                  <div style="margin-left:-10px" id="center" ng-hide="main.hideName" class="main-heading">{{main.viewName | translate}}</div>
-                  <div style="margin-left:-10px" id="center" ng-show="main.hideName" class="main-heading">{{'Cerca' | translate}}</div>
+                  <div style="margin-left:-10px" id="center" ng-hide="main[main.state].hideName" class="main-heading">{{main.viewName | translate}}</div>
 
                 </div>
+                <div ng-show="main[main.state].hideName" >{{ main[main.state].subHeader | translate}}</div>
                   <!-- Title -->
 
                     <div class="mdl-layout-spacer"></div>
@@ -169,20 +169,26 @@ Text angular
                       id="searchBar" />
                     </div>
 
-                    <span ng-if="main.Add" style="margin-left:-130px;font-size:8px" class="mdl-tooltip mdl-tooltip--validation toright" for="add_button" >
-                      <div >{{main.AddLabel|translate}}</div>
-                    </span>
 
                 </div>
+
+                <button id="down_button" ng-if="main[main.state].down" ng-click="searchClick()" class="mdl-button mdl-js-button mdl-button--icon right"
+                style="border:2px solid #FFF">                  <!--<img src="ui-amlapp/img/add-search.png">-->
+                  <i class="material-icons ">{{main[main.state].arrow}}</i>
+                </button>
+                <span ng-if="main.Add" style="" class="mdl-tooltip mdl-tooltip--validation toright" for="down_button" >
+                  <div >{{main[main.state].downLabel|translate}}</div>
+                </span>
                 <button id="add_button" ng-if="main.Add" ng-click="add()" class="mdl-button mdl-js-button mdl-button--icon right" style="border:2px solid #FFF">
                   <!--<img src="ui-amlapp/img/add-search.png">-->
-                  <b >+</b>
+                  <i class="material-icons ">add</i>
                 </button>
                 <span ng-if="main.Add" style="" class="mdl-tooltip mdl-tooltip--validation toright" for="add_button" >
                   <div >{{main.AddLabel|translate}}</div>
                 </span>
+
               </div>
-                  <div ng-if="main.showSubHeader"  class="slide-animate-container" >
+                  <div ng-if="main[main.state].showSubHeader"  class="slide-animate-container subHeader" >
                     <div class="slide-animate" style="width:100%" ng-include="'templates/subHeader_' + main.state+'.html'"></div>
                   </div>
 

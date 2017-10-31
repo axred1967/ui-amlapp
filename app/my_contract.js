@@ -220,17 +220,11 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   $('.mdl-layout__drawer-button').show()
   $scope.main.loader=true
   localstorage('pages',JSON.stringify({}))
-$scope.main.searchThings.fullname='1'
-$scope.main.searchThings.CPU='1'
-$scope.main.searchThings.numcontratto='1'
-$scope.main.searchThings.rischio='0'
-$scope.main.searchThings.email='1'
-$scope.main.searchThings.scaduti='0'
-$scope.main.searchThings.scopo='0'
-$scope.main.searchThings.natura='0'
-$scope.main.searchThings.agente='0'
-
-
+  if ($scope.main.searchText !== undefined && $scope.main.searchText.length>0){
+    $scope.main.hideName=true
+      $scope.main.showSubHeader=true
+  }
+  $scope.main[$scope.main.state].subHeader="Cerca"
 
 
 
@@ -580,11 +574,11 @@ $scope.main.searchThings.agente='0'
   })
   $scope.$on('showSubHeader', function(e) {
 
-    $scope.main.showSubHeader=true
+    $scope.main[$scope.main.state].showSubHeader=true
   })
-  $scope.$on('searchButton', function(e) {
+  $scope.$on('searchButton', function(e,args) {
     $timeout(function() {
-      if ($scope.Contracts_inf.search!=$scope.main.searchText){
+      if (args.click || ($scope.main.searchText.length>2 && $scope.Contracts_inf.search!=$scope.main.searchText)){
         $scope.Contracts_inf.search=$scope.main.searchText
         $scope.Contracts_inf.searchThings=$scope.main.searchThings
         $scope.Contracts_inf.last=99999999999

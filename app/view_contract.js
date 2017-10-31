@@ -10,7 +10,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
  	 $state.go('home');
   }
 	$scope.Contract=$scope.page.Contract
-	$scope.main.viewName=$filter('translate')('Scheda Contratto') 
+	$scope.main.viewName=$filter('translate')('Scheda Contratto')
 
 	$scope.main.Back=true
 	$scope.main.Add=true
@@ -22,6 +22,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 	$scope.main.loader=true
 	$scope.curr_page="view_contract"
   $scope.Contract=$scope.page.Contract
+	$scope.main.state=$state.current.name
 	if($scope.Contract===undefined){
 		swal({
 			title: $filter('translate')("Problema"),
