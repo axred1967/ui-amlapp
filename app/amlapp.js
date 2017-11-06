@@ -931,7 +931,7 @@ switch (paese){
 
 
   }
-  $scope.searchClick=function(){
+  $scope.downClick=function(){
     event.preventDefault();
     if ( $scope.main[$scope.main.state].showSubHeader){
       $scope.main[$scope.main.state].hideName=false
@@ -944,6 +944,12 @@ switch (paese){
       $scope.main[$scope.main.state].arrow='arrow_upward'
 
     }
+
+//        $scope.$broadcast('searchButton',{click:true} )
+  }
+  $scope.searchClick=function(){
+    event.preventDefault();
+    $scope.$broadcast('searchButton',{click:true} )
 
 //        $scope.$broadcast('searchButton',{click:true} )
   }

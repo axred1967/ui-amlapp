@@ -280,6 +280,8 @@ function base_name(path) {
   return url.split('?')[0];
 }
 function IsJsonString(str,isa) {
+  if (str===undefined || str===null)
+    return false
   try {
     var js=JSON.parse(str);
     $('input[type="date"]').each(function(){

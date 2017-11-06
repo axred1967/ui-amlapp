@@ -24,6 +24,7 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
             <div class="gridAx-item70" ng-click="tocontract(Contract)">
             <span ng-hide="agent.user_type==3" style="cursor:pointer;" >
               <strong class="blue first_letter_cap">{{Contract.Owner}}</strong>
+              <br/>
             </span>
             <span ng-hide="agent.user_type!=3" style="cursor:pointer;" >
               Contraente:
@@ -38,6 +39,7 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
               </span>
             <span style="cursor:pointer;" >
               {{Contract.CPU}} - {{Contract.number}}
+              <br/>
             </span><br/>
             <span ng-show="Contract.act_for_other>0 && agent.user_type!=3" style="cursor:pointer;"  >
               {{'firmatario' | translate}}: <strong class="orange first_letter_cap">{{Contract.contractor_name}}</strong>
@@ -60,7 +62,7 @@ infinite-scroll-parent="true" infinite-scroll-immediate-check='true'  infinite-s
               <br/>
             </span>
             <span ng-show="agent.user_type==1 && Contract.agent_id>0 " style="cursor:pointer;" >
-              Agente:<span class="blue first_letter_cap">{{agentListI[Contract.agent_id].name+' '+ agentListI[Contract.agent_id].surname + Contract.agent_id+ agent.id}}</span>
+              Agente:<span class="blue first_letter_cap">{{agentListI[Contract.agent_id].name+' '+ agentListI[Contract.agent_id].surname }}</span>
             </span>
 
           </div>

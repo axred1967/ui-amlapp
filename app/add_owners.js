@@ -385,12 +385,14 @@ $scope.addWord=function($search,$word,par){
 
 
 $scope.setEov=function(){
-	if (isObject($scope.Customer.id_release_date)){
-		d=$scope.Customer.id_release_date
-		d.setFullYear(d.getFullYear()+5)
-		$scope.Customer.id_validity=d
+		oggi=new Date()
+		if ($scope.Customer!==undefined && $scope.Customer.id_release_date!==undefined && ( $scope.Contract.id_validity===null)) {
+			Object.assign(oggi,$scope.Customer.id_release_date)
+			oggi.setFullYear(oggi.getFullYear()+5)
+			$scope.Contract.id_validity=oggi
+		}
 
-	}
+	
 }
 $scope.other=function(){
   if($scope.page.other_data)
