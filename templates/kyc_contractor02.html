@@ -1,9 +1,9 @@
 
 <fieldset>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-  <input class="mdl-textfield__input" type="text" autocomplete="off" id="address_resi" name="address_resi"
+  <input class="mdl-textfield__input" ng-class="{'imported': imported.address_resi }" type="text" autocomplete="off" id="address_resi" name="address_resi"
   ng-model="Customer.address_resi"  ng-change="Customer.address_resi=(Customer.address_resi| capitalize)" minlength="3"
-  ng-required="page.other_data "
+  ng-required="page.other_data " ng-class="{'imported': imported.address_resi }"
   ng-keyup="showAC('users.address_resi','address_resi',{zero:true});"
   ng-focus="showAC('users.address_resi','address_resi',{zero:true});resetAC()"
   />
@@ -25,7 +25,7 @@
 </fieldset>
 <fieldset>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-  <input class="mdl-textfield__input" type="text" autocomplete="off" id="resi_town" name="resi_town"
+  <input class="mdl-textfield__input" ng-class="{'imported': imported.resi_town }" type="text" autocomplete="off" id="resi_town" name="resi_town"
   ng-model="Customer.resi_town"  ng-change="Customer.resi_town=(Customer.resi_town| capitalize)"
   minlength="3" ng-required="page.other_data "
   ng-keyup="showAC('users.resi_town','resi_town',{zero:true});"
@@ -49,7 +49,7 @@
 </fieldset>
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text" autocomplete="off" id="resi_country" name="resi_country" minlength="3"  value=" "
+    <input class="mdl-textfield__input" ng-class="{'imported': imported.resi_country }" type="text" autocomplete="off" id="resi_country" name="resi_country" minlength="3"  value=" "
     ng-model="Customer.resi_country"   minlength="3"  ng-required="passo==2" def-setting="country"
     ng-keyup="showAC('users.resi_country','resi_country',{countries:true,zero:true});"
     ng-focus="showAC('users.resi_country','resi_country',{countries:true,zero:true});resetAC()"
@@ -85,7 +85,7 @@
 <div ng-show="Customer.check_residence==1">
 <fieldset>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-  <input class="mdl-textfield__input" type="text" autocomplete="off" id="domi_country" name="domi_country" minlength="3"  value=" "
+  <input class="mdl-textfield__input" ng-class="{'imported': imported.domi_country }" type="text" autocomplete="off" id="domi_country" name="domi_country" minlength="3"  value=" "
   ng-model="Customer.domi_country"   minlength="3"  ng-required="passo==2 && Customer.check_residence==1"
   ng-keyup="showAC('users.domi_country','domi_country',{countries:true,zero:true});"
   ng-focus="showAC('users.domi_country','domi_country',{countries:true,zero:true});resetAC()"
@@ -110,7 +110,7 @@
 </fieldset>
 <fieldset>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-  <input class="mdl-textfield__input" type="text" autocomplete="off" id="customer_address_domi" name="customer_address_domi"
+  <input class="mdl-textfield__input" ng-class="{'imported': imported.domi_address }" type="text" autocomplete="off" id="customer_address_domi" name="customer_address_domi"
   ng-model="Customer.domi_address"  ng-change="Customer.domi_address=(Customer.domi_address| capitalize)"
   minlength="3"      ng-required="passo==2 && Customer.check_residence==1"
 
@@ -123,7 +123,7 @@
 </fieldset>
 <fieldset>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-  <input class="mdl-textfield__input" type="text" autocomplete="off" id="domi_town" name="domi_town"
+  <input class="mdl-textfield__input" ng-class="{'imported': imported.domi_town }" type="text" autocomplete="off" id="domi_town" name="domi_town"
   ng-model="Customer.domi_town"  ng-change="Customer.domi_town=(Customer.domi_town| capitalize)"
   minlength="3"   ng-required="passo==2 && Customer.check_residence==1"
   ng-keyup="showAC('users.domi_down','domi_town',{zero:true});"
@@ -150,7 +150,7 @@
 </div>
 <fieldset>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-<input class="mdl-textfield__input" type="text" autocomplete="off" id="main_nationality" name="main_nationality"
+<input class="mdl-textfield__input" ng-class="{'imported': imported.main_nationality }" type="text" autocomplete="off" id="main_nationality" name="main_nationality"
 ng-model="Customer.main_nationality"  ng-change="Customer.main_nationality=(Customer.main_nationality| capitalize)"
 minlength="3"   ng-required="{{Customer.check_residence==1}}"
 ng-keyup="showAC('users.main_nationality','main_nationality',{zero:true});"
@@ -195,7 +195,7 @@ ng-focus="showAC('users.main_nationality','main_nationality',{zero:true});resetA
 </fieldset>
 <fieldset ng-show="Customer.check_pep==1">
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-<input class="mdl-textfield__input" type="text" autocomplete="off" id="pep_charge" name="pep_charge"
+<input class="mdl-textfield__input" ng-class="{'imported': imported.pep_charge }" type="text" autocomplete="off" id="pep_charge" name="pep_charge"
 ng-model="Customer.pep_charge "
 minlength="3"   ng-required="Customer.check_pep==1 && passo==2"
 ng-keyup="showAC('users.pep_charge','pep_charge',{zero:true});"
@@ -240,7 +240,7 @@ ng-focus="showAC('users.pep_charge','pep_charge',{zero:true});resetAC()"
 </div>
 -->
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-<input class="mdl-textfield__input" type="text" autocomplete="off" id="pep_type" name="pep_type"
+<input class="mdl-textfield__input" ng-class="{'imported': imported.pep_type }" type="text" autocomplete="off" id="pep_type" name="pep_type"
 ng-model="Customer.pep_type"
 minlength="3" ng-required="Customer.check_pep==1 && passo==2"
 ng-focus="resetAC();showAC('users.pep_type','pep_type',{zero:true});"
@@ -266,7 +266,7 @@ ng-keyup="showAC('users.pep_type','pep_type',{zero:true});"  />
 <!--
 
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-<input class="mdl-textfield__input" type="text" autocomplete="off" id="customer_profession" name="customer_profession"
+<input class="mdl-textfield__input" ng-class="{'imported': imported.address_resi }" type="text" autocomplete="off" id="customer_profession" name="customer_profession"
 ng-model="Customer.profession"
 minlength="3"   ng-required="page.other_data && ! page.owners"
 ng-keyup="showAC('users.profession','customer_profession');"
@@ -287,7 +287,7 @@ ng-focus="resetAC()"
 </div>
 -->
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-<input class="mdl-textfield__input" type="text" autocomplete="off" id="profession" name="profession"
+<input class="mdl-textfield__input" ng-class="{'imported': imported.profession }" type="text" autocomplete="off" id="profession" name="profession"
 ng-model="Customer.profession"
 minlength="3"   ng-required="page.other_data && ! page.owners"
 ng-keyup="showAC('users.profession','profession', {zero:true,order:1});"
@@ -312,7 +312,7 @@ ng-focus="resetAC();showAC('users.profession','profession', {zero:true,order:1})
 <fieldset>
 <!--
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-<select ng-model="Customer.main_activity_country" class="mdl-textfield__input"
+<select ng-model="Customer.main_activity_country" class="mdl-textfield__input" ng-class="{'imported': imported.address_resi }"
 ng-required="page.other_data && ! page.owners"
 id="customer_main_activity_country" name="customer_main_activity_country" >
 <option ng-repeat="option in countryList" value="{{option.country_id}}">{{option.country_name}}</option>
@@ -325,7 +325,7 @@ id="customer_main_activity_country" name="customer_main_activity_country" >
 </div>
 -->
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-<input class="mdl-textfield__input" type="text" autocomplete="off" id="main_activity_country" name="main_activity_country" minlength="3"  value=" "
+<input class="mdl-textfield__input" ng-class="{'imported': imported.main_activity_country }" type="text" autocomplete="off" id="main_activity_country" name="main_activity_country" minlength="3"  value=" "
 ng-model="Customer.main_activity_country"   minlength="3"  ng-required="passo==2" def-setting="country"
 ng-keyup="showAC('users.main_activity_country','main_activity_country',{countries:true,zero:true});"
 ng-focus="showAC('users.main_activity_country','main_activity_country',{countries:true,zero:true});resetAC()"
@@ -351,7 +351,7 @@ ng-focus="showAC('users.main_activity_country','main_activity_country',{countrie
 <!--
 <fieldset>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-<input class="mdl-textfield__input" type="text" autocomplete="off" id="customer_fiscal_number" name="customer_fiscal_number"
+<input class="mdl-textfield__input" ng-class="{'imported': imported.address_resi }" type="text" autocomplete="off" id="customer_fiscal_number" name="customer_fiscal_number"
 ng-model="Customer.fiscal_number"
 minlength="3"   ng-required="passo==2 && ! page.owners"
 
@@ -366,7 +366,7 @@ ng-focus="resetAC()"
 -->
 <fieldset>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-<input class="mdl-textfield__input" type="text" autocomplete="off" id="annual_income" name="annual_income" minlength="3"  value=" "
+<input class="mdl-textfield__input" ng-class="{'imported': imported.annual_income }" type="text" autocomplete="off" id="annual_income" name="annual_income" minlength="3"  value=" "
 ng-model="Customer.annual_income"   minlength="3"
 ng-keyup="showAC('users.annual_income','annual_income',{order:1,zero:true});"
 ng-focus="resetAC();showAC('users.annual_income','annual_income',{order:1,zero:true})"
@@ -391,7 +391,7 @@ ng-focus="resetAC();showAC('users.annual_income','annual_income',{order:1,zero:t
 
 <fieldset>
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-<input class="mdl-textfield__input" type="text" autocomplete="off" id="income_source" name="income_source" minlength="3"  value=" "
+<input class="mdl-textfield__input" ng-class="{'imported': imported.income_source }" type="text" autocomplete="off" id="income_source" name="income_source" minlength="3"  value=" "
 ng-model="Customer.income_source"   minlength="3"
 ng-keyup="showAC('users.income_source','income_source',{order:1,zero:true});"
 ng-focus="resetAC();showAC('users.income_source','income_source',{order:1,zero:true})"
@@ -416,7 +416,7 @@ ng-focus="resetAC();showAC('users.income_source','income_source',{order:1,zero:t
 
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
-    <text-angular   class="textwidth100" style="width: 100% !important;" ng-model="Customer.notes"
+    <text-angular   class="textwidth100" style="width: 100% !important;" ng-model="Customer.notes" ng-class="{'imported': imported.notes }"
     type="text" rows= "3" id="notes" name="notes" ></text-angular>
     <label for="notes"  class="mdl-textfield__label   " style="margin-top:-10px;color: #3f51b5;font-size: 12px;top: 4px;visibility: visible;">{{ 'Note' | translate}}</label>
     <span class="mdl-tooltip mdl-tooltip--validation" for="notes" minlength="3" ng-show="form.notes.$invalid && form.notes.$touched">

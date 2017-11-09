@@ -395,7 +395,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 								 $scope.main.loader=false
 								 $('.mdl-layout__drawer-button').hide()
 
-	            }, 905);
+	            }, 300);
 	  });
 
   	})

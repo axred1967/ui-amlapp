@@ -12,6 +12,7 @@
   "ContractDate" : "Data della Prestazione",
   "ContractEOV" : "Fine Validità della Prestazione",
   "EconomicValueifDeterminable":"Valore Economico della Prestazione",
+  "Valore contratto non determinabile":"Valore operazione non determinabile",
   "Login" : "Accesso",
   "Profile" : "Il mio Profilo",
   "SavePrev" : "Salva & Precendete",

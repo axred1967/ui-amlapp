@@ -561,7 +561,47 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     });
 
   }
+  $scope.loadAgentList=function(){
+      settings={table:'agent',id:'agent_id',
+                fields:{
+                  'j1.name':'name',
+                  'j1.surname':'surname',
+                'uno.agent_id':'agent_id'
+                },
+                join:{
+                  'j1':{'table':'users',
+                        'condition':'uno.user_id=j1.user_id '
+                      }
+                },
+                    where: {
+                  'uno.agency_id':$scope.agent.agency_id
 
+                }, limit:100
+              }
+      data= {"action":"ListObjs",settings:settings,pInfo:$scope.agent.pInfo}
+      $http.post(SERVICEURL2,  data )
+      .then(function(responceData)  {
+        if(responceData.data.RESPONSECODE=='1') 			{
+          data=responceData.data.RESPONSE
+          angular.forEach(data,function(value,key) {
+            $scope.agentListI[data[key]['agent_id']]=data[key]
+          })
+          $scope.agentList=data
+        }
+        else   {
+          if (responceData.data.RESPONSECODE=='-1'){
+            localstorage('msg','Sessione Scaduta ');
+            $state.go('login');;;
+          }
+        }})
+        , (function() {
+          console.log("error");
+        });
+
+
+  }
+
+  $scope.loadAgentList();
   $scope.back = function(d){
     $state.go($scope.page.location)
   }
@@ -578,12 +618,13 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
   })
   $scope.$on('searchButton', function(e,args) {
     $timeout(function() {
-      if (args.click || ($scope.main.searchText.length>2 && $scope.Contracts_inf.search!=$scope.main.searchText)){
+      if (args.click || ($scope.main.searchText.length>2 && $scope.Contracts_inf.search!=$scope.main.searchText) ||  ($scope.main.searchText.length==0 && $scope.Contracts_inf.search!=$scope.main.searchText)){
         $scope.Contracts_inf.search=$scope.main.searchText
         $scope.Contracts_inf.searchThings=$scope.main.searchThings
         $scope.Contracts_inf.last=99999999999
         $scope.Contracts_inf.Contracts=[]
         $scope.Contracts_inf.loaded=0
+        $scope.Contracts_inf.busy=false
         $scope.Contracts_inf.nextPage()
 
       }

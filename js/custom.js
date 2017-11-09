@@ -281,7 +281,7 @@ function base_name(path) {
 }
 function IsJsonString(str,isa) {
   if (str===undefined || str===null)
-    return false
+    return {}
   try {
     var js=JSON.parse(str);
     $('input[type="date"]').each(function(){

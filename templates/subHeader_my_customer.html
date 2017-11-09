@@ -1,0 +1,47 @@
+<div class="mdl-layout__header-row" style="height:auto" >
+<div class="mdl-grid" style="width:100%">
+  <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
+    <label  id="lfullname" class="mdl-switch mdl-js-switch mdl-js-ripple-effect checkBoxHeader" for="fullname">
+      <input id="fullname" name="fullname"  type="checkbox" class="mdl-switch__input excludeDirty" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      autocomplete="off"  modelAx="main.searchThings.fullname" checked ng-click="searchClick()"
+      ng-model="main.searchThings.fullname"        />
+      <span class="mdl-switch__label">{{'Nome'|translate}}</span>
+    </label>
+    </div>
+  </div>
+  <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
+    <label  id="lemail" class="mdl-switch mdl-js-switch mdl-js-ripple-effect checkBoxHeader" for="email">
+      <input id="email" name="email"  type="checkbox" class="mdl-switch__input excludeDirty" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      autocomplete="off"  modelAx="main.searchThings.email" checked ng-click="searchClick()"
+      ng-model="main.searchThings.email"        />
+      <span class="mdl-switch__label">{{'Email'|translate}}</span>
+    </label>
+    </div>
+  </div>
+    <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
+      <label  id="lfiscal_number" class="mdl-switch mdl-js-switch mdl-js-ripple-effect checkBoxHeader" for="fiscal_number">
+        <input id="fiscal_number" name="fiscal_number"  type="checkbox" class="mdl-switch__input excludeDirty" value="1" ng-true-value="'1'" ng-false-value="'0'"
+        autocomplete="off"  modelAx="main.searchThings.fiscal_number" checked ng-click="searchClick()"
+        ng-model="main.searchThings.fiscal_number"        />
+        <span class="mdl-switch__label">{{'ID Fiscale'|translate}}</span>
+      </label>
+      </div>
+    </div>
+      <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
+        <label  id="lmobile" class="mdl-switch mdl-js-switch mdl-js-ripple-effect checkBoxHeader" for="mobile">
+          <input id="mobile" name="mobile"  type="checkbox" class="mdl-switch__input excludeDirty" value="1" ng-true-value="'1'" ng-false-value="'0'"
+          autocomplete="off"  modelAx="main.searchThings.mobile" checked ng-click="searchClick()"
+          ng-model="main.searchThings.mobile"        />
+          <span class="mdl-switch__label">{{'Cellulare'|translate}}</span>
+        </label>
+        </div>
+      </div>
+  </div>
+
+
+
+</div>

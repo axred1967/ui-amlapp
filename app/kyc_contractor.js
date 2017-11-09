@@ -102,6 +102,14 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 
 											 $scope.Customer=angular.extend({},$scope.Kyc.contractor_data);
 											 setDefaults($scope)
+											 angular.forEach($scope.Customer, function(doc,key){
+								 				if ($scope.imported===undefined){
+								 					$scope.imported=[]
+
+								 				}
+												if ($scope.imported[key]===undefined)
+														$scope.imported[key]=false
+								 			})
 
 											 if ($scope.Kyc.contractor_data.name===undefined || $scope.Kyc.contractor_data.name===null || $scope.Kyc.contractor_data.name==null){
 
@@ -125,6 +133,9 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 														 $scope.Customer.surname=data[0].surname
 														 $scope.Customer.mobile=data[0].mobile
 														 $scope.Customer.fiscal_number=data[0].fiscal_number
+														 if ($scope.kyc_data===undefined ||Object.keys($scope.kyc_data).length==0 )
+			 								 			 $scope.loadKydData()
+
 										       }
 										       else   {
 										         if (responceData.data.RESPONSECODE=='-1'){
@@ -135,6 +146,10 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 													 , (function() {
 											       console.log("error");
 											     });
+
+											 } else {
+												 if ($scope.kyc_data===undefined ||Object.keys($scope.kyc_data).length==0 )
+												 $scope.loadKydData()
 
 											 }
 
@@ -186,8 +201,10 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 $scope.fillKycData=function(){
 	$scope.imported={}
 	angular.forEach($scope.kyc_data, function(doc,key){
+		if ($scope.Customer[key]!=$scope.kyc_data[key] )
+		if (! ($scope.Customer[key] instanceof Date && $scope.kyc_data[key] instanceof Date &&  $scope.Customer[key].getTime()===$scope.kyc_data[key].getTime() ))
 				$scope.imported[key]=true;
-				$scope.Customer[key]=$scope.kyc_data[key]
+			$scope.Customer[key]=$scope.kyc_data[key]
 
 
 	})
@@ -197,7 +214,7 @@ $scope.fillKycData=function(){
 }
 
  $scope.loadKydData=function(){
-	 if ($scope.Customer!==undefined && $scope.Customer.fiscal_number!==undefined && $scope.Customer.fiscal_number.length>0){
+	 if ($scope.Customer!==undefined && $scope.Customer.fiscal_number!==undefined  && $scope.Customer.fiscal_number!==null && $scope.Customer.fiscal_number.length>0){
 		 settings={table:'kyc_person',id:'id',
 							 where: {
 								 'lower(fiscal_id)': {valore:$scope.Customer.fiscal_number.toLowerCase()},
@@ -428,14 +445,6 @@ $scope.fillKycData=function(){
 			$scope.main.loader=false
 			$('.mdl-layout__drawer-button').hide()
 			setDefaults($scope)
-			angular.forEach($scope.Customer, function(doc,key){
-				if ($scope.imported===undefined){
-					$scope.imported=[]
-
-				}
-				$scope.imported[key]=false
-			})
-			 $scope.loadKydData()
 			var elmnt= document.getElementById("ui-content")
 			 elmnt.scrollTop=0;
 

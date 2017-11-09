@@ -1,4 +1,4 @@
-app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeout,$stateParams,$interval,$rootScope,$filter) {
+app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeout,$stateParams,$interval,AutoComplete,$rootScope,$filter) {
   //gestisco lo state parameter
 	  $scope.curr_page=$state.current.name
 	  $scope.pages=$stateParams.pages
@@ -35,6 +35,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 	$scope.main[$scope.main.state].arrow='arrow_downward'
 	$scope.main[$scope.main.state].downLabel="Verifica Doc Obbligatori"
 	$scope.main[$scope.main.state].subHeader="Doc Obbligatori"
+	$scope.word={};
 
 	$scope.imageurl=function(Doc){
 
@@ -217,6 +218,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 	else{
 			$scope.loadItem()
 	}
+
   $scope.fillKycData=function(){
 		swal({
 			title: $filter('translate')("Sei Sicuro?"),
@@ -287,7 +289,81 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 		}
   })
 }
+$scope.showAC=function($search,$word, settings){
+	settings.pInfo=$scope.agent.pInfo
+	AutoComplete.showAC($search,$word, settings)
+		.then(function(data) {
+			if(data.data.RESPONSECODE=='1') 			{
+				//$word=$($search.currentTarget).attr('id');
+				$search=res[1]
+				if (settings.index!==undefined)
+					$scope.word[$search+settings.index]=data.data.RESPONSE;
+				else
+					$scope.word[$search]=data.data.RESPONSE;
+			}
+		 if (data.data.RESPONSECODE=='-1'){
+				localstorage('msg','Sessione Scaduta ');
+				$state.go('login');;;
+		 }
+		})
+		, (function() {
+			console.log("error");
+		});
+}
+$scope.resetAC=function(){
+	$scope.word={}
+	$scope.list={}
+	$scope.listOther={}
+	$scope.listCompany={}
 
+
+}
+$scope.addWord=function($search,$word,par){
+	res = $search.split(".")
+	if (par.index!==undefined){
+		switch(res.length){
+			case 2:
+			$scope[res[0]][res[1]]=$word
+			$scope.word[res[1]+par.index]=[]
+			break;
+			case 3:
+			$scope[res[0]][res[1]][res[2]]=$word
+			$scope.word[res[2]+par.index]=[]
+			break;
+			case 4:
+			$scope[res[0]][res[1]][res[2]][res[3]]=$word
+			$scope.word[res[3]+par.index]=[]
+			break;
+
+		}
+	} else {
+		switch(res.length){
+			case 2:
+			$scope[res[0]][res[1]]=$word
+			$scope.word[res[1]]=[]
+			break;
+			case 3:
+			$scope[res[0]][res[1]][res[2]]=$word
+			$scope.word[res[2]]=[]
+			break;
+			case 4:
+			$scope[res[0]][res[1]][res[2]][res[3]]=$word
+			$scope.word[res[3]]=[]
+			break;
+
+		}
+	}
+	if (par.id!==undefined){
+		$('#'+par.id).parent('div.mdl-textfield').addClass('is-dirty');
+		$('#'+par.id).parent('div.mdl-textfield').addClass('ng-touched');
+		$('#'+par.id).parent('div.mdl-textfield').removeClass('is-invalid');
+
+	}
+
+	if (par.countries){
+		$scope.word['countries']=[]
+	}
+}
 
 
 
@@ -324,61 +400,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
   }
 
 
-  $scope.showAC=function($search,$word){
-    var id=localStorage.getItem("userId");
-    var usertype = localStorage.getItem('userType');
-    res = $search.split(".")
-    $search=res[1]
-    if ($word===undefined){
-      $word=$scope[res[0]][res[1]]
-    }
-    else {
-      $word=$('#'+$word).val()
-    }
-    $table=res[0].toLowerCase()
 
-    if (( $word  !== "undefined" && $word.length>3 &&  $word!=$scope.oldWord)){
-
-     data={ "action":"ACWord", id:id,usertype:usertype,  word:res[1] ,search:$word ,table:$table,pInfo:{user_id:$scope.agent.user_id,agent_id:$scope.agent.id,agency_id:$scope.agent.agency_id,user_type:$scope.agent.user_type,priviledge:$scope.agent.priviledge,cookie:$scope.agent.cookie}}
-      $http.post( SERVICEURL2,  data )
-      .then(function(data) {
-        if(data.data.RESPONSECODE=='1') 			{
-          //$word=$($search.currentTarget).attr('id');
-          $scope.word[$search]=data.data.RESPONSE;
-        }
-        if (data.data.RESPONSECODE=='-1'){
-           localstorage('msg','Sessione Scaduta ');
-           $state.go('login');;;
-        }
-      })
-      , (function() {
-        console.log("error");
-      });
-    }
-    $scope.oldWord= $($search.currentTarget).val()
-  }
-  $scope.resetAC=function(){
-    $scope.word={}
-    $scope.list={}
-    $scope.listOther={}
-    $scope.listCompany={}
-
-
-  }
-  $scope.addWord=function($search,$word){
-    res = $search.split(".")
-    switch(res.length){
-      case 2:
-      $scope[res[0]][res[1]]=$word
-      $scope.word[res[1]]=[]
-      break;
-      case 3:
-      $scope[res[0]][res[1]][res[2]]=$word
-      $scope.word[res[2]]=[]
-      break;
-
-    }
-  }
 	$scope.download = function(Doc,indice) {
 		url=SERVICEDIRURL +"file_down.php?file=" + Doc.doc_image +"&doc_per="+Doc.per+"&per_id="+Doc.per_id+"&isImage="+Doc.isImage+$scope.agent.pInfoUrl
 		if (Doc.isImage){

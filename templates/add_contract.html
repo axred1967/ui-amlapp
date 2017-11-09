@@ -144,7 +144,7 @@
               <input id="value_det" name="value_det"  type="checkbox" class="mdl-checkbox__input" def-setting="value_det" value="0" ng-true-value="'0'" ng-false-value="'1'"
               autocomplete="off" modelAx="Contract.value_det"
                 ng-model="Contract['value_det']"        />
-              <span class="mdl-checkbox__label">{{'Valore non contratto determinabile'|translate}}</span>
+              <span class="mdl-checkbox__label">{{'Valore operazione non determinabile'|translate}}</span>
             </label>
 
           </div>
@@ -205,8 +205,8 @@
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <input class="mdl-textfield__input" type="text" autocomplete="off" id="found_source" name="found_source" minlength="3"  value=" "
         ng-model="Contract.found_source"   minlength="3"
-        ng-keyup="showAC('users.found_source','found_source',{order:1,zero:true});"
-        ng-focus="resetAC();showAC('users.found_source','found_source',{order:1,zero:true})"
+        ng-keyup="showAC('contract.found_source','found_source',{order:1,zero:true});"
+        ng-focus="resetAC();showAC('contract.found_source','found_source',{order:1,zero:true})"
         />
         <label class="mdl-textfield__label" for="found_source">{{'Origine dei fondi' | translate }}*</label>
         <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="found_source">
@@ -229,8 +229,8 @@
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <input class="mdl-textfield__input" type="text" autocomplete="off" id="paymentInstrument" name="paymentInstrument" minlength="3"  value=" "
         ng-model="Contract.paymentInstrument"   minlength="3"
-        ng-keyup="showAC('users.paymentInstrument','paymentInstrument',{order:1,zero:true});"
-        ng-focus="resetAC();showAC('users.paymentInstrument','paymentInstrument',{order:1,zero:true})"
+        ng-keyup="showAC('contract.paymentInstrument','paymentInstrument',{order:1,zero:true});"
+        ng-focus="resetAC();showAC('contract.paymentInstrument','paymentInstrument',{order:1,zero:true})"
         />
         <label class="mdl-textfield__label" for="paymentInstrument">{{'Modalità di pagamento' | translate }}*</label>
         <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="paymentInstrument">

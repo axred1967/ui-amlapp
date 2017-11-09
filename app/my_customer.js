@@ -7,6 +7,8 @@ app2.factory('Customers_inf', function($http,$state) {
     this.CompanyId=-1
     this.Contract={}
     this.pInfo={}
+    this.search=''
+    this.searchThings=''
   };
 
   Customers_inf.prototype.nextPage = function(agent) {
@@ -22,15 +24,15 @@ app2.factory('Customers_inf', function($http,$state) {
       if (agent=='Owners')
         last=this.Customers[lastkey].id;
     }
-    data={"action":"CustomerList",last:last,pInfo:this.pInfo}
+    data={"action":"CustomerList",last:last,search:this.search,searchThings:this.searchThings,pInfo:this.pInfo}
     if (agent)
-    data={"action":"AgentList",last:last,pInfo:this.pInfo}
+    data={"action":"AgentList",last:last,search:this.search,searchThings:this.searchThings,pInfo:this.pInfo}
     if (agent=='Owners'){
       if (isObject(this.Contract))
         appData=this.Contract
       else
         appData=[]
-      data={"action":"OwnersList",company_id:this.CompanyId,last:last,appData:appData,pInfo:this.pInfo}
+      data={"action":"OwnersList",company_id:this.CompanyId,last:last,appData:appData,search:this.search,searchThings:this.searchThings,pInfo:this.pInfo}
     }
 
     $http.post(SERVICEURL2,  data )
@@ -101,6 +103,14 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
   $scope.main.viewName="Le mie Persone"
   $('.mdl-layout__drawer-button').show()
   $scope.main.loader=true
+  $scope.main.state=$state.current.name;
+  $scope.main[$scope.main.state] ={}
+  if ($scope.main.searchText !== undefined && $scope.main.searchText.length>0){
+    $scope.main.hideName=true
+      $scope.main.showSubHeader=true
+  }
+
+  $scope.main[$scope.main.state].subHeader="Cerca"
 
   $scope.Customers_inf=new Customers_inf  //    $scope.datalang = DATALANG;
   $scope.Customers_inf.pInfo=$scope.agent.pInfo
@@ -177,15 +187,33 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
       }
     });
   }
-  $scope.$on('showSubHeader', function(e) {
-    $scope.main.showSubHeader=true
-  })
+
   $scope.$on('backButton', function(e) {
   });
 
   $scope.$on('addButton', function(e) {
     $scope.add_customer()
   })
+
+  $scope.$on('showSubHeader', function(e) {
+    $scope.main[$scope.main.state].showSubHeader=true
+  })
+
+  $scope.$on('searchButton', function(e,args) {
+    $timeout(function() {
+      if (args.click || ($scope.main.searchText.length>2 && $scope.Customers_inf.search!=$scope.main.searchText) || ($scope.main.searchText.length==0 && $scope.Customers_inf.search!=$scope.main.searchText) ){
+        $scope.Customers_inf.search=$scope.main.searchText
+        $scope.Customers_inf.searchThings=$scope.main.searchThings
+        $scope.Customers_inf.last=99999999999
+        $scope.Customers_inf.Customers=[]
+        $scope.Customers_inf.loaded=0
+        $scope.Customers_inf.busy=false
+        $scope.Customers_inf.nextPage()
+
+      }
+   }, 2000);
+  })
+
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {

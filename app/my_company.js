@@ -5,6 +5,8 @@ app2.factory('Companies_inf', function($http) {
     this.after = '';
     this.loaded=0;
     this.pInfo={}
+    this.search=''
+    this.searchThings=''
 
   };
 
@@ -23,7 +25,7 @@ app2.factory('Companies_inf', function($http) {
       last=this.Companies[lastkey].company_id;
     }
 
-    data={"action":"CompanyList",id:id,email:email,usertype:usertype,priviledge:priviledge,last:last,pInfo:this.pInfo}
+    data={"action":"CompanyList",search:this.search,searchThings:this.searchThings,last:last,pInfo:this.pInfo}
     $http.post(SERVICEURL2,  data )
     .then(function(responceData)  {
       if(responceData.data.RESPONSECODE=='1') 			{
@@ -73,6 +75,14 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
   $scope.main.viewName="Le mie Società"
   $scope.main.Sidebar=true
   $('.mdl-layout__drawer-button').show()
+  $scope.main.state=$state.current.name;
+  $scope.main[$scope.main.state] ={}
+  if ($scope.main.searchText !== undefined && $scope.main.searchText.length>0){
+    $scope.main.hideName=true
+      $scope.main.showSubHeader=true
+  }
+
+  $scope.main[$scope.main.state].subHeader="Cerca"
 
 
   $scope.Companies_inf=new Companies_inf
@@ -167,6 +177,26 @@ app2.controller('my_company', function ($scope,$http,$translate,$rootScope,$stat
   $scope.$on('addButton', function(e) {
     $scope.add_company()
   })
+  $scope.$on('showSubHeader', function(e) {
+    $scope.main[$scope.main.state].showSubHeader=true
+  })
+
+  $scope.$on('searchButton', function(e,args) {
+    $timeout(function() {
+      if (args.click || ($scope.main.searchText.length>2 && $scope.Companies_inf.search!=$scope.main.searchText) || ($scope.main.searchText.length==0 && $scope.Companies_inf.search!=$scope.main.searchText) ){
+        $scope.Companies_inf.search=$scope.main.searchText
+        $scope.Companies_inf.searchThings=$scope.main.searchThings
+        $scope.Companies_inf.last=99999999999
+        $scope.Companies_inf.Companies=[]
+        $scope.Companies_inf.loaded=0
+        $scope.Companies_inf.busy=false
+
+        $scope.Companies_inf.nextPage()
+
+      }
+   }, 2000);
+  })
+
   $scope.$on('$viewContentLoaded',
            function(event){
              $timeout(function() {

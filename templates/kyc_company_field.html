@@ -71,13 +71,15 @@
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
     <input class="mdl-textfield__input"  ng-model="Company.fiscal_id"  ng-change="Company.fiscal_id=(Company.fiscal_id| uppercase) "
-    type="text" p ng-required="page.other_data " ng-blur="loadKycData()"
+    type="text" ng-required="true " ng-blur="loadKycData()"
     id="company_fiscal_id" name="company_fiscal_id" />
     <label for="company_fiscal_id" class="mdl-textfield__label">{{ 'PIVA' | translate}}</label>
     <span class="mdl-tooltip mdl-tooltip--validation" for="company_fiscal_id" minlength="3" ng-show="form.company_fiscal_id.$invalid && form.company_fiscal_id.$touched">
       <span ng-show="form.company_fiscal_id.$error.required">{{'Richiesto'|translate}}.</span>
     </div>
   </fieldset>
+  <div ng-if="page.location!='add_contract'">
+
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
     <input class="mdl-textfield__input"   ng-model="Company.address "   type="text"
@@ -131,7 +133,6 @@
     </span>
   </div>
 </fieldset>
-
 
   <fieldset>
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
@@ -218,3 +219,4 @@
           </span>
         </div>
       </fieldset>
+</div>

@@ -423,6 +423,24 @@ app2.directive('backImg', function(){
         });
     };
 });
+/*
+app2.directive('autocompleteAx', [function() {
+    return {
+      restrict: 'A',
+      scope: {
+        dirAgent: '=dirAgent',
+        docs: '=docs',
+        doc: '=doc',
+        dirText: '@',
+        preUploaded:'&',
+        uploadedMFile:'&'
+      },
+      require: '?ngModel',
+
+    }
+
+})
+*/
 app2.directive('uploadmfiles', ['$http','$timeout', function($http) {
   return {
     restrict: 'A',
@@ -759,7 +777,10 @@ app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLo
     $scope.agent.paese= localStorage.getItem("paese");
     $scope.agent.tipo_cliente= localStorage.getItem("tipo_cliente");
   }
+
 // Carico Lista agentdi
+$scope.agentList=[]
+$scope.agentListI=[]
 $scope.loadAgentList=function(){
     settings={table:'agent',id:'agent_id',
               fields:{
@@ -902,7 +923,7 @@ switch (paese){
 
   }
   $scope.checkDirty=function(){
-    if ($scope.main[$scope.main.state].down)
+    if ($scope.main[$scope.main.state].down!==undefined && $scope.main[$scope.main.state].down)
     return;
     $timeout(function(){
       if ($('#searchExCont').hasClass('is-focused')){
@@ -948,7 +969,6 @@ switch (paese){
 //        $scope.$broadcast('searchButton',{click:true} )
   }
   $scope.searchClick=function(){
-    event.preventDefault();
     $scope.$broadcast('searchButton',{click:true} )
 
 //        $scope.$broadcast('searchButton',{click:true} )
