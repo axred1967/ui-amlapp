@@ -779,49 +779,6 @@ app2.controller('personCtrl', function ($scope, $state,$stateParams,tmhDynamicLo
   }
 
 // Carico Lista agentdi
-$scope.agentList=[]
-$scope.agentListI=[]
-$scope.loadAgentList=function(){
-    settings={table:'agent',id:'agent_id',
-              fields:{
-                'j1.name':'name',
-                'j1.surname':'surname',
-              'uno.agent_id':'agent_id'
-              },
-              join:{
-                'j1':{'table':'users',
-                      'condition':'uno.user_id=j1.user_id '
-                    }
-              },
-                  where: {
-                'uno.agency_id':$scope.agent.agency_id
-
-              }, limit:100
-            }
-    data= {"action":"ListObjs",settings:settings,pInfo:$scope.agent.pInfo}
-    $http.post(SERVICEURL2,  data )
-    .then(function(responceData)  {
-      if(responceData.data.RESPONSECODE=='1') 			{
-        data=responceData.data.RESPONSE
-        angular.forEach(data,function(value,key) {
-          $scope.agentListI[data[key]['agent_id']]=data[key]
-        })
-        $scope.agentList=data
-      }
-      else   {
-        if (responceData.data.RESPONSECODE=='-1'){
-          localstorage('msg','Sessione Scaduta ');
-          $state.go('login');;;
-        }
-      }})
-      , (function() {
-        console.log("error");
-      });
-
-
-}
-
-$scope.loadAgentList();
 
 
 
@@ -842,7 +799,7 @@ switch (paese){
     $translate.use('it-IT-avv'); // translati   ons-en-US.json
     break;
     case 'studio notarile':
-    $translate.use('it-IT-notaiIT'); // translati   ons-en-US.json
+    $translate.use('it-IT-notai'); // translati   ons-en-US.json
     break;
     default:
     $translate.use('it-IT'); // translati   ons-en-US.json

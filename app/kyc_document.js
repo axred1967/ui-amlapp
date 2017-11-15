@@ -34,8 +34,9 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 	$scope.main[$scope.main.state].down=true
 	$scope.main[$scope.main.state].arrow='arrow_downward'
 	$scope.main[$scope.main.state].downLabel="Verifica Doc Obbligatori"
-	$scope.main[$scope.main.state].subHeader="Doc Obbligatori"
+	$scope.main[$scope.main.state].subHeader="Doc consigliati"
 	$scope.word={};
+	$scope.main.searchThings.IdDoc=1;
 
 	$scope.imageurl=function(Doc){
 
@@ -117,7 +118,7 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 								if ($scope.precAVDocs[key].doc_name!==undefined){
 									prec=$scope.precAVDocs[key].doc_name
 								}
-								$scope.precAVDocs[key].doc_name= prec+ " - importato da CPU" + data[0].cpu
+								$scope.precAVDocs[key].doc_name= prec+ " - importato da CPU " + data[0].CPU
 						})
 					}
 					else   {
@@ -158,12 +159,42 @@ app2.controller('kyc_document', function ($scope,$http,$state,$translate,$timeou
 		$scope.action="saveKyc"
 	  $scope.main.viewName="Documenti AV"
   }
+	switch ($scope.Contract.riskAassigned){
+		case 'Limitato':
+			$scope.main.searchThings.IdDoc=1;
+			if ($scope.Contract.act_for_other==1)
+			$scope.main.searchThings.Autorizzazioni=1;
 
+		break;
+		case 'Basso':
+		$scope.main.searchThings.IdDoc=1;
+		if ($scope.Contract.act_for_other==1)
+		$scope.main.searchThings.Autorizzazioni=1;
+		$scope.main.searchThings.DocContabili=1;
+
+		break;
+		case 'Medio':
+		$scope.main.searchThings.IdDoc=1;
+		if ($scope.Contract.act_for_other==1)
+		$scope.main.searchThings.Autorizzazioni=1;
+		$scope.main.searchThings.DocContabili=1;
+		$scope.main.searchThings.Ricerche=1;
+
+		break;
+		case 'Alto':
+		$scope.main.searchThings.IdDoc=1;
+		if ($scope.Contract.act_for_other==1)
+		$scope.main.searchThings.Autorizzazioni=1;
+		$scope.main.searchThings.DocContabili=1;
+		$scope.main.searchThings.Ricerche=1;
+		break;
+	}
 	$scope.saveDocs= function (passo){
 		dbData={}
 		dbData.Docs=JSON.stringify($scope.Kyc.Docs )
-
-   data={ "action":"saveKycAx", appData:$scope.Contract,agg:$scope.page.agg,dbData:dbData,pInfo:$scope.agent.pInfo}
+		option={}
+		option.synk_docs=true;
+   data={ "action":"saveKycAx",option:option, appData:$scope.Contract,agg:$scope.page.agg,dbData:dbData,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       if(data.data.RESPONSECODE=='1') 			{

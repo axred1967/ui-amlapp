@@ -1,4 +1,4 @@
-<fieldset ng-show="page.location=='my_company'">
+<fieldset ng-if="page.location=='my_company'">
   <div class="mdl-grid">
     <div class="mdl-cell--3-col-desktop mdl-cell--4-col-phone mdl--cell--4-col-tablet">
 
@@ -35,15 +35,55 @@
   </div>
 
 </fieldset>
+<fieldset>
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+    <input class="mdl-textfield__input"  ng-model="Company.fiscal_id"
+    type="text" ng-required="true " ng-blur="loadKycData()"
+    id="fiscal_id" name="fiscal_id"
+    ng-keyup="showAC('company.fiscal_id','fiscal_id',{zero:true,fields:{'name':'name'},
+    where:{'name':{ 'oprel':'or','valore' :Customer.fiscal_id, 'opcond': 'like', 'pre':'%','post':'%' }}});"
+    ng-focus="showAC('company.fiscal_id','fiscal_id',{zero:true,fields:{'name':'name'},
+    where:{'name':{ 'oprel':'or','valore' :Customer.fiscal_id, 'opcond': 'like', 'pre':'%','post':'%' }}});resetAC()"
 
+
+    />
+    <label for="fiscal_id" class="mdl-textfield__label">{{ 'PIVA' | translate}}</label>
+    <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="fiscal_id">
+      <tbody style="display:table">
+        <tr tabindex="30"
+        ng-click="addWord('Company.fiscal_id',item.word,{id:'fiscal_id'});loadKydData()"
+        my-Enter="addWord('Company.fiscal_id',item.word,{id:'fiscal_id'});loadKydData()"
+        ng-repeat="item in word.fiscal_id">
+          <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+          <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.name}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <span class="mdl-tooltip mdl-tooltip--validation" for="fiscal_id" minlength="3" ng-show="form.fiscal_id.$invalid && form.fiscal_id.$touched">
+      <span ng-show="form.fiscal_id.$error.required">{{'Richiesto'|translate}}.</span>
+    </div>
+  </fieldset>
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
     <input class="mdl-textfield__input"  ng-model="Company.name "  ng-change="Company.name=(Company.name| capitalize)"
-    type="text" ng-required="true" id="company_name" name="company_name"
+    type="text" ng-required="true" id="name" name="name"
+    ng-keyup="showAC('company.name','name',{zero:true});"
+    ng-focus="showAC('company.name','name',{zero:true});resetAC()"
+    ng-focus="resetAC()"
+
     autocomplete="off"/>
-    <label for="company_name" class="mdl-textfield__label">{{ 'Companyname' | translate}}</label>
-    <span class="mdl-tooltip mdl-tooltip--validation" for="company_name" minlength="3" ng-show="form.company_name.$invalid && form.company_name.$touched">
-      <span ng-show="form.company_name.$error.required">{{'Richiesto'|translate}}.</span>
+    <label for="name" class="mdl-textfield__label">{{ 'Companyname' | translate}}</label>
+    <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="fiscal_id">
+      <tbody style="display:table">
+        <tr tabindex="30"
+        ng-click="addWord('Company.name',item.word,{id:'name'});"
+        my-Enter="addWord('Company.name',item.word,{id:'name'});"
+        ng-repeat="item in word.name">
+          <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+        </tr>
+      </tbody>
+    </table>    <span class="mdl-tooltip mdl-tooltip--validation" for="name" minlength="3" ng-show="form.name.$invalid && form.name.$touched">
+      <span ng-show="form.name.$error.required">{{'Richiesto'|translate}}.</span>
     </div>
   </fieldset>
   <fieldset>
@@ -51,7 +91,8 @@
       <input class="mdl-textfield__input" type="text" id="company_type" name="company_type"
       ng-model="Company.company_type"   minlength="3" ng-required="true" autocomplete="off"
       ng-keyup="showAC('company.company_type','company_type',{zero:true});"
-      ng-focus="resetAC();showAC('company.company_type','company_type',{zero:true});" />
+      ng-focus="resetAC();showAC('company.company_type','company_type',{zero:true});"
+       />
       <label class="mdl-textfield__label" for="company_type">{{'Tipologia soggetto giuridico'|translate}} *</label>
       <table class="mdl-data-table mdl-js-data-table  border-none scrolly" autocomplete="company_type" tabindex="30">
         <tbody style="display:table">
@@ -68,25 +109,28 @@
     </span>
   </div>
 </fieldset>
-<fieldset>
-  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-    <input class="mdl-textfield__input"  ng-model="Company.fiscal_id"  ng-change="Company.fiscal_id=(Company.fiscal_id| uppercase) "
-    type="text" ng-required="true " ng-blur="loadKycData()"
-    id="company_fiscal_id" name="company_fiscal_id" />
-    <label for="company_fiscal_id" class="mdl-textfield__label">{{ 'PIVA' | translate}}</label>
-    <span class="mdl-tooltip mdl-tooltip--validation" for="company_fiscal_id" minlength="3" ng-show="form.company_fiscal_id.$invalid && form.company_fiscal_id.$touched">
-      <span ng-show="form.company_fiscal_id.$error.required">{{'Richiesto'|translate}}.</span>
-    </div>
-  </fieldset>
+
   <div ng-if="page.location!='add_contract'">
 
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
     <input class="mdl-textfield__input"   ng-model="Company.address "   type="text"
-    id="company_address" name="company_address" ng-required="true" />
-    <label for="company_address" class="mdl-textfield__label">{{ 'Indirizzo Sede' | translate}}</label>
-    <span class="mdl-tooltip mdl-tooltip--validation" for="company_address" minlength="3" ng-show="form.company_address.$invalid && form.company_address.$touched">
-      <span ng-show="form.company_address.$error.required">{{'Richiesto'|translate}}.</span>
+    id="address" name="address" ng-required="true" autocomplete="off"
+    ng-keyup="showAC('company.address','address',{zero:true});"
+    ng-focus="resetAC();showAC('company.address','address',{zero:true});"
+     />
+    <label for="address" class="mdl-textfield__label">{{ 'Indirizzo Sede' | translate}}</label>
+    <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="address">
+      <tbody style="display:table">
+        <tr tabindex="30"
+        ng-click="addWord('Company.address',item.word,{id:'address'});"
+        my-Enter="addWord('Company.address',item.word,{id:'address'});"
+        ng-repeat="item in word.address">
+          <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+        </tr>
+      </tbody>
+    </table>    <span class="mdl-tooltip mdl-tooltip--validation" for="address" minlength="3" ng-show="form.address.$invalid && form.address.$touched">
+      <span ng-show="form.address.$error.required">{{'Richiesto'|translate}}.</span>
     </div>
   </fieldset>
   <fieldset>
@@ -95,7 +139,7 @@
       ng-model="Company.town"  ng-change="Company.town=(Company.town| capitalize)"
       minlength="3" ng-required="true " autocomplete="off"
       ng-keyup="showAC('company.town','town',{zero:true});"
-      ng-focus="showAC('company.town','town',{zero:true});resetAC()"
+      ng-focus="showAC('company.town','town',{zero:true})"
       />
       <label class="mdl-textfield__label" for="town">{{'Città'|translate}} *</label>
       <table class="mdl-data-table mdl-js-data-table  border-none scrolly" autocomplete="town" >

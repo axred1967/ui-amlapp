@@ -1374,7 +1374,7 @@ svg {
 		font-feature-settings: 'liga';
 		content: "done";
 		position: absolute;
-		right: 0;
+		right: 40px;
 		bottom: 20px;
 }
 /*Basic styles*/
@@ -2256,4 +2256,17 @@ canvas {
 	background:#fff;
 	border:1px solid #1c224b;
 	color:#1c224b;
+}
+.mdl-layout__drawer .mdl-navigation .mdl-navigation__link {
+    padding: 16px 30px;
+}
+input:disabled, textarea:disabled {
+    color: rgb(35, 35, 35) !important;
+}
+.mdl-checkbox.is-disabled .mdl-checkbox__label {
+    color: rgb(35,35,35)!important;
+    cursor: auto;
+}
+.mdl-textfield__label{
+	top:10px;
 }

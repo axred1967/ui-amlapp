@@ -42,7 +42,7 @@
           <fieldset>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
               <input class="mdl-textfield__input" type="date" date-input id="Doc_doc_date" name="Doc_doc_date"
-              value=" "   ng-keyup="showAC($event,'contract');"
+              value=" "   ng-keyup="showAC($event,'contract');" def-setting
               ng-model="Doc.doc_date"   ng-required="true"
               />
               <label class="mdl-textfield__label" for="Contract_contract_value_eov">{{'Data Documento' | translate }}*</label>
@@ -106,9 +106,8 @@
 <label style="    color: #3f51b5;    font-size: 12px;    top: 4px;    visibility: visible;" >{{ 'Trascinali i Documenti qui  o scegli ' | translate }}</label>
 
 
-<div  >
-      <div  ng-repeat="Doc in Docs" ng-init="DocIndex=$index"
-      style="padding:20px" class="mdl-cell--3-col-desktop mdl-cell--12-col-phone mdl-cell--6-col-tablet">
+<div class="mdl-grid"  >
+      <div  ng-repeat="Doc in Docs" ng-init="DocIndex=$index"  style="padding:20px" class="mdl-cell--3-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
         <div class="demo-card-image mdl-card mdl-shadow--2dp">
           <div class="mdl-card__title mdl-card--expand">{{Doc.doc_name}}</div>
 
@@ -126,6 +125,7 @@
       </div>
 </div>
     </fieldset>
+
         <fieldset>
           <div class="center-align" style="margin-top:20px">
             <a id="kyc_button1" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_document()" href="javascript:;">

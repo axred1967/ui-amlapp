@@ -11,15 +11,39 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
       $state.go($scope.page.prev_page)
       return;
     }
+    if (passo==1){
+      if ($scope.print){
+
+      url=PDFURL +'kyc.php?id='+$scope.Contract.contract_id+"&download=Y"+$scope.agent.pInfoUrl
+        var anchor = angular.element('<a/>');
+      	angular.element(document.body).append(anchor);
+      	var ev = document.createEvent("MouseEvents");
+      	ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      	anchor.attr({
+      		href: url,
+      		target: '_blank',
+      		download: 'kyc'+$scope.Contract.contract_id+ '-'+$scope.agent.id+'.pdf'
+      	})[0].dispatchEvent(ev);
+        anchor.remove()
+      }
+        $scope.pages['risk_profile01_sm']={action:'', location:$scope.page.location,prev_page:$state.current.name,temp:null,Contract:$scope.Contract}
+  			localstorage('pages',JSON.stringify($scope.pages))
+        $state.go('risk_profile01_sm',{pages:$scope.pages})
+
+
+    $state.go()
+  }
+  if (passo==0){
     $state.go($scope.page.location)
   }
+}
 
   $scope.main.Back=true
   $scope.main.Add=false
   //		$scope.main.AddPage="add_contract"
   $scope.main.Search=false
   $scope.main.Sidebar=false
-  $scope.main.viewName="Sottoscrizione e Conclusione"
+  $scope.main.viewName="Adeguata Verifica"
   $scope.main.loader=true
   switch ($scope.page.action){
     default:
@@ -45,7 +69,8 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
         //convertDateStringsToDates($scope.Kyc.contractor_data.Docs)
         //convertDateStringsToDates($scope.Kyc.company_data)
         //convertDateStringsToDates($scope.Kyc.owner_data)
-
+        if ( $scope.Kyc.kyc_status==0)
+          $scope.print=true;
         if ($scope.Kyc.contractor_data.sign===undefined)
         $scope.Kyc.contractor_data.sign=""
         else {
@@ -216,6 +241,7 @@ app2.controller('kyc_signature', function ($scope,$http,$state,$translate,$timeo
   }
 
   $scope.$on('backButton', function(e) {
+
     $scope.back()
   });
 

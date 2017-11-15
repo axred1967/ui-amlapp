@@ -3,7 +3,7 @@
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
   <input class="mdl-textfield__input" ng-class="{'imported': imported.address_resi }" type="text" autocomplete="off" id="address_resi" name="address_resi"
   ng-model="Customer.address_resi"  ng-change="Customer.address_resi=(Customer.address_resi| capitalize)" minlength="3"
-  ng-required="page.other_data " ng-class="{'imported': imported.address_resi }"
+  ng-required="true" ng-class="{'imported': imported.address_resi }"
   ng-keyup="showAC('users.address_resi','address_resi',{zero:true});"
   ng-focus="showAC('users.address_resi','address_resi',{zero:true});resetAC()"
   />
@@ -27,7 +27,7 @@
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
   <input class="mdl-textfield__input" ng-class="{'imported': imported.resi_town }" type="text" autocomplete="off" id="resi_town" name="resi_town"
   ng-model="Customer.resi_town"  ng-change="Customer.resi_town=(Customer.resi_town| capitalize)"
-  minlength="3" ng-required="page.other_data "
+  minlength="3" ng-required="true "
   ng-keyup="showAC('users.resi_town','resi_town',{zero:true});"
   ng-focus="showAC('users.resi_town','resi_town',{zero:true});resetAC()"
   />
@@ -50,7 +50,7 @@
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" ng-class="{'imported': imported.resi_country }" type="text" autocomplete="off" id="resi_country" name="resi_country" minlength="3"  value=" "
-    ng-model="Customer.resi_country"   minlength="3"  ng-required="passo==2" def-setting="country"
+    ng-model="Customer.resi_country"   minlength="3"  ng-required="true" def-setting="country"
     ng-keyup="showAC('users.resi_country','resi_country',{countries:true,zero:true});"
     ng-focus="showAC('users.resi_country','resi_country',{countries:true,zero:true});resetAC()"
     />
@@ -152,7 +152,7 @@
 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 <input class="mdl-textfield__input" ng-class="{'imported': imported.main_nationality }" type="text" autocomplete="off" id="main_nationality" name="main_nationality"
 ng-model="Customer.main_nationality"  ng-change="Customer.main_nationality=(Customer.main_nationality| capitalize)"
-minlength="3"   ng-required="{{Customer.check_residence==1}}"
+minlength="3"   ng-required="true"
 ng-keyup="showAC('users.main_nationality','main_nationality',{zero:true});"
 ng-focus="showAC('users.main_nationality','main_nationality',{zero:true});resetAC()"
 />
@@ -179,14 +179,17 @@ ng-focus="showAC('users.main_nationality','main_nationality',{zero:true});resetA
 <div class="mdl-grid">
   <div class="mdl-cell ">
     <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEP-1">
-      <input type="radio" id="PEP-1" ng-model="Customer.check_pep" class="mdl-radio__button" name="PEP" value="1"  >
+      <input type="radio" id="PEP-1" ng-model="Customer.check_pep" class="mdl-radio__button" name="PEP" value="1"  ng-required="true">
       <span class="mdl-radio__label" >{{'dichiara di essere PEP'| translate}}</span>
     </label>
-  </div>
+    <span class="mdl-tooltip mdl-tooltip--validation" for="PEP" ng-show="form.PEP.$invalid && form.PEP.$touched">
+      <span ng-show="form.PEP.$error.required">{{'Richiesto'| translate}}</span>
+    </span>
+   </div>
 
   <div class="mdl-cell">
     <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="PEP-0">
-      <input type="radio" id="PEP-0" ng-model="Customer.check_pep" class="mdl-radio__button" name="PEP" value="0"  checked>
+      <input type="radio" id="PEP-0" ng-model="Customer.check_pep" class="mdl-radio__button" name="PEP" value="0"  checked ng-required="true">
       <span class="mdl-radio__label">{{'Dichiara di Non Essere PEP '| translate}}</span>
     </label>
   </div>
@@ -423,4 +426,15 @@ ng-focus="resetAC();showAC('users.income_source','income_source',{order:1,zero:t
       <span ng-show="form.notes.$error.required">{{'Richiesto'|translate}}.</span>
     </div>
 
+</fieldset>
+<fieldset>
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <label  id="lsendmail" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="sendmail">
+      <input id="sendmail" name="sendmail"  type="checkbox" class="mdl-checkbox__input" def-setting="sendmail" value="1" ng-true-value="1" ng-false-value="0"
+      autocomplete="off" modelAx="Contract.sendmail" ng-click="(Contract.sendmail=='0')  ? Contract.sendmail='1' : Contract.sendmail='0'"
+        ng-checked="Contract.sendmail==1"        />
+      <span class="mdl-checkbox__label">{{'invia mail di notifica al cliente' |translate}}</span>
+    </label>
+
+  </div>
 </fieldset>

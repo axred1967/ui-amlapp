@@ -12,6 +12,23 @@ app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeo
          $state.go($scope.page.prev_page)
          return;
       }
+			if (passo==1){
+				if ($scope.print){
+
+	      url=PDFURL +'risk.php?id='+$scope.Contract.contract_id+"&download=Y"+$scope.agent.pInfoUrl
+	        var anchor = angular.element('<a/>');
+	      	angular.element(document.body).append(anchor);
+	      	var ev = document.createEvent("MouseEvents");
+	      	ev.initMouseEvent("click", true, false, self, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+	      	anchor.attr({
+	      		href: url,
+	      		target: '_blank',
+	      		download: 'kyc'+$scope.Contract.contract_id+ '-'+$scope.agent.id+'.pdf'
+	      	})[0].dispatchEvent(ev);
+	        anchor.remove()
+	      }
+
+			}
       $state.go($scope.page.location)
     }
 
@@ -73,6 +90,9 @@ app2.controller('risk_final_sm', function ($scope,$http,$state,$translate,$timeo
           $scope.PEP="il Cliente si è dichiarato PEP"
 
         }
+				if ($scope.Risk.risk_status==0){
+					$scope.print=true;
+				}
         /*
         if ($scope.Risk.risk_data.Residence.riskCountry==1){
           $scope.Risk.risk_data.riskCalculated="Alto";

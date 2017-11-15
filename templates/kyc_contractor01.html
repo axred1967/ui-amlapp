@@ -1,45 +1,91 @@
-
-
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text" autocomplete="off" id="Customer_name" name="Customer_name"  pattern="[A-Za-zÀ-ž\s]*"
-      ng-class="{'imported': imported.name }" ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="passo==1 "
+    <input class="mdl-textfield__input" type="text" autocomplete="off" id="fiscal_number" name="fiscal_number"
+    ng-model="Customer.fiscal_number" ng-blur="loadKydData()"
+    minlength="3"   ng-required="true"
+    ng-keyup="showAC('users.fiscal_number','fiscal_number',{zero:true,fields:{'concat(name,\' \',surname)':'fullname'},
+    where:{'concat(name,\' \',surname)':{ 'oprel':'or','valore' :Customer.fiscal_number, 'opcond': 'like', 'pre':'%','post':'%' },
+    email:{  'oprel':' or ','valore':Customer.fiscal_number, 'opcond': 'like', 'pre':'%','post':'%' },
+    }});"
+    ng-focus="showAC('users.fiscal_number','fiscal_number',{zero:true,fields:{'concat(name,\' \',surname)':'fullname'},
+    where:{'concat(name,\' \',surname)':{ 'oprel':'or','valore' :Customer.fiscal_number, 'opcond': 'like', 'pre':'%','post':'%' },
+    email:{  'oprel':' or ','valore':Customer.fiscal_number, 'opcond': 'like', 'pre':'%','post':'%' },
+    }});resetAC()"
+    ng-focus="resetAC()"
     />
-    <label class="mdl-textfield__label" for="Customer_name">{{'Name'|translate}} *</label>
-    <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_name" ng-show="form.Customer_name.$invalid && form.Customer_name.$touched">
-      <span ng-show="form.Customer_name.$error.required">{{'Richiesto'| translate}}</span>
+    <label class="mdl-textfield__label" for="fiscal_number">{{'Codice ISS/Codice Fiscale'|translate}} *</label>
+    <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="fiscal_number">
+      <tbody style="display:table">
+        <tr tabindex="30"
+        ng-click="addWord('Customer.fiscal_number',item.word,{id:'fiscal_number'});loadKydData()"
+        my-Enter="addWord('Customer.fiscal_number',item.word,{id:'fiscal_number'});loadKydData()"
+        ng-repeat="item in word.fiscal_number">
+          <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+          <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.fullname}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <span class="mdl-tooltip mdl-tooltip--validation" for="fiscal_number" ng-show="form.fiscal_number.$invalid && form.fiscal_number.$touched">
+      <span ng-show="form.fiscal_number.$error.required">{{'Richiesto'| translate}}</span>
+    </span>
+  </div>
+</fieldset>
+
+<fieldset>
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input class="mdl-textfield__input" type="text" autocomplete="off" id="name" name="name"  pattern="[A-Za-zÀ-ž\s]*"
+      ng-class="{'imported': imported.name }" ng-model="Customer.name"  ng-change="Customer.name=(Customer.name| capitalize)" minlength="3" ng-required="passo==1 "
+      ng-keyup="showAC('users.name','name',{zero:true});"
+      ng-focus="showAC('users.name','name',{zero:true});resetAC()"
+
+
+    />
+    <label class="mdl-textfield__label" for="name">{{'Name'|translate}} *</label>
+    <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="name">
+      <tbody style="display:table">
+        <tr tabindex="30"
+        ng-click="addWord('Customer.name',item.word,{id:'name'})"
+        my-Enter="addWord('Customer.name',item.word,{id:'name'})"
+        ng-repeat="item in word.name">
+          <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <span class="mdl-tooltip mdl-tooltip--validation" for="name" ng-show="form.name.$invalid && form.name.$touched">
+      <span ng-show="form.name.$error.required">{{'Richiesto'| translate}}</span>
     </span>
   </div>
 </fieldset>
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text" autocomplete="off" id="Customer_surname" name="Customer_surname"value=" "  pattern="[A-Za-zÀ-ž\s]*"
+    <input class="mdl-textfield__input" type="text" autocomplete="off" id="surname" name="surname"value=" "  pattern="[A-Za-zÀ-ž\s]*"
     ng-class="{'imported': imported.surname }" ng-model="Customer.surname"  ng-change="Customer.surname=(Customer.surname| capitalize)" minlength="3"
-    ng-required="passo==1 " />
+    ng-required="passo==1 "
+    ng-keyup="showAC('users.surname','surname',{zero:true});"
+    ng-focus="showAC('users.surname','surname',{zero:true});resetAC()"
+
+     />
     <label class="mdl-textfield__label" for=""Customer_surname"">{{'Surname'|translate}} *</label>
-    <span class="mdl-tooltip mdl-tooltip--validation" for="Custome_surname" ng-show="form.Customer_surname.$invalid && form.Customer_surname.$touched">
-      <span ng-show="form.Customer_surname.$error.required">{{'Richiesto'| translate}}</span>
+    <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="surname">
+      <tbody style="display:table">
+        <tr tabindex="30"
+        ng-click="addWord('Customer.surname',item.word,{id:'surname'})"
+        my-Enter="addWord('Customer.surname',item.word,{id:'surname'})"
+        ng-repeat="item in word.surname">
+          <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.word}}</td>
+        </tr>
+      </tbody>
+    </table>
+      <span class="mdl-tooltip mdl-tooltip--validation" for="surname" ng-show="form.surname.$invalid && form.surname.$touched">
+      <span ng-show="form.surname.$error.required">{{'Richiesto'| translate}}</span>
     </span>
   </div>
 </fieldset>
-<fieldset>
-<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-<input class="mdl-textfield__input" type="text" autocomplete="off" id="customer_fiscal_number" name="customer_fiscal_number"
-ng-model="Customer.fiscal_number" ng-blur="loadKydData()"
-minlength="3"   ng-required="passo==2 && ! page.owners"
 
-ng-focus="resetAC()"
-/>
-<label class="mdl-textfield__label" for="customer_fiscal_number">{{'Codice ISS/Codice Fiscale'|translate}} *</label>
-<span class="mdl-tooltip mdl-tooltip--validation" for="customer_fiscal_number" ng-show="form.customer_fiscal_number.$invalid && form.customer_fiscal_number.$touched">
-  <span ng-show="form.customer_fiscal_number.$error.required">{{'Richiesto'| translate}}</span>
-</span>
-</div>
-</fieldset>
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="email" id="Customer_email" name="Customer_email" value=" "
-    ng-class="{'imported': imported.email }" ng-model="Customer.email"  />
+    ng-class="{'imported': imported.email }" ng-model="Customer.email" autocomplete="off" />
     <label class="mdl-textfield__label" for="email">{{'EmailID' | translate}}*</label>
     <span class="mdl-tooltip mdl-tooltip--validation" for="Customer_email" ng-show="form.Customer_email.$invalid && form.Customer_email.$touched">
       <span ng-show="form.Customer_email.$error.required">{{'Richiesta.'| translate}}</span>
@@ -72,7 +118,7 @@ ng-focus="resetAC()"
 </fieldset>
 <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text" autocomplete="off" id="tob" name="tob"  pattern="[A-Za-z\s]*"
+    <input class="mdl-textfield__input" type="text" autocomplete="off" id="tob" name="tob"  
     ng-class="{'imported': imported.birth_town }" ng-model="Customer.birth_town"  ng-change="Customer.birth_town=(Customer.birth_town| capitalize)"
     minlength="3" ng-required="passo==1"
     ng-keyup="showAC('users.birth_town','tob',{zero:true});"
@@ -148,7 +194,7 @@ ng-focus="resetAC()"
     ng-class="{'imported': imported.id_authority_name }" ng-model="Customer.id_authority_name"  ng-change="Kyc.contractor_data.id_authority_name=(Kyc.contractor_data.id_authority_name| capitalize)"
     minlength="3" ng-required="passo==1"
     ng-focus="resetAC();showAC('users.id_authority_name','id_authority_name',{zero:true});"
-    ng-keyup="showAC('users.id_authority_name','id_authority_name',{zero:true});"  />
+    ng-keyup="showAC('users.id_authority_name','id_authority_name',{zero:true });"  />
     <label class="mdl-textfield__label" for="id_authority_name">{{'AuthoritythatreleasedIdentityDocument'|translate}} *</label>
     <table class="mdl-data-table mdl-js-data-table  border-none scrolly " tabindex="30" autocomplete="id_authority_name">
       <tbody style="display:table">
@@ -177,7 +223,7 @@ ng-focus="resetAC()"
   </div>
 </fieldset>                  <fieldset>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="date" date-input id="Kyc_ddoc" name="Kyc_ddoc"
+    <input class="mdl-textfield__input" type="date" date-input id="Kyc_ddoc" name="Kyc_ddoc" ng-blur="setEov()"
     ng-class="{'imported': imported.id_release_date }" ng-model="Customer.id_release_date"   ng-required="passo==1 "
     />
     <label class="mdl-textfield__label" for="Kyc_doi">{{'ReleaseDateofIdentityDocument'|translate}} *</label>

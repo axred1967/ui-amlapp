@@ -160,7 +160,7 @@ app2.controller('my_customer', function ($scope,$http,$translate,$rootScope, $st
     })
     .then((Value) => {
       if (Value) {
-        data={action:'delete',table:'users','primary':'user_id',id:Ob.user_id ,pInfo:$scope.agent.pInfo}
+        data={action:'delete',table:'agency_users','primary':'id',id:Ob.auid ,pInfo:$scope.agent.pInfo}
         $http.post(SERVICEURL2,data)
         .then(function(data){
         if(data.data.RESPONSECODE=='1')

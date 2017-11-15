@@ -1,11 +1,11 @@
 <div class="mdl-layout__header-row" style="height:auto" >
-<div class="mdl-grid" style="width:100%">
+<div  class="mdl-grid" style="width:100%">
   <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
     <label  id="lIdDoc" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="IdDoc">
-      <input id="IdDoc" name="IdDoc"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      <input disabled id="IdDoc" name="IdDoc"  type="checkbox" class="mdl-checkbox__input disabled" value="1" ng-true-value="'1'" ng-false-value="'0'"
       autocomplete="off"  modelAx="main.searchThings.IdDoc" checked ng-click="searchClick()"
-      ng-model="main.searchThings.IdDoc"        />
+      ng-checked="main.searchThings.IdDoc"        />
       <span class="mdl-checkbox__label">{{'Documenti di identità'|translate}}</span>
     </label>
     </div>
@@ -13,9 +13,9 @@
   <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
     <label  id="lDocContabili" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="DocContabili">
-      <input id="DocContabili" name="DocContabili"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      <input disabled id="DocContabili" name="DocContabili"  type="checkbox" class="mdl-checkbox__input disabled" value="1" ng-true-value="'1'" ng-false-value="'0'"
       autocomplete="off"  modelAx="main.searchThings.DocContabili" checked ng-click="searchClick()"
-      ng-model="main.searchThings.DocContabili"        />
+      ng-checked="main.searchThings.DocContabili"        />
       <span class="mdl-checkbox__label">{{'Documenti Contabili'|translate}}</span>
     </label>
     </div>
@@ -23,19 +23,19 @@
   <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
     <label  id="lAutorizzazioni" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="Autorizzazioni">
-      <input id="Autorizzazioni" name="Autorizzazioni"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      <input disabled id="Autorizzazioni" name="Autorizzazioni"  type="checkbox" class="mdl-checkbox__input disabled" value="1" ng-true-value="'1'" ng-false-value="'0'"
       autocomplete="off"  checked ng-click="searchClick()"
-      ng-model="main.searchThings.Autorizzazioni"        />
-      <span class="mdl-checkbox__label">{{'Autorizzazioni'|translate}}</span>
+      ng-checked="main.searchThings.Autorizzazioni"        />
+      <span class="mdl-checkbox__label">{{'Autorizzazioni Sociali'|translate}}</span>
     </label>
   </div>
   </div>
   <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
     <label  id="lRicerche" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="Ricerche">
-      <input id="Ricerche" name="Ricerche"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      <input disabled id="Ricerche" name="Ricerche"  type="checkbox" class="mdl-checkbox__input disabled" value="1" ng-true-value="'1'" ng-false-value="'0'"
       autocomplete="off"  checked ng-click="searchClick()" modelAx="main.searchThings.Ricerche"
-      ng-model="main.searchThings.Ricerche"        />
+      ng-checked="main.searchThings.Ricerche"        />
       <span class="mdl-checkbox__label">{{'Ricerche'|translate}}</span>
     </label>
   </div>
@@ -43,13 +43,16 @@
   <div class="mdl-cell mdl-cell--2-col-desktop mdl-cell--4-col-phone mdl-cell--4-col-tablet">
     <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label pad0">
     <label  id="laltro" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="altro">
-      <input id="altro" name="altro"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
+      <input disabled id="altro" name="altro"  type="checkbox" class="mdl-checkbox__input disabled" value="1" ng-true-value="'1'" ng-false-value="'0'"
       autocomplete="off"  modelAx="main.searchThings.altro" checked ng-click="searchClick()"
-      ng-model="main.searchThings.altro"        />
+      ng-checked="main.searchThings.altro"        />
       <span class="mdl-checkbox__label">{{'Altro'|translate}}</span>
     </label>
   </div>
   </div>
 
+  </div>
+  <div ng-if="! Contract.riskAssigned.length>1" class="mdl-grid" style="width:100%">
+    Valuta il Rischio per avere i suggerimenti a seconda del Rischio.
   </div>
 </div>

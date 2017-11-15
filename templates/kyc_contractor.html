@@ -84,6 +84,8 @@
       <div class="mdl-cell mdl-cell--12-col">
         <h5 style"text-color:red" ng-if="formStatus">{{formStatus}}</h5>
         <form id="form" name="form" action="#" novalidate="">
+
+
           <fieldset ng-show="passo==1 && Kyc.kyc_update.state=='aggiornamento'">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label ">
               <text-angular   class="textwidth100" style="width: 100% !important;" ng-class="{'imported': imported.updatereason }" ng-model="Kyc.kyc_update.updateReasons" ng-required="pass==1 && Kyc.kyc_update.state=='aggiornamento'"
@@ -132,34 +134,9 @@
               </span>
             </div>
           </fieldset>
-<!--
-          <fieldset>
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input class="mdl-textfield__input" type="text" id="Kyc_name" name="Kyc_name"  pattern="[A-Za-z\s]*"
-              ng-model="Kyc.contractor_data.name"  ng-change="Kyc.name=(Kyc.name| capitalize)" minlength="3" ng-required="true"
-              ng-keyup="showAC('users.Kyc_name','Kyc_name',{ob:searchContractor,zero:true});"autocomplete="off"
-              ng-focus="showAC('users.Kyc_name','Kyc_name',{ob:searchContractor,zero:true});resetAC()"
-              />
-              <input type="text" autocomplete="off" ng-model="Kyc.contractor_data.contractor_id" style="display:none" ng-required="true" id="Contractor" name="Contractor" />
 
-              <label class="mdl-textfield__label" for="Kyc_name">{{'Cerca firmatario'|translate}} *</label>
-              <table class="mdl-data-table mdl-js-data-table  border-none scrolly " autocomplete="searchContractor" tabindex="30">
-                <tbody>
-                  <tr ng-click="addWord('Kyc.contractor_data.name',item.name,{res:'Kyc_name',other:[{s:'user_id',d:'Kyc.contractor_data.contractor_id'}],id:'Kyc_name'})"
-                      my-Enter="addWord('Kyc.contractor_data.name',item.name,{res:'Kyc_name',other:[{s:'user_id',d:'Kyc.contractor_data.contractor_id'}],id:'Kyc_name'})"
-                  ng-repeat="item in  word.Kyc_name"  tabindex="30">
-                    <td style="display:none" >{{item.user_id}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.name}}</td>
-                    <td class="mdl-data-table__cell--non-numeric">&nbsp;{{item.email}}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_name" ng-show="form.Kyc_name.$invalid && form.Kyc_name.$touched">
-                <span ng-show="form.Kyc_name.$error.required">{{'Richiesto'| translate}}</span>
-              </span>
-            </div>
-          </fieldset>
--->
+
+
         <div  ui-view="01" ></div>
         <div  ui-view="02" ></div>
 

@@ -377,6 +377,78 @@ function getCountryList(){
   return countryList
 
 }
+function getAgentList(agentListI,agent){
+  var agentList=false
+  agentList=localStorage.getItem('agentList')
+  if (agentList!==null && agentList.length>0){
+    agentList=IsJsonString(agentList)
+    agentListI=IsJsonString(localStorage.getItem('agentListI'))
+    return agentList
+
+  }
+  else{
+    settings={table:'agent',id:'agent_id',
+              fields:{
+                'j1.name':'name',
+                'j1.surname':'surname',
+              'uno.agent_id':'agent_id'
+              },
+              join:{
+                'j1':{'table':'users',
+                      'condition':'uno.user_id=j1.user_id '
+                    }
+              },
+                  where: {
+                'uno.agency_id':agent.agency_id
+
+              }, limit:100
+            }
+    $.ajax ({
+      type: "POST",
+      async:false,
+      url: SERVICEURL,
+      data: {"action":"ListObjs",settings:settings,pInfo:agent.pInfo},
+      crossDomain: true,
+      success:function(data){
+        //  alert(data);
+        data=JSON.parse(data);
+        agentList=data.RESPONSE
+        angular.forEach(agentList,function(value,key) {
+          agentListI[agentList[key]['agent_id']]=agentList[key]
+        })
+        localstorage('agentList',JSON.stringify(agentList))
+        localstorage('agentListI',JSON.stringify(agentListI))
+
+      }
+    });
+    return agentList
+
+  }
+
+
+
+}
+function createTempContract(agent,contract){
+   var contract
+    $.ajax ({
+      type: "POST",
+      async:false,
+      url: SERVICEURL,
+      data: {"action":"add_temp_contract",settings:settings,contract:contract,pInfo:agent.pInfo},
+      crossDomain: true,
+      success:function(data){
+        //  alert(data);
+        data=JSON.parse(data);
+        contract=data.RESPONSE
+
+      }
+    });
+    return contract
+
+
+
+
+}
 function resize_img(){
   /*    $('.demo-card-image img.loadImg').each(function() {
   $(this).removeAttr('style');
@@ -484,6 +556,7 @@ function setDefaults($scope){
       if (ngm===undefined){
         ngm=$(this).attr('ng-model')
       }
+
 
       if (typeof ngm !== typeof undefined && ngm !== false){
         var $val

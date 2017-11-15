@@ -17,6 +17,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
     $scope.main.loader=true
 		$scope.aggKyc=false;
 		$scope.showContOcc=true
+		$scope.agentList=getAgentList($scope.agentListI,$scope.agent)
 
 // memorizzo i dati
 		$interval(function(){
@@ -34,6 +35,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
      switch ($scope.page.action){
        case 'edit' :
        $scope.action='edit'
+
        $scope.main.viewName="Modifica Contratto"
        break;
 
@@ -41,8 +43,12 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
        $scope.action='add'
        $scope.main.viewName="Nuovo Contratto"
        $scope.Contract={}
-
-
+       break;
+			 case 'add_contract_kyc' :
+       $scope.action='edit'
+			 $scope.mode="kyc"
+       $scope.main.viewName="Adeguata Verifica"
+       $scope.Contract=$scope.page.Contract
        break;
        default :
        $scope.main.viewName="Nuovo Contratto"
@@ -71,7 +77,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 		 }
 		 $scope.setEoC=function(){
 			 oggi=new Date()
-			 if ($scope.Contract!==undefined && $scope.Contract.contract_date!==undefined && ( $scope.Contract.contract_eov===null)) {
+			 if ($scope.Contract!==undefined &&    $scope.Contract.contract_date!==undefined &&    $scope.Contract.contract_date!==null && ( scope.Contract.contract_eov===undefined || $scope.Contract.contract_eov===null)) {
 				 Object.assign(oggi,$scope.Contract.contract_date)
 		     oggi.setFullYear(oggi.getFullYear()+10)
 		     $scope.Contract.contract_eov=oggi
@@ -79,50 +85,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
 	   }
 
-		 $scope.toogle=function(o){
-			 o = o.split(".")
-			 switch (o.length){
-				 case 1:
-				 $val= $scope[o[0]]
-				 if ($val==1){
-					 $scope[o[0]]=0;
-				 }
-				 else{
-					 $scope[o[0]]=1;
-				 }
-				 break;
-				 case 2:
-				 $val= $scope[o[0]][o[1]]
-				 if ($val==1){
-					 $scope[o[0]][o[1]]=0;
-				 }
-				 else{
-					 $scope[o[0]][o[1]]=1;
-				 }
-				 break;
-				 case 3:
-				 $val= $scope[o[0]][o[1]][o[2]]
-				 if ($val==1){
-					 $scope[o[0]][o[1]][o[2]]=0
-				 }
-				 else{
-					 $scope[o[0]][o[1]][o[2]]=1;
-				 }
-				 break;
-				 case 4:
-				 $val= $scope[o[0]][o[1]][o[2]][o[3]]
-				 if ($val==1){
-					 $scope[o[0]][o[1]][o[2]][o[3]]=0
-				 }
-				 else{
-					 $scope[o[0]][o[1]][o[2]][o[3]]=1;
-				 }
-				 break;
 
-			 }
-
-
-		 }
 		 $scope.changeProcura=function(){
 			 if ($scope.Contract.procura){
 				 $scope.$broadcast('procuratore')
@@ -151,9 +114,9 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
        $scope.oldContrator=$scope.searchContractor
      }
      $scope.showCompanyList=function(){
-       if (( $scope.oldCompany!=$scope.Contract.name)){
+       if (( $scope.oldCompany!=$scope.Contract.owner)){
 
-        data={ "action":"ACCompanyList", name:$scope.Contract.name,pInfo:$scope.agent.pInfo}
+        data={ "action":"ACCompanyList", name:$scope.Contract.owner,pInfo:$scope.agent.pInfo}
          $http.post( SERVICEURL2,  data )
          .then(function(data) {
            if(data.data.RESPONSECODE=='1') 			{
@@ -249,7 +212,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
      };
      $scope.addCompanyItem=function(company){
        $scope.listCompany=[];
-       $scope.Contract.name=company.name;
+       $scope.Contract.owner=company.owner;
        $scope.Contract.company_id=company.company_id;
      };
      $scope.addOtherItem=function(other){
@@ -261,7 +224,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
 
 
-  $scope.add_contract=function(){
+  $scope.add_contract=function(passo){
 		event.preventDefault()
     //       add_contract($scope.action);
     var langfileloginchk = localStorage.getItem("language");
@@ -308,9 +271,12 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
       {
         $scope.contract=[]
         //swal("",data.data.RESPONSE);
-        $lastid=data.lastid
+        $scope.lastid=data.data.lastid
+				if ($scope.Contract.CPU=='in preparazione'){
+					$scope.Contract.CPU=data.data.CPU
+				}
 
-        $scope.back()
+        $scope.back(passo)
 
       }
       else      {
@@ -375,7 +341,56 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 
 
 
-		$scope.back=function(){
+		$scope.back=function(passo){
+			if ($scope.mode=="kyc"  ){
+
+				$scope.pages[$scope.page.location].Contract=$scope.Contract
+			switch (passo){
+				case 0:
+					$state.go($scope.page.location,{pages:$scope.pages})
+					return
+				break
+				case -1:
+				$scope.pages['kyc_contractor.02']={action:'',location:$scope.page.location,prev_page:'kyc_contractor.01',Contract:$scope.Contract,agg:$scope.page.agg}
+				localstorage('pages', JSON.stringify($scope.pages));
+				$state.go('kyc_contractor.02'  ,{pages:$scope.pages})
+				return;
+				break;
+				case 1:
+				next="kyc_document"
+				switch($scope.Contract.act_for_other){
+					case '1':
+					next="kyc_company"
+					break;
+					case '2':
+					next="kyc_owners"
+					default:
+				}
+				$scope.pages[next]={action:'',location:$scope.page.location,prev_page:$state.current.name,Contract:$scope.Contract,agg:$scope.page.agg}
+				localstorage('pages', JSON.stringify($scope.pages));
+				$state.go(next  ,{pages:$scope.pages})
+				return
+				break;
+			}
+		}
+
+/*
+			if (passo==1 && $scope.page.action=="add_contract"){
+				$scope.pages={currentObId:$scope.lastid,currentOb:'contract'}
+				$scope.pages['view_contract']={action:'view', location:"my_contract",Contract:$scope.Contract}
+				$scope.pages['kyc_contractor.01']={action:'', user_id:$scope.Contract.contractor_id,location:'view_contract',temp:null}
+				localstorage('pages',JSON.stringify($scope.pages))
+				$state.go('kyc_contractor.01',{pages:$scope.pages})
+				return
+			}
+			if ( $scope.page.action=="add_contract"){
+				$scope.pages={currentObId:$scope.lastid,currentOb:'contract'}
+				$scope.pages['view_contract']={action:'view', location:$state.current.name,Contract:$scope.Contract}
+				localstorage('pages',JSON.stringify($scope.pages))
+				$state.go('view_contract',{pages:$scope.pages})
+				return
+			}
+*/
 	    $state.go($scope.page.location,{pages:$scope.pages})
 	  }
 		$scope.$on('backButton', function(e) {

@@ -7,7 +7,7 @@ app2.controller('add_owners', function ($scope,$http,$state,$translate,$timeout,
 	}
 	$scope.page=$scope.pages[$state.current.name]
 	if ($scope.page.location.substr(0,3)=='kyc')
-		$scope.searchKyc=true;
+		//$scope.searchKyc=true;
 
   $scope.main.loader=true
   $scope.main.Back=true
@@ -386,13 +386,13 @@ $scope.addWord=function($search,$word,par){
 
 $scope.setEov=function(){
 		oggi=new Date()
-		if ($scope.Customer!==undefined && $scope.Customer.id_release_date!==undefined && ( $scope.Contract.id_validity===null)) {
-			Object.assign(oggi,$scope.Customer.id_release_date)
+		if ($scope.Customer!==undefined &&  $scope.Customer.id_release_date!==undefined &&  $scope.Customer.id_release_date!==null && ( $scope.Contract.id_validity===null)) {
+			oggi=new Date($scope.Customer.id_release_date)
 			oggi.setFullYear(oggi.getFullYear()+5)
 			$scope.Contract.id_validity=oggi
 		}
 
-	
+
 }
 $scope.other=function(){
   if($scope.page.other_data)

@@ -15,7 +15,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 	$scope.main.Back=true
 	$scope.main.Add=true
 	$scope.main.AddPage="add_contract"
-	$scope.main.AddLabel="Nuovo Contratto"
+	$scope.main.AddLabel="Nuova AV"
 	$scope.main.action="add_contract"
 	$scope.main.Search=false
 	$scope.main.Sidebar=false
@@ -50,22 +50,32 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 			$('#loader_img').hide();
 			if(responceData.data.RESPONSECODE=='1') 			{
 				var data=responceData.data.RESPONSE;
-				data.Owner=data.fullname
-				data.contractor_name=data.fullname
-
+				if (data.firmatario===undefined || data.firmatario==null || data.firmatario.trim().length==0){
+					data.firmatario=data.fullname
+				}
+				data.fullname=data.firmatario
+				data.Owner=data.firmatario
+				data.contractor_name=data.firmatario
 				if (data.act_for_other==1){
-					data.contractor_name=data.fullname
-					data.fullname=data.name
-					data.Owner=data.name
+					if (data.owner===undefined || data.owner==null || data.owner.trim().length==0){
+						data.owner=data.name
+					}
+					data.fullname=data.owner
+					data.Owner=data.owner
 				}
 				if (data.act_for_other==2){
-					data.contractor_name=data.fullname
-					data.fullname=data.other_name
-					data.Owner=data.other_name
+					if (data.owner===undefined || data.owner==null || data.owner.trim().length==0){
+						data.owner=data.other_name
+					}
+					data.fullname=data.owner
+					data.Owner=data.owner
 				}
+
         data.kyc_update=IsJsonString(data.kyc_update)
 				data.risk_update=IsJsonString(data.risk_update)
 				$scope.Contract=data;
+				$scope.pages[$state.current.name].Contract=$scope.Contract
+
 				$scope.loader=false;
 
 			}
@@ -89,7 +99,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 		edit_risk_account(id)
 	};
 	$scope.edit_contract = function(){
-		$scope.pages['add_contract']={action:'edit', location:$state.current.name,temp:$scope.Contract}
+		$scope.pages['add_contract']={action:'edit', location:$state.current.name,prev_page:$state.current.name,temp:$scope.Contract,view:true}
 		localstorage('pages',JSON.stringify($scope.pages))
 		$state.go('add_contract',{pages:$scope.pages})
 	};
@@ -119,6 +129,7 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 		$state.go('agg_kyc',{pages:$scope.pages})
 	};
 	$scope.owners = function(){
+
 		$scope.pages['kyc_owners']={action:'', company_id:$scope.Contract.company_id,location:$state.current.name,Contract:$scope.Contract,view:true}
 		localstorage('pages',JSON.stringify($scope.pages))
 		$state.go('kyc_owners',{pages:$scope.pages})
@@ -135,10 +146,15 @@ app2.controller('view_contract', function ($scope,$http,$translate,$state,$rootS
 		$state.go('kyc_company',{pages:$scope.pages})
 	};
 	$scope.add_contract = function(){
+		pages={'kyc_contractor.01':{action:'add_contract', location:$state.current.name},currentOb:'contract'}
+		localstorage('pages',JSON.stringify(pages))
+		$state.go('kyc_contractor.01',{pages:pages})
 		//localstorage('add_contract',JSON.stringify({action:'add_contract',location:$scope.curr_page}))
+		/*
 		$scope.pages['add_contract']={action:'add_contract', location:'home',temp:null}
 		localstorage('pages',JSON.stringify($scope.pages))
 		$state.go('add_contract',{pages:$scope.pages})
+		*/
 	};
 
 	$scope.edit_risk = function(){

@@ -7,17 +7,20 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout
 		}
 		$scope.page=$scope.pages[$state.current.name]
     $scope.back=function(passo){
+			$scope.Contract.Owner=$scope.Company.name;
+			$scope.pages[$scope.page.location].Contract=$scope.Contract
       if (passo>0){
+				$scope.pages[$scope.page.prev_page].temp=$scope.Contract
         $scope.pages['kyc_owners' ]={action:'',location:$scope.page.location,prev_page:$state.current.name,agg:$scope.page.agg}
         localstorage('pages', JSON.stringify($scope.pages));
         $state.go('kyc_owners' ,{pages:$scope.pages})
         return;
       }
       if (passo==-1){
-         $state.go($scope.page.prev_page)
+         $state.go($scope.page.prev_page,{pages:$scope.pages})
          return;
       }
-      $state.go($scope.page.location)
+      $state.go($scope.page.location,{pages:$scope.pages})
     }
 
   $scope.main.Back=true
@@ -104,7 +107,7 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout
 
 
   $scope.loadItem()
-	$scope.fillKydData=function(){
+	$scope.fillKycData=function(){
 		$scope.Company=$scope.kyc_data;
 		setDefaults($scope);
 
@@ -191,7 +194,9 @@ app2.controller('kyc_company', function ($scope,$http,$state,$translate,$timeout
 		dbData.company_data=JSON.stringify(angular.extend({},$scope.Kyc_company_data,$scope.Company))
 
     $scope.main.loader=true
-   data={ "action":"saveKycAx", appData:$scope.Contract,agg:$scope.page.agg,dbData:dbData,pInfo:$scope.agent.pInfo}
+		option={}
+		option.synk_company=true;
+   data={ "action":"saveKycAx", option:option,appData:$scope.Contract,agg:$scope.page.agg,dbData:dbData,pInfo:$scope.agent.pInfo}
     $http.post( SERVICEURL2,  data )
     .then(function(data) {
       $scope.main.loader=false

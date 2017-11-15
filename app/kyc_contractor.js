@@ -15,8 +15,9 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 		}
 
     $scope.back=function(passo){
-      if ($scope.passo==1 && passo>0){
-        $scope.pages['kyc_contractor.02']={action:'',passo:passo, location:$scope.page.location,prev_page:$state.current.name,temp:null,view:$scope.page.view}
+				if ($scope.passo==1 && passo>0){
+				$scope.pages[$scope.page.location].Contract=$scope.Contract
+        $scope.pages['kyc_contractor.02']={action:'',passo:passo, Contract:$scope.Contract,location:$scope.page.location,prev_page:$state.current.name,temp:null,view:$scope.page.view}
         localstorage('pages', JSON.stringify($scope.pages));
 				$scope.main.loader=false
 				$scope.passo++
@@ -26,6 +27,8 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 	        return;
       }
 			if ($scope.passo==2 && passo>0){
+				next="add_contract"
+				/*
 				next="kyc_document"
 				switch($scope.Kyc.contract_data.act_for_other){
 					case '1':
@@ -35,7 +38,8 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 					next="kyc_owners"
 					default:
 				}
-				$scope.pages[next]={action:'',location:$scope.page.location,prev_page:$state.current.name,agg:$scope.page.agg}
+				*/
+				$scope.pages[next]={action:'add_contract_kyc',location:$scope.page.location,prev_page:$state.current.name,Contract:$scope.Contract,agg:$scope.page.agg}
 				localstorage('pages', JSON.stringify($scope.pages));
 				$state.go(next  ,{pages:$scope.pages})
 				return;
@@ -71,19 +75,27 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 		'fiscal_number':'uno.fiscal_number'
 	}
 
-
+ $scope.action="saveKyc"
  switch ($scope.page.action){
+	 		case 'add_contract':
+					$scope.Contract={}
+					$scope.Contract.CPU="in Preparazione"
+					$scope.Contract.Owner='in inserimento'
+					$scope.Kyc={}
+					$scope.Kyc.contractor_data={}
+
+			break;
       default:
 			$scope.Contract=$scope.page.Contract
 			if ($scope.Contract===undefined){
 				$scope.Contract=$scope.pages[$scope.page.location].Contract
 
 			}
-			    $scope.action="saveKyc"
 
 
     }
     $scope.loadItem=function(){
+
       appData=$scope.Contract
       data={"action":"kycAx",appData:appData,agg:$scope.page.agg,pInfo:$scope.agent.pInfo}
       $scope.main.loader=true
@@ -171,6 +183,31 @@ app2.controller('kyc_contractor', function ($scope,$http,$state,$translate,$time
 
 
     }
+		$scope.showContractorList=function(){
+	    if ((typeof $scope.Kyc.fullname !== "undefined" && $scope.oldContrator!=$scope.Kyc.fullname)){
+	     data={ "action":"ACCustomerList", name:$scope.Kyc.fullname,kyc:$scope.searchKyc,pInfo:$scope.agent.pInfo}
+	      $http.post( SERVICEURL2,  data )
+	      .then(function(data) {
+	        if(data.data.RESPONSECODE=='1') 			{
+	          $scope.list=data.data.RESPONSE;
+	        }
+	        if (data.data.RESPONSECODE=='-1'){
+	           localstorage('msg','Sessione Scaduta ');
+	           $state.go('login');;;
+	        }
+	      })
+	      , (function() {
+	        console.log("error");
+	      });
+	    }
+	    $scope.oldContrator=$scope.searchContractor
+	  }
+	  $scope.addContractorItem=function(id, name){
+	    $scope.list=[];
+	    $scope.Owner.fullname=name;
+	    $scope.Owner.user_id=id;
+			$scope.loadItem()
+	  };
     // gestisco il salvataggio automatico
     // memorizzo i dati
 /*
@@ -241,8 +278,9 @@ $scope.fillKycData=function(){
 
  }
 
+		if ($scope.page.action!='add_contract')
+			$scope.loadItem()
 
-		$scope.loadItem()
 		$scope.loadCustomer=function(){
 			ob={}
 			ob.settings={}
@@ -285,6 +323,7 @@ $scope.fillKycData=function(){
 	  }
 
     $scope.save_kyc= function (passo){
+			event.preventDefault()
 			if (passo==1){
 				$scope.back(passo)
 			}
@@ -304,13 +343,24 @@ $scope.fillKycData=function(){
         console.log($scope.data);
       }
       var langfileloginchk = localStorage.getItem("language");
+			if ($scope.page.action=='add_contract' && !$scope.Contract.contract_id>0){
+				$scope.Contract.firmatario=$scope.Customer.name +" "+$scope.Customer.surname;
+				$scope.Contract=createTempContract($scope.agent,$scope.Contract);
+				$scope.Contract.Owner=$scope.Contract.firmatario
+			}
 			dbData={}
 			dbData.place_of_identification=$scope.Kyc.place_of_identification
 			dbData.date_of_identification=$scope.Kyc.date_of_identification
 			dbData.kyc_update=JSON.stringify($scope.Kyc.kyc_update)
 
 			dbData.contractor_data=JSON.stringify(angular.extend($scope.Kyc.contractor_data,$scope.Customer))
-     data={ "action":"saveKycAx", agg:$scope.page.agg, appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
+			option={}
+			option.synk_user=false;
+			if ($scope.passo==2){
+				option.synk_user=true;
+			}
+
+     data={ "action":"saveKycAx", option:option,agg:$scope.page.agg, appData:$scope.Contract,dbData:dbData,pInfo:$scope.agent.pInfo}
       $http.post( SERVICEURL2,  data )
       .then(function(data) {
         //$scope.loader=false
@@ -417,19 +467,17 @@ $scope.fillKycData=function(){
 	      $scope.word['countries']=[]
 	    }
 	  }
-		$scope.setEov=function(){
-				$scope.dataChange=true
-		}
+
 
 
 		$scope.setEov=function(){
-			if (isObject($scope.Customer.id_release_date)){
-				d=$scope.Customer.id_release_date
-		    d.setFullYear(d.getFullYear()+5)
-				if ($scope.dataChange)
-		    	$scope.Customer.id_validity=d
-
+			oggi=new Date()
+			if ($scope.Customer!==undefined &&    $scope.Customer.id_release_date!==undefined &&  $scope.Customer.id_release_date!==null && ( $scope.Customer.id_validity===undefined || $scope.Customer.id_validity===null)) {
+				oggi = new Date($scope.Customer.id_release_date)
+			  oggi.setFullYear(oggi.getFullYear()+10)
+				$scope.Customer.id_validity=oggi
 			}
+
 	  }
 
   $scope.$on('backButton', function(e) {

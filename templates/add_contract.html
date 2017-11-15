@@ -1,5 +1,34 @@
 <div  class="mdl-card card-ax">
+  <table  align="center" class="tview mdl-data-table mdl-js-data-table  mdl-shadow--2dp">
+    <tbody>
+      <tr>
+        <td  >
+          <button  id="profile"  class="center mdl-button mdl-js-button  mdl-button--colored azure">
+                <i class="material-icons">reorder</i>
+          </button>
 
+        </td>
+        <td style="text-align:left;font-size:16px"class="azure"><b>{{'Dati Contratto' |translate}} {{passo}}</b></td>
+
+      </tr>
+      <tr>
+        <td  >{{'CPU' | translate}} :</td>
+        <td class="blue">{{Contract.CPU}}</td>
+
+      </tr>
+      <tr>
+        <td  >{{'Cliente' | translate}} :</td>
+        <td class="blue" style="font-size:24px;"><b>{{Contract.Owner}}</b></td>
+
+      </tr>
+      <tr ng-show="Contract.act_for_other>0">
+        <td  >{{'Firmatario' | translate}} :</td>
+        <td class="orange">{{Contract.contractor_name}}</td>
+
+      </tr>
+  </tbody>
+  </table>
+<br/>
 <div class="mdl-card mdl-shadow--2dp">
   <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--12-col">
@@ -75,7 +104,7 @@
 
           </div>
         </fieldset>
-        <fieldset ng-show="agent.priviledge==1 || agent.id==-1">
+        <fieldset ng-if="agent.priviledge==1 || agent.id==-1">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" autocomplete="off" id="CPU" name="CPU" minlength="3"  value=" "
             ng-model="Contract.CPU "   minlength="3" autocomplete="off"
@@ -118,15 +147,15 @@
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <label  id="lend_det" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="end_det">
               <input id="end_det" name="end_det"  type="checkbox" class="mdl-checkbox__input" value="0" ng-true-value="'0'" ng-false-value="'1'"
-              autocomplete="off" def-setting="end_det" modelAx="Contract.end_det"
-              ng-model="Contract['end_det']"        />
+              autocomplete="off" def-setting="end_det"modelAx="Contract.end_det" ng-click="(Contract.end_det=='1')  ? Contract.end_det='0' : Contract.end_det='1'"
+              ng-checked="Contract.end_det=='0'"        />
               <span class="mdl-checkbox__label">{{'Fine non validità determinabile'|translate}}</span>
             </label>
 
           </div>
         </fieldset>
 
-        <fieldset ng-show="Contract.tipo_contratto==0 && Contract.end_det==1">
+        <fieldset ng-show="Contract.tipo_contratto==0 && Contract.end_det=='1'">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="date" date-input id="Contract_contract_eov" name="Contract_contract_eov" minlength="3"  value=" "
             ng-model="Contract.contract_eov"    autocomplete="off"
@@ -141,16 +170,16 @@
         <fieldset>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <label  id="lvalue_det" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="value_det">
-              <input id="value_det" name="value_det"  type="checkbox" class="mdl-checkbox__input" def-setting="value_det" value="0" ng-true-value="'0'" ng-false-value="'1'"
-              autocomplete="off" modelAx="Contract.value_det"
-                ng-model="Contract['value_det']"        />
+              <input id="value_det" name="value_det"  type="checkbox" class="mdl-checkbox__input" def-setting="value_det" value="0" ng-true-value="0" ng-false-value="1"
+              autocomplete="off" modelAx="Contract.value_det" ng-click="(Contract.value_det=='1')  ? Contract.value_det='0' : Contract.value_det='1'"
+                ng-checked="Contract.value_det==0"        />
               <span class="mdl-checkbox__label">{{'Valore operazione non determinabile'|translate}}</span>
             </label>
 
           </div>
         </fieldset>
 
-        <fieldset id="sheconomicVal" ng-show="Contract.value_det==1">
+        <fieldset id="sheconomicVal" ng-show="Contract.value_det=='1'">
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input ng-currency class="mdl-textfield__input" type="text" autocomplete="off" id="Contract_contract_value" name="Contract_contract_value" minlength="3"  value=" "
             ng-model="Contract.contract_value"   minlength="3" autocomplete="off"
@@ -164,19 +193,7 @@
         </fieldset>
 
         <fieldset>
-<!--
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-            <select ng-model="Contract.activity_country" class="mdl-textfield__input" placeholder="{{'Paese dove si svolge operazione' | translate}}"
-            ng-required="page.other_data "
-            id="Contract_activity_country" name="Contract_activity_country">
-            <option ng-repeat="option in countryList" value="{{option.country_id}}">{{option.country_name}}</option>
-          </select>
-          <label class="mdl-textfield__label" for="Contract_activity_country">{{'Paese dove si svolge operazione'|translate}} *</label>
-          <span class="mdl-tooltip mdl-tooltip--validation" for="Kyc_name" ng-show="form.Contract_activity_country.$invalid && form.Contract_activity_country.$touched">
-            <span ng-show="form.Contract_activity_country.$error.required">{{'Richiesto'| translate}}</span>
-          </span>
-        </div>
--->
+
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="text" autocomplete="off" id="activity_country" name="activity_country" minlength="3"  value=" "
           ng-model="Contract.activity_country"   minlength="3" autocomplete="off" ng-required="true" def-setting="country"
@@ -312,15 +329,15 @@
       </div>
       </fieldset>
 -->
-      <fieldset>
+      <fieldset ng-if="1==0 && mode!='kyc'">
         <div class="gridAx">
           <div class="gridAx-item70">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
               <input class="mdl-textfield__input" ng-keyup="showContractorList();"
-              ng-model="Contract.contractor_name"  type="text" autocomplete="off"
+              ng-model="Contract.firmatario"  type="text" autocomplete="off"
               ng-focus="showContractorList();resetAC()"
               id="searchContractor" name="searchContractor" ng-required="true" />
-              <input type="text" autocomplete="off" ng-model="Contract.contractor_id" style="display:none" ng-required="true" id="Contractor" name="Contractor" />
+              <input type="text" autocomplete="off" ng-model="Contract.contractor_id" style="display:none" ng-required="false" id="Contractor" name="Contractor" />
               <label  for="searchContractor" class="mdl-textfield__label" >{{'Cerca Firmatario' | translate }}</label>
               <table class="mdl-data-table mdl-js-data-table  border-none scrolly " autocomplete="searchContractor" tabindex="30">
                 <tbody>
@@ -350,6 +367,7 @@
         </div>
 
         </fieldset>
+
         <div ng-focus="resetAC()" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo" style="margin-top:5px;">
 
           <div class="mdl-grid">
@@ -375,11 +393,8 @@
           </div>
         </div>
 
-        <fieldset>
-          <div id="show_Role" style="width:100%" ng-show="Contract.act_for_other>0">
+        <fieldset ng-if="Contract.act_for_other>0">
 
-            <div class="gridAx">
-              <div class="gridAx-item100">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
               <input class="mdl-textfield__input" type="text" autocomplete="off" ng-model="Contract.role_for_other" ng-keyup="showAC('Contract.role_for_other','role_for_other',{zero:true});"
               id="role_for_other" name="role_for_other"  ng-required="Contract.act_for_other>0" autocomplete="off"
@@ -397,8 +412,9 @@
                 <span ng-show="form.role_for_other.$error.required">{{'Richiesto'|translate}}.</span>
               </span>
               </div>
-            </div>
-            <div  class="gridAx-item  " style="padding-right:16px;">
+          </fieldset>
+          <fieldset ng-if="Contract.act_for_other==1">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                 <label  id="lprocura" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="procura">
                   <input id="procura" name="procura"  type="checkbox" class="mdl-checkbox__input" value="1" ng-true-value="'1'" ng-false-value="'0'"
                   autocomplete="off"
@@ -406,24 +422,22 @@
                   <span class="mdl-checkbox__label">{{'Censisci deleghe sociali'|translate}}</span>
                 </label>
             </div>
-
-            </div>
           </fieldset>
 
-          <fieldset>
+          <fieldset ng-if="1==0 && mode!='kyc'">
 
             <div id="show_forCompany" ng-show="Contract.act_for_other==1" style="width:100%">
               <div class="gridAx">
                 <div class="gridAx-item70">
                   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
                     <input class="mdl-textfield__input" ng-keyup="showCompanyList();"
-                    ng-model="Contract.name" autocomplete="off"
+                    ng-model="Contract.owner" autocomplete="off"
                     type="text" autocomplete="off" placeholder=" {{'SearchCompanyByEmail' | translate }}"
                     ng-focus="showCompanyList();resetAC()"
                     id="FindCompany" name="FindCompany" ng-required=" {{Contract.act_for_other==1}}" />
                     <input ng-model="Contract.company_id" autocomplete="off"
                     type="text" style="display:none" id="Company" name="Company"
-                    ng-required="Contract.act_for_other==1"/>
+                    ng-required="false"/>
                     <label class="mdl-textfield__label" for="FindCompany" >{{'SearchCompanyByEmail' | translate }}</label>
                     <table class="mdl-data-table mdl-js-data-table  border-none  scrolly">
                       <tbody>
@@ -449,7 +463,7 @@
               </div>
             </fieldset>
 
-            <fieldset>
+            <fieldset  ng-if="1=0 && mode!='kyc'">
 
               <div id="show_forPerson" ng-show="Contract.act_for_other==2" style="width:100%">
                 <div class="gridAx">
@@ -518,14 +532,35 @@
       <br/>
 
 
-      <div style="clear:both" class="center-align">
-        <a id="save_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary orange-btn" ng-click="add_contract()" href="javascript:;">
-          {{'Save' | translate }}
-        </a>
-        <a id="cancel_button_cust" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary blue-btn" ng-click="back()" href="javascript:;">
-          {{'Cancel' | translate }}
-        </a>
+      <div ng-if="!page.view" style="clear:both" class="center-align">
+        <button  id="save_prev" ng-click="add_contract(-1)" class="left mdl-button mdl-js-button  mdl-button--colored orange ">
+          <i class="material-icons size24">keyboard_arrow_left</i>
+        </button>
+        <span class="mdl-tooltip mdl-tooltip--validation" for="save_prev" >
+          <span >{{'SavePrev'|translate}}.</span>
+        </span>
+        <button  id="save_exit" ng-click="add_contract(0)" class="left mdl-button mdl-js-button  mdl-button--colored gray ">
+            <i class="material-icons size24">subdirectory_arrow_left</i>
+          </button>
+          <span class="mdl-tooltip mdl-tooltip--validation" for="save_exit" >
+            <span >{{'SaveExit'|translate}}.</span>
+          </span>
+          <button  id="save_next" ng-click="add_contract(1)" class="right mdl-button mdl-js-button  mdl-button--colored blue">
+            <i class="material-icons size24">keyboard_arrow_right</i>
+          </button>
+          <span class="mdl-tooltip mdl-tooltip--validation" for="save_next" >
+            <span >{{'SaveNext'|translate}}.</span>
+          </span>
 
       </div>
+      <div ng-if="page.view" class="center-align">
+        <button  id="save_exit" ng-click="add_contract(0)" class="left mdl-button mdl-js-button  mdl-button--colored gray ">
+          <i class="material-icons size24">subdirectory_arrow_left</i>
+        </button>
+        <span class="mdl-tooltip mdl-tooltip--validation" for="save_exit" >
+          <span >{{'SaveExit'|translate}}.</span>
+        </span>
+       </div>
+
       <div class="clr"></div>
 </div>

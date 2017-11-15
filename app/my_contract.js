@@ -68,26 +68,26 @@ app2.factory('Contracts_inf', function($http,$state) {
         //$http.post( LOG,  {r:"dopo caricamento",data:data})
         if (this.pInfo.user_type<3)
         angular.forEach(data,function(value,key) {
-          data[key].Owner=data[key].fullname
-          data[key].kyc_update=IsJsonString(data[key].kyc_update)
-          data[key].risk_update=IsJsonString(data[key].risk_update)
-
-          if (data[key].act_for_other==1){
-            data[key].contractor_name=data[key].fullname
-            data[key].fullname=data[key].name
-            data[key].Owner=data[key].name
-          }
-          if (data[key].act_for_other==2){
-            data[key].contractor_name=data[key].fullname
-            data[key].fullname=data[key].other_name
-            data[key].Owner=data[key].other_name
-          }
-          if (data[key].fullname===null){
-            data[key].contractor_name=data[key].nometemp
-            data[key].fullname=data[key].nometemp
-            data[key].Owner=data[key].nometemp
-
-          }
+          if (data[key].firmatario===undefined || data[key].firmatario===null || data[key].firmatario.trim().length==0){
+  					data[key].firmatario=data[key].fullname
+  				}
+          data[key].fullname=data[key].firmatario
+          data[key].Owner=data[key].firmatario
+          data[key].contractor_name=data[key].firmatario
+  				if (data[key].act_for_other==1){
+  					if (data[key].owner===undefined || data[key].owner==null || data[key].owner.trim().length==0){
+  						data[key].owner=data[key].name
+  					}
+            data[key].fullname=data[key].owner
+            data[key].Owner=data[key].owner
+  				}
+  				if (data[key].act_for_other==2){
+  					if (data[key].owner===undefined || data[key].owner==null || data[key].owner.trim().length==0){
+  						data[key].owner=data[key].other_name
+  					}
+            data[key].fullname=data[key].owner
+            data[key].Owner=data[key].owner
+  				}
         })
 
         if (data.length==0){
@@ -205,6 +205,8 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
         else
       $scope.main.Cm=$filter('translate')("Le mie Persone")
   //alert(window.location.pathname.replace(/^\//, ''));
+  $scope.pages={}
+  $scope.pages[$state.current.name]={}
   $scope.main.state=$state.current.name;
   $scope.main.login=false
   $scope.main.Back=false
@@ -214,12 +216,12 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     $scope.main.Add=true
   $scope.main.Search=true
   $scope.main.AddPage="add_contract"
+  $scope.main.AddLabel="Nuova AV"
   $scope.main.action="add_contract"
   $scope.main.viewName="I miei Contratti"
   $scope.main.Sidebar=true
   $('.mdl-layout__drawer-button').show()
   $scope.main.loader=true
-  localstorage('pages',JSON.stringify({}))
   if ($scope.main.searchText !== undefined && $scope.main.searchText.length>0){
     $scope.main.hideName=true
       $scope.main.showSubHeader=true
@@ -343,13 +345,15 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
   }
   $scope.toDocs = function(Contract){
-    pages={'kyc_document':{action:'', location:$state.current.name,Contract:Contract,view:true},currentObId:Contract.contract_id,currentOb:'contract'}
-    localstorage('pages',JSON.stringify(pages))
-    $state.go('kyc_document',{pages:pages})
+    $scope.pages.currentObId=Contract.contract_id
+    $scope.pages.currentOb="contract"
+    $scope.pages['kyc_document']={action:'', location:$state.current.name,Contract:Contract,view:true}
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go('kyc_document',{pages:$scope.pages})
 
 
   };
-  $scope.tocontract = function(d){
+  $scope.tocontract = function(Contract){
     if ($scope.agent.user_type==3)
       return
     /*
@@ -359,15 +363,25 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     localstorage("Customertype",1);
     localstorage('Contract', JSON.stringify(d));
     */
+    $scope.pages.currentObId=Contract.contract_id
+    $scope.pages.currentOb="contract"
 
-    pages={'view_contract':{action:'view', location:$state.current.name,Contract:d},currentObId:d.contract_id,currentOb:'contract'}
-    localstorage('pages',JSON.stringify(pages))
-    $state.go('view_contract',{pages:pages})
+    $scope.pages['view_contract']={action:'view', location:$state.current.name,Contract:Contract}
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go('view_contract',{pages:$scope.pages})
   };
   $scope.add_contract = function(){
+    $scope.pages.currentOb="contract"
+    $scope.pages['kyc_contractor.01']={action:'add_contract', location:$state.current.name}
+    localstorage('pages',JSON.stringify($scope.pages))
+    $state.go('kyc_contractor.01',{pages:$scope.pages})
+
+/*
     pages={'add_contract':{action:'add_contract', location:$state.current.name},currentOb:'contract'}
     localstorage('pages',JSON.stringify(pages))
     $state.go('add_contract',{pages:pages})
+*/
+
   };
   $scope.share = function(d){
     if ($scope.main.web){
@@ -561,47 +575,8 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
     });
 
   }
-  $scope.loadAgentList=function(){
-      settings={table:'agent',id:'agent_id',
-                fields:{
-                  'j1.name':'name',
-                  'j1.surname':'surname',
-                'uno.agent_id':'agent_id'
-                },
-                join:{
-                  'j1':{'table':'users',
-                        'condition':'uno.user_id=j1.user_id '
-                      }
-                },
-                    where: {
-                  'uno.agency_id':$scope.agent.agency_id
+  $scope.agentList=getAgentList($scope.agentListI,$scope.agent)
 
-                }, limit:100
-              }
-      data= {"action":"ListObjs",settings:settings,pInfo:$scope.agent.pInfo}
-      $http.post(SERVICEURL2,  data )
-      .then(function(responceData)  {
-        if(responceData.data.RESPONSECODE=='1') 			{
-          data=responceData.data.RESPONSE
-          angular.forEach(data,function(value,key) {
-            $scope.agentListI[data[key]['agent_id']]=data[key]
-          })
-          $scope.agentList=data
-        }
-        else   {
-          if (responceData.data.RESPONSECODE=='-1'){
-            localstorage('msg','Sessione Scaduta ');
-            $state.go('login');;;
-          }
-        }})
-        , (function() {
-          console.log("error");
-        });
-
-
-  }
-
-  $scope.loadAgentList();
   $scope.back = function(d){
     $state.go($scope.page.location)
   }
