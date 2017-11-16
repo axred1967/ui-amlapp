@@ -54,26 +54,6 @@ if ( isapp ) {
   document.write('<script src="cordova.js"></' + 'script>');
   $(document).ready(function(){app.initialize();});
 }
-(function(){
-
-    // Match this timestamp with the release of your code
-    var lastVersioning = Date.UTC(2017, 11, 16, 10, 0, 0);
-
-    var lastCacheDateTime = localStorage.getItem('lastCacheDatetime');
-
-    if(lastCacheDateTime){
-        if(lastVersioning > lastCacheDateTime){
-            var reload = true;
-        }
-    }
-
-    localStorage.setItem('lastCacheDatetime', Date.now());
-
-    if(reload){
-        location.reload(true);
-    }
-
-})();
 </script>
 <script src="https://amlapp.euriskoformazione.com/dev/ui-amlapp/js/animsition.min.js"></script>
 <script src="https://amlapp.euriskoformazione.com/dev/ui-amlapp/js/sweetalert.min.js"></script>
