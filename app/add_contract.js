@@ -366,6 +366,7 @@ app2.controller('add_contract', function ($scope,$http,$translate,$rootScope,$ti
 					next="kyc_owners"
 					default:
 				}
+				$scope.pages.currentObId=$scope.Contract.contract_id
 				$scope.pages[next]={action:'',location:$scope.page.location,prev_page:$state.current.name,Contract:$scope.Contract,agg:$scope.page.agg}
 				localstorage('pages', JSON.stringify($scope.pages));
 				$state.go(next  ,{pages:$scope.pages})

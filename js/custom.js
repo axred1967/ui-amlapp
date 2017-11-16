@@ -377,6 +377,11 @@ function getCountryList(){
   return countryList
 
 }
+function getAgentListI(agentListI,agent){
+  var agentList=false
+  agentList=IsJsonString(localStorage.getItem('agentListI'))
+  return   agentList
+}
 function getAgentList(agentListI,agent){
   var agentList=false
   agentList=localStorage.getItem('agentList')

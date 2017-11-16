@@ -576,6 +576,7 @@ app2.controller('my_contract', function ($scope,$http,$translate,$rootScope,$sta
 
   }
   $scope.agentList=getAgentList($scope.agentListI,$scope.agent)
+  $scope.agentListI=getAgentListI($scope.agentListI,$scope.agent)
 
   $scope.back = function(d){
     $state.go($scope.page.location)

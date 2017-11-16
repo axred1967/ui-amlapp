@@ -347,6 +347,7 @@ $scope.fillKycData=function(){
 				$scope.Contract.firmatario=$scope.Customer.name +" "+$scope.Customer.surname;
 				$scope.Contract=createTempContract($scope.agent,$scope.Contract);
 				$scope.Contract.Owner=$scope.Contract.firmatario
+				$scope.Contract.contractor_id=$scope.Contract.firmatario	
 			}
 			dbData={}
 			dbData.place_of_identification=$scope.Kyc.place_of_identification
